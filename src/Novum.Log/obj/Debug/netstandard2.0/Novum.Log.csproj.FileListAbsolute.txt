@@ -1,0 +1,10 @@
+C:\Users\nrastl\Desktop\Novum\src\Novum.Log\bin\Debug\netstandard2.0\NLog.config
+C:\Users\nrastl\Desktop\Novum\src\Novum.Log\bin\Debug\netstandard2.0\Novum.Log.deps.json
+C:\Users\nrastl\Desktop\Novum\src\Novum.Log\bin\Debug\netstandard2.0\Novum.Log.dll
+C:\Users\nrastl\Desktop\Novum\src\Novum.Log\bin\Debug\netstandard2.0\Novum.Log.pdb
+C:\Users\nrastl\Desktop\Novum\src\Novum.Log\obj\Debug\netstandard2.0\Novum.Log.csproj.CoreCompileInputs.cache
+C:\Users\nrastl\Desktop\Novum\src\Novum.Log\obj\Debug\netstandard2.0\Novum.Log.AssemblyInfoInputs.cache
+C:\Users\nrastl\Desktop\Novum\src\Novum.Log\obj\Debug\netstandard2.0\Novum.Log.AssemblyInfo.cs
+C:\Users\nrastl\Desktop\Novum\src\Novum.Log\obj\Debug\netstandard2.0\Novum.Log.dll
+C:\Users\nrastl\Desktop\Novum\src\Novum.Log\obj\Debug\netstandard2.0\Novum.Log.pdb
+C:\Users\nrastl\Desktop\Novum\src\Novum.Log\obj\Debug\netstandard2.0\Novum.Log.csprojAssemblyReference.cache

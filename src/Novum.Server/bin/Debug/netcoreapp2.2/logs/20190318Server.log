@@ -1,0 +1,2 @@
+20190318|131532439|Warn|Overriding address(es) 'https://localhost:5001, http://localhost:5000'. Binding to endpoints defined in UseKestrel() instead.
+20190318|131645688|Warn|Overriding address(es) 'https://localhost:5001, http://localhost:5000'. Binding to endpoints defined in UseKestrel() instead.
