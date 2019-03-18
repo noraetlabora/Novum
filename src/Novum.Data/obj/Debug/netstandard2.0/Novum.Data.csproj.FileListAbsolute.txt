@@ -1,9 +1,0 @@
-C:\Users\nrastl\Desktop\Novum\src\Novum.Data\bin\Debug\netstandard2.0\Novum.Data.deps.json
-C:\Users\nrastl\Desktop\Novum\src\Novum.Data\bin\Debug\netstandard2.0\Novum.Data.dll
-C:\Users\nrastl\Desktop\Novum\src\Novum.Data\bin\Debug\netstandard2.0\Novum.Data.pdb
-C:\Users\nrastl\Desktop\Novum\src\Novum.Data\obj\Debug\netstandard2.0\Novum.Data.csprojAssemblyReference.cache
-C:\Users\nrastl\Desktop\Novum\src\Novum.Data\obj\Debug\netstandard2.0\Novum.Data.csproj.CoreCompileInputs.cache
-C:\Users\nrastl\Desktop\Novum\src\Novum.Data\obj\Debug\netstandard2.0\Novum.Data.AssemblyInfoInputs.cache
-C:\Users\nrastl\Desktop\Novum\src\Novum.Data\obj\Debug\netstandard2.0\Novum.Data.AssemblyInfo.cs
-C:\Users\nrastl\Desktop\Novum\src\Novum.Data\obj\Debug\netstandard2.0\Novum.Data.dll
-C:\Users\nrastl\Desktop\Novum\src\Novum.Data\obj\Debug\netstandard2.0\Novum.Data.pdb

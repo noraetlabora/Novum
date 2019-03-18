@@ -2,13 +2,5 @@
   "ProjectFilePath": "c:\\Users\\nrastl\\Desktop\\Novum\\src\\Novum.Server\\Novum.Server.csproj",
   "TargetFramework": "netcoreapp2.2",
   "TagHelpers": [],
-  "Configuration": {
-    "ConfigurationName": "MVC-2.1",
-    "LanguageVersion": "2.1",
-    "Extensions": [
-      {
-        "ExtensionName": "MVC-2.1"
-      }
-    ]
-  }
+  "Configuration": null
 }

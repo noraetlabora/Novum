@@ -93,7 +93,7 @@ namespace Novum.Database.Cache
 
         public static string SqlToday
         {
-            get { return SingleQuote + DateTime.Now.ToString("yyyy-MM-dd") + SingleQuote; }
+            get { return DateTime.Now.ToString("yyyy-MM-dd"); }
         }
     }
 }

@@ -11,28 +11,26 @@ namespace Novum.Database.Cache.API
     /// <summary>
     /// 
     /// </summary>
-    public class Misc : IDbMisc
+    public class Menu : IDbMenu
     {
-        public Misc()
+        public Menu()
         {
         }
 
-        public List<Novum.Data.CancellationResason> GetCancellationReason(string department)
+        public List<string> GetCategories(string department, string menuId)
         {
-            var sql = string.Format("SELECT * FROM NT.StornoGrund WHERE FA = {0} AND passiv > '{1}'", department, CacheString.SqlToday);
+            var sql = string.Format("SELECT * FROM NT.TouchMenuZeile WHERE FA = {0} AND MENU = '{1}'", department, menuId);
             Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
             var dataAdapter = new CacheDataAdapter(sql, DB.CacheConnection);
             var dataTable = new DataTable();
             dataAdapter.Fill(dataTable);
 
-            var cReasons = new List<Novum.Data.CancellationResason>();
+            var categories = new List<string>();
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
-                var cReason = new Novum.Data.CancellationResason();
-                cReason.Id = (string)dataRow["GRUND"];
-                cReason.Name = (string)dataRow["bez"];
-                cReasons.Add(cReason);
+                var category = "";
+                category = (string)dataRow["ZE"];
             }
 
             Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": TableRowCount = " + dataTable.Rows.Count);

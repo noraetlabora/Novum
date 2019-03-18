@@ -7,6 +7,6 @@ namespace Novum.Database.API
     /// </summary>
     public interface IDbMenu
     {
-        List<Novum.Data.CancellationResason> GetCategories(string department);
+        List<string> GetCategories(string department);
     }
 }
