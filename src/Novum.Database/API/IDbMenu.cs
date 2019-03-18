@@ -1,0 +1,12 @@
+using System.Collections.Generic;
+
+namespace Novum.Database.API
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IDbMenu
+    {
+        List<Novum.Data.CancellationResason> GetCategories(string department);
+    }
+}
