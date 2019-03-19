@@ -35,7 +35,7 @@ namespace Novum.Database.Cache.API
 
             Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": TableRowCount = " + dataTable.Rows.Count);
 
-            return cReasons;
+            return categories;
         }
     }
 }
