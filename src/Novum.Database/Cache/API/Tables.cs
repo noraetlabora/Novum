@@ -6,7 +6,7 @@ namespace Novum.Database.Cache.API
     /// <summary>
     /// 
     /// </summary>
-    public class Tables : IDbTables
+    internal class Tables : IDbTables
     {
         public Tables()
         {

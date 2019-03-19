@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Novum.Server.Models.Os;
+using Novum.Data.Os;
 
 namespace Novum.Server.Controllers.Os
 {

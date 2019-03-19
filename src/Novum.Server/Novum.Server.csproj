@@ -8,16 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="InterSystemsCache" Version="1.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Novum.Database\Novum.Database.csproj" />
     <ProjectReference Include="..\Novum.Log\Novum.Log.csproj" />
     <ProjectReference Include="..\Novum.Data\Novum.Data.csproj" />
+    <ProjectReference Include="..\Novum.Logic\Novum.Logic.csproj" />
   </ItemGroup>
 
 </Project>

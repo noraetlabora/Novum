@@ -42,7 +42,7 @@ namespace Novum.Database
             get { return dbConnection; }
         }
 
-        public static Cache.API.CacheApi Api
+        public static API.IDbApi Api
         {
             get { return api; }
         }

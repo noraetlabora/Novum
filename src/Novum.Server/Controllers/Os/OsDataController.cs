@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Novum.Server.Models.Os;
+using Novum.Data.Os;
 
 namespace Novum.Server.Controllers.Os
 {
@@ -45,15 +45,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/CancellationReasons")]
         public IActionResult GetCancellationReasons()
         {
-            var osCReasons = new List<CancellationReason>();
-            List<Novum.Data.CancellationResason> novCReasons = Novum.Database.DB.Api.Misc.GetCancellationReason("1001");
-            foreach (var novCReason in novCReasons)
-            {
-                var osCReason = new CancellationReason();
-                osCReason.Id = novCReason.Id;
-                osCReason.Name = novCReason.Name;
-                osCReasons.Add(osCReason);
-            }
+            var osCReasons = Novum.Logic.CancellationReason.GetCancellationReasons("1001");
             return new ObjectResult(osCReasons);
         }
 

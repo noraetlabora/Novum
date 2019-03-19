@@ -11,7 +11,7 @@ namespace Novum.Database.Cache.API
     /// <summary>
     /// 
     /// </summary>
-    public class Menu : IDbMenu
+    internal class Menu : IDbMenu
     {
         public Menu()
         {

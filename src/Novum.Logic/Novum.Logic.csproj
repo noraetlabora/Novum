@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Novum.Database\Novum.Database.csproj" />
+    <ProjectReference Include="..\Novum.Log\Novum.Log.csproj" />
+    <ProjectReference Include="..\Novum.Data\Novum.Data.csproj" />
+  </ItemGroup>
+
+</Project>

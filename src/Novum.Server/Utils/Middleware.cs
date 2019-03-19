@@ -70,6 +70,7 @@ namespace Novum.Server.Utils
 
             var sb = new StringBuilder();
             sb.Append("Request ").Append(Pipe);
+            sb.Append(request.HttpContext.TraceIdentifier).Append(Pipe);
             sb.Append(request.Method.Substring(0, 3)).Append(Pipe);
             sb.Append(request.Path).Append(Pipe);
             sb.Append(bodyAsText);
@@ -87,6 +88,7 @@ namespace Novum.Server.Utils
 
             var sb = new StringBuilder();
             sb.Append("Response").Append(Pipe);
+            sb.Append(response.HttpContext.TraceIdentifier).Append(Pipe);
             sb.Append(response.StatusCode).Append(Pipe);
             sb.Append(response.HttpContext.Request.Path).Append(Pipe);
             sb.Append(bodyAsText);

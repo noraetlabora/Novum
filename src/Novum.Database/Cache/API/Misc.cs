@@ -11,12 +11,17 @@ namespace Novum.Database.Cache.API
     /// <summary>
     /// 
     /// </summary>
-    public class Misc : IDbMisc
+    internal class Misc : IDbMisc
     {
         public Misc()
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
         public List<Novum.Data.CancellationResason> GetCancellationReason(string department)
         {
             var sql = string.Format("SELECT * FROM NT.StornoGrund WHERE FA = {0} AND passiv > '{1}'", department, CacheString.SqlToday);

@@ -6,7 +6,7 @@ namespace Novum.Database.Cache.API
     /// <summary>
     /// 
     /// </summary>
-    public class User : IDbUser
+    internal class User : IDbUser
     {
         public User()
         {

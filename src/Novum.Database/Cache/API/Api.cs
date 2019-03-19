@@ -5,7 +5,7 @@ namespace Novum.Database.Cache.API
     /// <summary>
     /// 
     /// </summary>
-    public class CacheApi : IDbApi
+    internal class CacheApi : IDbApi
     {
         private static Cache.API.Misc misc;
         private static Cache.API.Tables tables;
