@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Novum.Data.Models.Os;
+using Novum.Data.Os;
 
 namespace Novum.Server.Controllers.Os
 {
@@ -57,16 +57,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/Categories")]
         public IActionResult GetCategories()
         {
-            var categories = new List<Category>();
-            //
-            for (int i = 0; i < 20; i++)
-            {
-                var category = new Category();
-                category.Name = "Kategorie " + i.ToString();
-
-                categories.Add(category);
-            }
-            //
+            var categories = Novum.Logic.Os.OsData.GetCategories("1001", "1");
             return new ObjectResult(categories);
         }
 

@@ -24,7 +24,7 @@ namespace Novum.Database.Cache.API
         /// <returns></returns>
         public List<Novum.Data.CancellationResason> GetCancellationReason(string department)
         {
-            var sql = string.Format("SELECT * FROM NT.StornoGrund WHERE FA = {0} AND passiv > '{1}'", department, CacheString.SqlToday);
+            var sql = string.Format("SELECT GRUND, bez FROM NT.StornoGrund WHERE FA = {0} AND passiv > '{1}'", department, CacheString.SqlToday);
             Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
             var dataAdapter = new CacheDataAdapter(sql, DB.CacheConnection);
             var dataTable = new DataTable();
@@ -35,8 +35,8 @@ namespace Novum.Database.Cache.API
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 var cReason = new Novum.Data.CancellationResason();
-                cReason.Id = (string)dataRow["GRUND"];
-                cReason.Name = (string)dataRow["bez"];
+                cReason.Id = DataObject.GetString(dataRow, "GRUND");
+                cReason.Name = DataObject.GetString(dataRow, "bez");
                 cReasons.Add(cReason);
             }
 

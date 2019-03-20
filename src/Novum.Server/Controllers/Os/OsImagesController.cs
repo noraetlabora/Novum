@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Novum.Data.Models.Os;
+using Novum.Data.Os;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 
