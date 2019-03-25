@@ -113,17 +113,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/PaymentMedia")]
         public IActionResult GetPaymentMedia()
         {
-            var paymentMedia = new List<PaymentMedium>();
-            //
-            for (int i = 0; i < 20; i++)
-            {
-                var paymentMedium = new PaymentMedium();
-                paymentMedium.Id = i.ToString();
-                paymentMedium.Name = "Zahlunsmedium " + i.ToString();
-
-                paymentMedia.Add(paymentMedium);
-            }
-            //
+            var paymentMedia = Novum.Logic.Os.OsData.GetPaymentMedia("1001");
             return new ObjectResult(paymentMedia);
         }
 
@@ -135,16 +125,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/Printers")]
         public IActionResult GetPrinters()
         {
-            var printers = new List<Printer>();
-            //
-            for (int i = 0; i < 20; i++)
-            {
-                var printer = new Printer();
-                printer.Name = "Drucker " + i.ToString();
-
-                printers.Add(printer);
-            }
-            //
+            var printers = Novum.Logic.Os.OsData.GetInvoicePrinters("1001");
             return new ObjectResult(printers);
         }
 

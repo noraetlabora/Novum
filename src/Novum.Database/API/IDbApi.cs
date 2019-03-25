@@ -8,8 +8,11 @@ namespace Novum.Database.API
     public interface IDbApi
     {
         Database.API.IDbMisc Misc { get; }
-        Database.API.IDbTable Tables { get; }
+        Database.API.IDbTable Table { get; }
         Database.API.IDbUser User { get; }
         Database.API.IDbMenu Menu { get; }
+        Database.API.IDbPrinter Printer { get; }
+        Database.API.IDbPayment Payment { get; }
+        Database.API.IDbModifier Modifier { get; }
     }
 }

@@ -2,26 +2,28 @@ using System;
 
 namespace Novum.Data
 {
-    public class Menu
+    public class ModifierMenu
     {
 
         #region Constructor
-        public Menu()
+        public ModifierMenu()
         {
 
         }
         #endregion
 
         #region Properties
+
         public string Id { get; set; }
         public string Name { get; set; }
-        public string BackgroundColor { get; set; }
-        public string ForegroundColor { get; set; }
-        public uint Columns { get; set; }
+        public uint MinSelection { get; set; }
+        public uint MaxSelection { get; set; }
 
         #endregion
 
 
     }
+
+
 
 }

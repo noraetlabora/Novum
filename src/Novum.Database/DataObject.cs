@@ -47,5 +47,13 @@ namespace Novum.Database
 
             return Convert.ToUInt32(dataRow[column]);
         }
+
+        public static bool GetBool(DataRow dataRow, string column)
+        {
+            if (IsNull(dataRow, column))
+                return false;
+
+            return Convert.ToBoolean(dataRow[column]);
+        }
     }
 }
