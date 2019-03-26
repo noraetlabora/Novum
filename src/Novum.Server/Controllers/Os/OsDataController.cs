@@ -69,19 +69,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/ModifierGroups")]
         public IActionResult GetModifierGroups()
         {
-            var modifierGroups = new List<ModifierGroup>();
-            //
-            for (int i = 0; i < 20; i++)
-            {
-                var modifierGroup = new ModifierGroup();
-                modifierGroup.Id = i.ToString();
-                modifierGroup.Name = "Änderergruppe " + i.ToString();
-                modifierGroup.MinChoices = 1;
-                modifierGroup.MaxChoices = 99;
-
-                modifierGroups.Add(modifierGroup);
-            }
-            //
+            var modifierGroups = Novum.Logic.Os.OsData.GetModifierGroups("1001");
             return new ObjectResult(modifierGroups);
         }
 

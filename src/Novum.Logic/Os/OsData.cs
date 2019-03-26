@@ -140,9 +140,47 @@ namespace Novum.Logic.Os
         #endregion
 
         #region ModifierGroups
-        public static List<Novum.Data.Os.ModifierGroup> GetModifierGroups()
+        public static List<Novum.Data.Os.ModifierGroup> GetModifierGroups(string department)
         {
-            throw new NotImplementedException();
+            var modifierGroups = new List<Novum.Data.Os.ModifierGroup>();
+            var modifierMenus = Modifier.GetModifierMenus(department);
+
+            foreach (Data.ModifierMenu modifierMenu in modifierMenus)
+            {
+                var modifierGroup = new Novum.Data.Os.ModifierGroup();
+                modifierGroup.Id = modifierMenu.Id;
+                modifierGroup.Name = modifierMenu.Name;
+                modifierGroup.MinChoices = (int)modifierMenu.MinSelection;
+                modifierGroup.MaxChoices = (int)modifierMenu.MaxSelection;
+                modifierGroup.Question = "";
+                modifierGroup.Type = Novum.Data.Os.ModifierGroup.ModifierType.PickOneEnum;
+                modifierGroup.Choices = new List<Data.Os.ModifierChoice>();
+
+                var modifiers = Modifier.GetModifiers(department, modifierMenu.Id);
+                var lastModifierId = "";
+
+                foreach (Data.Modifier modifier in modifiers)
+                {
+                    // ignore two sequently equal modifiers (eg. rare and rare)
+                    if (lastModifierId.Equals(modifier.Id))
+                        continue;
+                    lastModifierId = modifier.Id;
+
+                    var modifierChoice = new Novum.Data.Os.ModifierChoice();
+
+                    modifierChoice.Id = modifier.Id;
+                    modifierChoice.Name = modifier.Name;
+                    modifierChoice.ReceiptName = modifier.Name;
+                    modifierChoice.DefaultAmount = 0;
+                    modifierChoice.MinAmount = (int)modifier.MinAmount;
+                    modifierChoice.MaxAmount = (int)modifier.MaxAmount;
+
+                    modifierGroup.Choices.Add(modifierChoice);
+                }
+                modifierGroups.Add(modifierGroup);
+            }
+
+            return modifierGroups;
         }
 
         #endregion

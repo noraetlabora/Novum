@@ -11,6 +11,8 @@ namespace Novum.Server.Controllers.Os
     /// </summary>
     public class OsHostController : Controller
     {
+        private static DateTime serverStart = DateTime.Now;
+
         /// <summary>
         /// Get the status of the host / POS. This will be regularly called by clients to detect status changes (like host / POS restarts)
         /// </summary>
@@ -20,9 +22,7 @@ namespace Novum.Server.Controllers.Os
         public IActionResult GetHostStatus()
         {
             var posStatus = new PosStatus();
-            //
-            posStatus.SessionId = "1";
-            //
+            posStatus.SessionId = serverStart.ToString("dd.MM.yyyy_HH:mm:ss.ffff");
             return new OkObjectResult(posStatus);
         }
     }

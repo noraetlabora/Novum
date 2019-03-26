@@ -71,7 +71,7 @@ namespace Novum.Database.Cache.API
             {
                 System.Threading.Monitor.Enter(DB.CacheConnection);
 
-                var sql = string.Format("SELECT M.UMENU, M.ROW, M.COL, M.ANR, M.bgcolor, M.fgcolor, W.bez FROM NT.TouchUmenuZeilen M LEFT JOIN WW.ANR AS W ON (W.FA = M.FA AND W.ANR = M.ANR) WHERE M.FA = {0} AND   M.UMENU = {1}", department, menuId);
+                var sql = string.Format("SELECT M.ROW, M.COL, M.ANR, M.bgcolor, M.fgcolor, W.bez FROM NT.TouchUmenuZeilen M LEFT JOIN WW.ANR AS W ON (W.FA = M.FA AND W.ANR = M.ANR) WHERE M.FA = {0} AND M.UMENU = {1} AND M.ANR <> '' ", department, menuId);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
                 var dataAdapter = new CacheDataAdapter(sql, DB.CacheConnection);
                 var dataTable = new DataTable();
@@ -80,10 +80,12 @@ namespace Novum.Database.Cache.API
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
                     var modifier = new Novum.Data.Modifier();
-                    modifier.Id = DataObject.GetString(dataRow, "UMENU");
+                    modifier.Id = DataObject.GetString(dataRow, "ANR");
                     modifier.Name = DataObject.GetString(dataRow, "bez");
-                    modifier.ReceiptName = modifier.Name;
-                    modifier.DefaultAmount = 0;
+                    modifier.Row = DataObject.GetUInt(dataRow, "ROW");
+                    modifier.Column = DataObject.GetUInt(dataRow, "COL");
+                    modifier.BackgroundColor = DataObject.GetString(dataRow, "bgcolor");
+                    modifier.ForegroundColor = DataObject.GetString(dataRow, "fgcolor");
                     modifier.MinAmount = 0;
                     modifier.MaxAmount = 1;
 

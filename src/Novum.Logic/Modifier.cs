@@ -6,7 +6,7 @@ namespace Novum.Logic
     /// <summary>
     /// 
     /// </summary>
-    public class ModifierMenu
+    public class Modifier
     {
         /// <summary>
         /// 
