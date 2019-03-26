@@ -83,13 +83,8 @@ namespace Novum.Server.Controllers.Os
         {
             var osConfiguration = new OsConfiguration();
             osConfiguration.Global = new Dictionary<string, string>();
-
-            //
-            for (int i = 0; i < 20; i++)
-            {
-                osConfiguration.Global["key" + i.ToString()] = "value" + i.ToString();
-            }
-            //
+            osConfiguration.Global.Add("language", "de");
+            osConfiguration.Global.Add("locale", "de_DE");
             return new ObjectResult(osConfiguration);
         }
 
