@@ -1,4 +1,4 @@
-using Novum.Database.API;
+using Novum.Database.Api;
 
 namespace Novum.Database.Cache.API
 {

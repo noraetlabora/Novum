@@ -1,4 +1,4 @@
-namespace Novum.Database.API
+namespace Novum.Database.Api
 {
     /// <summary>
     /// 

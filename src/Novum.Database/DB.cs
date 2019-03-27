@@ -42,7 +42,7 @@ namespace Novum.Database
             get { return dbConnection; }
         }
 
-        public static API.IDbApi Api
+        public static Api.IDbApi Api
         {
             get { return api; }
         }

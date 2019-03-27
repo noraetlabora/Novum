@@ -1,19 +1,19 @@
 using System;
 
-namespace Novum.Database.API
+namespace Novum.Database.Api
 {
     /// <summary>
     /// 
     /// </summary>
     public interface IDbApi
     {
-        Database.API.IDbMisc Misc { get; }
-        Database.API.IDbTable Table { get; }
-        Database.API.IDbUser User { get; }
-        Database.API.IDbMenu Menu { get; }
-        Database.API.IDbPrinter Printer { get; }
-        Database.API.IDbPayment Payment { get; }
-        Database.API.IDbModifier Modifier { get; }
-        Database.API.IDbArticle Article { get; }
+        Database.Api.IDbMisc Misc { get; }
+        Database.Api.IDbTable Table { get; }
+        Database.Api.IDbUser User { get; }
+        Database.Api.IDbMenu Menu { get; }
+        Database.Api.IDbPrinter Printer { get; }
+        Database.Api.IDbPayment Payment { get; }
+        Database.Api.IDbModifier Modifier { get; }
+        Database.Api.IDbArticle Article { get; }
     }
 }

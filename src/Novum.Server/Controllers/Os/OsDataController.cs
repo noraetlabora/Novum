@@ -20,7 +20,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/Articles")]
         public IActionResult GetArticles()
         {
-            var articles = Novum.Logic.Os.OsData.GetArticles("1001");
+            var articles = Novum.Logic.Os.Data.GetArticles("1001");
             return new ObjectResult(articles);
         }
 
@@ -33,7 +33,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/CancellationReasons")]
         public IActionResult GetCancellationReasons()
         {
-            var osCReasons = Novum.Logic.CancellationReason.GetCancellationReasons("1001");
+            var osCReasons = Novum.Logic.Os.Data.GetCancellationReasons("1001");
             return new ObjectResult(osCReasons);
         }
 
@@ -45,7 +45,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/Categories")]
         public IActionResult GetCategories()
         {
-            var categories = Novum.Logic.Os.OsData.GetCategories("1001", "1");
+            var categories = Novum.Logic.Os.Data.GetCategories("1001", "1");
             return new ObjectResult(categories);
         }
 
@@ -57,7 +57,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/ModifierGroups")]
         public IActionResult GetModifierGroups()
         {
-            var modifierGroups = Novum.Logic.Os.OsData.GetModifierGroups("1001");
+            var modifierGroups = Novum.Logic.Os.Data.GetModifierGroups("1001");
             return new ObjectResult(modifierGroups);
         }
 
@@ -84,7 +84,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/PaymentMedia")]
         public IActionResult GetPaymentMedia()
         {
-            var paymentMedia = Novum.Logic.Os.OsData.GetPaymentMedia("1001");
+            var paymentMedia = Novum.Logic.Os.Data.GetPaymentMedia("1001");
             return new ObjectResult(paymentMedia);
         }
 
@@ -96,7 +96,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/Printers")]
         public IActionResult GetPrinters()
         {
-            var printers = Novum.Logic.Os.OsData.GetInvoicePrinters("1001");
+            var printers = Novum.Logic.Os.Data.GetInvoicePrinters("1001");
             return new ObjectResult(printers);
         }
 
@@ -108,17 +108,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/ServiceAreas")]
         public IActionResult GetServiceAreas()
         {
-            var serviceAreas = new List<ServiceArea>();
-            //
-            for (int i = 0; i < 20; i++)
-            {
-                var serviceArea = new ServiceArea();
-                serviceArea.Id = i.ToString();
-                serviceArea.Name = "Ort " + i.ToString();
-
-                serviceAreas.Add(serviceArea);
-            }
-            //
+            var serviceAreas = Novum.Logic.Os.Data.GetServiceAreas("1001");
             return new OkObjectResult(serviceAreas);
         }
 

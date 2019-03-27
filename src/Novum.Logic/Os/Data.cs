@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
+using Novum.Data.Os;
+using Novum.Database.Api;
 
 namespace Novum.Logic.Os
 {
     /// <summary>
     /// 
     /// </summary>
-    public class OsData
+    public class Data
     {
-
         #region Cancellation Reason
 
         /// <summary>
@@ -19,7 +20,7 @@ namespace Novum.Logic.Os
         public static List<Novum.Data.Os.CancellationReason> GetCancellationReasons(string department)
         {
             var osCReasons = new List<Novum.Data.Os.CancellationReason>();
-            var novCReasons = CancellationReason.GetCancellationReasons(department);
+            var novCReasons = Novum.Database.DB.Api.Misc.GetCancellationReason(department);
             foreach (var novCReason in novCReasons.Values)
             {
                 var osCReason = new Novum.Data.Os.CancellationReason();
@@ -42,10 +43,10 @@ namespace Novum.Logic.Os
         public static List<Novum.Data.Os.Category> GetCategories(string department, string menuId)
         {
             var categories = new List<Novum.Data.Os.Category>();
-            var mainMenus = Menu.GetMainMenu(department, menuId);
+            var mainMenus = Novum.Database.DB.Api.Menu.GetMainMenu(department, menuId);
             var handledMenuIds = new List<string>();
 
-            foreach (Data.Menu menu in mainMenus.Values)
+            foreach (Novum.Data.Menu menu in mainMenus.Values)
             {
                 var category = new Novum.Data.Os.Category();
                 category.Name = menu.Name;
@@ -62,17 +63,17 @@ namespace Novum.Logic.Os
         private static List<Novum.Data.Os.CategoryContentEntry> GetCategoryContent(string department, string menuId, ref List<string> handledMenuIds)
         {
             var contentEntries = new List<Novum.Data.Os.CategoryContentEntry>();
-            var articles = Article.GetArticles(department, menuId);
+            var articles = Novum.Database.DB.Api.Article.GetArticles(department, menuId);
 
-            foreach (Data.Article article in articles.Values)
+            foreach (Novum.Data.Article article in articles.Values)
             {
-                //ignore all not supported menuItems 
-                if (NotSupportedMenuItem(article.Id))
+                //ignore all not supported articles 
+                if (ArticleIdNotSupported(article.Id))
                     continue;
 
                 var contentEntry = new Novum.Data.Os.CategoryContentEntry();
 
-                // submenu (eg. "$9")
+                // submenu
                 if (article.Id.StartsWith("$"))
                 {
                     var subMenuId = article.Id.Substring(1);
@@ -91,6 +92,7 @@ namespace Novum.Logic.Os
                 {
                     contentEntry.ArticleId = article.Id;
                 }
+
                 contentEntries.Add(contentEntry);
             }
             return contentEntries;
@@ -106,27 +108,19 @@ namespace Novum.Logic.Os
             return category;
         }
 
+        private static string[] notSupportedArticleIds = { "PLU", "$KONTO:", "$GUTSCHEIN:", "$GUTSCHEINBET:", "$RABATT:", "GANG:", "$FILTER:" };
         /// <summary>
-        /// Ignore all not supported menuItems like PLU, GANG, RABATT, etc.
+        /// Ignore all not supported articles like PLU, GANG, RABATT, etc.
         /// </summary>
-        /// <param name="menuItemId"></param>
+        /// <param name="article id"></param>
         /// <returns></returns>
-        private static bool NotSupportedMenuItem(string menuItemId)
+        private static bool ArticleIdNotSupported(string articleId)
         {
-            if (menuItemId.StartsWith("PLU"))
-                return true;
-            if (menuItemId.StartsWith("$KONTO:"))
-                return true;
-            if (menuItemId.StartsWith("$GUTSCHEIN:"))
-                return true;
-            if (menuItemId.StartsWith("$GUTSCHEINBET:"))
-                return true;
-            if (menuItemId.StartsWith("$RABATT:"))
-                return true;
-            if (menuItemId.StartsWith("GANG:"))
-                return true;
-            if (menuItemId.StartsWith("$FILTER:"))
-                return true;
+            foreach (string notSupportedArticleId in notSupportedArticleIds)
+            {
+                if (articleId.StartsWith(notSupportedArticleId))
+                    return true;
+            }
             return false;
         }
 
@@ -136,12 +130,12 @@ namespace Novum.Logic.Os
         public static List<Novum.Data.Os.Article> GetArticles(string department)
         {
             var osArticles = new List<Novum.Data.Os.Article>();
-            var novArticles = Article.GetArticles(department);
-            var modifierMenus = Modifier.GetModifierMenus(department);
-            var menuModifiers = Modifier.GetMenuModifiers(department);
-            Data.ModifierMenu modifierMenu = null;
+            var novArticles = Novum.Database.DB.Api.Article.GetArticles(department);
+            var modifierMenus = Novum.Database.DB.Api.Modifier.GetModifierMenus(department);
+            var menuModifiers = Novum.Database.DB.Api.Modifier.GetMenuModifiers(department);
+            Novum.Data.ModifierMenu modifierMenu = null;
 
-            foreach (Data.Article novArticle in novArticles.Values)
+            foreach (Novum.Data.Article novArticle in novArticles.Values)
             {
                 var osArticle = new Novum.Data.Os.Article();
 
@@ -156,7 +150,7 @@ namespace Novum.Logic.Os
 
                 // search the menu modifier (menu, row, col)
                 // if found add the modifier menu id to the article
-                foreach (Data.MenuModifier menuModifier in menuModifiers)
+                foreach (Novum.Data.MenuModifier menuModifier in menuModifiers)
                 {
                     if (!menuModifier.MenuId.Equals(novArticle.MenuId))
                         continue;
@@ -165,9 +159,9 @@ namespace Novum.Logic.Os
                     if (!menuModifier.Column.Equals(novArticle.Column))
                         continue;
                     if (osArticle.ModifierGroups == null)
-                        osArticle.ModifierGroups = new List<Data.Os.ArticleModifierGroup>();
+                        osArticle.ModifierGroups = new List<ArticleModifierGroup>();
 
-                    var articleModifierGroup = new Data.Os.ArticleModifierGroup();
+                    var articleModifierGroup = new Novum.Data.Os.ArticleModifierGroup();
                     articleModifierGroup.ModifierGroupId = menuModifier.ModifierMenuId;
                     osArticle.ModifierGroups.Add(articleModifierGroup);
 
@@ -189,9 +183,9 @@ namespace Novum.Logic.Os
         public static List<Novum.Data.Os.ModifierGroup> GetModifierGroups(string department)
         {
             var modifierGroups = new List<Novum.Data.Os.ModifierGroup>();
-            var modifierMenus = Modifier.GetModifierMenus(department);
+            var modifierMenus = Novum.Database.DB.Api.Modifier.GetModifierMenus(department);
 
-            foreach (Data.ModifierMenu modifierMenu in modifierMenus.Values)
+            foreach (Novum.Data.ModifierMenu modifierMenu in modifierMenus.Values)
             {
                 var modifierGroup = new Novum.Data.Os.ModifierGroup();
                 modifierGroup.Id = modifierMenu.Id;
@@ -200,12 +194,12 @@ namespace Novum.Logic.Os
                 modifierGroup.MaxChoices = (int)modifierMenu.MaxSelection;
                 modifierGroup.Question = "";
                 modifierGroup.Type = Novum.Data.Os.ModifierGroup.ModifierType.PickOneEnum;
-                modifierGroup.Choices = new List<Data.Os.ModifierChoice>();
+                modifierGroup.Choices = new List<ModifierChoice>();
 
-                var modifiers = Modifier.GetModifiers(department, modifierMenu.Id);
+                var modifiers = Novum.Database.DB.Api.Modifier.GetModifiers(department, modifierMenu.Id);
                 var lastModifierId = "";
 
-                foreach (Data.Modifier modifier in modifiers.Values)
+                foreach (Novum.Data.Modifier modifier in modifiers.Values)
                 {
                     // ignore two sequently equal modifiers (eg. rare and rare)
                     if (lastModifierId.Equals(modifier.Id))
@@ -240,7 +234,7 @@ namespace Novum.Logic.Os
         /// <returns></returns>
         public static List<Novum.Data.Os.Printer> GetInvoicePrinters(string department)
         {
-            var novPrinters = Printer.GetInvoicePrinters(department);
+            var novPrinters = Novum.Database.DB.Api.Printer.GetInvoicePrinters(department);
             var osPrinters = new List<Novum.Data.Os.Printer>();
 
             foreach (Novum.Data.Printer novPrinter in novPrinters.Values)
@@ -264,7 +258,7 @@ namespace Novum.Logic.Os
         /// <returns></returns>
         public static List<Novum.Data.Os.PaymentMedium> GetPaymentMedia(string department)
         {
-            var novPaymentTypes = Payment.GetPaymentTypes(department);
+            var novPaymentTypes = Novum.Database.DB.Api.Payment.GetPaymentTypes(department);
             var osPaymentMedia = new List<Novum.Data.Os.PaymentMedium>();
 
             foreach (Novum.Data.PaymentType novPaymentType in novPaymentTypes.Values)
@@ -279,5 +273,28 @@ namespace Novum.Logic.Os
             return osPaymentMedia;
         }
         #endregion
+
+        #region Service Area
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        public static List<Novum.Data.Os.ServiceArea> GetServiceAreas(string department)
+        {
+            var ocServiceAreas = new List<Novum.Data.Os.ServiceArea>();
+            var novServiceAreas = Novum.Database.DB.Api.Misc.GetServiceAreas(department);
+            foreach (var novServiceArea in novServiceAreas.Values)
+            {
+                var osServiceArea = new Novum.Data.Os.ServiceArea();
+                osServiceArea.Id = novServiceArea.Id;
+                osServiceArea.Name = novServiceArea.Name;
+                ocServiceAreas.Add(osServiceArea);
+            }
+            return ocServiceAreas;
+        }
+
+        #endregion 
     }
 }
