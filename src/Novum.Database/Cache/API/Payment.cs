@@ -22,9 +22,9 @@ namespace Novum.Database.Cache.API
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public List<Novum.Data.PaymentType> GetPaymentTypes(string department)
+        public Dictionary<string, Novum.Data.PaymentType> GetPaymentTypes(string department)
         {
-            var paymentTypes = new List<Novum.Data.PaymentType>();
+            var paymentTypes = new Dictionary<string, Novum.Data.PaymentType>();
             try
             {
                 System.Threading.Monitor.Enter(DB.CacheConnection);
@@ -48,9 +48,15 @@ namespace Novum.Database.Cache.API
                         paymentType.Signature = true;
                     else
                         paymentType.Signature = false;
-                    paymentTypes.Add(paymentType);
+                    paymentTypes.Add(paymentType.Id, paymentType);
                 }
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": TableRowCount = " + dataTable.Rows.Count);
+            }
+            catch (Exception ex)
+            {
+                Log.Database.Error(ex.Message);
+                Log.Database.Error(ex.StackTrace);
+                throw ex;
             }
             finally
             {

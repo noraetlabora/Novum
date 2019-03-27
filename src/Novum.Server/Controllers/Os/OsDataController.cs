@@ -20,19 +20,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/Articles")]
         public IActionResult GetArticles()
         {
-            var articles = new List<Article>();
-            //
-            for (int i = 0; i < 20; i++)
-            {
-                var article = new Article();
-                article.Id = i.ToString();
-                article.Name = "Artikel " + i.ToString();
-                article.Plu = "1000" + i.ToString();
-                article.MustEnterPrice = 0;
-
-                articles.Add(article);
-            }
-            //
+            var articles = Novum.Logic.Os.OsData.GetArticles("1001");
             return new ObjectResult(articles);
         }
 

@@ -11,9 +11,10 @@ namespace Novum.Database.Cache.API
         private static Cache.API.Table table;
         private static Cache.API.User user;
         private static Cache.API.Menu menu;
+        private static Cache.API.Article article;
+        private static Cache.API.Modifier modifier;
         private static Cache.API.Printer printer;
         private static Cache.API.Payment payment;
-        private static Cache.API.Modifier modifier;
 
         public CacheApi()
         {
@@ -25,12 +26,14 @@ namespace Novum.Database.Cache.API
                 user = new Cache.API.User();
             if (menu == null)
                 menu = new Cache.API.Menu();
+            if (article == null)
+                article = new Cache.API.Article();
+            if (modifier == null)
+                modifier = new Cache.API.Modifier();
             if (printer == null)
                 printer = new Cache.API.Printer();
             if (payment == null)
                 payment = new Cache.API.Payment();
-            if (modifier == null)
-                modifier = new Cache.API.Modifier();
         }
 
         public IDbMisc Misc
@@ -49,6 +52,14 @@ namespace Novum.Database.Cache.API
         {
             get { return menu; }
         }
+        public IDbArticle Article
+        {
+            get { return article; }
+        }
+        public IDbModifier Modifier
+        {
+            get { return modifier; }
+        }
         public IDbPrinter Printer
         {
             get { return printer; }
@@ -56,10 +67,6 @@ namespace Novum.Database.Cache.API
         public IDbPayment Payment
         {
             get { return payment; }
-        }
-        public IDbModifier Modifier
-        {
-            get { return modifier; }
         }
     }
 }

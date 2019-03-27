@@ -25,9 +25,9 @@ namespace Novum.Database.Cache.API
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public List<Novum.Data.ModifierMenu> GetModifierMenus(string department)
+        public Dictionary<string, Novum.Data.ModifierMenu> GetModifierMenus(string department)
         {
-            var modifierMenus = new List<Novum.Data.ModifierMenu>();
+            var modifierMenus = new Dictionary<string, Novum.Data.ModifierMenu>();
             try
             {
                 System.Threading.Monitor.Enter(DB.CacheConnection);
@@ -45,11 +45,18 @@ namespace Novum.Database.Cache.API
                     modifierMenu.Name = DataObject.GetString(dataRow, "bez");
                     modifierMenu.MinSelection = DataObject.GetUInt(dataRow, "aendmin");
                     modifierMenu.MaxSelection = DataObject.GetUInt(dataRow, "aendmax");
+                    modifierMenu.Columns = DataObject.GetUInt(dataRow, "spalten");
 
-                    modifierMenus.Add(modifierMenu);
+                    modifierMenus.Add(modifierMenu.Id, modifierMenu);
                 }
 
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": TableRowCount = " + dataTable.Rows.Count);
+            }
+            catch (Exception ex)
+            {
+                Log.Database.Error(ex.Message);
+                Log.Database.Error(ex.StackTrace);
+                throw ex;
             }
             finally
             {
@@ -64,9 +71,9 @@ namespace Novum.Database.Cache.API
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public List<Novum.Data.Modifier> GetModifiers(string department, string menuId)
+        public Dictionary<string, Novum.Data.Modifier> GetModifiers(string department, string menuId)
         {
-            var modifiers = new List<Novum.Data.Modifier>();
+            var modifiers = new Dictionary<string, Novum.Data.Modifier>();
             try
             {
                 System.Threading.Monitor.Enter(DB.CacheConnection);
@@ -89,10 +96,16 @@ namespace Novum.Database.Cache.API
                     modifier.MinAmount = 0;
                     modifier.MaxAmount = 1;
 
-                    modifiers.Add(modifier);
+                    modifiers.Add(modifier.Id, modifier);
                 }
 
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": TableRowCount = " + dataTable.Rows.Count);
+            }
+            catch (Exception ex)
+            {
+                Log.Database.Error(ex.Message);
+                Log.Database.Error(ex.StackTrace);
+                throw ex;
             }
             finally
             {
@@ -100,6 +113,55 @@ namespace Novum.Database.Cache.API
             }
 
             return modifiers;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        public List<Novum.Data.MenuModifier> GetMenuModifiers(string department)
+        {
+            var menuModifiers = new List<Novum.Data.MenuModifier>();
+
+            try
+            {
+                System.Threading.Monitor.Enter(DB.CacheConnection);
+
+                var sql = string.Format("SELECT UMENU, ROW, COL, LFD, AendUMenu FROM NT.TouchUmenuZeilenA WHERE FA = {0} ", department);
+                Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
+                var dataAdapter = new CacheDataAdapter(sql, DB.CacheConnection);
+                var dataTable = new DataTable();
+                dataAdapter.Fill(dataTable);
+
+                foreach (DataRow dataRow in dataTable.Rows)
+                {
+                    var menuModifier = new Novum.Data.MenuModifier();
+
+                    menuModifier.MenuId = DataObject.GetString(dataRow, "UMENU");
+                    menuModifier.Row = DataObject.GetUInt(dataRow, "ROW");
+                    menuModifier.Column = DataObject.GetUInt(dataRow, "COL");
+                    menuModifier.Sort = DataObject.GetUInt(dataRow, "LFD");
+                    menuModifier.ModifierMenuId = DataObject.GetString(dataRow, "AendUMenu");
+
+                    menuModifiers.Add(menuModifier);
+                }
+
+                Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": TableRowCount = " + dataTable.Rows.Count);
+            }
+            catch (Exception ex)
+            {
+                Log.Database.Error(ex.Message);
+                Log.Database.Error(ex.StackTrace);
+                throw ex;
+            }
+            finally
+            {
+                System.Threading.Monitor.Exit(DB.CacheConnection);
+            }
+
+            return menuModifiers;
         }
     }
 }

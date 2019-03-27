@@ -6,7 +6,7 @@ namespace Novum.Logic
     /// <summary>
     /// 
     /// </summary>
-    public class Menu
+    public class Article
     {
         /// <summary>
         /// 
@@ -14,20 +14,19 @@ namespace Novum.Logic
         /// <param name="department"></param>
         /// <param name="menuId"></param>
         /// <returns></returns>
-        public static Dictionary<string, Novum.Data.Menu> GetMainMenu(string department, string menuId)
+        public static Dictionary<string, Novum.Data.Article> GetArticles(string department, string menuId)
         {
-            return Novum.Database.DB.Api.Menu.GetMainMenu(department, menuId);
+            return Novum.Database.DB.Api.Article.GetArticles(department, menuId);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="department"></param>
-        /// <param name="menuId"></param>
         /// <returns></returns>
-        public static Novum.Data.Menu GetSubMenu(string department, string menuId)
+        public static Dictionary<string, Novum.Data.Article> GetArticles(string department)
         {
-            return Novum.Database.DB.Api.Menu.GetSubMenu(department, menuId);
+            return Novum.Database.DB.Api.Article.GetArticles(department);
         }
 
     }

@@ -14,5 +14,6 @@ namespace Novum.Database.API
         Database.API.IDbPrinter Printer { get; }
         Database.API.IDbPayment Payment { get; }
         Database.API.IDbModifier Modifier { get; }
+        Database.API.IDbArticle Article { get; }
     }
 }

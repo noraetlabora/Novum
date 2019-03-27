@@ -20,7 +20,7 @@ namespace Novum.Logic.Os
         {
             var osCReasons = new List<Novum.Data.Os.CancellationReason>();
             var novCReasons = CancellationReason.GetCancellationReasons(department);
-            foreach (var novCReason in novCReasons)
+            foreach (var novCReason in novCReasons.Values)
             {
                 var osCReason = new Novum.Data.Os.CancellationReason();
                 osCReason.Id = novCReason.Id;
@@ -45,7 +45,7 @@ namespace Novum.Logic.Os
             var mainMenus = Menu.GetMainMenu(department, menuId);
             var handledMenuIds = new List<string>();
 
-            foreach (Data.Menu menu in mainMenus)
+            foreach (Data.Menu menu in mainMenus.Values)
             {
                 var category = new Novum.Data.Os.Category();
                 category.Name = menu.Name;
@@ -62,20 +62,20 @@ namespace Novum.Logic.Os
         private static List<Novum.Data.Os.CategoryContentEntry> GetCategoryContent(string department, string menuId, ref List<string> handledMenuIds)
         {
             var contentEntries = new List<Novum.Data.Os.CategoryContentEntry>();
-            var menuItems = Menu.GetMenuItems(department, menuId);
+            var articles = Article.GetArticles(department, menuId);
 
-            foreach (Data.MenuItem menuItem in menuItems)
+            foreach (Data.Article article in articles.Values)
             {
                 //ignore all not supported menuItems 
-                if (NotSupportedMenuItem(menuItem.Id))
+                if (NotSupportedMenuItem(article.Id))
                     continue;
 
                 var contentEntry = new Novum.Data.Os.CategoryContentEntry();
 
                 // submenu (eg. "$9")
-                if (menuItem.Id.StartsWith("$"))
+                if (article.Id.StartsWith("$"))
                 {
-                    var subMenuId = menuItem.Id.Substring(1);
+                    var subMenuId = article.Id.Substring(1);
                     // don't loop the same menu "Dessert -> Dessert -> Dessert -> ..."
                     if (menuId.Equals(subMenuId))
                         continue;
@@ -89,7 +89,7 @@ namespace Novum.Logic.Os
                 // normal article
                 else
                 {
-                    contentEntry.ArticleId = menuItem.Id;
+                    contentEntry.ArticleId = article.Id;
                 }
                 contentEntries.Add(contentEntry);
             }
@@ -133,9 +133,55 @@ namespace Novum.Logic.Os
         #endregion
 
         #region Articles
-        public static List<Novum.Data.Os.Article> GetArticles()
+        public static List<Novum.Data.Os.Article> GetArticles(string department)
         {
-            throw new NotImplementedException();
+            var osArticles = new List<Novum.Data.Os.Article>();
+            var novArticles = Article.GetArticles(department);
+            var modifierMenus = Modifier.GetModifierMenus(department);
+            var menuModifiers = Modifier.GetMenuModifiers(department);
+            Data.ModifierMenu modifierMenu = null;
+
+            foreach (Data.Article novArticle in novArticles.Values)
+            {
+                var osArticle = new Novum.Data.Os.Article();
+
+                osArticle.Id = novArticle.Id;
+                osArticle.Name = novArticle.Name;
+                osArticle.ReceiptName = novArticle.ReceiptName;
+                osArticle.Plu = novArticle.Plu;
+                if (novArticle.AskForPrice)
+                    osArticle.MustEnterPrice = 1;
+                else
+                    osArticle.MustEnterPrice = 0;
+
+                // search the menu modifier (menu, row, col)
+                // if found add the modifier menu id to the article
+                foreach (Data.MenuModifier menuModifier in menuModifiers)
+                {
+                    if (!menuModifier.MenuId.Equals(novArticle.MenuId))
+                        continue;
+                    if (!menuModifier.Row.Equals(novArticle.Row))
+                        continue;
+                    if (!menuModifier.Column.Equals(novArticle.Column))
+                        continue;
+                    if (osArticle.ModifierGroups == null)
+                        osArticle.ModifierGroups = new List<Data.Os.ArticleModifierGroup>();
+
+                    var articleModifierGroup = new Data.Os.ArticleModifierGroup();
+                    articleModifierGroup.ModifierGroupId = menuModifier.ModifierMenuId;
+                    osArticle.ModifierGroups.Add(articleModifierGroup);
+
+                    if (modifierMenus.TryGetValue(menuModifier.ModifierMenuId, out modifierMenu))
+                    {
+                        if (modifierMenu.MinSelection > 0)
+                            osArticle.ForceShowModifiers = true;
+                    }
+                }
+
+                osArticles.Add(osArticle);
+            }
+
+            return osArticles;
         }
         #endregion
 
@@ -145,7 +191,7 @@ namespace Novum.Logic.Os
             var modifierGroups = new List<Novum.Data.Os.ModifierGroup>();
             var modifierMenus = Modifier.GetModifierMenus(department);
 
-            foreach (Data.ModifierMenu modifierMenu in modifierMenus)
+            foreach (Data.ModifierMenu modifierMenu in modifierMenus.Values)
             {
                 var modifierGroup = new Novum.Data.Os.ModifierGroup();
                 modifierGroup.Id = modifierMenu.Id;
@@ -159,7 +205,7 @@ namespace Novum.Logic.Os
                 var modifiers = Modifier.GetModifiers(department, modifierMenu.Id);
                 var lastModifierId = "";
 
-                foreach (Data.Modifier modifier in modifiers)
+                foreach (Data.Modifier modifier in modifiers.Values)
                 {
                     // ignore two sequently equal modifiers (eg. rare and rare)
                     if (lastModifierId.Equals(modifier.Id))
@@ -197,7 +243,7 @@ namespace Novum.Logic.Os
             var novPrinters = Printer.GetInvoicePrinters(department);
             var osPrinters = new List<Novum.Data.Os.Printer>();
 
-            foreach (Novum.Data.Printer novPrinter in novPrinters)
+            foreach (Novum.Data.Printer novPrinter in novPrinters.Values)
             {
                 var osPrinter = new Novum.Data.Os.Printer();
                 osPrinter.Name = novPrinter.Name;
@@ -221,7 +267,7 @@ namespace Novum.Logic.Os
             var novPaymentTypes = Payment.GetPaymentTypes(department);
             var osPaymentMedia = new List<Novum.Data.Os.PaymentMedium>();
 
-            foreach (Novum.Data.PaymentType novPaymentType in novPaymentTypes)
+            foreach (Novum.Data.PaymentType novPaymentType in novPaymentTypes.Values)
             {
                 var osPaymentMedium = new Novum.Data.Os.PaymentMedium();
                 osPaymentMedium.Id = novPaymentType.Id;

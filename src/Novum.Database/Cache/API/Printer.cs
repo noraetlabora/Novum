@@ -22,9 +22,9 @@ namespace Novum.Database.Cache.API
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public List<Novum.Data.Printer> GetInvoicePrinters(string department)
+        public Dictionary<string, Novum.Data.Printer> GetInvoicePrinters(string department)
         {
-            var printers = new List<Novum.Data.Printer>();
+            var printers = new Dictionary<string, Novum.Data.Printer>();
             try
             {
                 System.Threading.Monitor.Enter(DB.CacheConnection);
@@ -43,10 +43,16 @@ namespace Novum.Database.Cache.API
                     printer.Name = DataObject.GetString(dataRow, "beschreibung");
                     printer.Type = DataObject.GetString(dataRow, "devtype");
                     printer.Device = DataObject.GetString(dataRow, "device");
-                    printers.Add(printer);
+                    printers.Add(printer.Id, printer);
                 }
 
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": TableRowCount = " + dataTable.Rows.Count);
+            }
+            catch (Exception ex)
+            {
+                Log.Database.Error(ex.Message);
+                Log.Database.Error(ex.StackTrace);
+                throw ex;
             }
             finally
             {

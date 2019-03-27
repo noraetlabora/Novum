@@ -2,6 +2,11 @@ using System;
 
 namespace Novum.Data
 {
+    /// <summary>
+    /// Modifier 
+    /// </summary>
+    /// <example>
+    /// </example>
     public class Modifier
     {
 

@@ -2,11 +2,11 @@ using System;
 
 namespace Novum.Data
 {
-    public class MenuItem
+    public class Article
     {
 
         #region Constructor
-        public MenuItem()
+        public Article()
         {
 
         }
@@ -16,15 +16,15 @@ namespace Novum.Data
         public string Id { get; set; }
         public string Name { get; set; }
         public string ReceiptName { get; set; }
+        public string MenuId { get; set; }
         public uint Row { get; set; }
         public uint Column { get; set; }
         public string BackgroundColor { get; set; }
         public string ForegroundColor { get; set; }
-        public string SubMenu { get; set; }
         public bool AskForPrice { get; set; }
         public bool AskForName { get; set; }
         public bool ShowModifiers { get; set; }
-        public string PLU { get; set; }
+        public string Plu { get; set; }
 
         #endregion
     }

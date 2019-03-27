@@ -7,7 +7,6 @@ namespace Novum.Database.API
     /// </summary>
     public interface IDbMisc
     {
-        List<Novum.Data.CancellationResason> GetCancellationReason(string department);
-        List<Novum.Data.MenuItem> GetArticles(string department);
+        Dictionary<string, Novum.Data.CancellationResason> GetCancellationReason(string department);
     }
 }

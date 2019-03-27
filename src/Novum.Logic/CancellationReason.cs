@@ -13,7 +13,7 @@ namespace Novum.Logic
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public static List<Novum.Data.CancellationResason> GetCancellationReasons(string department)
+        public static Dictionary<string, Novum.Data.CancellationResason> GetCancellationReasons(string department)
         {
             return Novum.Database.DB.Api.Misc.GetCancellationReason(department);
         }

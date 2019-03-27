@@ -7,7 +7,8 @@ namespace Novum.Database.API
     /// </summary>
     public interface IDbModifier
     {
-        List<Novum.Data.ModifierMenu> GetModifierMenus(string department);
-        List<Novum.Data.Modifier> GetModifiers(string department, string menuId);
+        Dictionary<string, Novum.Data.ModifierMenu> GetModifierMenus(string department);
+        Dictionary<string, Novum.Data.Modifier> GetModifiers(string department, string menuId);
+        List<Novum.Data.MenuModifier> GetMenuModifiers(string department);
     }
 }
