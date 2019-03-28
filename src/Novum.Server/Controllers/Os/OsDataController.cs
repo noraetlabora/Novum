@@ -96,7 +96,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/Printers")]
         public IActionResult GetPrinters()
         {
-            var printers = Novum.Logic.Os.Data.GetInvoicePrinters("1001");
+            var printers = Novum.Logic.Os.Data.GetPrinters("1001");
             return new ObjectResult(printers);
         }
 
@@ -120,17 +120,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/Users")]
         public IActionResult GetUsers()
         {
-            var users = new List<User>();
-            //
-            for (int i = 0; i < 20; i++)
-            {
-                var user = new User();
-                user.Id = i.ToString();
-                user.Name = "Benutzer " + i.ToString();
-
-                users.Add(user);
-            }
-            //
+            var users = Novum.Logic.Os.Data.GetUsers("1001");
             return new ObjectResult(users);
         }
 

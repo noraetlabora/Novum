@@ -27,17 +27,7 @@ namespace Novum.Database
         private static CacheADOConnection dbConnection;
         private static Cache.API.CacheApi api;
 
-        //public DB(string host, string port, string nsp, string user, string password)
-        //{
-        //    dbConnection = new CacheADOConnection(host, port, nsp, user, password);
-        //}
-
         internal static CacheADOConnection CacheConnection
-        {
-            get { return dbConnection; }
-        }
-
-        public static IDbConnection Connection
         {
             get { return dbConnection; }
         }
@@ -104,7 +94,7 @@ namespace Novum.Database
             get { return dbConnection.ConnectionString; }
             set
             {
-                Log.Database.Debug("setting connection string to: " + value);
+                Log.Database.Info("setting connection string to: " + value.Substring(0, 50) + "...");
                 dbConnection.ConnectionString = value;
             }
         }
@@ -126,6 +116,8 @@ namespace Novum.Database
 
         public void Dispose()
         {
+            if (State != ConnectionState.Closed)
+                Close();
             Log.Database.Info("disposing database connection");
         }
 

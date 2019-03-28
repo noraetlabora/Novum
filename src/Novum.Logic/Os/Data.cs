@@ -10,7 +10,7 @@ namespace Novum.Logic.Os
     /// </summary>
     public class Data
     {
-        #region Cancellation Reason
+        #region Cancellation Reasons
 
         /// <summary>
         /// 
@@ -31,7 +31,109 @@ namespace Novum.Logic.Os
             return osCReasons;
         }
 
-        #endregion 
+        #endregion
+
+        #region PaymentMedia
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        public static List<Novum.Data.Os.PaymentMedium> GetPaymentMedia(string department)
+        {
+            var novPaymentTypes = Novum.Database.DB.Api.Payment.GetPaymentTypes(department);
+            var osPaymentMedia = new List<Novum.Data.Os.PaymentMedium>();
+
+            foreach (Novum.Data.PaymentType novPaymentType in novPaymentTypes.Values)
+            {
+                var osPaymentMedium = new Novum.Data.Os.PaymentMedium();
+                osPaymentMedium.Id = novPaymentType.Id;
+                osPaymentMedium.Name = novPaymentType.Name;
+                osPaymentMedium.AllowOverPayment = 0;
+                osPaymentMedia.Add(osPaymentMedium);
+            }
+
+            return osPaymentMedia;
+        }
+        #endregion
+
+        #region Printers
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        public static List<Novum.Data.Os.Printer> GetPrinters(string department)
+        {
+            var novPrinters = Novum.Database.DB.Api.Printer.GetInvoicePrinters(department);
+            var osPrinters = new List<Novum.Data.Os.Printer>();
+
+            foreach (Novum.Data.Printer novPrinter in novPrinters.Values)
+            {
+                var osPrinter = new Novum.Data.Os.Printer();
+                osPrinter.Name = novPrinter.Name;
+                osPrinter.Path = novPrinter.Id;
+                osPrinters.Add(osPrinter);
+            }
+
+            return osPrinters;
+        }
+
+        #endregion
+
+        #region Articles
+        public static List<Novum.Data.Os.Article> GetArticles(string department)
+        {
+            var osArticles = new List<Novum.Data.Os.Article>();
+            var novArticles = Novum.Database.DB.Api.Article.GetArticles(department);
+            var modifierMenus = Novum.Database.DB.Api.Modifier.GetModifierMenus(department);
+            var menuModifiers = Novum.Database.DB.Api.Modifier.GetMenuModifiers(department);
+            Novum.Data.ModifierMenu modifierMenu = null;
+
+            foreach (Novum.Data.Article novArticle in novArticles.Values)
+            {
+                var osArticle = new Novum.Data.Os.Article();
+
+                osArticle.Id = novArticle.Id;
+                osArticle.Name = novArticle.Name;
+                osArticle.ReceiptName = novArticle.ReceiptName;
+                osArticle.Plu = novArticle.Plu;
+                if (novArticle.AskForPrice)
+                    osArticle.MustEnterPrice = 1;
+                else
+                    osArticle.MustEnterPrice = 0;
+
+                // search the menu modifier (menu, row, col)
+                // if found add the modifier menu id to the article
+                foreach (Novum.Data.MenuModifier menuModifier in menuModifiers)
+                {
+                    if (!menuModifier.MenuId.Equals(novArticle.MenuId))
+                        continue;
+                    if (!menuModifier.Row.Equals(novArticle.Row))
+                        continue;
+                    if (!menuModifier.Column.Equals(novArticle.Column))
+                        continue;
+                    if (osArticle.ModifierGroups == null)
+                        osArticle.ModifierGroups = new List<ArticleModifierGroup>();
+
+                    var articleModifierGroup = new Novum.Data.Os.ArticleModifierGroup();
+                    articleModifierGroup.ModifierGroupId = menuModifier.ModifierMenuId;
+                    osArticle.ModifierGroups.Add(articleModifierGroup);
+
+                    if (modifierMenus.TryGetValue(menuModifier.ModifierMenuId, out modifierMenu))
+                    {
+                        if (modifierMenu.MinSelection > 0)
+                            osArticle.ForceShowModifiers = true;
+                    }
+                }
+
+                osArticles.Add(osArticle);
+            }
+
+            return osArticles;
+        }
+        #endregion
 
         #region Categories
 
@@ -126,59 +228,6 @@ namespace Novum.Logic.Os
 
         #endregion
 
-        #region Articles
-        public static List<Novum.Data.Os.Article> GetArticles(string department)
-        {
-            var osArticles = new List<Novum.Data.Os.Article>();
-            var novArticles = Novum.Database.DB.Api.Article.GetArticles(department);
-            var modifierMenus = Novum.Database.DB.Api.Modifier.GetModifierMenus(department);
-            var menuModifiers = Novum.Database.DB.Api.Modifier.GetMenuModifiers(department);
-            Novum.Data.ModifierMenu modifierMenu = null;
-
-            foreach (Novum.Data.Article novArticle in novArticles.Values)
-            {
-                var osArticle = new Novum.Data.Os.Article();
-
-                osArticle.Id = novArticle.Id;
-                osArticle.Name = novArticle.Name;
-                osArticle.ReceiptName = novArticle.ReceiptName;
-                osArticle.Plu = novArticle.Plu;
-                if (novArticle.AskForPrice)
-                    osArticle.MustEnterPrice = 1;
-                else
-                    osArticle.MustEnterPrice = 0;
-
-                // search the menu modifier (menu, row, col)
-                // if found add the modifier menu id to the article
-                foreach (Novum.Data.MenuModifier menuModifier in menuModifiers)
-                {
-                    if (!menuModifier.MenuId.Equals(novArticle.MenuId))
-                        continue;
-                    if (!menuModifier.Row.Equals(novArticle.Row))
-                        continue;
-                    if (!menuModifier.Column.Equals(novArticle.Column))
-                        continue;
-                    if (osArticle.ModifierGroups == null)
-                        osArticle.ModifierGroups = new List<ArticleModifierGroup>();
-
-                    var articleModifierGroup = new Novum.Data.Os.ArticleModifierGroup();
-                    articleModifierGroup.ModifierGroupId = menuModifier.ModifierMenuId;
-                    osArticle.ModifierGroups.Add(articleModifierGroup);
-
-                    if (modifierMenus.TryGetValue(menuModifier.ModifierMenuId, out modifierMenu))
-                    {
-                        if (modifierMenu.MinSelection > 0)
-                            osArticle.ForceShowModifiers = true;
-                    }
-                }
-
-                osArticles.Add(osArticle);
-            }
-
-            return osArticles;
-        }
-        #endregion
-
         #region ModifierGroups
         public static List<Novum.Data.Os.ModifierGroup> GetModifierGroups(string department)
         {
@@ -225,56 +274,7 @@ namespace Novum.Logic.Os
 
         #endregion
 
-        #region Printer
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="department"></param>
-        /// <returns></returns>
-        public static List<Novum.Data.Os.Printer> GetInvoicePrinters(string department)
-        {
-            var novPrinters = Novum.Database.DB.Api.Printer.GetInvoicePrinters(department);
-            var osPrinters = new List<Novum.Data.Os.Printer>();
-
-            foreach (Novum.Data.Printer novPrinter in novPrinters.Values)
-            {
-                var osPrinter = new Novum.Data.Os.Printer();
-                osPrinter.Name = novPrinter.Name;
-                osPrinter.Path = novPrinter.Id;
-                osPrinters.Add(osPrinter);
-            }
-
-            return osPrinters;
-        }
-
-        #endregion
-
-        #region PaymentMedia
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="department"></param>
-        /// <returns></returns>
-        public static List<Novum.Data.Os.PaymentMedium> GetPaymentMedia(string department)
-        {
-            var novPaymentTypes = Novum.Database.DB.Api.Payment.GetPaymentTypes(department);
-            var osPaymentMedia = new List<Novum.Data.Os.PaymentMedium>();
-
-            foreach (Novum.Data.PaymentType novPaymentType in novPaymentTypes.Values)
-            {
-                var osPaymentMedium = new Novum.Data.Os.PaymentMedium();
-                osPaymentMedium.Id = novPaymentType.Id;
-                osPaymentMedium.Name = novPaymentType.Name;
-                osPaymentMedium.AllowOverPayment = 0;
-                osPaymentMedia.Add(osPaymentMedium);
-            }
-
-            return osPaymentMedia;
-        }
-        #endregion
-
-        #region Service Area
+        #region Service Areas
 
         /// <summary>
         /// 
@@ -295,6 +295,29 @@ namespace Novum.Logic.Os
             return ocServiceAreas;
         }
 
-        #endregion 
+        #endregion
+
+        #region Users
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        public static List<Novum.Data.Os.User> GetUsers(string department)
+        {
+            var osUsers = new List<Novum.Data.Os.User>();
+            var novWaiters = Novum.Database.DB.Api.Waiter.GetWaiters(department);
+            foreach (var novWaiter in novWaiters.Values)
+            {
+                var osUser = new Novum.Data.Os.User();
+                osUser.Id = novWaiter.Id;
+                osUser.Name = novWaiter.Name;
+                osUsers.Add(osUser);
+            }
+            return osUsers;
+        }
+
+        #endregion
     }
 }

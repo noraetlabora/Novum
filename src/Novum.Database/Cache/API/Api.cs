@@ -9,7 +9,7 @@ namespace Novum.Database.Cache.API
     {
         private static Cache.API.Misc misc;
         private static Cache.API.Table table;
-        private static Cache.API.User user;
+        private static Cache.API.Waiter waiter;
         private static Cache.API.Menu menu;
         private static Cache.API.Article article;
         private static Cache.API.Modifier modifier;
@@ -22,8 +22,8 @@ namespace Novum.Database.Cache.API
                 misc = new Cache.API.Misc();
             if (table == null)
                 table = new Cache.API.Table();
-            if (user == null)
-                user = new Cache.API.User();
+            if (waiter == null)
+                waiter = new Cache.API.Waiter();
             if (menu == null)
                 menu = new Cache.API.Menu();
             if (article == null)
@@ -44,9 +44,9 @@ namespace Novum.Database.Cache.API
         {
             get { return table; }
         }
-        public IDbUser User
+        public IDbWaiter Waiter
         {
-            get { return user; }
+            get { return waiter; }
         }
         public IDbMenu Menu
         {
