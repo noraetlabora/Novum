@@ -4,10 +4,10 @@ using System.Data;
 using System.Reflection;
 using Novum.Database.Api;
 using Novum.Data;
-using InterSystems.Data.CacheClient;
+using InterSystems.Data.IRISClient;
 using System.Collections.Generic;
 
-namespace Novum.Database.Cache.API
+namespace Novum.Database.InterSystems.Api
 {
     /// <summary>
     /// 
@@ -36,7 +36,7 @@ namespace Novum.Database.Cache.API
 
                 var sql = string.Format("SELECT M.Anr, M.UMENU, M.ROW, M.COL, M.bez1, M.bgcolor, M.fgcolor, A.vkaend, A.nameaend FROM NT.TouchUMenuZeilen M LEFT JOIN WW.ANRKassa AS A ON (A.FA=M.FA AND A.ANR=M.ANR) WHERE M.FA = {0} AND M.UMENU = '{1}' AND M.ANR <> '' ", department, menuId);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
-                var dataAdapter = new CacheDataAdapter(sql, DB.CacheConnection);
+                var dataAdapter = new IRISDataAdapter(sql, DB.CacheConnection);
                 var dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
 
@@ -98,7 +98,7 @@ namespace Novum.Database.Cache.API
                 sql.Append(" WHERE M.FA = ").Append(department);
                 sql.Append(" AND ISNUMERIC(M.Anr) = 1");
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql.ToString());
-                var dataAdapter = new CacheDataAdapter(sql.ToString(), DB.CacheConnection);
+                var dataAdapter = new IRISDataAdapter(sql.ToString(), DB.CacheConnection);
                 var dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
 

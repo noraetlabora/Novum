@@ -3,10 +3,10 @@ using System.Data;
 using System.Reflection;
 using Novum.Database.Api;
 using Novum.Data;
-using InterSystems.Data.CacheClient;
+using InterSystems.Data.IRISClient;
 using System.Collections.Generic;
 
-namespace Novum.Database.Cache.API
+namespace Novum.Database.InterSystems.Api
 {
     /// <summary>
     /// 
@@ -29,9 +29,9 @@ namespace Novum.Database.Cache.API
             {
                 System.Threading.Monitor.Enter(DB.CacheConnection);
 
-                var sql = string.Format("SELECT IKA, bez, prg, druanz, unterschrift FROM NT.Zahlart WHERE FA = {0} AND passiv > '{1}'", department, CacheString.SqlToday);
+                var sql = string.Format("SELECT IKA, bez, prg, druanz, unterschrift FROM NT.Zahlart WHERE FA = {0} AND passiv > '{1}'", department, DBString.SqlToday);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
-                var dataAdapter = new CacheDataAdapter(sql, DB.CacheConnection);
+                var dataAdapter = new IRISDataAdapter(sql, DB.CacheConnection);
                 var dataTable = new DataTable();
 
                 dataAdapter.Fill(dataTable);

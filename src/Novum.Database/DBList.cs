@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 
-namespace Novum.Database.Cache
+namespace Novum.Database
 {
     /// <summary>
-    /// CacheList is a List of strings which can be accessed.
+    /// DBList is a List of strings which can be accessed.
     /// </summary>
-    internal class CacheList : IEnumerable<string>
+    internal class DBList : IEnumerable<string>
     {
         private static NumberStyles style = NumberStyles.AllowDecimalPoint;
         private static CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
@@ -19,7 +19,7 @@ namespace Novum.Database.Cache
         /// 
         /// </summary>
         /// <param name="stringArray"></param>
-        public CacheList(string[] stringArray)
+        public DBList(string[] stringArray)
         {
             if (stringArray == null)
             {

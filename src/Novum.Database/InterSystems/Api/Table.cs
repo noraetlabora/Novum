@@ -1,7 +1,7 @@
 using System;
 using Novum.Database.Api;
 
-namespace Novum.Database.Cache.API
+namespace Novum.Database.InterSystems.Api
 {
     /// <summary>
     /// 

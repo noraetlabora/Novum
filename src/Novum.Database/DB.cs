@@ -1,6 +1,6 @@
 using System;
 using System.Data;
-using InterSystems.Data.CacheClient;
+using InterSystems.Data.IRISClient;
 
 namespace Novum.Database
 {
@@ -18,16 +18,16 @@ namespace Novum.Database
         public static DB Instance { get { return lazy.Value; } }
         private DB()
         {
-            Log.Database.Info("creating Intersystems Caché ADO connection");
-            dbConnection = new CacheADOConnection();
-            Log.Database.Info("creating Intersystems Caché API");
-            api = new Cache.API.CacheApi();
+            Log.Database.Info("creating InterSystems IRIS connection");
+            dbConnection = new IRISConnection();
+            Log.Database.Info("creating InterSystems API");
+            api = new InterSystems.Api.InterSystemsApi();
         }
 
-        private static CacheADOConnection dbConnection;
-        private static Cache.API.CacheApi api;
+        private static IRISConnection dbConnection;
+        private static InterSystems.Api.InterSystemsApi api;
 
-        internal static CacheADOConnection CacheConnection
+        internal static IRISConnection CacheConnection
         {
             get { return dbConnection; }
         }

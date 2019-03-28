@@ -1,39 +1,39 @@
 using Novum.Database.Api;
 
-namespace Novum.Database.Cache.API
+namespace Novum.Database.InterSystems.Api
 {
     /// <summary>
     /// 
     /// </summary>
-    internal class CacheApi : IDbApi
+    internal class InterSystemsApi : IDbApi
     {
-        private static Cache.API.Misc misc;
-        private static Cache.API.Table table;
-        private static Cache.API.Waiter waiter;
-        private static Cache.API.Menu menu;
-        private static Cache.API.Article article;
-        private static Cache.API.Modifier modifier;
-        private static Cache.API.Printer printer;
-        private static Cache.API.Payment payment;
+        private static InterSystems.Api.Misc misc;
+        private static InterSystems.Api.Table table;
+        private static InterSystems.Api.Waiter waiter;
+        private static InterSystems.Api.Menu menu;
+        private static InterSystems.Api.Article article;
+        private static InterSystems.Api.Modifier modifier;
+        private static InterSystems.Api.Printer printer;
+        private static InterSystems.Api.Payment payment;
 
-        public CacheApi()
+        public InterSystemsApi()
         {
             if (misc == null)
-                misc = new Cache.API.Misc();
+                misc = new InterSystems.Api.Misc();
             if (table == null)
-                table = new Cache.API.Table();
+                table = new InterSystems.Api.Table();
             if (waiter == null)
-                waiter = new Cache.API.Waiter();
+                waiter = new InterSystems.Api.Waiter();
             if (menu == null)
-                menu = new Cache.API.Menu();
+                menu = new InterSystems.Api.Menu();
             if (article == null)
-                article = new Cache.API.Article();
+                article = new InterSystems.Api.Article();
             if (modifier == null)
-                modifier = new Cache.API.Modifier();
+                modifier = new InterSystems.Api.Modifier();
             if (printer == null)
-                printer = new Cache.API.Printer();
+                printer = new InterSystems.Api.Printer();
             if (payment == null)
-                payment = new Cache.API.Payment();
+                payment = new InterSystems.Api.Payment();
         }
 
         public IDbMisc Misc

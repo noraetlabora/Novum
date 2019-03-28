@@ -4,10 +4,10 @@ using System.Data;
 using System.Reflection;
 using Novum.Database.Api;
 using Novum.Data;
-using InterSystems.Data.CacheClient;
+using InterSystems.Data.IRISClient;
 using System.Collections.Generic;
 
-namespace Novum.Database.Cache.API
+namespace Novum.Database.InterSystems.Api
 {
     /// <summary>
     /// 
@@ -36,7 +36,7 @@ namespace Novum.Database.Cache.API
 
                 var sql = string.Format("SELECT M.ZE, M.bez1, M.bgcolor, M.fgcolor, UM.UMENU, UM.spalten FROM  NT.TouchMenuZeile M INNER JOIN NT.TouchUmenu UM ON UM.FA = M.FA AND UM.UMENU = M.ZE WHERE M.FA = {0} AND M.MENU = '{1}'", department, menuId);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
-                var dataAdapter = new CacheDataAdapter(sql, DB.CacheConnection);
+                var dataAdapter = new IRISDataAdapter(sql, DB.CacheConnection);
                 var dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
 
@@ -83,7 +83,7 @@ namespace Novum.Database.Cache.API
 
                 var sql = string.Format("SELECT UMENU, bez, spalten FROM NT.TouchUmenu WHERE FA = {0} AND UMENU = '{1}'", department, menuId);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
-                var dataAdapter = new CacheDataAdapter(sql, DB.CacheConnection);
+                var dataAdapter = new IRISDataAdapter(sql, DB.CacheConnection);
                 var dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": TableRowCount = " + dataTable.Rows.Count);

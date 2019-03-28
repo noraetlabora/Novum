@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Novum.Database.Cache
+namespace Novum.Database
 {
     /// <summary>
-    /// String contains a string Value which can be be splitted by a comma, semicolon, pipe, double pipes or character 96.
+    /// DBString contains a string Value which can be be splitted by a comma, semicolon, pipe, double pipes or character 96.
     /// </summary>
-    internal class CacheString
+    internal class DBString
     {
         private const char Comma = (char)44;
         private const char Semicolon = (char)59;
@@ -24,7 +24,7 @@ namespace Novum.Database.Cache
         /// Constructor
         /// </summary>
         /// <param name="value"></param>
-        public CacheString(string value)
+        public DBString(string value)
         {
             if (string.IsNullOrEmpty(value))
             {

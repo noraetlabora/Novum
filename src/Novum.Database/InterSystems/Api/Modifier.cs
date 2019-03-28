@@ -3,10 +3,10 @@ using System.Data;
 using System.Reflection;
 using Novum.Database.Api;
 using Novum.Data;
-using InterSystems.Data.CacheClient;
+using InterSystems.Data.IRISClient;
 using System.Collections.Generic;
 
-namespace Novum.Database.Cache.API
+namespace Novum.Database.InterSystems.Api
 {
     /// <summary>
     /// 
@@ -34,7 +34,7 @@ namespace Novum.Database.Cache.API
 
                 var sql = string.Format("SELECT UMENU, bez, aendmin, aendmax, aendauto, spalten, aendmaxaus, aendmehrfach FROM NT.TouchUmenu WHERE FA = {0} AND aend = 1", department);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
-                var dataAdapter = new CacheDataAdapter(sql, DB.CacheConnection);
+                var dataAdapter = new IRISDataAdapter(sql, DB.CacheConnection);
                 var dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
 
@@ -80,7 +80,7 @@ namespace Novum.Database.Cache.API
 
                 var sql = string.Format("SELECT M.ROW, M.COL, M.ANR, M.bgcolor, M.fgcolor, W.bez FROM NT.TouchUmenuZeilen M LEFT JOIN WW.ANR AS W ON (W.FA = M.FA AND W.ANR = M.ANR) WHERE M.FA = {0} AND M.UMENU = {1} AND M.ANR <> '' ", department, menuId);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
-                var dataAdapter = new CacheDataAdapter(sql, DB.CacheConnection);
+                var dataAdapter = new IRISDataAdapter(sql, DB.CacheConnection);
                 var dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
 
@@ -131,7 +131,7 @@ namespace Novum.Database.Cache.API
 
                 var sql = string.Format("SELECT UMENU, ROW, COL, LFD, AendUMenu FROM NT.TouchUmenuZeilenA WHERE FA = {0} ", department);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
-                var dataAdapter = new CacheDataAdapter(sql, DB.CacheConnection);
+                var dataAdapter = new IRISDataAdapter(sql, DB.CacheConnection);
                 var dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
 
