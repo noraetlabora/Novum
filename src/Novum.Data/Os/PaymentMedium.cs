@@ -39,14 +39,6 @@ namespace Novum.Data.Os
         public string Name { get; set; }
 
         /// <summary>
-        /// Optional. 0 &#x3D; when using this media the app will not allow to enter a higher payment amount as to be paid. 1 &#x3D; over payment is allowed
-        /// </summary>
-        /// <value>Optional. 0 &#x3D; when using this media the app will not allow to enter a higher payment amount as to be paid. 1 &#x3D; over payment is allowed</value>
-        // [Required]
-        [DataMember(Name = "allowOverPayment")]
-        public int? AllowOverPayment { get; set; }
-
-        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -56,7 +48,6 @@ namespace Novum.Data.Os
             sb.Append("class PaymentMedium {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  AllowOverPayment: ").Append(AllowOverPayment).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -102,11 +93,6 @@ namespace Novum.Data.Os
                     Name == other.Name ||
                     Name != null &&
                     Name.Equals(other.Name)
-                ) &&
-                (
-                    AllowOverPayment == other.AllowOverPayment ||
-                    AllowOverPayment != null &&
-                    AllowOverPayment.Equals(other.AllowOverPayment)
                 );
         }
 
@@ -124,8 +110,6 @@ namespace Novum.Data.Os
                     hashCode = hashCode * 59 + Id.GetHashCode();
                 if (Name != null)
                     hashCode = hashCode * 59 + Name.GetHashCode();
-                if (AllowOverPayment != null)
-                    hashCode = hashCode * 59 + AllowOverPayment.GetHashCode();
                 return hashCode;
             }
         }

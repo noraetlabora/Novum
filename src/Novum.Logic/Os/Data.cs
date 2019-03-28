@@ -49,7 +49,6 @@ namespace Novum.Logic.Os
                 var osPaymentMedium = new Novum.Data.Os.PaymentMedium();
                 osPaymentMedium.Id = novPaymentType.Id;
                 osPaymentMedium.Name = novPaymentType.Name;
-                osPaymentMedium.AllowOverPayment = 0;
                 osPaymentMedia.Add(osPaymentMedium);
             }
 

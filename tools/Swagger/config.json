@@ -1,5 +1,5 @@
 {
-	"packageName": "NovumPosServerStup",
-	"packageVersion": "0.0.0",
-	"packageContext": "Novum.Pos.Server"
+	"packageName": "Novum.Data.Os",
+	"packageVersion": "0.9.7.9",
+	"packageContext": "Novum.Data.Os"
 }

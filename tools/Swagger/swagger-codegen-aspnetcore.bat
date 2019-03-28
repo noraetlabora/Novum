@@ -1,1 +1,1 @@
-java -jar swagger-codegen-cli-2.4.3-20190301.005442-10.jar generate -l aspnetcore -i swagger_V0.9.6.16.json -o ./Stub4AspNetCore/ -c config.json
+java -jar swagger-codegen-cli-2.4.3-20190301.005442-10.jar generate -l aspnetcore -i swagger_V0.9.7.9.json -o ./Stub4AspNetCore/ -c config.json
