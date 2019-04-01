@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
-using InterSystems.Data.IRISClient;
+using InterSystems.Data.CacheClient;
 using Novum.Database.Api;
 
 namespace Novum.Database.InterSystems.Api
@@ -21,12 +21,12 @@ namespace Novum.Database.InterSystems.Api
             var waiters = new Dictionary<string, Novum.Data.Waiter>();
             try
             {
-                System.Threading.Monitor.Enter(DB.CacheConnection);
+                System.Threading.Monitor.Enter(DB.Connection);
 
-                var sql = string.Format("SELECT PNR, name FROM NT.Pers WHERE FA = {0} AND passiv > '{1}'", department, DBString.SqlToday);
+                var sql = string.Format("SELECT PNR, name FROM NT.Pers WHERE FA = {0} AND passiv > '{1}'", department, Sql.Today);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
 
-                var dataAdapter = new IRISDataAdapter(sql, DB.CacheConnection);
+                var dataAdapter = new CacheDataAdapter(sql, DB.Connection);
                 var dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
 
@@ -48,7 +48,7 @@ namespace Novum.Database.InterSystems.Api
             }
             finally
             {
-                System.Threading.Monitor.Exit(DB.CacheConnection);
+                System.Threading.Monitor.Exit(DB.Connection);
             }
 
             return waiters;

@@ -4,8 +4,8 @@ using System.Data;
 using System.Reflection;
 using Novum.Database.Api;
 using Novum.Data;
-using InterSystems.Data.IRISClient;
 using System.Collections.Generic;
+using InterSystems.Data.CacheClient;
 
 namespace Novum.Database.InterSystems.Api
 {
@@ -32,11 +32,11 @@ namespace Novum.Database.InterSystems.Api
             var articles = new Dictionary<string, Novum.Data.Article>();
             try
             {
-                System.Threading.Monitor.Enter(DB.CacheConnection);
+                System.Threading.Monitor.Enter(DB.Connection);
 
                 var sql = string.Format("SELECT M.Anr, M.UMENU, M.ROW, M.COL, M.bez1, M.bgcolor, M.fgcolor, A.vkaend, A.nameaend FROM NT.TouchUMenuZeilen M LEFT JOIN WW.ANRKassa AS A ON (A.FA=M.FA AND A.ANR=M.ANR) WHERE M.FA = {0} AND M.UMENU = '{1}' AND M.ANR <> '' ", department, menuId);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
-                var dataAdapter = new IRISDataAdapter(sql, DB.CacheConnection);
+                var dataAdapter = new CacheDataAdapter(sql, DB.Connection);
                 var dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
 
@@ -71,7 +71,7 @@ namespace Novum.Database.InterSystems.Api
             }
             finally
             {
-                System.Threading.Monitor.Exit(DB.CacheConnection);
+                System.Threading.Monitor.Exit(DB.Connection);
             }
 
             return articles;
@@ -87,7 +87,7 @@ namespace Novum.Database.InterSystems.Api
             var articles = new Dictionary<string, Novum.Data.Article>();
             try
             {
-                System.Threading.Monitor.Enter(DB.CacheConnection);
+                System.Threading.Monitor.Enter(DB.Connection);
 
                 var sql = new StringBuilder();
                 sql.Append(" SELECT M.Anr, M.UMENU, M.ROW, M.COL, M.bez1, M.bgcolor, M.fgcolor,");
@@ -98,7 +98,7 @@ namespace Novum.Database.InterSystems.Api
                 sql.Append(" WHERE M.FA = ").Append(department);
                 sql.Append(" AND ISNUMERIC(M.Anr) = 1");
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql.ToString());
-                var dataAdapter = new IRISDataAdapter(sql.ToString(), DB.CacheConnection);
+                var dataAdapter = new CacheDataAdapter(sql.ToString(), DB.Connection);
                 var dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
 
@@ -137,7 +137,7 @@ namespace Novum.Database.InterSystems.Api
             }
             finally
             {
-                System.Threading.Monitor.Exit(DB.CacheConnection);
+                System.Threading.Monitor.Exit(DB.Connection);
             }
 
             return articles;

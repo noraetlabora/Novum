@@ -3,7 +3,7 @@ using System.Data;
 using System.Reflection;
 using Novum.Database.Api;
 using Novum.Data;
-using InterSystems.Data.IRISClient;
+using InterSystems.Data.CacheClient;
 using System.Collections.Generic;
 
 namespace Novum.Database.InterSystems.Api
@@ -27,12 +27,12 @@ namespace Novum.Database.InterSystems.Api
             var printers = new Dictionary<string, Novum.Data.Printer>();
             try
             {
-                System.Threading.Monitor.Enter(DB.CacheConnection);
+                System.Threading.Monitor.Enter(DB.Connection);
 
                 var sql = string.Format("SELECT DEV, beschreibung, devtype, device FROM NT.Device WHERE FA = {0} AND DEV LIKE 'RD%' AND pas = 0", department);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
 
-                var dataAdapter = new IRISDataAdapter(sql, DB.CacheConnection);
+                var dataAdapter = new CacheDataAdapter(sql, DB.Connection);
                 var dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
 
@@ -56,7 +56,7 @@ namespace Novum.Database.InterSystems.Api
             }
             finally
             {
-                System.Threading.Monitor.Exit(DB.CacheConnection);
+                System.Threading.Monitor.Exit(DB.Connection);
             }
 
             return printers;

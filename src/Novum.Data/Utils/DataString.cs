@@ -2,18 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Novum.Database
+namespace Novum.Data.Utils
 {
     /// <summary>
-    /// DBString contains a string Value which can be be splitted by a comma, semicolon, pipe, double pipes or character 96.
+    /// DataString contains a string Value which can be be splitted by a comma, semicolon, pipe, double pipes or character 96.
     /// </summary>
-    internal class DBString
+    public class DataString
     {
         private const char Comma = (char)44;
         private const char Semicolon = (char)59;
         private const char Char96 = (char)96;
         private const char SinglePipe = (char)124;
-        private char[] DoublePipes = "||".ToCharArray();
         private const char SingleQuote = (char)39;
         private const char DoubleQuotes = (char)34;
 
@@ -24,7 +23,7 @@ namespace Novum.Database
         /// Constructor
         /// </summary>
         /// <param name="value"></param>
-        public DBString(string value)
+        public DataString(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -77,7 +76,7 @@ namespace Novum.Database
         {
             if (string.IsNullOrEmpty(_string))
                 return new string[] { };
-            return _string.Split(DoublePipes);
+            return _string.Split(new string[] { "||" }, StringSplitOptions.None);
         }
 
         /// <summary>
@@ -89,11 +88,6 @@ namespace Novum.Database
             if (string.IsNullOrEmpty(_string))
                 return new string[] { };
             return _string.Split(Char96);
-        }
-
-        public static string SqlToday
-        {
-            get { return DateTime.Now.ToString("yyyy-MM-dd"); }
         }
     }
 }

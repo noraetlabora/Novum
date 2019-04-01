@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 
-namespace Novum.Database
+namespace Novum.Data.Utils
 {
     /// <summary>
-    /// DBList is a List of strings which can be accessed.
+    /// DataList is a List of strings which can be accessed.
     /// </summary>
-    internal class DBList : IEnumerable<string>
+    public class DataList : IEnumerable<string>
     {
         private static NumberStyles style = NumberStyles.AllowDecimalPoint;
         private static CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
@@ -19,7 +19,7 @@ namespace Novum.Database
         /// 
         /// </summary>
         /// <param name="stringArray"></param>
-        public DBList(string[] stringArray)
+        public DataList(string[] stringArray)
         {
             if (stringArray == null)
             {
@@ -46,7 +46,7 @@ namespace Novum.Database
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public uint UIntAt(int index)
+        public uint GetUInt(int index)
         {
             if (index < 0 && index >= list.Count)
                 return 0;
@@ -61,7 +61,7 @@ namespace Novum.Database
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public int IntAt(int index)
+        public int GetInt(int index)
         {
             if (index < 0 && index >= list.Count)
                 return 0;
@@ -76,7 +76,7 @@ namespace Novum.Database
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public decimal DecimalAt(int index)
+        public decimal GetDecimal(int index)
         {
             if (index < 0 && index >= list.Count)
                 return decimal.Zero;
@@ -91,7 +91,7 @@ namespace Novum.Database
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public bool BoolAt(int index)
+        public bool GetBool(int index)
         {
             if (index < 0 && index >= list.Count)
                 return false;
@@ -106,13 +106,28 @@ namespace Novum.Database
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public string StringAt(int index)
+        public string GetString(int index)
         {
             if (index < 0 && index >= list.Count)
                 return string.Empty;
             if (string.IsNullOrEmpty(list[index]))
                 return string.Empty;
             return list[index];
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public DateTime GetDateTime(int index)
+        {
+            if (index < 0 && index >= list.Count)
+                return new DateTime(1999, 12, 31, 23, 59, 59, 999);
+            DateTime value;
+            if (!DateTime.TryParse(list[index], out value))
+                return new DateTime(1999, 12, 31, 23, 59, 59, 999);
+            return value;
         }
     }
 }

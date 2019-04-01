@@ -21,6 +21,7 @@ namespace Novum.Server
             Novum.Database.DB.Instance.ConnectionString = "Server=192.168.0.4; Port=1972; Namespace=PROG-DEV; User ID=_SYSTEM; Password=SYS";
             Novum.Database.DB.Instance.Open();
             var state = Novum.Database.DB.Instance.State;
+            //Novum.Database.DB.Instance.GetTables("1001");
 
             BuildWebHost(args).Run();
         }

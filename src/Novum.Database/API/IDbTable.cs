@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Novum.Database.Api
 {
     /// <summary>
@@ -5,6 +7,6 @@ namespace Novum.Database.Api
     /// </summary>
     public interface IDbTable
     {
-        void GetTables();
+        Dictionary<string, Data.Table> GetTables(string department);
     }
 }

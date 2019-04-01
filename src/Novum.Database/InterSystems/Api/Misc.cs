@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Text;
 using Novum.Database.Api;
 using Novum.Data;
-using InterSystems.Data.IRISClient;
+using InterSystems.Data.CacheClient;
 using System.Collections.Generic;
 
 namespace Novum.Database.InterSystems.Api
@@ -30,11 +30,11 @@ namespace Novum.Database.InterSystems.Api
             var cReasons = new Dictionary<string, Novum.Data.CancellationResason>();
             try
             {
-                System.Threading.Monitor.Enter(DB.CacheConnection);
+                System.Threading.Monitor.Enter(DB.Connection);
 
-                var sql = string.Format("SELECT GRUND, bez FROM NT.StornoGrund WHERE FA = {0} AND passiv > '{1}'", department, DBString.SqlToday);
+                var sql = string.Format("SELECT GRUND, bez FROM NT.StornoGrund WHERE FA = {0} AND passiv > '{1}'", department, Sql.Today);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
-                var dataAdapter = new IRISDataAdapter(sql, DB.CacheConnection);
+                var dataAdapter = new CacheDataAdapter(sql, DB.Connection);
                 var dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
 
@@ -56,7 +56,7 @@ namespace Novum.Database.InterSystems.Api
             }
             finally
             {
-                System.Threading.Monitor.Exit(DB.CacheConnection);
+                System.Threading.Monitor.Exit(DB.Connection);
             }
 
             return cReasons;
@@ -76,11 +76,11 @@ namespace Novum.Database.InterSystems.Api
             var serviceAreas = new Dictionary<string, Novum.Data.ServiceArea>();
             try
             {
-                System.Threading.Monitor.Enter(DB.CacheConnection);
+                System.Threading.Monitor.Enter(DB.Connection);
 
-                var sql = string.Format("SELECT VKO, bez FROM WW.VKO WHERE FA = {0} AND passiv > '{1}'", department, DBString.SqlToday);
+                var sql = string.Format("SELECT VKO, bez FROM WW.VKO WHERE FA = {0} AND passiv > '{1}'", department, Sql.Today);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
-                var dataAdapter = new IRISDataAdapter(sql, DB.CacheConnection);
+                var dataAdapter = new CacheDataAdapter(sql, DB.Connection);
                 var dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
 
@@ -102,7 +102,7 @@ namespace Novum.Database.InterSystems.Api
             }
             finally
             {
-                System.Threading.Monitor.Exit(DB.CacheConnection);
+                System.Threading.Monitor.Exit(DB.Connection);
             }
 
             return serviceAreas;

@@ -10,9 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="InterSystems.Data.IRISClient">
-      <HintPath>\lib\InterSystems.Data.IRISClient.dll</HintPath>
-    </Reference>
+    <PackageReference Include="InterSystemsCache" Version="1.0.4" />
   </ItemGroup>
 
 </Project>

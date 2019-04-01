@@ -4,7 +4,7 @@ using System.Data;
 using System.Reflection;
 using Novum.Database.Api;
 using Novum.Data;
-using InterSystems.Data.IRISClient;
+using InterSystems.Data.CacheClient;
 using System.Collections.Generic;
 
 namespace Novum.Database.InterSystems.Api
@@ -32,11 +32,11 @@ namespace Novum.Database.InterSystems.Api
             var menus = new Dictionary<string, Novum.Data.Menu>();
             try
             {
-                System.Threading.Monitor.Enter(DB.CacheConnection);
+                System.Threading.Monitor.Enter(DB.Connection);
 
                 var sql = string.Format("SELECT M.ZE, M.bez1, M.bgcolor, M.fgcolor, UM.UMENU, UM.spalten FROM  NT.TouchMenuZeile M INNER JOIN NT.TouchUmenu UM ON UM.FA = M.FA AND UM.UMENU = M.ZE WHERE M.FA = {0} AND M.MENU = '{1}'", department, menuId);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
-                var dataAdapter = new IRISDataAdapter(sql, DB.CacheConnection);
+                var dataAdapter = new CacheDataAdapter(sql, DB.Connection);
                 var dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
 
@@ -62,7 +62,7 @@ namespace Novum.Database.InterSystems.Api
             }
             finally
             {
-                System.Threading.Monitor.Exit(DB.CacheConnection);
+                System.Threading.Monitor.Exit(DB.Connection);
             }
 
             return menus;
@@ -79,11 +79,11 @@ namespace Novum.Database.InterSystems.Api
             var menu = new Novum.Data.Menu();
             try
             {
-                System.Threading.Monitor.Enter(DB.CacheConnection);
+                System.Threading.Monitor.Enter(DB.Connection);
 
                 var sql = string.Format("SELECT UMENU, bez, spalten FROM NT.TouchUmenu WHERE FA = {0} AND UMENU = '{1}'", department, menuId);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
-                var dataAdapter = new IRISDataAdapter(sql, DB.CacheConnection);
+                var dataAdapter = new CacheDataAdapter(sql, DB.Connection);
                 var dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
                 Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": TableRowCount = " + dataTable.Rows.Count);
@@ -103,7 +103,7 @@ namespace Novum.Database.InterSystems.Api
             }
             finally
             {
-                System.Threading.Monitor.Exit(DB.CacheConnection);
+                System.Threading.Monitor.Exit(DB.Connection);
             }
 
             return menu;
