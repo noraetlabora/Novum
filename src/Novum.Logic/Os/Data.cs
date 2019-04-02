@@ -317,6 +317,27 @@ namespace Novum.Logic.Os
             return osUsers;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="department"></param>
+        /// <returns></returns>
+        public static List<Novum.Data.Os.TableResult> GetTables(string department)
+        {
+            var osTables = new List<Novum.Data.Os.TableResult>();
+            var novTables = Novum.Database.DB.Api.Table.GetTables(department);
+            foreach (var novTable in novTables.Values)
+            {
+                var osTable = new Novum.Data.Os.TableResult();
+                osTable.Id = novTable.Id;
+                osTable.Name = novTable.Name;
+                osTable.BookedAmount = (int)novTable.Amount * 100;
+                osTable.LastActivityTime = (int)Utils.Unix.Timestamp(novTable.Updated);
+                osTables.Add(osTable);
+            }
+            return osTables;
+        }
+
         #endregion
     }
 }

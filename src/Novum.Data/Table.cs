@@ -4,7 +4,7 @@ namespace Novum.Data
 {
     public class Table
     {
-        enum Index
+        private enum Index
         {
             Id = 0,
             Name = 1,

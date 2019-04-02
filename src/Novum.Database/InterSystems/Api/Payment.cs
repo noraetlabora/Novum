@@ -1,9 +1,5 @@
-using System;
 using System.Data;
-using System.Reflection;
 using Novum.Database.Api;
-using Novum.Data;
-using InterSystems.Data.CacheClient;
 using System.Collections.Generic;
 
 namespace Novum.Database.InterSystems.Api
@@ -25,42 +21,22 @@ namespace Novum.Database.InterSystems.Api
         public Dictionary<string, Novum.Data.PaymentType> GetPaymentTypes(string department)
         {
             var paymentTypes = new Dictionary<string, Novum.Data.PaymentType>();
-            try
-            {
-                System.Threading.Monitor.Enter(DB.Connection);
+            var sql = string.Format("SELECT IKA, bez, prg, druanz, unterschrift FROM NT.Zahlart WHERE FA = {0} AND passiv > '{1}'", department, Interaction.SqlToday);
+            var dataTable = Interaction.GetDataTable(sql);
 
-                var sql = string.Format("SELECT IKA, bez, prg, druanz, unterschrift FROM NT.Zahlart WHERE FA = {0} AND passiv > '{1}'", department, Sql.Today);
-                Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": SQL = " + sql);
-                var dataAdapter = new CacheDataAdapter(sql, DB.Connection);
-                var dataTable = new DataTable();
-
-                dataAdapter.Fill(dataTable);
-
-                foreach (DataRow dataRow in dataTable.Rows)
-                {
-                    var paymentType = new Novum.Data.PaymentType();
-                    paymentType.Id = DataObject.GetString(dataRow, "IKA");
-                    paymentType.Name = DataObject.GetString(dataRow, "bez");
-                    paymentType.Program = DataObject.GetString(dataRow, "prg");
-                    paymentType.ReceiptCount = DataObject.GetUInt(dataRow, "druanz");
-                    var signature = DataObject.GetString(dataRow, "unterschrift");
-                    if (signature.Equals("0"))
-                        paymentType.Signature = true;
-                    else
-                        paymentType.Signature = false;
-                    paymentTypes.Add(paymentType.Id, paymentType);
-                }
-                Log.Database.Debug(MethodBase.GetCurrentMethod().Name + ": TableRowCount = " + dataTable.Rows.Count);
-            }
-            catch (Exception ex)
+            foreach (DataRow dataRow in dataTable.Rows)
             {
-                Log.Database.Error(ex.Message);
-                Log.Database.Error(ex.StackTrace);
-                throw ex;
-            }
-            finally
-            {
-                System.Threading.Monitor.Exit(DB.Connection);
+                var paymentType = new Novum.Data.PaymentType();
+                paymentType.Id = DataObject.GetString(dataRow, "IKA");
+                paymentType.Name = DataObject.GetString(dataRow, "bez");
+                paymentType.Program = DataObject.GetString(dataRow, "prg");
+                paymentType.ReceiptCount = DataObject.GetUInt(dataRow, "druanz");
+                var signature = DataObject.GetString(dataRow, "unterschrift");
+                if (signature.Equals("0"))
+                    paymentType.Signature = true;
+                else
+                    paymentType.Signature = false;
+                paymentTypes.Add(paymentType.Id, paymentType);
             }
 
             return paymentTypes;

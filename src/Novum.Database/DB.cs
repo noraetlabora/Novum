@@ -1,6 +1,8 @@
 using System;
 using System.Data;
-using InterSystems.Data.CacheClient;
+using InterSystems.Data.IRISClient;
+using InterSystems.XEP;
+using System.Data.Common;
 
 namespace Novum.Database
 {
@@ -18,27 +20,26 @@ namespace Novum.Database
         public static DB Instance { get { return lazy.Value; } }
         private DB()
         {
-            Log.Database.Info("creating InterSystems.Caché connection");
-            dbConnection = new CacheConnection();
-            Log.Database.Info("creating InterSystems.Caché  API");
+            Log.Database.Info("creating InterSystems connection");
+            xep = PersisterFactory.CreatePersister();
+            Log.Database.Info("creating InterSystems API");
             api = new InterSystems.Api.InterSystemsApi();
-            //Log.Database.Info("creating IRIS object");
-            //iris = IRIS.CreateIRIS(DB.Connection);
         }
 
-        private static CacheADOConnection dbConnection;
-        //private static IRIS iris;
+        private static string connectionString;
+        private static IRISADOConnection dbConnection;
+        private static EventPersister xep;
         private static InterSystems.Api.InterSystemsApi api;
 
-        internal static CacheADOConnection Connection
+        internal static IRISADOConnection Connection
         {
             get { return dbConnection; }
         }
 
-        // internal static IRIS Iris
-        // {
-        //     get { return iris; }
-        // }
+        internal static EventPersister Xep
+        {
+            get { return xep; }
+        }
 
         public static Api.IDbApi Api
         {
@@ -54,7 +55,8 @@ namespace Novum.Database
             try
             {
                 Log.Database.Info("opening database connection");
-                dbConnection.Open();
+                xep.Connect(connectionString);
+                dbConnection = (IRISADOConnection)xep.GetAdoNetConnection();
                 Log.Database.Info("database connection is open");
             }
             catch (Exception ex)
@@ -68,7 +70,7 @@ namespace Novum.Database
             try
             {
                 Log.Database.Info("closing database connection");
-                dbConnection.Close();
+                xep.Close();
                 Log.Database.Info("database connection is closed");
             }
             catch (Exception ex)
@@ -99,11 +101,11 @@ namespace Novum.Database
 
         public string ConnectionString
         {
-            get { return dbConnection.ConnectionString; }
+            get { return connectionString; }
             set
             {
                 Log.Database.Info("setting connection string to: " + value.Substring(0, 50) + "...");
-                dbConnection.ConnectionString = value;
+                connectionString = value;
             }
         }
 
@@ -130,7 +132,6 @@ namespace Novum.Database
         }
 
         #endregion
-
 
     }
 }

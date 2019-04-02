@@ -160,21 +160,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/Tables")]
         public IActionResult GetTables([FromQuery]string serviceAreaId)
         {
-            var tables = new List<TableResult>();
-            //
-            for (int i = 0; i < 20; i++)
-            {
-                var table = new TableResult();
-                table.Id = i.ToString();
-                table.Name = "Tisch " + i.ToString();
-                table.ServiceAreaId = "0";
-                table.BookedAmount = i * 100;
-                table.LastActivityTime = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-                //table.SubTables = "";
-
-                tables.Add(table);
-            }
-            //
+            var tables = Novum.Logic.Os.Data.GetTables("1001");
             return new ObjectResult(tables);
         }
     }
