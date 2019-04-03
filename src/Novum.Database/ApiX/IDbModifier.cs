@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace Novum.Database.Api
 {
     /// <summary>
-    /// 
+    /// Interface for Modifier Api
     /// </summary>
     public interface IDbModifier
     {

@@ -3,7 +3,7 @@ using System;
 namespace Novum.Database.Api
 {
     /// <summary>
-    /// 
+    /// Interface for Apis
     /// </summary>
     public interface IDbApi
     {
