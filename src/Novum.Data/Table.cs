@@ -24,10 +24,6 @@ namespace Novum.Data
         }
 
         #region Constructor
-        public Table()
-        {
-
-        }
 
         public Table(string dbString)
         {

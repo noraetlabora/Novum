@@ -7,6 +7,6 @@ namespace Novum.Database.Api
     /// </summary>
     public interface IDbPrinter
     {
-        Dictionary<string, Novum.Data.Printer> GetInvoicePrinters(string department);
+        Dictionary<string, Novum.Data.Printer> GetInvoicePrinters();
     }
 }

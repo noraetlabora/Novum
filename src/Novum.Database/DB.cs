@@ -58,6 +58,7 @@ namespace Novum.Database
                 xep.Connect(connectionString);
                 dbConnection = (IRISADOConnection)xep.GetAdoNetConnection();
                 Log.Database.Info("database connection is open");
+                api.Initialize();
             }
             catch (Exception ex)
             {

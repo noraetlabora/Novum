@@ -7,6 +7,6 @@ namespace Novum.Database.Api
     /// </summary>
     public interface IDbWaiter
     {
-        Dictionary<string, Novum.Data.Waiter> GetWaiters(string department);
+        Dictionary<string, Novum.Data.Waiter> GetWaiters();
     }
 }

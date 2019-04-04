@@ -27,10 +27,10 @@ namespace Novum.Database.InterSystems.Api
         /// <param name="department"></param>
         /// <param name="menuId"></param>
         /// <returns></returns>
-        public Dictionary<string, Novum.Data.Article> GetArticles(string department, string menuId)
+        public Dictionary<string, Novum.Data.Article> GetArticles(string menuId)
         {
             var articles = new Dictionary<string, Novum.Data.Article>();
-            var sql = string.Format("SELECT M.Anr, M.UMENU, M.ROW, M.COL, M.bez1, M.bgcolor, M.fgcolor, A.vkaend, A.nameaend FROM NT.TouchUMenuZeilen M LEFT JOIN WW.ANRKassa AS A ON (A.FA=M.FA AND A.ANR=M.ANR) WHERE M.FA = {0} AND M.UMENU = '{1}' AND M.ANR <> '' ", department, menuId);
+            var sql = string.Format("SELECT M.Anr, M.UMENU, M.ROW, M.COL, M.bez1, M.bgcolor, M.fgcolor, A.vkaend, A.nameaend FROM NT.TouchUMenuZeilen M LEFT JOIN WW.ANRKassa AS A ON (A.FA=M.FA AND A.ANR=M.ANR) WHERE M.FA = {0} AND M.UMENU = '{1}' AND M.ANR <> '' ", Data.Department, menuId);
             var dataTable = Interaction.GetDataTable(sql);
 
             foreach (DataRow dataRow in dataTable.Rows)
@@ -63,7 +63,7 @@ namespace Novum.Database.InterSystems.Api
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public Dictionary<string, Novum.Data.Article> GetArticles(string department)
+        public Dictionary<string, Novum.Data.Article> GetArticles()
         {
             var articles = new Dictionary<string, Novum.Data.Article>();
             var sql = new StringBuilder();
@@ -72,7 +72,7 @@ namespace Novum.Database.InterSystems.Api
             sql.Append(" FROM NT.TouchUMenuZeilen M");
             sql.Append(" LEFT JOIN WW.ANRKassa AS A ON (A.FA=M.FA AND A.ANR=M.ANR)");
             sql.Append(" LEFT JOIN NT.PLUTabDet AS P ON (P.FA = M.FA AND P.ANR = M.ANR)");
-            sql.Append(" WHERE M.FA = ").Append(department);
+            sql.Append(" WHERE M.FA = ").Append(Data.Department);
             sql.Append(" AND ISNUMERIC(M.Anr) = 1");
             var dataTable = Interaction.GetDataTable(sql.ToString());
 

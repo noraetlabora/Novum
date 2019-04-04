@@ -7,8 +7,8 @@ namespace Novum.Database.Api
     /// </summary>
     public interface IDbMisc
     {
-        Dictionary<string, Novum.Data.CancellationResason> GetCancellationReason(string department);
-        Dictionary<string, Novum.Data.ServiceArea> GetServiceAreas(string department);
+        Dictionary<string, Novum.Data.CancellationResason> GetCancellationReason();
+        Dictionary<string, Novum.Data.ServiceArea> GetServiceAreas();
 
 
     }

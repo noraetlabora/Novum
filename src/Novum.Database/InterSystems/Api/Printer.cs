@@ -18,10 +18,10 @@ namespace Novum.Database.InterSystems.Api
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public Dictionary<string, Novum.Data.Printer> GetInvoicePrinters(string department)
+        public Dictionary<string, Novum.Data.Printer> GetInvoicePrinters()
         {
             var printers = new Dictionary<string, Novum.Data.Printer>();
-            var sql = string.Format("SELECT DEV, beschreibung, devtype, device FROM NT.Device WHERE FA = {0} AND DEV LIKE 'RD%' AND pas = 0", department);
+            var sql = string.Format("SELECT DEV, beschreibung, devtype, device FROM NT.Device WHERE FA = {0} AND DEV LIKE 'RD%' AND pas = 0", Data.Department);
             var dataTable = Interaction.GetDataTable(sql);
 
             foreach (DataRow dataRow in dataTable.Rows)

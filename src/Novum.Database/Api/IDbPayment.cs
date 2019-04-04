@@ -7,6 +7,6 @@ namespace Novum.Database.Api
     /// </summary>
     public interface IDbPayment
     {
-        Dictionary<string, Novum.Data.PaymentType> GetPaymentTypes(string department);
+        Dictionary<string, Novum.Data.PaymentType> GetPaymentTypes();
     }
 }

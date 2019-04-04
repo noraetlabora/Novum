@@ -89,5 +89,17 @@ namespace Novum.Data.Utils
                 return new string[] { };
             return _string.Split(Char96);
         }
+
+
+        /// <summary>
+        /// Split the current string value by carriage return line feed (\r\n)
+        /// </summary>
+        /// <returns>String Array</returns>
+        public string[] SplitByCRLF()
+        {
+            if (string.IsNullOrEmpty(_string))
+                return new string[] { };
+            return _string.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+        }
     }
 }

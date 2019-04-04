@@ -20,7 +20,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/Articles")]
         public IActionResult GetArticles()
         {
-            var articles = Novum.Logic.Os.Data.GetArticles("1001");
+            var articles = Novum.Logic.Os.Data.GetArticles();
             return new ObjectResult(articles);
         }
 
@@ -33,7 +33,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/CancellationReasons")]
         public IActionResult GetCancellationReasons()
         {
-            var osCReasons = Novum.Logic.Os.Data.GetCancellationReasons("1001");
+            var osCReasons = Novum.Logic.Os.Data.GetCancellationReasons();
             return new ObjectResult(osCReasons);
         }
 
@@ -45,7 +45,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/Categories")]
         public IActionResult GetCategories()
         {
-            var categories = Novum.Logic.Os.Data.GetCategories("1001", "1");
+            var categories = Novum.Logic.Os.Data.GetCategories("1");
             return new ObjectResult(categories);
         }
 
@@ -57,7 +57,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/ModifierGroups")]
         public IActionResult GetModifierGroups()
         {
-            var modifierGroups = Novum.Logic.Os.Data.GetModifierGroups("1001");
+            var modifierGroups = Novum.Logic.Os.Data.GetModifierGroups();
             return new ObjectResult(modifierGroups);
         }
 
@@ -84,7 +84,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/PaymentMedia")]
         public IActionResult GetPaymentMedia()
         {
-            var paymentMedia = Novum.Logic.Os.Data.GetPaymentMedia("1001");
+            var paymentMedia = Novum.Logic.Os.Data.GetPaymentMedia();
             return new ObjectResult(paymentMedia);
         }
 
@@ -96,7 +96,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/Printers")]
         public IActionResult GetPrinters()
         {
-            var printers = Novum.Logic.Os.Data.GetPrinters("1001");
+            var printers = Novum.Logic.Os.Data.GetPrinters();
             return new ObjectResult(printers);
         }
 
@@ -108,7 +108,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/ServiceAreas")]
         public IActionResult GetServiceAreas()
         {
-            var serviceAreas = Novum.Logic.Os.Data.GetServiceAreas("1001");
+            var serviceAreas = Novum.Logic.Os.Data.GetServiceAreas();
             return new OkObjectResult(serviceAreas);
         }
 
@@ -120,7 +120,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/Users")]
         public IActionResult GetUsers()
         {
-            var users = Novum.Logic.Os.Data.GetUsers("1001");
+            var users = Novum.Logic.Os.Data.GetUsers();
             return new ObjectResult(users);
         }
 
@@ -134,20 +134,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/OrderLines")]
         public IActionResult GetOrderLines([FromQuery]string subTableId, [FromQuery]string status)
         {
-            var orderLines = new List<OrderLine>();
-            //
-            for (int i = 0; i < 20; i++)
-            {
-                var orderLine = new OrderLine();
-                orderLine.Id = subTableId + "|" + i.ToString();
-                orderLine.ArticleId = "ArtikelId " + i.ToString();
-                orderLine.Quantity = 1;
-                orderLine.SinglePrice = 299;
-                orderLine.Status = OrderLine.OrderLineStatus.OrderedEnum;
-
-                orderLines.Add(orderLine);
-            }
-            //
+            var orderLines = Novum.Logic.Os.Data.GetOrderLines(subTableId);
             return new ObjectResult(orderLines);
         }
 
@@ -160,7 +147,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/Tables")]
         public IActionResult GetTables([FromQuery]string serviceAreaId)
         {
-            var tables = Novum.Logic.Os.Data.GetTables("1001");
+            var tables = Novum.Logic.Os.Data.GetTables();
             return new ObjectResult(tables);
         }
     }

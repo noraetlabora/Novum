@@ -7,7 +7,7 @@ namespace Novum.Database.Api
     /// </summary>
     public interface IDbArticle
     {
-        Dictionary<string, Novum.Data.Article> GetArticles(string department, string menuId);
-        Dictionary<string, Novum.Data.Article> GetArticles(string department);
+        Dictionary<string, Novum.Data.Article> GetArticles(string menuId);
+        Dictionary<string, Novum.Data.Article> GetArticles();
     }
 }

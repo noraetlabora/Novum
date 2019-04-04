@@ -20,10 +20,10 @@ namespace Novum.Database.InterSystems.Api
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public Dictionary<string, Novum.Data.CancellationResason> GetCancellationReason(string department)
+        public Dictionary<string, Novum.Data.CancellationResason> GetCancellationReason()
         {
             var cReasons = new Dictionary<string, Novum.Data.CancellationResason>();
-            var sql = string.Format("SELECT GRUND, bez FROM NT.StornoGrund WHERE FA = {0} AND passiv > '{1}'", department, Interaction.SqlToday);
+            var sql = string.Format("SELECT GRUND, bez FROM NT.StornoGrund WHERE FA = {0} AND passiv > '{1}'", Data.Department, Interaction.SqlToday);
             var dataTable = Interaction.GetDataTable(sql);
 
             foreach (DataRow dataRow in dataTable.Rows)
@@ -46,10 +46,10 @@ namespace Novum.Database.InterSystems.Api
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public Dictionary<string, Novum.Data.ServiceArea> GetServiceAreas(string department)
+        public Dictionary<string, Novum.Data.ServiceArea> GetServiceAreas()
         {
             var serviceAreas = new Dictionary<string, Novum.Data.ServiceArea>();
-            var sql = string.Format("SELECT VKO, bez FROM WW.VKO WHERE FA = {0} AND passiv > '{1}'", department, Interaction.SqlToday);
+            var sql = string.Format("SELECT VKO, bez FROM WW.VKO WHERE FA = {0} AND passiv > '{1}'", Data.Department, Interaction.SqlToday);
             var dataTable = Interaction.GetDataTable(sql);
 
             foreach (DataRow dataRow in dataTable.Rows)

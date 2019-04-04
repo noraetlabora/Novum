@@ -21,10 +21,10 @@ namespace Novum.Database.InterSystems.Api
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public Dictionary<string, Novum.Data.ModifierMenu> GetModifierMenus(string department)
+        public Dictionary<string, Novum.Data.ModifierMenu> GetModifierMenus()
         {
             var modifierMenus = new Dictionary<string, Novum.Data.ModifierMenu>();
-            var sql = string.Format("SELECT UMENU, bez, aendmin, aendmax, aendauto, spalten, aendmaxaus, aendmehrfach FROM NT.TouchUmenu WHERE FA = {0} AND aend = 1", department);
+            var sql = string.Format("SELECT UMENU, bez, aendmin, aendmax, aendauto, spalten, aendmaxaus, aendmehrfach FROM NT.TouchUmenu WHERE FA = {0} AND aend = 1", Data.Department);
             var dataTable = Interaction.GetDataTable(sql);
 
             foreach (DataRow dataRow in dataTable.Rows)
@@ -47,10 +47,10 @@ namespace Novum.Database.InterSystems.Api
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public Dictionary<string, Novum.Data.Modifier> GetModifiers(string department, string menuId)
+        public Dictionary<string, Novum.Data.Modifier> GetModifiers(string menuId)
         {
             var modifiers = new Dictionary<string, Novum.Data.Modifier>();
-            var sql = string.Format("SELECT M.ROW, M.COL, M.ANR, M.bgcolor, M.fgcolor, W.bez FROM NT.TouchUmenuZeilen M LEFT JOIN WW.ANR AS W ON (W.FA = M.FA AND W.ANR = M.ANR) WHERE M.FA = {0} AND M.UMENU = {1} AND M.ANR <> '' ", department, menuId);
+            var sql = string.Format("SELECT M.ROW, M.COL, M.ANR, M.bgcolor, M.fgcolor, W.bez FROM NT.TouchUmenuZeilen M LEFT JOIN WW.ANR AS W ON (W.FA = M.FA AND W.ANR = M.ANR) WHERE M.FA = {0} AND M.UMENU = {1} AND M.ANR <> '' ", Data.Department, menuId);
             var dataTable = Interaction.GetDataTable(sql);
 
             foreach (DataRow dataRow in dataTable.Rows)
@@ -77,10 +77,10 @@ namespace Novum.Database.InterSystems.Api
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public List<Novum.Data.MenuModifier> GetMenuModifiers(string department)
+        public List<Novum.Data.MenuModifier> GetMenuModifiers()
         {
             var menuModifiers = new List<Novum.Data.MenuModifier>();
-            var sql = string.Format("SELECT UMENU, ROW, COL, LFD, AendUMenu FROM NT.TouchUmenuZeilenA WHERE FA = {0} ", department);
+            var sql = string.Format("SELECT UMENU, ROW, COL, LFD, AendUMenu FROM NT.TouchUmenuZeilenA WHERE FA = {0} ", Data.Department);
             var dataTable = Interaction.GetDataTable(sql);
 
             foreach (DataRow dataRow in dataTable.Rows)

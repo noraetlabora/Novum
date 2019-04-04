@@ -13,10 +13,10 @@ namespace Novum.Database.InterSystems.Api
         {
         }
 
-        public Dictionary<string, Novum.Data.Waiter> GetWaiters(string department)
+        public Dictionary<string, Novum.Data.Waiter> GetWaiters()
         {
             var waiters = new Dictionary<string, Novum.Data.Waiter>();
-            var sql = string.Format("SELECT PNR, name FROM NT.Pers WHERE FA = {0} AND passiv > '{1}'", department, Interaction.SqlToday);
+            var sql = string.Format("SELECT PNR, name FROM NT.Pers WHERE FA = {0} AND passiv > '{1}'", Data.Department, Interaction.SqlToday);
             var dataTable = Interaction.GetDataTable(sql);
 
             foreach (DataRow dataRow in dataTable.Rows)

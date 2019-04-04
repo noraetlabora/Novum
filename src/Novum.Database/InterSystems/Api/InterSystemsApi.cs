@@ -15,6 +15,7 @@ namespace Novum.Database.InterSystems.Api
         private static InterSystems.Api.Modifier modifier;
         private static InterSystems.Api.Printer printer;
         private static InterSystems.Api.Payment payment;
+        private static InterSystems.Api.Order order;
 
         public InterSystemsApi()
         {
@@ -34,6 +35,8 @@ namespace Novum.Database.InterSystems.Api
                 printer = new InterSystems.Api.Printer();
             if (payment == null)
                 payment = new InterSystems.Api.Payment();
+            if (order == null)
+                order = new InterSystems.Api.Order();
         }
 
         public IDbMisc Misc
@@ -67,6 +70,17 @@ namespace Novum.Database.InterSystems.Api
         public IDbPayment Payment
         {
             get { return payment; }
+        }
+
+        public IDbOrder Order
+        {
+            get { return order; }
+        }
+
+        public void Initialize()
+        {
+            Data.Department = Interaction.CallClassMethod("cmNT.Kassa", "GetOmanFirma");
+            Log.Database.Info("Department = " + Data.Department);
         }
     }
 }

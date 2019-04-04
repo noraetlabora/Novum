@@ -27,10 +27,10 @@ namespace Novum.Database.InterSystems.Api
         /// <param name="department"></param>
         /// <param name="menuId"></param>
         /// <returns></returns>
-        public Dictionary<string, Novum.Data.Menu> GetMainMenu(string department, string menuId)
+        public Dictionary<string, Novum.Data.Menu> GetMainMenu(string menuId)
         {
             var menus = new Dictionary<string, Novum.Data.Menu>();
-            var sql = string.Format("SELECT M.ZE, M.bez1, M.bgcolor, M.fgcolor, UM.UMENU, UM.spalten FROM  NT.TouchMenuZeile M INNER JOIN NT.TouchUmenu UM ON UM.FA = M.FA AND UM.UMENU = M.ZE WHERE M.FA = {0} AND M.MENU = '{1}'", department, menuId);
+            var sql = string.Format("SELECT M.ZE, M.bez1, M.bgcolor, M.fgcolor, UM.UMENU, UM.spalten FROM  NT.TouchMenuZeile M INNER JOIN NT.TouchUmenu UM ON UM.FA = M.FA AND UM.UMENU = M.ZE WHERE M.FA = {0} AND M.MENU = '{1}'", Data.Department, menuId);
             var dataTable = Interaction.GetDataTable(sql);
 
             foreach (DataRow dataRow in dataTable.Rows)
@@ -54,10 +54,10 @@ namespace Novum.Database.InterSystems.Api
         /// <param name="department"></param>
         /// <param name="menuId"></param>
         /// <returns></returns>
-        public Novum.Data.Menu GetSubMenu(string department, string menuId)
+        public Novum.Data.Menu GetSubMenu(string menuId)
         {
             var menu = new Novum.Data.Menu();
-            var sql = string.Format("SELECT UMENU, bez, spalten FROM NT.TouchUmenu WHERE FA = {0} AND UMENU = '{1}'", department, menuId);
+            var sql = string.Format("SELECT UMENU, bez, spalten FROM NT.TouchUmenu WHERE FA = {0} AND UMENU = '{1}'", Data.Department, menuId);
             var dataTable = Interaction.GetDataTable(sql);
 
             if (dataTable.Rows.Count == 0)

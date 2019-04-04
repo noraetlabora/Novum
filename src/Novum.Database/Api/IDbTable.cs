@@ -7,6 +7,6 @@ namespace Novum.Database.Api
     /// </summary>
     public interface IDbTable
     {
-        Dictionary<string, Data.Table> GetTables(string department);
+        Dictionary<string, Data.Table> GetTables();
     }
 }
