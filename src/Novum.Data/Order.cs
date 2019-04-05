@@ -150,11 +150,13 @@ namespace Novum.Data
         private void SetId()
         {
             var sb = new StringBuilder();
-            sb.Append(Status.ToString());
-            sb.Append(Course.ToString());
-            //sb.Append(Sort.ToString());?????
-            sb.Append(ArticleId);
+            sb.Append((int)Status).Append(Utils.DataString.SinglePipe);
+            sb.Append(Course.ToString()).Append(Utils.DataString.SinglePipe);
+            //sb.Append(Sort.ToString()).Append(Utils.DataString.SinglePipe);
+            sb.Append(ArticleId).Append(Utils.DataString.SinglePipe);
+            sb.Append(UnitPrice).Append(Utils.DataString.SinglePipe);
             sb.Append(Name);
+            this.Id = sb.ToString();
         }
 
         #endregion

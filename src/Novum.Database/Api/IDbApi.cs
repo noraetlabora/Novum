@@ -16,6 +16,7 @@ namespace Novum.Database.Api
         Database.Api.IDbModifier Modifier { get; }
         Database.Api.IDbArticle Article { get; }
         Database.Api.IDbOrder Order { get; }
+        Database.Api.IDbPos Pos { get; }
         void Initialize();
     }
 }

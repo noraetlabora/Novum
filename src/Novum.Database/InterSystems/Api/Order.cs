@@ -16,7 +16,7 @@ namespace Novum.Database.InterSystems.Api
         public Dictionary<string, Novum.Data.Order> GetOrders(string tableId)
         {
             var orders = new Dictionary<string, Novum.Data.Order>();
-            var dbString = Interaction.CallClassMethod("cmNT.Tisch", "GetTischListeAll", Data.Department, "RK", tableId, "", "2");
+            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetAllTischBonMitAenderer", Data.Department, "RK", tableId, "", "2");
             var ordersString = new Novum.Data.Utils.DataString(dbString);
             var ordersArray = ordersString.SplitByCRLF();
 

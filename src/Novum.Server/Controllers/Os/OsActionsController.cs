@@ -22,21 +22,19 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/actions/Auth/Login")]
         public IActionResult AuthLogin([FromBody][Required]LoginUser data)
         {
-            var osError = new OsError();
-            if (string.IsNullOrEmpty(data.Id))
+            try
             {
-                osError.ErrorMsg = "no Id";
+                Logic.Os.Actions.Login(data);
+                //200 - Ok
+                return new OkResult();
+            }
+            catch (Exception ex)
+            {
+                var osError = new OsError();
+                osError.ErrorMsg = ex.Message;
                 //401 - Unauthorized
                 return new UnauthorizedObjectResult(osError);
             }
-            if (string.IsNullOrEmpty(data.Password))
-            {
-                osError.ErrorMsg = "no Password";
-                //401 - Unauthorized
-                return new UnauthorizedObjectResult(osError);
-            }
-            //200 - Ok
-            return new OkObjectResult(null);
         }
 
         /// <summary>
@@ -62,23 +60,19 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/actions/Init/RegisterClient")]
         public IActionResult InitRegisterClient([FromBody][Required]ClientInfo clientData)
         {
-            var posInfo = new POSInfo();
-            var osError = new OsError();
-
-            //
-            posInfo.ClientName = "Norli";
-            posInfo.RestaurantName = "Müllnerbräu";
-            posInfo.UtcTime = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-
-            //osError.ErrorMsg = "Bad Request";
-            ////400 - Bad Request
-            //return new BadRequestJsonResult(osError);
-            //osError.ErrorMsg = "Precondition Failed";
-            ////412 - Precondition Failed
-            //return new ContentResult() { StatusCode = 412, Content = osError.ToJson() };
-
-            //200 - Ok
-            return new OkObjectResult(posInfo);
+            try
+            {
+                var posInfo = Logic.Os.Actions.RegisterClient(clientData);
+                //200 - Ok
+                return new OkObjectResult(posInfo);
+            }
+            catch (Exception ex)
+            {
+                var osError = new OsError();
+                osError.ErrorMsg = ex.Message;
+                //400 - BadRequest
+                return new BadRequestObjectResult(osError);
+            }
         }
 
         /// <summary>

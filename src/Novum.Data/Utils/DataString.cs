@@ -9,12 +9,14 @@ namespace Novum.Data.Utils
     /// </summary>
     public class DataString
     {
-        private const char Comma = (char)44;
-        private const char Semicolon = (char)59;
-        private const char Char96 = (char)96;
-        private const char SinglePipe = (char)124;
-        private const char SingleQuote = (char)39;
-        private const char DoubleQuotes = (char)34;
+        public const char Comma = (char)44;
+        public const char Semicolon = (char)59;
+        public const char Char96 = (char)96;
+        public const char SinglePipe = (char)124;
+        public const string DoublePipes = "||";
+        public const char SingleQuote = (char)39;
+        public const char DoubleQuotes = (char)34;
+        public const string CRLF = "\r\n";
 
 
         private string _string;
@@ -76,7 +78,7 @@ namespace Novum.Data.Utils
         {
             if (string.IsNullOrEmpty(_string))
                 return new string[] { };
-            return _string.Split(new string[] { "||" }, StringSplitOptions.None);
+            return _string.Split(new string[] { DoublePipes }, StringSplitOptions.None);
         }
 
         /// <summary>
@@ -99,7 +101,7 @@ namespace Novum.Data.Utils
         {
             if (string.IsNullOrEmpty(_string))
                 return new string[] { };
-            return _string.Split(new string[] { "\r\n" }, StringSplitOptions.None);
+            return _string.Split(new string[] { CRLF }, StringSplitOptions.None);
         }
     }
 }

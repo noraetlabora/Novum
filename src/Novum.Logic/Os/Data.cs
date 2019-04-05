@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Novum.Data.Os;
-using Novum.Database.Api;
+using Novum.Database;
 
 namespace Novum.Logic.Os
 {
@@ -17,13 +17,13 @@ namespace Novum.Logic.Os
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public static List<Novum.Data.Os.CancellationReason> GetCancellationReasons()
+        public static List<CancellationReason> GetCancellationReasons()
         {
-            var osCReasons = new List<Novum.Data.Os.CancellationReason>();
-            var novCReasons = Novum.Database.DB.Api.Misc.GetCancellationReason();
+            var osCReasons = new List<CancellationReason>();
+            var novCReasons = DB.Api.Misc.GetCancellationReason();
             foreach (var novCReason in novCReasons.Values)
             {
-                var osCReason = new Novum.Data.Os.CancellationReason();
+                var osCReason = new CancellationReason();
                 osCReason.Id = novCReason.Id;
                 osCReason.Name = novCReason.Name;
                 osCReasons.Add(osCReason);
@@ -39,14 +39,14 @@ namespace Novum.Logic.Os
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public static List<Novum.Data.Os.PaymentMedium> GetPaymentMedia()
+        public static List<PaymentMedium> GetPaymentMedia()
         {
-            var novPaymentTypes = Novum.Database.DB.Api.Payment.GetPaymentTypes();
-            var osPaymentMedia = new List<Novum.Data.Os.PaymentMedium>();
+            var novPaymentTypes = DB.Api.Payment.GetPaymentTypes();
+            var osPaymentMedia = new List<PaymentMedium>();
 
             foreach (Novum.Data.PaymentType novPaymentType in novPaymentTypes.Values)
             {
-                var osPaymentMedium = new Novum.Data.Os.PaymentMedium();
+                var osPaymentMedium = new PaymentMedium();
                 osPaymentMedium.Id = novPaymentType.Id;
                 osPaymentMedium.Name = novPaymentType.Name;
                 osPaymentMedia.Add(osPaymentMedium);
@@ -63,14 +63,14 @@ namespace Novum.Logic.Os
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public static List<Novum.Data.Os.Printer> GetPrinters()
+        public static List<Printer> GetPrinters()
         {
-            var novPrinters = Novum.Database.DB.Api.Printer.GetInvoicePrinters();
-            var osPrinters = new List<Novum.Data.Os.Printer>();
+            var novPrinters = DB.Api.Printer.GetInvoicePrinters();
+            var osPrinters = new List<Printer>();
 
             foreach (Novum.Data.Printer novPrinter in novPrinters.Values)
             {
-                var osPrinter = new Novum.Data.Os.Printer();
+                var osPrinter = new Printer();
                 osPrinter.Name = novPrinter.Name;
                 osPrinter.Path = novPrinter.Id;
                 osPrinters.Add(osPrinter);
@@ -82,17 +82,17 @@ namespace Novum.Logic.Os
         #endregion
 
         #region Articles
-        public static List<Novum.Data.Os.Article> GetArticles()
+        public static List<Article> GetArticles()
         {
-            var osArticles = new List<Novum.Data.Os.Article>();
-            var novArticles = Novum.Database.DB.Api.Article.GetArticles();
-            var modifierMenus = Novum.Database.DB.Api.Modifier.GetModifierMenus();
-            var menuModifiers = Novum.Database.DB.Api.Modifier.GetMenuModifiers();
+            var osArticles = new List<Article>();
+            var novArticles = DB.Api.Article.GetArticles();
+            var modifierMenus = DB.Api.Modifier.GetModifierMenus();
+            var menuModifiers = DB.Api.Modifier.GetMenuModifiers();
             Novum.Data.ModifierMenu modifierMenu = null;
 
             foreach (Novum.Data.Article novArticle in novArticles.Values)
             {
-                var osArticle = new Novum.Data.Os.Article();
+                var osArticle = new Article();
 
                 osArticle.Id = novArticle.Id;
                 osArticle.Name = novArticle.Name;
@@ -116,7 +116,7 @@ namespace Novum.Logic.Os
                     if (osArticle.ModifierGroups == null)
                         osArticle.ModifierGroups = new List<ArticleModifierGroup>();
 
-                    var articleModifierGroup = new Novum.Data.Os.ArticleModifierGroup();
+                    var articleModifierGroup = new ArticleModifierGroup();
                     articleModifierGroup.ModifierGroupId = menuModifier.ModifierMenuId;
                     osArticle.ModifierGroups.Add(articleModifierGroup);
 
@@ -141,15 +141,15 @@ namespace Novum.Logic.Os
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public static List<Novum.Data.Os.Category> GetCategories(string menuId)
+        public static List<Category> GetCategories(string menuId)
         {
-            var categories = new List<Novum.Data.Os.Category>();
-            var mainMenus = Novum.Database.DB.Api.Menu.GetMainMenu(menuId);
+            var categories = new List<Category>();
+            var mainMenus = DB.Api.Menu.GetMainMenu(menuId);
             var handledMenuIds = new List<string>();
 
             foreach (Novum.Data.Menu menu in mainMenus.Values)
             {
-                var category = new Novum.Data.Os.Category();
+                var category = new Category();
                 category.Name = menu.Name;
 
                 var contentEntries = GetCategoryContent(menu.Id, ref handledMenuIds);
@@ -161,10 +161,10 @@ namespace Novum.Logic.Os
             return categories;
         }
 
-        private static List<Novum.Data.Os.CategoryContentEntry> GetCategoryContent(string menuId, ref List<string> handledMenuIds)
+        private static List<CategoryContentEntry> GetCategoryContent(string menuId, ref List<string> handledMenuIds)
         {
-            var contentEntries = new List<Novum.Data.Os.CategoryContentEntry>();
-            var articles = Novum.Database.DB.Api.Article.GetArticles(menuId);
+            var contentEntries = new List<CategoryContentEntry>();
+            var articles = DB.Api.Article.GetArticles(menuId);
 
             foreach (Novum.Data.Article article in articles.Values)
             {
@@ -172,7 +172,7 @@ namespace Novum.Logic.Os
                 if (ArticleIdNotSupported(article.Id))
                     continue;
 
-                var contentEntry = new Novum.Data.Os.CategoryContentEntry();
+                var contentEntry = new CategoryContentEntry();
 
                 // submenu
                 if (article.Id.StartsWith("$"))
@@ -199,10 +199,10 @@ namespace Novum.Logic.Os
             return contentEntries;
         }
 
-        private static Novum.Data.Os.Category GetSubCategory(string menuId, ref List<string> handledMenuIds)
+        private static Category GetSubCategory(string menuId, ref List<string> handledMenuIds)
         {
-            var category = new Novum.Data.Os.Category();
-            var subMenu = Novum.Database.DB.Api.Menu.GetSubMenu(menuId);
+            var category = new Category();
+            var subMenu = DB.Api.Menu.GetSubMenu(menuId);
             category.Name = subMenu.Name;
             category.Content = GetCategoryContent(menuId, ref handledMenuIds);
 
@@ -228,23 +228,23 @@ namespace Novum.Logic.Os
         #endregion
 
         #region ModifierGroups
-        public static List<Novum.Data.Os.ModifierGroup> GetModifierGroups()
+        public static List<ModifierGroup> GetModifierGroups()
         {
-            var modifierGroups = new List<Novum.Data.Os.ModifierGroup>();
-            var modifierMenus = Novum.Database.DB.Api.Modifier.GetModifierMenus();
+            var modifierGroups = new List<ModifierGroup>();
+            var modifierMenus = DB.Api.Modifier.GetModifierMenus();
 
             foreach (Novum.Data.ModifierMenu modifierMenu in modifierMenus.Values)
             {
-                var modifierGroup = new Novum.Data.Os.ModifierGroup();
+                var modifierGroup = new ModifierGroup();
                 modifierGroup.Id = modifierMenu.Id;
                 modifierGroup.Name = modifierMenu.Name;
                 modifierGroup.MinChoices = (int)modifierMenu.MinSelection;
                 modifierGroup.MaxChoices = (int)modifierMenu.MaxSelection;
                 modifierGroup.Question = "";
-                modifierGroup.Type = Novum.Data.Os.ModifierGroup.ModifierType.PickOneEnum;
+                modifierGroup.Type = ModifierGroup.ModifierType.PickOneEnum;
                 modifierGroup.Choices = new List<ModifierChoice>();
 
-                var modifiers = Novum.Database.DB.Api.Modifier.GetModifiers(modifierMenu.Id);
+                var modifiers = DB.Api.Modifier.GetModifiers(modifierMenu.Id);
                 var lastModifierId = "";
 
                 foreach (Novum.Data.Modifier modifier in modifiers.Values)
@@ -254,7 +254,7 @@ namespace Novum.Logic.Os
                         continue;
                     lastModifierId = modifier.Id;
 
-                    var modifierChoice = new Novum.Data.Os.ModifierChoice();
+                    var modifierChoice = new ModifierChoice();
 
                     modifierChoice.Id = modifier.Id;
                     modifierChoice.Name = modifier.Name;
@@ -280,18 +280,18 @@ namespace Novum.Logic.Os
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public static List<Novum.Data.Os.ServiceArea> GetServiceAreas()
+        public static List<ServiceArea> GetServiceAreas()
         {
-            var ocServiceAreas = new List<Novum.Data.Os.ServiceArea>();
-            var novServiceAreas = Novum.Database.DB.Api.Misc.GetServiceAreas();
+            var osServiceAreas = new List<ServiceArea>();
+            var novServiceAreas = DB.Api.Misc.GetServiceAreas();
             foreach (var novServiceArea in novServiceAreas.Values)
             {
-                var osServiceArea = new Novum.Data.Os.ServiceArea();
+                var osServiceArea = new ServiceArea();
                 osServiceArea.Id = novServiceArea.Id;
                 osServiceArea.Name = novServiceArea.Name;
-                ocServiceAreas.Add(osServiceArea);
+                osServiceAreas.Add(osServiceArea);
             }
-            return ocServiceAreas;
+            return osServiceAreas;
         }
 
         #endregion
@@ -303,13 +303,13 @@ namespace Novum.Logic.Os
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public static List<Novum.Data.Os.User> GetUsers()
+        public static List<User> GetUsers()
         {
-            var osUsers = new List<Novum.Data.Os.User>();
-            var novWaiters = Novum.Database.DB.Api.Waiter.GetWaiters();
+            var osUsers = new List<User>();
+            var novWaiters = DB.Api.Waiter.GetWaiters();
             foreach (var novWaiter in novWaiters.Values)
             {
-                var osUser = new Novum.Data.Os.User();
+                var osUser = new User();
                 osUser.Id = novWaiter.Id;
                 osUser.Name = novWaiter.Name;
                 osUsers.Add(osUser);
@@ -322,17 +322,17 @@ namespace Novum.Logic.Os
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public static List<Novum.Data.Os.TableResult> GetTables()
+        public static List<TableResult> GetTables()
         {
-            var osTables = new List<Novum.Data.Os.TableResult>();
-            var novTables = Novum.Database.DB.Api.Table.GetTables();
+            var osTables = new List<TableResult>();
+            var novTables = DB.Api.Table.GetTables();
 
             foreach (var novTable in novTables.Values)
             {
-                var osTable = new Novum.Data.Os.TableResult();
+                var osTable = new TableResult();
                 osTable.Id = novTable.Id;
                 osTable.Name = novTable.Name;
-                osTable.BookedAmount = (int)novTable.Amount * 100;
+                osTable.BookedAmount = (int)decimal.Multiply(novTable.Amount, 100);
                 osTable.LastActivityTime = (int)Utils.Unix.Timestamp(novTable.Updated);
                 osTables.Add(osTable);
             }
@@ -344,18 +344,35 @@ namespace Novum.Logic.Os
         /// </summary>
         /// <param name="department"></param>
         /// <returns></returns>
-        public static List<Novum.Data.Os.OrderLine> GetOrderLines(string subTableId)
+        public static List<OrderLine> GetOrderLines(string subTableId)
         {
-            var osOrderLines = new List<Novum.Data.Os.OrderLine>();
-            var novOrders = Novum.Database.DB.Api.Order.GetOrders(subTableId);
+            var osOrderLines = new List<OrderLine>();
+            var novOrders = DB.Api.Order.GetOrders(subTableId);
 
             foreach (var novOrder in novOrders.Values)
             {
-                var osOrderLine = new Novum.Data.Os.OrderLine();
+                var osOrderLine = new OrderLine();
                 osOrderLine.Id = novOrder.Id;
+                osOrderLine.ArticleId = novOrder.ArticleId;
+                osOrderLine.Quantity = (int)novOrder.Quantity;
+                osOrderLine.SinglePrice = (int)decimal.Multiply(novOrder.UnitPrice, 100);
+                osOrderLine.Status = GetOsOrderLineStatus(novOrder.Status);
                 osOrderLines.Add(osOrderLine);
             }
             return osOrderLines;
+        }
+
+        private static OrderLine.OrderLineStatus GetOsOrderLineStatus(Novum.Data.Order.OrderStatus novOrderStatus)
+        {
+            switch (novOrderStatus)
+            {
+                case Novum.Data.Order.OrderStatus.Ordered:
+                    return OrderLine.OrderLineStatus.CommittedEnum;
+                case Novum.Data.Order.OrderStatus.NewOrder:
+                    return OrderLine.OrderLineStatus.OrderedEnum;
+                default:
+                    return OrderLine.OrderLineStatus.UnknownEnum;
+            }
         }
 
         #endregion

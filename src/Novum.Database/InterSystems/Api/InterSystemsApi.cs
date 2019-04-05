@@ -16,27 +16,20 @@ namespace Novum.Database.InterSystems.Api
         private static InterSystems.Api.Printer printer;
         private static InterSystems.Api.Payment payment;
         private static InterSystems.Api.Order order;
+        private static InterSystems.Api.Pos pos;
 
         public InterSystemsApi()
         {
-            if (misc == null)
-                misc = new InterSystems.Api.Misc();
-            if (table == null)
-                table = new InterSystems.Api.Table();
-            if (waiter == null)
-                waiter = new InterSystems.Api.Waiter();
-            if (menu == null)
-                menu = new InterSystems.Api.Menu();
-            if (article == null)
-                article = new InterSystems.Api.Article();
-            if (modifier == null)
-                modifier = new InterSystems.Api.Modifier();
-            if (printer == null)
-                printer = new InterSystems.Api.Printer();
-            if (payment == null)
-                payment = new InterSystems.Api.Payment();
-            if (order == null)
-                order = new InterSystems.Api.Order();
+            misc = new InterSystems.Api.Misc();
+            table = new InterSystems.Api.Table();
+            waiter = new InterSystems.Api.Waiter();
+            menu = new InterSystems.Api.Menu();
+            article = new InterSystems.Api.Article();
+            modifier = new InterSystems.Api.Modifier();
+            printer = new InterSystems.Api.Printer();
+            payment = new InterSystems.Api.Payment();
+            order = new InterSystems.Api.Order();
+            pos = new InterSystems.Api.Pos();
         }
 
         public IDbMisc Misc
@@ -75,6 +68,11 @@ namespace Novum.Database.InterSystems.Api
         public IDbOrder Order
         {
             get { return order; }
+        }
+
+        public IDbPos Pos
+        {
+            get { return pos; }
         }
 
         public void Initialize()

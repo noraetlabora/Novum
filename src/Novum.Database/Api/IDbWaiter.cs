@@ -8,5 +8,7 @@ namespace Novum.Database.Api
     public interface IDbWaiter
     {
         Dictionary<string, Novum.Data.Waiter> GetWaiters();
+        bool ValidWaiter(string waiterId, string code);
+        void Login(string deviceId, string waiterId);
     }
 }
