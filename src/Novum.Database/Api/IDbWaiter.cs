@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Novum.Data;
 
 namespace Novum.Database.Api
 {
@@ -7,8 +8,9 @@ namespace Novum.Database.Api
     /// </summary>
     public interface IDbWaiter
     {
-        Dictionary<string, Novum.Data.Waiter> GetWaiters();
-        bool ValidWaiter(string waiterId, string code);
-        void Login(string deviceId, string waiterId);
+        Dictionary<string, Waiter> GetWaiters();
+        bool ValidWaiter(Session session, string code);
+        void Login(Session session);
+        void Logout(Session session);
     }
 }

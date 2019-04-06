@@ -147,14 +147,15 @@ namespace Novum.Data
             }
         }
 
+        private const string Pipe = "|";
         private void SetId()
         {
             var sb = new StringBuilder();
-            sb.Append((int)Status).Append(Utils.DataString.SinglePipe);
-            sb.Append(Course.ToString()).Append(Utils.DataString.SinglePipe);
-            //sb.Append(Sort.ToString()).Append(Utils.DataString.SinglePipe);
-            sb.Append(ArticleId).Append(Utils.DataString.SinglePipe);
-            sb.Append(UnitPrice).Append(Utils.DataString.SinglePipe);
+            sb.Append((int)Status).Append(Pipe);
+            sb.Append(Course.ToString()).Append(Pipe);
+            //sb.Append(Sort.ToString()).Append(Pipe);
+            sb.Append(ArticleId).Append(Pipe);
+            sb.Append(UnitPrice).Append(Pipe);
             sb.Append(Name);
             this.Id = sb.ToString();
         }

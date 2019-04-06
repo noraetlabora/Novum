@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
+using Novum.Data;
 using Novum.Database.Api;
 
 namespace Novum.Database.InterSystems.Api
@@ -30,10 +31,10 @@ namespace Novum.Database.InterSystems.Api
             return waiters;
         }
 
-        public bool ValidWaiter(string waiterId, string code)
+        public bool ValidWaiter(Session session, string code)
         {
             var waiters = new Dictionary<string, Novum.Data.Waiter>();
-            var sql = string.Format("SELECT PNR, code, name FROM NT.Pers WHERE FA = {0} AND PNR = '{1}' AND code = '{2}' AND passiv > '{3}'", Data.Department, waiterId, code, Interaction.SqlToday);
+            var sql = string.Format("SELECT PNR, code, name FROM NT.Pers WHERE FA = {0} AND PNR = '{1}' AND code = '{2}' AND passiv > '{3}'", session.Department, session.WaiterId, code, Interaction.SqlToday);
             var dataTable = Interaction.GetDataTable(sql);
 
             if (dataTable.Rows.Count == 1)
@@ -42,17 +43,17 @@ namespace Novum.Database.InterSystems.Api
                 return false;
         }
 
-        public void Login(string deviceId, string waiterId)
+        public void Login(Session session)
         {
-            var posId = DB.Api.Pos.GetPosId(deviceId);
-            Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogin", Data.Department, posId, waiterId);
-            Interaction.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", Data.Department, posId, waiterId, deviceId, "1");
+            var posId = DB.Api.Pos.GetPosId(session.SerialNumber);
+            Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogin", session.Department, posId, session.WaiterId);
+            Interaction.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", Data.Department, posId, session.WaiterId, session.SerialNumber, "1");
         }
 
-        public void Logout(string deviceId, string waiterId)
+        public void Logout(Session session)
         {
-            var posId = DB.Api.Pos.GetPosId(deviceId);
-            Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogout", Data.Department, posId, waiterId);
+            var posId = DB.Api.Pos.GetPosId(session.SerialNumber);
+            Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogout", session.Department, posId, session.WaiterId);
         }
     }
 }

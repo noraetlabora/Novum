@@ -9,14 +9,14 @@ namespace Novum.Data.Utils
     /// </summary>
     public class DataString
     {
-        public const char Comma = (char)44;
-        public const char Semicolon = (char)59;
+        private const char Comma = (char)44;
+        private const char Semicolon = (char)59;
         public const char Char96 = (char)96;
-        public const char SinglePipe = (char)124;
-        public const string DoublePipes = "||";
-        public const char SingleQuote = (char)39;
-        public const char DoubleQuotes = (char)34;
-        public const string CRLF = "\r\n";
+        private const char SinglePipe = (char)124;
+        private const string DoublePipes = "||";
+        private const char SingleQuote = (char)39;
+        private const char DoubleQuotes = (char)34;
+        private const string CRLF = "\r\n";
 
 
         private string _string;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Novum.Data;
 using Novum.Data.Os;
 using Novum.Database;
 
@@ -19,7 +20,7 @@ namespace Novum.Logic.Os
         /// </summary>
         /// <param name="clientData"></param>
         /// <returns></returns>
-        public static POSInfo RegisterClient(ClientInfo clientData)
+        public static POSInfo RegisterClient(Session session, ClientInfo clientData)
         {
             var posId = DB.Api.Pos.GetPosId(clientData.Id);
             if (string.IsNullOrEmpty(posId))
@@ -38,16 +39,17 @@ namespace Novum.Logic.Os
 
         #region Authentication
 
-        public static void Login(LoginUser loginUser)
+        public static void Login(Session session, LoginUser loginUser)
         {
-            bool validWaiter = DB.Api.Waiter.ValidWaiter(loginUser.Id, loginUser.Password);
+            bool validWaiter = DB.Api.Waiter.ValidWaiter(session, loginUser.Password);
             if (!validWaiter)
                 throw new Exception(string.Format("user {0} not valid", loginUser.Id));
-            DB.Api.Waiter.Login("125-49787459", loginUser.Id);
+            DB.Api.Waiter.Login(session);
         }
 
-        public static void Logout(string waiterId)
+        public static void Logout(Session session)
         {
+            DB.Api.Waiter.Logout(session);
         }
 
         #endregion

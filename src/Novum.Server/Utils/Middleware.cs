@@ -4,6 +4,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
+using System.Linq;
+
 
 namespace Novum.Server.Utils
 {
@@ -14,6 +16,8 @@ namespace Novum.Server.Utils
     public class Middleware
     {
         private static char Pipe = '|';
+        private static string[] initRequests = {"/api/v2/actions/Init/RegisterGateway",
+                                                "/api/v2/actions/Init/RegisterClient"};
         private readonly RequestDelegate _next;
 
         /// <summary>
@@ -36,6 +40,16 @@ namespace Novum.Server.Utils
             {
                 var request = httpContext.Request;
                 var requestBodyContent = await ReadRequestBody(request);
+                if (RequestNeedsAuthorization(request))
+                {
+                    if (!request.Cookies.ContainsKey("sessionId"))
+                    {
+                        Log.Server.Error(string.Format("Middleware.Invoke|{0}|{1} had no cookie 'sessionId'", request.Method, request.Path.Value));
+                        httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return;
+                    }
+                }
+
                 var originalBodyStream = httpContext.Response.Body;
                 using (var responseBody = new MemoryStream())
                 {
@@ -50,13 +64,22 @@ namespace Novum.Server.Utils
             }
             catch (Exception ex)
             {
-                Log.Server.Error(ex.Message + Environment.NewLine + ex.StackTrace);
-                //await _next(httpContext);
+                Log.Server.Error("Middleware.Invoke|" + ex.Message);
+                Log.Server.Error("Middleware.Invoke|" + ex.StackTrace);
             }
             finally
             {
 
             }
+        }
+
+        private bool RequestNeedsAuthorization(HttpRequest request)
+        {
+            if (request.Method.Equals("GET"))
+                return false;
+            if (initRequests.Contains(request.Path.Value))
+                return false;
+            return true;
         }
 
         private async Task<string> ReadRequestBody(HttpRequest request)
