@@ -38,27 +38,28 @@ namespace Novum.Server.Utils
         {
             try
             {
-                var request = httpContext.Request;
-                var requestBodyContent = await ReadRequestBody(request);
-                if (RequestNeedsAuthorization(request))
+                //check if request is authorized
+                if (RequestNeedsAuthorization(httpContext.Request))
                 {
-                    if (!request.Cookies.ContainsKey("sessionId"))
+                    if (!httpContext.Request.Cookies.ContainsKey("sessionId"))
                     {
-                        Log.Server.Error(string.Format("Middleware.Invoke|{0}|{1} had no cookie 'sessionId'", request.Method, request.Path.Value));
+                        LogUnauthorizedRequest(httpContext.Request);
                         httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                         return;
                     }
                 }
 
+                //read and log request body
+                var requestBodyContent = await ReadRequestBody(httpContext.Request);
                 var originalBodyStream = httpContext.Response.Body;
                 using (var responseBody = new MemoryStream())
                 {
-                    var response = httpContext.Response;
-                    response.Body = responseBody;
+                    httpContext.Response.Body = responseBody;
                     await _next(httpContext);
 
+                    //read and log response body
                     string responseBodyContent = null;
-                    responseBodyContent = await ReadResponseBody(response);
+                    responseBodyContent = await ReadResponseBody(httpContext.Response);
                     await responseBody.CopyToAsync(originalBodyStream);
                 }
             }
@@ -119,6 +120,16 @@ namespace Novum.Server.Utils
             Log.Json.Info(sb.ToString());
 
             return bodyAsText;
+        }
+
+        private void LogUnauthorizedRequest(HttpRequest request)
+        {
+            var sb = new StringBuilder();
+            sb.Append("Request ").Append(Pipe);
+            sb.Append(request.HttpContext.TraceIdentifier).Append(Pipe);
+            sb.Append(request.Method.Substring(0, 3)).Append(Pipe);
+            sb.Append(request.Path).Append(Pipe);
+            sb.Append("unauthorized request - no sessionId in cookies");
         }
     }
 }
