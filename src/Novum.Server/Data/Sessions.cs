@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 using Novum.Data;
 
 namespace Novum.Server.Data
@@ -7,29 +8,17 @@ namespace Novum.Server.Data
     /// <summary>
     /// 
     /// </summary>
-    public class Sessions
+    public static class Sessions
     {
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>   
-        public static Sessions Instance { get { return lazy.Value; } }
-        private static readonly Lazy<Sessions> lazy = new Lazy<Sessions>(() => new Sessions());
-
-        private Dictionary<string, Session> sessions = new Dictionary<string, Session>();
-
-        private Sessions()
-        {
-
-        }
+        private static Dictionary<string, Session> sessions = new Dictionary<string, Session>();
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public Session GetSession(string sessionId)
+        public static Session GetSession(HttpRequest request)
         {
+            var sessionId = request.Cookies["sessionId"];
             if (string.IsNullOrEmpty(sessionId))
                 return null;
             if (!sessions.ContainsKey(sessionId))
@@ -41,7 +30,7 @@ namespace Novum.Server.Data
         /// 
         /// </summary>
         /// <value></value>
-        public bool SetSession(Session session)
+        public static bool SetSession(Session session)
         {
             if (session == null)
                 return false;
@@ -55,7 +44,7 @@ namespace Novum.Server.Data
         /// 
         /// </summary>
         /// <param name="session"></param>
-        public void Add(Session session)
+        public static void Add(Session session)
         {
             if (session == null)
             {
@@ -75,7 +64,7 @@ namespace Novum.Server.Data
         /// </summary>
         /// <param name="sessionId"></param>
         /// <returns></returns>
-        public bool Remove(string sessionId)
+        public static bool Remove(string sessionId)
         {
             if (string.IsNullOrEmpty(sessionId))
             {

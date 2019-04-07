@@ -125,11 +125,11 @@ namespace Novum.Server.Utils
         private void LogUnauthorizedRequest(HttpRequest request)
         {
             var sb = new StringBuilder();
-            sb.Append("Request ").Append(Pipe);
-            sb.Append(request.HttpContext.TraceIdentifier).Append(Pipe);
-            sb.Append(request.Method.Substring(0, 3)).Append(Pipe);
+            sb.Append(request.Method).Append(Pipe);
             sb.Append(request.Path).Append(Pipe);
             sb.Append("unauthorized request - no sessionId in cookies");
+
+            Log.Server.Error(sb.ToString());
         }
     }
 }

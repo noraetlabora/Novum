@@ -23,20 +23,19 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/actions/Auth/Login")]
         public IActionResult AuthLogin([FromBody][Required]LoginUser loginUser)
         {
-            var session = Data.Sessions.Instance.GetSession(Request.Cookies["sessionId"]);
-
+            var session = Data.Sessions.GetSession(Request);
             try
             {
                 session.WaiterId = loginUser.Id;
                 Logic.Os.Actions.Login(session, loginUser);
-                Data.Sessions.Instance.SetSession(session);
+                Data.Sessions.SetSession(session);
                 //200 - Ok
                 return new OkResult();
             }
             catch (Exception ex)
             {
                 session.WaiterId = "";
-                Data.Sessions.Instance.SetSession(session);
+                Data.Sessions.SetSession(session);
                 var osError = new OsError();
                 osError.ErrorMsg = ex.Message;
                 //401 - Unauthorized
@@ -52,9 +51,9 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/actions/Auth/Logout")]
         public IActionResult AuthLogout()
         {
-            var session = Data.Sessions.Instance.GetSession(Request.Cookies["sessionId"]);
+            var session = Data.Sessions.GetSession(Request);
             session.WaiterId = "";
-            Data.Sessions.Instance.SetSession(session);
+            Data.Sessions.SetSession(session);
             //200 - Ok
             return new OkObjectResult(null);
         }
@@ -70,7 +69,7 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/actions/Init/RegisterClient")]
         public IActionResult InitRegisterClient([FromBody][Required]ClientInfo clientInfo)
         {
-            var session = Data.Sessions.Instance.GetSession(Request.Cookies["sessionId"]);
+            var session = Data.Sessions.GetSession(Request);
             if (session == null)
             {
                 session = new Session();
@@ -83,7 +82,7 @@ namespace Novum.Server.Controllers.Os
             {
                 var posInfo = Logic.Os.Actions.RegisterClient(session, clientInfo);
                 //save session internal and return the sessionId in the response
-                Data.Sessions.Instance.SetSession(session);
+                Data.Sessions.SetSession(session);
                 Response.Cookies.Append("sessionId", session.Id);
                 //200 - Ok
                 return new OkObjectResult(posInfo);
