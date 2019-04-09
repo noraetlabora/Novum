@@ -8,12 +8,10 @@ using Novum.Database;
 namespace Novum.Logic.Os
 {
     /// <summary>
-    /// 
+    /// .
     /// </summary>
-    public class Actions
+    public class Registration
     {
-
-        #region Initialization
 
         /// <summary>
         /// 
@@ -35,10 +33,6 @@ namespace Novum.Logic.Os
             return posInfo;
         }
 
-        #endregion
-
-        #region Authentication
-
         public static void Login(Session session, LoginUser loginUser)
         {
             bool validWaiter = DB.Api.Waiter.ValidWaiter(session, loginUser.Password);
@@ -51,11 +45,5 @@ namespace Novum.Logic.Os
         {
             DB.Api.Waiter.Logout(session);
         }
-
-        #endregion
-
-
-
-
     }
 }

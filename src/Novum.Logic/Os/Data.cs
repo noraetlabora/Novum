@@ -324,19 +324,59 @@ namespace Novum.Logic.Os
         /// <returns></returns>
         public static List<TableResult> GetTables()
         {
-            var osTables = new List<TableResult>();
+            var osTables = new Dictionary<string, TableResult>();
             var novTables = DB.Api.Table.GetTables();
 
+            // create main tables
             foreach (var novTable in novTables.Values)
             {
                 var osTable = new TableResult();
-                osTable.Id = novTable.Id;
-                osTable.Name = novTable.Name;
-                osTable.BookedAmount = (int)decimal.Multiply(novTable.Amount, 100);
+                osTable.Id = GetMainTable(novTable.Id);
+
+                if (osTables.ContainsKey(osTable.Id))
+                    continue;
+
+                osTable.Name = GetMainTable(novTable.Name);
+                osTable.SubTables = new List<SubTable>();
+                osTable.BookedAmount = 0;
                 osTable.LastActivityTime = (int)Utils.Unix.Timestamp(novTable.Updated);
-                osTables.Add(osTable);
+                osTables.Add(osTable.Id, osTable);
             }
-            return osTables;
+
+            // add subtables to maintables
+            foreach (var novTable in novTables.Values)
+            {
+                var osSubTable = new SubTable();
+                osSubTable.Id = novTable.Id;
+                osSubTable.Name = novTable.Name;
+                osSubTable.IsSelected = false;
+
+                var mainTableId = GetMainTable(novTable.Id);
+                osTables[mainTableId].SubTables.Add(osSubTable);
+                osTables[mainTableId].BookedAmount += (int)decimal.Multiply(novTable.Amount, 100);
+
+                //take time of the table last updated further in the past
+                var lastUpdated = (int)Utils.Unix.Timestamp(novTable.Updated);
+                if (osTables[mainTableId].LastActivityTime > lastUpdated)
+                    osTables[mainTableId].LastActivityTime = lastUpdated;
+            }
+
+            return new List<TableResult>(osTables.Values);
+        }
+
+        /// <summary>
+        ///  returns the main table, it does not check if the string is an id or name of the table
+        /// </summary>
+        /// <param name="table"></param>
+        /// <returns>1010 (table 1010), 1010 (table 1010.1), 10 (table 10) 10 (table 10.2)</returns>
+        private static string GetMainTable(string table)
+        {
+            if (table.Contains("."))
+            {
+                var index = table.IndexOf(".");
+                return table.Substring(0, index);
+            }
+            return table;
         }
 
         /// <summary>

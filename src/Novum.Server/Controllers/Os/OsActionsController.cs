@@ -17,7 +17,7 @@ namespace Novum.Server.Controllers.Os
         /// Execute a login transaciton. NOTE: Will set an \&quot;AuthToken\&quot; cookie needed in later authorized requests.
         /// </summary>
         /// <param name="loginUser"></param>
-        /// <response code="200"></response>
+        /// <response code="204"></response>
         /// <response code="401"></response>
         [HttpPost]
         [Route("/api/v2/actions/Auth/Login")]
@@ -27,10 +27,10 @@ namespace Novum.Server.Controllers.Os
             try
             {
                 session.WaiterId = loginUser.Id;
-                Logic.Os.Actions.Login(session, loginUser);
+                Logic.Os.Registration.Login(session, loginUser);
                 Data.Sessions.SetSession(session);
-                //200 - Ok
-                return new OkResult();
+                //204 - No Content
+                return new NoContentResult();
             }
             catch (Exception ex)
             {
@@ -80,7 +80,7 @@ namespace Novum.Server.Controllers.Os
 
             try
             {
-                var posInfo = Logic.Os.Actions.RegisterClient(session, clientInfo);
+                var posInfo = Logic.Os.Registration.RegisterClient(session, clientInfo);
                 //save session internal and return the sessionId in the response
                 Data.Sessions.SetSession(session);
                 Response.Cookies.Append("sessionId", session.Id);
