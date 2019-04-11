@@ -10,5 +10,6 @@ namespace Novum.Database.Api
         string GetPosId(string deviceId);
         string GetServiceAreaId(string posId);
         string GetServiceAreaName(string serviceAreaId);
+        string GetPriceLevel(string sercieAreaId);
     }
 }

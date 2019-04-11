@@ -49,7 +49,7 @@ namespace Novum.Database.InterSystems.Api
         public Dictionary<string, Novum.Data.ServiceArea> GetServiceAreas()
         {
             var serviceAreas = new Dictionary<string, Novum.Data.ServiceArea>();
-            var sql = string.Format("SELECT VKO, bez FROM WW.VKO WHERE FA = {0} AND passiv > '{1}'", Data.Department, Interaction.SqlToday);
+            var sql = string.Format("SELECT VKO, bez, vkebene FROM WW.VKO WHERE FA = {0} AND passiv > '{1}'", Data.Department, Interaction.SqlToday);
             var dataTable = Interaction.GetDataTable(sql);
 
             foreach (DataRow dataRow in dataTable.Rows)
@@ -57,6 +57,7 @@ namespace Novum.Database.InterSystems.Api
                 var serviceArea = new Novum.Data.ServiceArea();
                 serviceArea.Id = DataObject.GetString(dataRow, "VKO");
                 serviceArea.Name = DataObject.GetString(dataRow, "bez");
+                serviceArea.PriceLevel = DataObject.GetString(dataRow, "vkebene");
                 serviceAreas.Add(serviceArea.Id, serviceArea);
             }
 

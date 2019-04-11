@@ -25,7 +25,7 @@ namespace Novum.Logic.Os
                 throw new Exception(string.Format("client {0} not valid", clientData.Id));
             var serviceAreaId = DB.Api.Pos.GetServiceAreaId(posId);
 
-            var posInfo = new Novum.Data.Os.POSInfo();
+            var posInfo = new POSInfo();
             posInfo.RestaurantName = DB.Api.Pos.GetServiceAreaName(serviceAreaId);
             posInfo.ClientName = "Orderman";
             posInfo.UtcTime = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds();

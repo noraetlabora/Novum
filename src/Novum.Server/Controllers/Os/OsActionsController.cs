@@ -70,16 +70,10 @@ namespace Novum.Server.Controllers.Os
         public IActionResult InitRegisterClient([FromBody][Required]ClientInfo clientInfo)
         {
             var session = Data.Sessions.GetSession(Request);
-            if (session == null)
-            {
-                session = new Session();
-                session.Department = Logic.Data.Department;
-                session.SerialNumber = clientInfo.Id;
-            }
-            session.WaiterId = "";
-
+            session = Logic.SessionHelper.Initialize(session, clientInfo.Id);
             try
             {
+                //register client
                 var posInfo = Logic.Os.Registration.RegisterClient(session, clientInfo);
                 //save session internal and return the sessionId in the response
                 Data.Sessions.SetSession(session);

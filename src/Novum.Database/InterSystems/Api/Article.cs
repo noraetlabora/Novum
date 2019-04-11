@@ -110,5 +110,57 @@ namespace Novum.Database.InterSystems.Api
 
             return articles;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="articleId"></param>
+        /// <param name="price"></param>
+        public void CheckEnteredPrice(Session session, string articleId, decimal price)
+        {
+            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "CheckArtikelpreis", session.Department, session.PosId, session.WaiterId, "tableId", articleId, price);
+            var chPriceString = new Novum.Data.Utils.DataString(dbString);
+            var chPriceArray = chPriceString.SplitByChar96();
+            var chPriceList = new Novum.Data.Utils.DataList(chPriceArray);
+
+            switch (chPriceList.GetString(0))
+            {
+                // 0 - entered price is ok
+                case "0":
+                    break;
+                // 1 - entered price is lower than min price
+                case "1":
+                    throw new Exception(string.Format("entered price {0} for article {1} is lower than the min. price {2}", price, articleId, chPriceList.GetString(1)));
+                // 2 - entered price is higher than max price
+                case "2":
+                    throw new Exception(string.Format("entered price {0} for article {1} is higher than the max. price {2}", price, articleId, chPriceList.GetString(1)));
+                default:
+                    break;
+            }
+        }
+
+        public bool IsAvailable(Session session, string articleId)
+        {
+            //Interaction.CallVoidClassMethod("cmNT.BonOman", "CheckArtikelVerfuegbarkeit", session.Department, session.PosId, session.WaiterId, "", articleId, notOrderedQuantity, request.Quantity);
+            return true;
+        }
+
+        internal static void CheckAvailibility(string availability)
+        {
+            switch (availability)
+            {
+                // 0 = available
+                case "0":
+                    break;
+                // 1 = available, warning?
+                case "1":
+                    break;
+                //2 = not available, error
+                //3 = not available, ?
+                default:
+                    throw new Exception("article not available");
+            }
+        }
     }
 }

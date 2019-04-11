@@ -5,6 +5,8 @@ namespace Novum.Data
 {
     public class Session
     {
+        private List<string> openTableIds;
+        private Dictionary<string, Order> orders;
 
         #region Constructor
         public Session()
@@ -17,6 +19,8 @@ namespace Novum.Data
             this.SerialNumber = "";
             this.ServiceAreaId = "";
             this.WaiterId = "";
+            this.openTableIds = new List<string>();
+            this.orders = new Dictionary<string, Order>();
         }
         #endregion
 
@@ -68,8 +72,56 @@ namespace Novum.Data
         /// 
         /// </summary>
         /// <value></value>
+        public string PriceLevel { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public string WaiterId { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public Table CurrentTable { get; }
+
+
+        public bool OpenTable(string tableId)
+        {
+            if (!openTableIds.Contains(tableId))
+            {
+                openTableIds.Add(tableId);
+                return true;
+            }
+            return false;
+        }
+
+        public bool CloseTable(string tableId)
+        {
+            if (openTableIds.Contains(tableId))
+            {
+                openTableIds.Remove(tableId);
+                return true;
+            }
+            return false;
+        }
+
+        public int CloseAllTables()
+        {
+            var closedTables = openTableIds.Count;
+            openTableIds = new List<string>();
+            return closedTables;
+        }
+
+        public decimal AddOrder(Order order)
+        {
+            if (orders.ContainsKey(order.Id))
+                orders[order.Id].Quantity += order.Quantity;
+            else
+                orders.Add(order.Id, order);
+            return orders[order.Id].Quantity;
+        }
 
         #endregion
 

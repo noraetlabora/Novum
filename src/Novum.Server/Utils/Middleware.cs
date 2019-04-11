@@ -41,7 +41,8 @@ namespace Novum.Server.Utils
                 //check if request is authorized
                 if (RequestNeedsAuthorization(httpContext.Request))
                 {
-                    if (!httpContext.Request.Cookies.ContainsKey("sessionId"))
+                    var session = Data.Sessions.GetSession(httpContext.Request);
+                    if (session == null)
                     {
                         LogUnauthorizedRequest(httpContext.Request);
                         httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;

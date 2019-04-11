@@ -8,5 +8,6 @@ namespace Novum.Database.Api
     public interface IDbOrder
     {
         Dictionary<string, Novum.Data.Order> GetOrders(string tableId);
+        Novum.Data.Order GetNewOrder(Novum.Data.Session session, string articleId);
     }
 }

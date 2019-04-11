@@ -26,6 +26,12 @@ namespace Novum.Data
         /// <value>"Bar", "Stube", "Terasse"</value>
         public string Name { get; set; }
 
+        /// <summary>
+        /// price level
+        /// </summary>
+        /// <value></value>
+        public string PriceLevel { get; set; }
+
         #endregion
     }
 }

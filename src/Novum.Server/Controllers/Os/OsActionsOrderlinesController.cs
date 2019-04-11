@@ -46,19 +46,20 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/actions/OrderLines/Add/{subTableId}")]
         public IActionResult AddOrderLines([FromRoute][Required]string subTableId, [FromBody][Required]OrderLineAdd data)
         {
-            var osError = new OsError();
-            var olResult = new OrderLineResult();
-
-            //
-            olResult.Id = "article0";
-            olResult.SinglePrice = 1299;
-            olResult.Modifiers = new List<OrderLineResultModifier>();
-            var modifier = new OrderLineResultModifier() { Id = "modifier0" };
-            olResult.Modifiers.Add(modifier);
-            //
-
-            //201 - Created
-            return new CreatedResult("OrderLines/Add", olResult);
+            var session = Data.Sessions.GetSession(Request);
+            try
+            {
+                var olResult = Logic.Os.Order.Add(session, subTableId, data);
+                //201 - Created
+                return new CreatedResult("OrderLines/Add", olResult);
+            }
+            catch (Exception ex)
+            {
+                var osError = new OsError();
+                osError.ErrorMsg = ex.Message;
+                //400 - BadRequest
+                return new BadRequestObjectResult(osError);
+            }
         }
 
         /// <summary>

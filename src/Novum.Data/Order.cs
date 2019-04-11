@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Text;
 
 namespace Novum.Data
@@ -33,6 +34,12 @@ namespace Novum.Data
         }
 
         #region Constructor
+
+        public Order()
+        {
+
+        }
+
         public Order(string dbString)
         {
             if (string.IsNullOrEmpty(dbString))
@@ -50,10 +57,9 @@ namespace Novum.Data
             this.Name = dataList.GetString((int)Index.Name);
             this.Quantity = dataList.GetDecimal((int)Index.Quantity);
             this.UnitPrice = dataList.GetDecimal((int)Index.UnitPrice);
-            this.Course = dataList.GetString((int)Index.Course);
+            this.CourseId = dataList.GetString((int)Index.Course);
             this.CourseName = dataList.GetString((int)Index.CourseName);
             SetStatus(dataList.GetUInt((int)Index.Status));
-            SetId();
         }
 
         #endregion
@@ -64,7 +70,20 @@ namespace Novum.Data
         /// Id of the order
         /// </summary>
         /// <value></value>
-        public string Id { get; set; }
+        public string Id
+        {
+            get
+            {
+                var sb = new StringBuilder();
+                sb.Append((int)Status).Append(Pipe);
+                sb.Append(CourseId.ToString()).Append(Pipe);
+                //sb.Append(Sort.ToString()).Append(Pipe);
+                sb.Append(ArticleId).Append(Pipe);
+                sb.Append(UnitPrice.ToString(CultureInfo.InvariantCulture)).Append(Pipe);
+                sb.Append(Name);
+                return sb.ToString();
+            }
+        }
 
         /// <summary>
         ///
@@ -116,7 +135,7 @@ namespace Novum.Data
         /// 
         /// </summary>
         /// <value></value>
-        public string Course { get; set; }
+        public string CourseId { get; set; }
 
         /// <summary>
         /// 
@@ -148,17 +167,7 @@ namespace Novum.Data
         }
 
         private const string Pipe = "|";
-        private void SetId()
-        {
-            var sb = new StringBuilder();
-            sb.Append((int)Status).Append(Pipe);
-            sb.Append(Course.ToString()).Append(Pipe);
-            //sb.Append(Sort.ToString()).Append(Pipe);
-            sb.Append(ArticleId).Append(Pipe);
-            sb.Append(UnitPrice).Append(Pipe);
-            sb.Append(Name);
-            this.Id = sb.ToString();
-        }
+
 
         #endregion
     }

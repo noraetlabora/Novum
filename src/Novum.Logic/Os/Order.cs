@@ -21,9 +21,18 @@ namespace Novum.Logic.Os
         /// <returns></returns>
         public static OrderLineResult Add(Session session, string subTableId, OrderLineAdd data)
         {
+            var orderLineResult = new OrderLineResult();
 
+            if (data.EnteredPrice != 0)
+                DB.Api.Article.CheckEnteredPrice(session, data.ArticleId, decimal.Multiply((decimal)data.EnteredPrice, 100));
+            var order = DB.Api.Order.GetNewOrder(session, data.ArticleId);
+            order.Quantity = (decimal)data.Quantity;
+            session.AddOrder(order);
 
-            return null;
+            orderLineResult.Id = order.Id;
+            orderLineResult.SinglePrice = (int)decimal.Multiply(order.UnitPrice, 100);
+
+            return orderLineResult;
         }
 
         /// <summary>

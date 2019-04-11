@@ -28,6 +28,11 @@ namespace Novum.Database.InterSystems.Api
             return Interaction.CallClassMethod("cmWW.VKO", "GetVKOBez", Data.Department, sercieAreaId);
         }
 
+        public string GetPriceLevel(string sercieAreaId)
+        {
+            return Interaction.CallClassMethod("cmWW.VKO", "GetVKPEbene", Data.Department, sercieAreaId);
+        }
+
 
     }
 }
