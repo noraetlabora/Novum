@@ -4,14 +4,6 @@ namespace Novum.Data
 {
     public class Article
     {
-
-        #region Constructor
-        public Article()
-        {
-
-        }
-        #endregion
-
         #region Properties
         public string Id { get; set; }
         public string Name { get; set; }
@@ -27,5 +19,13 @@ namespace Novum.Data
         public string Plu { get; set; }
 
         #endregion
+        
+        #region Constructor
+        public Article()
+        {
+
+        }
+        #endregion
+
     }
 }

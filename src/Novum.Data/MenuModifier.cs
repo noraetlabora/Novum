@@ -12,14 +12,6 @@ namespace Novum.Data
     /// </example>
     public class MenuModifier
     {
-
-        #region Constructor
-        public MenuModifier()
-        {
-
-        }
-        #endregion
-
         #region Properties
         /// <summary>
         /// id of the menu
@@ -48,5 +40,13 @@ namespace Novum.Data
         public string ModifierMenuId { get; set; }
 
         #endregion
+
+        #region Constructor
+        public MenuModifier()
+        {
+
+        }
+        #endregion
+
     }
 }

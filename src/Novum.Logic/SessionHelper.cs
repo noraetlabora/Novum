@@ -11,7 +11,7 @@ namespace Novum.Logic
             if (session == null)
                 session = new Session();
 
-            session.Department = Logic.Data.Department;
+            session.ClientId = Logic.Data.ClientId;
             session.SerialNumber = serialNumber;
             session.PosId = Database.DB.Api.Pos.GetPosId(serialNumber);
             session.ServiceAreaId = Database.DB.Api.Pos.GetServiceAreaId(session.PosId);

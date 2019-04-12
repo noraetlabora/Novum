@@ -6,6 +6,7 @@ namespace Novum.Data
 {
     public class Order
     {
+        #region Enums
         public enum OrderStatus
         {
             Ordered = 0,
@@ -33,36 +34,9 @@ namespace Novum.Data
             Sort = 3
         }
 
-        #region Constructor
-
-        public Order()
-        {
-
-        }
-
-        public Order(string dbString)
-        {
-            if (string.IsNullOrEmpty(dbString))
-                return;
-
-            var dataString = new Utils.DataString(dbString);
-            var dataList = new Utils.DataList(dataString.SplitByChar96());
-
-            // parsing the Id
-            // var novId = dataList.GetString((int)Index.Id);
-            // var novIdDataString = new Utils.DataString(novId);
-            // var novIdDataList = new Utils.DataList(novIdDataString.SplitByDoublePipes());
-
-            this.ArticleId = dataList.GetString((int)Index.ArticleId);
-            this.Name = dataList.GetString((int)Index.Name);
-            this.Quantity = dataList.GetDecimal((int)Index.Quantity);
-            this.UnitPrice = dataList.GetDecimal((int)Index.UnitPrice);
-            this.CourseId = dataList.GetString((int)Index.Course);
-            this.CourseName = dataList.GetString((int)Index.CourseName);
-            SetStatus(dataList.GetUInt((int)Index.Status));
-        }
-
         #endregion
+
+        private const string Pipe = "|";
 
         #region Properties
 
@@ -145,6 +119,37 @@ namespace Novum.Data
 
         #endregion
 
+        #region Constructor
+
+        public Order()
+        {
+
+        }
+
+        public Order(string dbString)
+        {
+            if (string.IsNullOrEmpty(dbString))
+                return;
+
+            var dataString = new Utils.DataString(dbString);
+            var dataList = new Utils.DataList(dataString.SplitByChar96());
+
+            // parsing the Id
+            // var novId = dataList.GetString((int)Index.Id);
+            // var novIdDataString = new Utils.DataString(novId);
+            // var novIdDataList = new Utils.DataList(novIdDataString.SplitByDoublePipes());
+
+            this.ArticleId = dataList.GetString((int)Index.ArticleId);
+            this.Name = dataList.GetString((int)Index.Name);
+            this.Quantity = dataList.GetDecimal((int)Index.Quantity);
+            this.UnitPrice = dataList.GetDecimal((int)Index.UnitPrice);
+            this.CourseId = dataList.GetString((int)Index.Course);
+            this.CourseName = dataList.GetString((int)Index.CourseName);
+            SetStatus(dataList.GetUInt((int)Index.Status));
+        }
+
+        #endregion        
+
         #region private methods
 
         private void SetStatus(uint status)
@@ -165,9 +170,6 @@ namespace Novum.Data
                     break;
             }
         }
-
-        private const string Pipe = "|";
-
 
         #endregion
     }

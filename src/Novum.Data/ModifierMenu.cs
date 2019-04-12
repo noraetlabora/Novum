@@ -12,14 +12,6 @@ namespace Novum.Data
     /// </example>
     public class ModifierMenu
     {
-
-        #region Constructor
-        public ModifierMenu()
-        {
-
-        }
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -50,6 +42,12 @@ namespace Novum.Data
 
         #endregion
 
+        #region Constructor
+        public ModifierMenu()
+        {
+
+        }
+        #endregion
 
     }
 

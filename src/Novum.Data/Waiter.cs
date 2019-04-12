@@ -4,14 +4,6 @@ namespace Novum.Data
 {
     public class Waiter
     {
-
-        #region Constructor
-        public Waiter()
-        {
-
-        }
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -26,6 +18,13 @@ namespace Novum.Data
         /// <value>"Chef de rang", "Commis de rang", "Maître d’hôtel"</value>
         public string Name { get; set; }
 
+        #endregion
+
+        #region Constructor
+        public Waiter()
+        {
+
+        }
         #endregion
     }
 }

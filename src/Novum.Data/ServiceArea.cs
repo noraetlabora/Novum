@@ -4,14 +4,6 @@ namespace Novum.Data
 {
     public class ServiceArea
     {
-
-        #region Constructor
-        public ServiceArea()
-        {
-
-        }
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -32,6 +24,13 @@ namespace Novum.Data
         /// <value></value>
         public string PriceLevel { get; set; }
 
+        #endregion
+
+        #region Constructor
+        public ServiceArea()
+        {
+
+        }
         #endregion
     }
 }

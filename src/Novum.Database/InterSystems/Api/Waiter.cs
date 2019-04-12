@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using Novum.Data;
 using Novum.Database.Api;
 
@@ -17,8 +18,12 @@ namespace Novum.Database.InterSystems.Api
         public Dictionary<string, Novum.Data.Waiter> GetWaiters()
         {
             var waiters = new Dictionary<string, Novum.Data.Waiter>();
-            var sql = string.Format("SELECT PNR, name FROM NT.Pers WHERE FA = {0} AND passiv > '{1}'", Data.Department, Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql);
+            var sql = new StringBuilder();
+            sql.Append(" SELECT PNR, name ");
+            sql.Append(" FROM NT.Pers ");
+            sql.Append(" WHERE FA = ").Append(Data.ClientId);
+            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
+            var dataTable = Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -34,8 +39,14 @@ namespace Novum.Database.InterSystems.Api
         public bool ValidWaiter(Session session, string code)
         {
             var waiters = new Dictionary<string, Novum.Data.Waiter>();
-            var sql = string.Format("SELECT PNR, code, name FROM NT.Pers WHERE FA = {0} AND PNR = '{1}' AND code = '{2}' AND passiv > '{3}'", session.Department, session.WaiterId, code, Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql);
+            var sql = new StringBuilder();
+            sql.Append(" SELECT PNR, code, name");
+            sql.Append(" FROM NT.Pers ");
+            sql.Append(" WHERE FA = ").Append(session.ClientId);
+            sql.Append(" AND PNR = ").Append(Interaction.SqlQuote(session.WaiterId));
+            sql.Append(" AND code = ").Append(Interaction.SqlQuote(code));
+            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
+            var dataTable = Interaction.GetDataTable(sql.ToString());
 
             if (dataTable.Rows.Count == 1)
                 return true;
@@ -46,14 +57,14 @@ namespace Novum.Database.InterSystems.Api
         public void Login(Session session)
         {
             var posId = DB.Api.Pos.GetPosId(session.SerialNumber);
-            Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogin", session.Department, posId, session.WaiterId);
-            Interaction.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", Data.Department, posId, session.WaiterId, session.SerialNumber, "1");
+            Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogin", session.ClientId, posId, session.WaiterId);
+            Interaction.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", Data.ClientId, posId, session.WaiterId, session.SerialNumber, "1");
         }
 
         public void Logout(Session session)
         {
             var posId = DB.Api.Pos.GetPosId(session.SerialNumber);
-            Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogout", session.Department, posId, session.WaiterId);
+            Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogout", session.ClientId, posId, session.WaiterId);
         }
     }
 }

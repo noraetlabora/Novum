@@ -23,7 +23,7 @@ namespace Novum.Database.InterSystems.Api
         public Dictionary<string, Novum.Data.Order> GetOrders(string tableId)
         {
             var orders = new Dictionary<string, Novum.Data.Order>();
-            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetAllTischBonMitAenderer", Data.Department, "RK", tableId, "", "2");
+            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetAllTischBonMitAenderer", Data.ClientId, "RK", tableId, "", "2");
             var ordersString = new Novum.Data.Utils.DataString(dbString);
             var ordersArray = ordersString.SplitByCRLF();
 
@@ -41,7 +41,7 @@ namespace Novum.Database.InterSystems.Api
         public Novum.Data.Order GetNewOrder(Session session, string articleId)
         {
             var order = new Novum.Data.Order();
-            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetPLUDaten", session.Department, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", articleId);
+            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetPLUDaten", session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", articleId);
             var orderString = new Novum.Data.Utils.DataString(dbString);
             var orderArray = orderString.SplitByChar96();
             var orderList = new Novum.Data.Utils.DataList(orderArray);

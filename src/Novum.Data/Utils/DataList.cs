@@ -11,10 +11,14 @@ namespace Novum.Data.Utils
     /// </summary>
     public class DataList : IEnumerable<string>
     {
+        #region private fields
         private static NumberStyles style = NumberStyles.AllowDecimalPoint;
         private static CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
         private List<string> list;
 
+        #endregion
+
+        #region Constructor
         /// <summary>
         /// 
         /// </summary>
@@ -31,6 +35,9 @@ namespace Novum.Data.Utils
             }
         }
 
+        #endregion
+
+        #region Enumerator
         IEnumerator<string> IEnumerable<string>.GetEnumerator()
         {
             return list.GetEnumerator();
@@ -40,7 +47,9 @@ namespace Novum.Data.Utils
         {
             return list.GetEnumerator();
         }
+        #endregion
 
+        #region public Methods
         /// <summary>
         /// 
         /// </summary>
@@ -129,5 +138,7 @@ namespace Novum.Data.Utils
                 return new DateTime(1999, 12, 31, 23, 59, 59, 999);
             return value;
         }
+
+        #endregion
     }
 }

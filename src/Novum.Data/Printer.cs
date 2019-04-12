@@ -4,14 +4,6 @@ namespace Novum.Data
 {
     public class Printer
     {
-
-        #region Constructor
-        public Printer()
-        {
-
-        }
-        #endregion
-
         #region Properties
 
         /// <summary>
@@ -38,6 +30,13 @@ namespace Novum.Data
         /// <value>"|WL|\\NOV-PROGAPP\BON", "|TCP|192.168.0.187:9100"</value>
         public string Device { get; set; }
 
+        #endregion
+
+        #region Constructor
+        public Printer()
+        {
+
+        }
         #endregion
     }
 }

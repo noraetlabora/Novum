@@ -16,7 +16,7 @@ namespace Novum.Database.InterSystems.Api
         public Dictionary<string, Novum.Data.Table> GetTables()
         {
             var tables = new Dictionary<string, Novum.Data.Table>();
-            var dbString = Interaction.CallClassMethod("cmNT.Tisch", "GetTischListeAll", Data.Department);
+            var dbString = Interaction.CallClassMethod("cmNT.Tisch", "GetTischListeAll", Data.ClientId);
             var tablesString = new Novum.Data.Utils.DataString(dbString);
             var tablesArray = tablesString.SplitByDoublePipes();
 

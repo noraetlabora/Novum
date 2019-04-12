@@ -4,14 +4,6 @@ namespace Novum.Data
 {
     public class PaymentType
     {
-
-        #region Constructor
-        public PaymentType()
-        {
-
-        }
-        #endregion
-
         #region Properties
         /// <summary>
         /// 
@@ -43,7 +35,13 @@ namespace Novum.Data
         /// <value>true or false</value>
         public bool Signature { get; set; }
 
+        #endregion
 
+        #region Constructor
+        public PaymentType()
+        {
+
+        }
         #endregion
     }
 }

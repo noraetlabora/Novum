@@ -77,8 +77,8 @@ namespace Novum.Database.InterSystems.Api
 
         public void Initialize()
         {
-            Data.Department = Interaction.CallClassMethod("cmNT.Kassa", "GetOmanFirma");
-            Log.Database.Info("Department = " + Data.Department);
+            Data.ClientId = Interaction.CallClassMethod("cmNT.Kassa", "GetOmanFirma");
+            Log.Database.Info("Department = " + Data.ClientId);
         }
     }
 }

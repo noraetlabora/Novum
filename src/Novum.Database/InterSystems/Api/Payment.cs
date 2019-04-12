@@ -1,6 +1,7 @@
 using System.Data;
 using Novum.Database.Api;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Novum.Database.InterSystems.Api
 {
@@ -21,8 +22,12 @@ namespace Novum.Database.InterSystems.Api
         public Dictionary<string, Novum.Data.PaymentType> GetPaymentTypes()
         {
             var paymentTypes = new Dictionary<string, Novum.Data.PaymentType>();
-            var sql = string.Format("SELECT IKA, bez, prg, druanz, unterschrift FROM NT.Zahlart WHERE FA = {0} AND passiv > '{1}'", Data.Department, Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql);
+            var sql = new StringBuilder();
+            sql.Append(" SELECT IKA, bez, prg, druanz, unterschrift ");
+            sql.Append(" FROM NT.Zahlart ");
+            sql.Append(" WHERE FA = ").Append(Data.ClientId);
+            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
+            var dataTable = Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {

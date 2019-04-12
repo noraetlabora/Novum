@@ -9,6 +9,7 @@ namespace Novum.Data.Utils
     /// </summary>
     public class DataString
     {
+        #region private const
         private const char Comma = (char)44;
         private const char Semicolon = (char)59;
         public const char Char96 = (char)96;
@@ -18,9 +19,11 @@ namespace Novum.Data.Utils
         private const char DoubleQuotes = (char)34;
         private const string CRLF = "\r\n";
 
+        #endregion
 
         private string _string;
 
+        #region Constructor
         /// <summary>
         /// Constructor
         /// </summary>
@@ -36,6 +39,10 @@ namespace Novum.Data.Utils
                 _string = value;
             }
         }
+
+        #endregion
+
+        #region public Methods
 
         /// <summary>
         /// Split the current string value by comma (,)
@@ -103,5 +110,7 @@ namespace Novum.Data.Utils
                 return new string[] { };
             return _string.Split(new string[] { CRLF }, StringSplitOptions.None);
         }
+
+        #endregion
     }
 }

@@ -15,22 +15,22 @@ namespace Novum.Database.InterSystems.Api
 
         public string GetPosId(string deviceId)
         {
-            return Interaction.CallClassMethod("cmNT.Kassa", "GetOmanKassa", Data.Department, deviceId);
+            return Interaction.CallClassMethod("cmNT.Kassa", "GetOmanKassa", Data.ClientId, deviceId);
         }
 
         public string GetServiceAreaId(string posId)
         {
-            return Interaction.CallClassMethod("cmNT.Kassa", "GetVerkaufsort", Data.Department, posId);
+            return Interaction.CallClassMethod("cmNT.Kassa", "GetVerkaufsort", Data.ClientId, posId);
         }
 
         public string GetServiceAreaName(string sercieAreaId)
         {
-            return Interaction.CallClassMethod("cmWW.VKO", "GetVKOBez", Data.Department, sercieAreaId);
+            return Interaction.CallClassMethod("cmWW.VKO", "GetVKOBez", Data.ClientId, sercieAreaId);
         }
 
         public string GetPriceLevel(string sercieAreaId)
         {
-            return Interaction.CallClassMethod("cmWW.VKO", "GetVKPEbene", Data.Department, sercieAreaId);
+            return Interaction.CallClassMethod("cmWW.VKO", "GetVKPEbene", Data.ClientId, sercieAreaId);
         }
 
 

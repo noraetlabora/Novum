@@ -5,24 +5,8 @@ namespace Novum.Data
 {
     public class Session
     {
-        private List<string> openTableIds;
         private Dictionary<string, Order> orders;
-
-        #region Constructor
-        public Session()
-        {
-            this.Id = Guid.NewGuid().ToString();
-            this.Department = "";
-            this.DeviceType = "";
-            this.OperatingSystem = "";
-            this.PosId = "";
-            this.SerialNumber = "";
-            this.ServiceAreaId = "";
-            this.WaiterId = "";
-            this.openTableIds = new List<string>();
-            this.orders = new Dictionary<string, Order>();
-        }
-        #endregion
+        public Table CurrentTable { get; set; }
 
         #region Properties
 
@@ -54,7 +38,7 @@ namespace Novum.Data
         /// 
         /// </summary>
         /// <value></value>
-        public string Department { get; set; }
+        public string ClientId { get; set; }
 
         /// <summary>
         /// 
@@ -80,39 +64,25 @@ namespace Novum.Data
         /// <value></value>
         public string WaiterId { get; set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        public Table CurrentTable { get; }
+        #endregion
 
-
-        public bool OpenTable(string tableId)
+        #region Constructor
+        public Session()
         {
-            if (!openTableIds.Contains(tableId))
-            {
-                openTableIds.Add(tableId);
-                return true;
-            }
-            return false;
+            this.Id = Guid.NewGuid().ToString();
+            this.ClientId = "";
+            this.DeviceType = "";
+            this.OperatingSystem = "";
+            this.PosId = "";
+            this.SerialNumber = "";
+            this.ServiceAreaId = "";
+            this.WaiterId = "";
+            this.PriceLevel = "";
+            this.orders = new Dictionary<string, Order>();
         }
+        #endregion
 
-        public bool CloseTable(string tableId)
-        {
-            if (openTableIds.Contains(tableId))
-            {
-                openTableIds.Remove(tableId);
-                return true;
-            }
-            return false;
-        }
-
-        public int CloseAllTables()
-        {
-            var closedTables = openTableIds.Count;
-            openTableIds = new List<string>();
-            return closedTables;
-        }
+        #region public Methods
 
         public decimal AddOrder(Order order)
         {
@@ -124,8 +94,5 @@ namespace Novum.Data
         }
 
         #endregion
-
-
-
     }
 }

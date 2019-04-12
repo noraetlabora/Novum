@@ -1,6 +1,7 @@
 using System.Data;
 using Novum.Database.Api;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Novum.Database.InterSystems.Api
 {
@@ -21,8 +22,13 @@ namespace Novum.Database.InterSystems.Api
         public Dictionary<string, Novum.Data.Printer> GetInvoicePrinters()
         {
             var printers = new Dictionary<string, Novum.Data.Printer>();
-            var sql = string.Format("SELECT DEV, beschreibung, devtype, device FROM NT.Device WHERE FA = {0} AND DEV LIKE 'RD%' AND pas = 0", Data.Department);
-            var dataTable = Interaction.GetDataTable(sql);
+            var sql = new StringBuilder();
+            sql.Append(" SELECT DEV, beschreibung, devtype, device ");
+            sql.Append(" FROM NT.Device ");
+            sql.Append(" WHERE FA = ").Append(Data.ClientId);
+            sql.Append(" AND DEV LIKE 'RD%' ");
+            sql.Append(" AND pas = 0");
+            var dataTable = Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {

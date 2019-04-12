@@ -1,4 +1,5 @@
 using System.Data;
+using System.Text;
 using Novum.Database.Api;
 using System.Collections.Generic;
 
@@ -23,8 +24,12 @@ namespace Novum.Database.InterSystems.Api
         public Dictionary<string, Novum.Data.CancellationResason> GetCancellationReason()
         {
             var cReasons = new Dictionary<string, Novum.Data.CancellationResason>();
-            var sql = string.Format("SELECT GRUND, bez FROM NT.StornoGrund WHERE FA = {0} AND passiv > '{1}'", Data.Department, Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql);
+            var sql = new StringBuilder();
+            sql.Append(" SELECT GRUND, bez ");
+            sql.Append(" FROM NT.StornoGrund ");
+            sql.Append(" WHERE FA = ").Append(Data.ClientId);
+            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
+            var dataTable = Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -49,8 +54,12 @@ namespace Novum.Database.InterSystems.Api
         public Dictionary<string, Novum.Data.ServiceArea> GetServiceAreas()
         {
             var serviceAreas = new Dictionary<string, Novum.Data.ServiceArea>();
-            var sql = string.Format("SELECT VKO, bez, vkebene FROM WW.VKO WHERE FA = {0} AND passiv > '{1}'", Data.Department, Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql);
+            var sql = new StringBuilder();
+            sql.Append(" SELECT VKO, bez, vkebene ");
+            sql.Append(" FROM WW.VKO ");
+            sql.Append(" WHERE FA = ").Append(Data.ClientId);
+            sql.Append(" AND  passiv > ").Append(Interaction.SqlToday);
+            var dataTable = Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {

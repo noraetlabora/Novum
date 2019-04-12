@@ -8,10 +8,24 @@ namespace Novum.Database.InterSystems
 
     internal class Interaction
     {
+        /// <summary>
+        /// returns the current date in single quotes
+        /// </summary>
+        /// <value>'2019-12-31'</value>
         internal static string SqlToday
         {
             get
-            { return DateTime.Now.ToString("yyyy-MM-dd"); }
+            { return "'" + DateTime.Now.ToString("yyyy-MM-dd") + "'"; }
+        }
+
+        /// <summary>
+        /// returns the argument value in single quotes
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>'myValue'</returns>
+        internal static string SqlQuote(string value)
+        {
+            return "'" + value + "'";
         }
 
         internal static DataTable GetDataTable(string sql)
@@ -120,6 +134,7 @@ namespace Novum.Database.InterSystems
             }
             catch (Exception ex)
             {
+                //Log.Database.ErrorException(caller, ex);
                 Log.Database.Error(caller + "|ClassMethod|" + classMethod);
                 Log.Database.Error(caller + "|ExceptionMessage|" + ex.Message);
                 Log.Database.Error(caller + "|ExceptionStackTrace|" + ex.StackTrace);

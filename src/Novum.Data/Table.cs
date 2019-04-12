@@ -4,6 +4,7 @@ namespace Novum.Data
 {
     public class Table
     {
+        #region Enums
         private enum Index
         {
             Id = 0,
@@ -23,29 +24,6 @@ namespace Novum.Data
             AssignmentType = 23
         }
 
-        #region Constructor
-
-        public Table(string dbString)
-        {
-            if (string.IsNullOrEmpty(dbString))
-                return;
-
-            var dataString = new Utils.DataString(dbString);
-            var dataList = new Utils.DataList(dataString.SplitByChar96());
-
-            this.Id = dataList.GetString((int)Index.Id);
-            this.Name = dataList.GetString((int)Index.Name);
-            this.Amount = dataList.GetDecimal((int)Index.Amount);
-            this.Comment = dataList.GetString((int)Index.Comment);
-            this.WaiterId = dataList.GetString((int)Index.WaiterId);
-            this.WaiterName = dataList.GetString((int)Index.WaiterName);
-            this.Opend = dataList.GetDateTime((int)Index.Opened);
-            this.Updated = dataList.GetDateTime((int)Index.Updated);
-            this.Room = dataList.GetString((int)Index.Room);
-            this.Guests = dataList.GetUInt((int)Index.Guests);
-            this.LeftTableId = dataList.GetString((int)Index.LeftTableId);
-            this.RightTableId = dataList.GetString((int)Index.RightTableId);
-        }
         #endregion
 
         #region Properties
@@ -125,7 +103,31 @@ namespace Novum.Data
         /// <value>1001.6, 1008.1</value>
         public string RightTableId { get; set; }
 
+        #endregion
 
+        #region Constructor
+
+        public Table(string dbString)
+        {
+            if (string.IsNullOrEmpty(dbString))
+                return;
+
+            var dataString = new Utils.DataString(dbString);
+            var dataList = new Utils.DataList(dataString.SplitByChar96());
+
+            this.Id = dataList.GetString((int)Index.Id);
+            this.Name = dataList.GetString((int)Index.Name);
+            this.Amount = dataList.GetDecimal((int)Index.Amount);
+            this.Comment = dataList.GetString((int)Index.Comment);
+            this.WaiterId = dataList.GetString((int)Index.WaiterId);
+            this.WaiterName = dataList.GetString((int)Index.WaiterName);
+            this.Opend = dataList.GetDateTime((int)Index.Opened);
+            this.Updated = dataList.GetDateTime((int)Index.Updated);
+            this.Room = dataList.GetString((int)Index.Room);
+            this.Guests = dataList.GetUInt((int)Index.Guests);
+            this.LeftTableId = dataList.GetString((int)Index.LeftTableId);
+            this.RightTableId = dataList.GetString((int)Index.RightTableId);
+        }
         #endregion
     }
 }

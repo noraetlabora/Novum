@@ -9,16 +9,7 @@ namespace Novum.Data
     /// </example>
     public class Modifier
     {
-
-        #region Constructor
-        public Modifier()
-        {
-
-        }
-        #endregion
-
         #region Properties
-
         public string Id { get; set; }
         public string Name { get; set; }
         public uint Row { get; set; }
@@ -28,6 +19,13 @@ namespace Novum.Data
         public uint MinAmount { get; set; }
         public uint MaxAmount { get; set; }
 
+        #endregion
+
+        #region Constructor
+        public Modifier()
+        {
+
+        }
         #endregion
 
     }

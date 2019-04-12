@@ -30,8 +30,14 @@ namespace Novum.Database.InterSystems.Api
         public Dictionary<string, Novum.Data.Article> GetArticles(string menuId)
         {
             var articles = new Dictionary<string, Novum.Data.Article>();
-            var sql = string.Format("SELECT M.Anr, M.UMENU, M.ROW, M.COL, M.bez1, M.bgcolor, M.fgcolor, A.vkaend, A.nameaend FROM NT.TouchUMenuZeilen M LEFT JOIN WW.ANRKassa AS A ON (A.FA=M.FA AND A.ANR=M.ANR) WHERE M.FA = {0} AND M.UMENU = '{1}' AND M.ANR <> '' ", Data.Department, menuId);
-            var dataTable = Interaction.GetDataTable(sql);
+            var sql = new StringBuilder();
+            sql.Append(" SELECT M.Anr, M.UMENU, M.ROW, M.COL, M.bez1, M.bgcolor, M.fgcolor, A.vkaend, A.nameaend ");
+            sql.Append(" FROM NT.TouchUMenuZeilen M ");
+            sql.Append(" LEFT JOIN WW.ANRKassa AS A ON (A.FA=M.FA AND A.ANR=M.ANR) ");
+            sql.Append(" WHERE M.FA = ").Append(Data.ClientId);
+            sql.Append(" AND M.UMENU = ").Append(Interaction.SqlQuote(menuId));
+            sql.Append(" AND M.ANR <> '' ");
+            var dataTable = Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -72,7 +78,7 @@ namespace Novum.Database.InterSystems.Api
             sql.Append(" FROM NT.TouchUMenuZeilen M");
             sql.Append(" LEFT JOIN WW.ANRKassa AS A ON (A.FA=M.FA AND A.ANR=M.ANR)");
             sql.Append(" LEFT JOIN NT.PLUTabDet AS P ON (P.FA = M.FA AND P.ANR = M.ANR)");
-            sql.Append(" WHERE M.FA = ").Append(Data.Department);
+            sql.Append(" WHERE M.FA = ").Append(Data.ClientId);
             sql.Append(" AND ISNUMERIC(M.Anr) = 1");
             var dataTable = Interaction.GetDataTable(sql.ToString());
 
@@ -119,7 +125,7 @@ namespace Novum.Database.InterSystems.Api
         /// <param name="price"></param>
         public void CheckEnteredPrice(Session session, string articleId, decimal price)
         {
-            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "CheckArtikelpreis", session.Department, session.PosId, session.WaiterId, "tableId", articleId, price);
+            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "CheckArtikelpreis", session.ClientId, session.PosId, session.WaiterId, "tableId", articleId, price);
             var chPriceString = new Novum.Data.Utils.DataString(dbString);
             var chPriceArray = chPriceString.SplitByChar96();
             var chPriceList = new Novum.Data.Utils.DataList(chPriceArray);

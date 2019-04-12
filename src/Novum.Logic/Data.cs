@@ -7,9 +7,9 @@ namespace Novum.Logic
     /// </summary>
     public static class Data
     {
-        public static string Department
+        public static string ClientId
         {
-            get { return Database.InterSystems.Data.Department; }
+            get { return Database.InterSystems.Data.ClientId; }
         }
     }
 }

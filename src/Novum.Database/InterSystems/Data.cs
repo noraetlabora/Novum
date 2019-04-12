@@ -16,9 +16,9 @@ namespace Novum.Database.InterSystems
         }
 
         /// <summary>
-        /// Department 
+        /// ClientId 
         /// </summary>
         /// <value></value>
-        public static string Department { get; set; }
+        public static string ClientId { get; set; }
     }
 }
