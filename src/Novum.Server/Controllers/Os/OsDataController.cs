@@ -132,7 +132,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="200">Orderlines with their unpaid quantity/price</response>
         [HttpGet]
         [Route("/api/v2/data/OrderLines")]
-        public IActionResult GetOrderLines([FromQuery]string subTableId, [FromQuery]string status)
+        public IActionResult GetOrderLines([FromQuery] string subTableId, [FromQuery] string status)
         {
             var orderLines = Novum.Logic.Os.Data.GetOrderLines(subTableId);
             return new ObjectResult(orderLines);
@@ -145,7 +145,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="200">open tables array</response>
         [HttpGet]
         [Route("/api/v2/data/Tables")]
-        public IActionResult GetTables([FromQuery]string serviceAreaId)
+        public IActionResult GetTables([FromQuery] string serviceAreaId)
         {
             var tables = Novum.Logic.Os.Data.GetTables();
             return new ObjectResult(tables);

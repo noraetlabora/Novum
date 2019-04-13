@@ -1,11 +1,10 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
-using System.Linq;
-
 
 namespace Novum.Server.Utils
 {
@@ -16,8 +15,10 @@ namespace Novum.Server.Utils
     public class Middleware
     {
         private static char Pipe = '|';
-        private static string[] initRequests = {"/api/v2/actions/Init/RegisterGateway",
-                                                "/api/v2/actions/Init/RegisterClient"};
+        private static string[] initRequests = {
+            "/api/v2/actions/Init/RegisterGateway",
+            "/api/v2/actions/Init/RegisterClient"
+        };
         private readonly RequestDelegate _next;
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace Novum.Server.Utils
                 //read and log request body
                 var requestBodyContent = await ReadRequestBody(httpContext.Request);
                 var originalBodyStream = httpContext.Response.Body;
-                using (var responseBody = new MemoryStream())
+                using(var responseBody = new MemoryStream())
                 {
                     httpContext.Response.Body = responseBody;
                     await _next(httpContext);
@@ -66,12 +67,7 @@ namespace Novum.Server.Utils
             }
             catch (Exception ex)
             {
-                Log.Server.Error("Middleware.Invoke|" + ex.Message);
-                Log.Server.Error("Middleware.Invoke|" + ex.StackTrace);
-            }
-            finally
-            {
-
+                Log.Server.Error(ex, "Middleware.Invoke");
             }
         }
 

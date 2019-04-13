@@ -19,7 +19,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="201"></response>
         [HttpPost]
         [Route("/api/v2/actions/SubTables/Create")]
-        public virtual IActionResult CreateSubTable([FromQuery]string tableId)
+        public virtual IActionResult CreateSubTable([FromQuery] string tableId)
         {
             var subTable = new SubTable();
 
@@ -43,7 +43,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="201"></response>
         [HttpPost]
         [Route("/api/v2/actions/Tables/OpenByName/{name}")]
-        public IActionResult OpenTableByName([FromRoute][Required]string name, [FromQuery]string serviceAreaId, [FromQuery]bool? prePayment)
+        public IActionResult OpenTableByName([FromRoute][Required] string name, [FromQuery] string serviceAreaId, [FromQuery] bool? prePayment)
         {
             var tableResult = new TableResult();
 
@@ -71,7 +71,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="409">Conflict</response>
         [HttpPost]
         [Route("/api/v2/actions/Tables/FinalizeOrder/{tableId}")]
-        public virtual IActionResult FinalizeTableOrder([FromRoute][Required]string tableId)
+        public virtual IActionResult FinalizeTableOrder([FromRoute][Required] string tableId)
         {
             //204 - No Content
             return new NoContentResult();

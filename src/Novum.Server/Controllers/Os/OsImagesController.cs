@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Novum.Data.Os;
-using System.ComponentModel.DataAnnotations;
-using System.Drawing;
 
 namespace Novum.Server.Controllers.Os
 {
@@ -20,7 +20,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/images/fax/{id}")]
-        public virtual IActionResult GetFaxImage([FromRoute][Required]string id)
+        public virtual IActionResult GetFaxImage([FromRoute][Required] string id)
         {
             var image = System.IO.File.ReadAllBytes(@"C:\Temp\image.jpg");
             return new OkObjectResult(image);
@@ -34,7 +34,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="204"></response>
         [HttpPut]
         [Route("/api/v2/images/fax/{id}")]
-        public virtual IActionResult PutFaxImage([FromRoute][Required]string id)
+        public virtual IActionResult PutFaxImage([FromRoute][Required] string id)
         {
             throw new NotImplementedException();
         }
@@ -49,7 +49,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="403"></response>
         [HttpPost]
         [Route("/api/v2/images/fax")]
-        public IActionResult PostFaxImage([FromQuery]string subTableId)
+        public IActionResult PostFaxImage([FromQuery] string subTableId)
         {
             throw new NotImplementedException();
         }

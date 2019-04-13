@@ -19,7 +19,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="204">OK in case the payment was successfull and the receipt is moved to the printer queue.</response>
         [HttpPost]
         [Route("/api/v2/actions/Pay/SubTables")]
-        public virtual IActionResult PaySubTables([FromBody][Required]PaySubTables data)
+        public virtual IActionResult PaySubTables([FromBody][Required] PaySubTables data)
         {
 
             // 204 - No Content 
@@ -33,7 +33,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="204"></response>
         [HttpPost]
         [Route("/api/v2/actions/Pay/OrderLines")]
-        public IActionResult PayOrderLines([FromBody]PayOrderLines data)
+        public IActionResult PayOrderLines([FromBody] PayOrderLines data)
         {
 
             // 204 - No Content 

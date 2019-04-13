@@ -20,7 +20,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="201">OrderLineResult informing about the new ids / prices of the modified orderline.</response>
         [HttpPost]
         [Route("/api/v2/actions/OrderLines/Void/{orderLineId}")]
-        public virtual IActionResult VoidOrderLines([FromRoute][Required]string orderLineId, [FromBody][Required]OrderLineVoid data)
+        public virtual IActionResult VoidOrderLines([FromRoute][Required] string orderLineId, [FromBody][Required] OrderLineVoid data)
         {
             Log.Json.Info(Request.Path.Value);
             var osError = new OsError();
@@ -44,7 +44,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="201"></response>
         [HttpPost]
         [Route("/api/v2/actions/OrderLines/Add/{subTableId}")]
-        public IActionResult AddOrderLines([FromRoute][Required]string subTableId, [FromBody][Required]OrderLineAdd data)
+        public IActionResult AddOrderLines([FromRoute][Required] string subTableId, [FromBody][Required] OrderLineAdd data)
         {
             var session = Data.Sessions.GetSession(Request);
             try
@@ -70,7 +70,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="201">OrderLineResult informing about the new ids / prices of the modified orderline.</response>
         [HttpPost]
         [Route("/api/v2/actions/OrderLines/ModifyUncommitted/{orderLineId}")]
-        public IActionResult ModifyOrderLinesUncommitted([FromRoute][Required]string orderLineId, [FromBody][Required]OrderLineModify data)
+        public IActionResult ModifyOrderLinesUncommitted([FromRoute][Required] string orderLineId, [FromBody][Required] OrderLineModify data)
         {
             var osError = new OsError();
             var olResult = new OrderLineResult();

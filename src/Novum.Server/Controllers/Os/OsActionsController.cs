@@ -21,7 +21,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="401"></response>
         [HttpPost]
         [Route("/api/v2/actions/Auth/Login")]
-        public IActionResult AuthLogin([FromBody][Required]LoginUser loginUser)
+        public IActionResult AuthLogin([FromBody][Required] LoginUser loginUser)
         {
             var session = Data.Sessions.GetSession(Request);
             try
@@ -67,7 +67,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="412"></response>
         [HttpPost]
         [Route("/api/v2/actions/Init/RegisterClient")]
-        public IActionResult InitRegisterClient([FromBody][Required]ClientInfo clientInfo)
+        public IActionResult InitRegisterClient([FromBody][Required] ClientInfo clientInfo)
         {
             var session = Data.Sessions.GetSession(Request);
             session = Logic.SessionHelper.Initialize(session, clientInfo.Id);
@@ -97,7 +97,7 @@ namespace Novum.Server.Controllers.Os
         /// <response code="204"></response>
         [HttpPost]
         [Route("/api/v2/actions/Init/RegisterGateway")]
-        public IActionResult InitRegisterGateway([FromBody][Required]GatewayInfo gatewayInfo)
+        public IActionResult InitRegisterGateway([FromBody][Required] GatewayInfo gatewayInfo)
         {
             return new NoContentResult();
         }
