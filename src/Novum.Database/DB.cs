@@ -62,7 +62,7 @@ namespace Novum.Database
             }
             catch (Exception ex)
             {
-                Log.Database.Fatal(ex.Message + Environment.NewLine + ex.StackTrace);
+                Log.Database.Fatal(ex, "could not open database connection");
             }
         }
 
@@ -76,7 +76,7 @@ namespace Novum.Database
             }
             catch (Exception ex)
             {
-                Log.Database.Error(ex.Message + Environment.NewLine + ex.StackTrace);
+                Log.Database.Error(ex, "could not close database connection");
             }
         }
 

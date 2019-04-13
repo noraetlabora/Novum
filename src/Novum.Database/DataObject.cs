@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Text;
 
 namespace Novum.Database
 {
@@ -16,10 +17,11 @@ namespace Novum.Database
             }
             catch (Exception ex)
             {
-                Log.Database.Error("DataRow.IsNull threw Exception" + ex.Message);
-                Log.Database.Error(ex.StackTrace);
-                Log.Database.Error("dataRow = " + dataRow.ToString());
-                Log.Database.Error("column = " + column);
+                var message = new StringBuilder();
+                message.Append("DataObject.DataRow.IsNull").Append(Environment.NewLine);
+                message.Append("dataRow = ").Append(dataRow.ToString()).Append(Environment.NewLine);
+                message.Append("column = ").Append(column);
+                Log.Database.Error(ex, message.ToString());
                 return true;
             }
             return false;

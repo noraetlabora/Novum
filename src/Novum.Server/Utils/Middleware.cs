@@ -90,7 +90,7 @@ namespace Novum.Server.Utils
 
             var buffer = new byte[Convert.ToInt32(request.ContentLength)];
             await request.Body.ReadAsync(buffer, 0, buffer.Length);
-            var bodyAsText = Encoding.UTF8.GetString(buffer);
+            var bodyAsText = Encoding.UTF8.GetString(buffer).Replace("\n", string.Empty);
             request.Body.Seek(0, SeekOrigin.Begin);
 
             var sb = new StringBuilder();

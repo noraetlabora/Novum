@@ -45,9 +45,7 @@ namespace Novum.Database.InterSystems
             }
             catch (Exception ex)
             {
-                Log.Database.Error(caller + "|SQL|" + sql);
-                Log.Database.Error(caller + "|ExceptionMessage|" + ex.Message);
-                Log.Database.Error(caller + "|ExceptionStackTrace|" + ex.StackTrace);
+                Log.Database.Error(ex, caller + "|SQL|" + sql);
                 throw ex;
             }
             finally
@@ -134,10 +132,7 @@ namespace Novum.Database.InterSystems
             }
             catch (Exception ex)
             {
-                //Log.Database.ErrorException(caller, ex);
-                Log.Database.Error(caller + "|ClassMethod|" + classMethod);
-                Log.Database.Error(caller + "|ExceptionMessage|" + ex.Message);
-                Log.Database.Error(caller + "|ExceptionStackTrace|" + ex.StackTrace);
+                Log.Database.Error(ex, caller + "|ClassMethod|" + classMethod);
                 throw ex;
             }
 
@@ -222,9 +217,7 @@ namespace Novum.Database.InterSystems
             }
             catch (Exception ex)
             {
-                Log.Database.Error(caller + "|VoidClassMethod|" + classMethod);
-                Log.Database.Error(caller + "|ExceptionMessage|" + ex.Message);
-                Log.Database.Error(caller + "|ExceptionStackTrace|" + ex.StackTrace);
+                Log.Database.Error(ex, caller + "|VoidClassMethod|" + classMethod);
                 throw ex;
             }
         }
