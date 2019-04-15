@@ -7,6 +7,11 @@ namespace Novum.Logic
     /// </summary>
     public static class Data
     {
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public static string ClientId
         {
             get { return Database.InterSystems.Data.ClientId; }

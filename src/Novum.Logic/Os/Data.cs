@@ -15,7 +15,6 @@ namespace Novum.Logic.Os
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
         /// <returns></returns>
         public static List<CancellationReason> GetCancellationReasons()
         {
@@ -37,12 +36,11 @@ namespace Novum.Logic.Os
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
         /// <returns></returns>
         public static List<PaymentMedium> GetPaymentMedia()
         {
-            var novPaymentTypes = DB.Api.Payment.GetPaymentTypes();
             var osPaymentMedia = new List<PaymentMedium>();
+            var novPaymentTypes = DB.Api.Payment.GetPaymentTypes();
 
             foreach (Novum.Data.PaymentType novPaymentType in novPaymentTypes.Values)
             {
@@ -61,12 +59,11 @@ namespace Novum.Logic.Os
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
         /// <returns></returns>
         public static List<Printer> GetPrinters()
         {
-            var novPrinters = DB.Api.Printer.GetInvoicePrinters();
             var osPrinters = new List<Printer>();
+            var novPrinters = DB.Api.Printer.GetInvoicePrinters();
 
             foreach (Novum.Data.Printer novPrinter in novPrinters.Values)
             {
@@ -82,13 +79,17 @@ namespace Novum.Logic.Os
         #endregion
 
         #region Articles
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static List<Article> GetArticles()
         {
             var osArticles = new List<Article>();
             var novArticles = DB.Api.Article.GetArticles();
-            var modifierMenus = DB.Api.Modifier.GetModifierMenus();
-            var menuModifiers = DB.Api.Modifier.GetMenuModifiers();
-            Novum.Data.ModifierMenu modifierMenu = null;
+            var novModifierMenus = DB.Api.Modifier.GetModifierMenus();
+            var novMenuModifiers = DB.Api.Modifier.GetMenuModifiers();
+            Novum.Data.ModifierMenu novModifierMenu = null;
 
             foreach (Novum.Data.Article novArticle in novArticles.Values)
             {
@@ -105,24 +106,24 @@ namespace Novum.Logic.Os
 
                 // search the menu modifier (menu, row, col)
                 // if found add the modifier menu id to the article
-                foreach (Novum.Data.MenuModifier menuModifier in menuModifiers)
+                foreach (Novum.Data.MenuModifier novMenuModifier in novMenuModifiers)
                 {
-                    if (!menuModifier.MenuId.Equals(novArticle.MenuId))
+                    if (!novMenuModifier.MenuId.Equals(novArticle.MenuId))
                         continue;
-                    if (!menuModifier.Row.Equals(novArticle.Row))
+                    if (!novMenuModifier.Row.Equals(novArticle.Row))
                         continue;
-                    if (!menuModifier.Column.Equals(novArticle.Column))
+                    if (!novMenuModifier.Column.Equals(novArticle.Column))
                         continue;
                     if (osArticle.ModifierGroups == null)
                         osArticle.ModifierGroups = new List<ArticleModifierGroup>();
 
-                    var articleModifierGroup = new ArticleModifierGroup();
-                    articleModifierGroup.ModifierGroupId = menuModifier.ModifierMenuId;
-                    osArticle.ModifierGroups.Add(articleModifierGroup);
+                    var osArticleModifierGroup = new ArticleModifierGroup();
+                    osArticleModifierGroup.ModifierGroupId = novMenuModifier.ModifierMenuId;
+                    osArticle.ModifierGroups.Add(osArticleModifierGroup);
 
-                    if (modifierMenus.TryGetValue(menuModifier.ModifierMenuId, out modifierMenu))
+                    if (novModifierMenus.TryGetValue(novMenuModifier.ModifierMenuId, out novModifierMenu))
                     {
-                        if (modifierMenu.MinSelection > 0)
+                        if (novModifierMenu.MinSelection > 0)
                             osArticle.ForceShowModifiers = true;
                     }
                 }
@@ -139,45 +140,45 @@ namespace Novum.Logic.Os
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
+        /// <param name="menuId"></param>
         /// <returns></returns>
         public static List<Category> GetCategories(string menuId)
         {
-            var categories = new List<Category>();
-            var mainMenus = DB.Api.Menu.GetMainMenu(menuId);
+            var osCategories = new List<Category>();
+            var novMainMenus = DB.Api.Menu.GetMainMenu(menuId);
             var handledMenuIds = new List<string>();
 
-            foreach (Novum.Data.Menu menu in mainMenus.Values)
+            foreach (Novum.Data.Menu novMainMenu in novMainMenus.Values)
             {
-                var category = new Category();
-                category.Name = menu.Name;
+                var osCategory = new Category();
+                osCategory.Name = novMainMenu.Name;
 
-                var contentEntries = GetCategoryContent(menu.Id, ref handledMenuIds);
+                var contentEntries = GetCategoryContent(novMainMenu.Id, ref handledMenuIds);
 
-                category.Content = contentEntries;
-                categories.Add(category);
+                osCategory.Content = contentEntries;
+                osCategories.Add(osCategory);
             }
 
-            return categories;
+            return osCategories;
         }
 
         private static List<CategoryContentEntry> GetCategoryContent(string menuId, ref List<string> handledMenuIds)
         {
-            var contentEntries = new List<CategoryContentEntry>();
-            var articles = DB.Api.Article.GetArticles(menuId);
+            var osContentEntries = new List<CategoryContentEntry>();
+            var novArticles = DB.Api.Article.GetArticles(menuId);
 
-            foreach (Novum.Data.Article article in articles.Values)
+            foreach (Novum.Data.Article novArticle in novArticles.Values)
             {
                 //ignore all not supported articles 
-                if (ArticleIdNotSupported(article.Id))
+                if (ArticleIdNotSupported(novArticle.Id))
                     continue;
 
-                var contentEntry = new CategoryContentEntry();
+                var osContentEntry = new CategoryContentEntry();
 
                 // submenu
-                if (article.Id.StartsWith("$"))
+                if (novArticle.Id.StartsWith("$"))
                 {
-                    var subMenuId = article.Id.Substring(1);
+                    var subMenuId = novArticle.Id.Substring(1);
                     // don't loop the same menu "Dessert -> Dessert -> Dessert -> ..."
                     if (menuId.Equals(subMenuId))
                         continue;
@@ -186,34 +187,34 @@ namespace Novum.Logic.Os
                         continue;
                     handledMenuIds.Add(subMenuId);
                     //get subMenu
-                    contentEntry.Category = GetSubCategory(subMenuId, ref handledMenuIds);
+                    osContentEntry.Category = GetSubCategory(subMenuId, ref handledMenuIds);
                 }
                 // normal article
                 else
                 {
-                    contentEntry.ArticleId = article.Id;
+                    osContentEntry.ArticleId = novArticle.Id;
                 }
 
-                contentEntries.Add(contentEntry);
+                osContentEntries.Add(osContentEntry);
             }
-            return contentEntries;
+            return osContentEntries;
         }
 
         private static Category GetSubCategory(string menuId, ref List<string> handledMenuIds)
         {
-            var category = new Category();
+            var osCategory = new Category();
             var subMenu = DB.Api.Menu.GetSubMenu(menuId);
-            category.Name = subMenu.Name;
-            category.Content = GetCategoryContent(menuId, ref handledMenuIds);
+            osCategory.Name = subMenu.Name;
+            osCategory.Content = GetCategoryContent(menuId, ref handledMenuIds);
 
-            return category;
+            return osCategory;
         }
 
         private static string[] notSupportedArticleIds = { "PLU", "$KONTO:", "$GUTSCHEIN:", "$GUTSCHEINBET:", "$RABATT:", "GANG:", "$FILTER:" };
         /// <summary>
         /// Ignore all not supported articles like PLU, GANG, RABATT, etc.
         /// </summary>
-        /// <param name="article id"></param>
+        /// <param name="articleId"></param>
         /// <returns></returns>
         private static bool ArticleIdNotSupported(string articleId)
         {
@@ -228,23 +229,28 @@ namespace Novum.Logic.Os
         #endregion
 
         #region ModifierGroups
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static List<ModifierGroup> GetModifierGroups()
         {
-            var modifierGroups = new List<ModifierGroup>();
-            var modifierMenus = DB.Api.Modifier.GetModifierMenus();
+            var osModifierGroups = new List<ModifierGroup>();
+            var novModifierMenus = DB.Api.Modifier.GetModifierMenus();
 
-            foreach (Novum.Data.ModifierMenu modifierMenu in modifierMenus.Values)
+            foreach (Novum.Data.ModifierMenu novModifierMenu in novModifierMenus.Values)
             {
-                var modifierGroup = new ModifierGroup();
-                modifierGroup.Id = modifierMenu.Id;
-                modifierGroup.Name = modifierMenu.Name;
-                modifierGroup.MinChoices = (int)modifierMenu.MinSelection;
-                modifierGroup.MaxChoices = (int)modifierMenu.MaxSelection;
-                modifierGroup.Question = "";
-                modifierGroup.Type = ModifierGroup.ModifierType.PickOneEnum;
-                modifierGroup.Choices = new List<ModifierChoice>();
+                var osModifierGroup = new ModifierGroup();
+                osModifierGroup.Id = novModifierMenu.Id;
+                osModifierGroup.Name = novModifierMenu.Name;
+                osModifierGroup.MinChoices = (int)novModifierMenu.MinSelection;
+                osModifierGroup.MaxChoices = (int)novModifierMenu.MaxSelection;
+                osModifierGroup.Question = "";
+                osModifierGroup.Type = ModifierGroup.ModifierType.PickOneEnum;
+                osModifierGroup.Choices = new List<ModifierChoice>();
 
-                var modifiers = DB.Api.Modifier.GetModifiers(modifierMenu.Id);
+                var modifiers = DB.Api.Modifier.GetModifiers(novModifierMenu.Id);
                 var lastModifierId = "";
 
                 foreach (Novum.Data.Modifier modifier in modifiers.Values)
@@ -263,12 +269,12 @@ namespace Novum.Logic.Os
                     modifierChoice.MinAmount = (int)modifier.MinAmount;
                     modifierChoice.MaxAmount = (int)modifier.MaxAmount;
 
-                    modifierGroup.Choices.Add(modifierChoice);
+                    osModifierGroup.Choices.Add(modifierChoice);
                 }
-                modifierGroups.Add(modifierGroup);
+                osModifierGroups.Add(osModifierGroup);
             }
 
-            return modifierGroups;
+            return osModifierGroups;
         }
 
         #endregion
@@ -278,7 +284,6 @@ namespace Novum.Logic.Os
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
         /// <returns></returns>
         public static List<ServiceArea> GetServiceAreas()
         {
@@ -301,7 +306,6 @@ namespace Novum.Logic.Os
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
         /// <returns></returns>
         public static List<User> GetUsers()
         {
@@ -320,7 +324,6 @@ namespace Novum.Logic.Os
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
         /// <returns></returns>
         public static List<TableResult> GetTables()
         {
@@ -382,7 +385,7 @@ namespace Novum.Logic.Os
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
+        /// <param name="subTableId"></param>
         /// <returns></returns>
         public static List<OrderLine> GetOrderLines(string subTableId)
         {

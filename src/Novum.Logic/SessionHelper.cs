@@ -3,8 +3,19 @@ using Novum.Data;
 
 namespace Novum.Logic
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
     public class SessionHelper
     {
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="serialNumber"></param>
+        /// <returns></returns>
         public static Session Initialize(Session session, string serialNumber)
         {
             if (session == null)

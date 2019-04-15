@@ -19,7 +19,6 @@ namespace Novum.Database.InterSystems.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
         /// <returns></returns>
         public Dictionary<string, Novum.Data.CancellationResason> GetCancellationReason()
         {
@@ -49,7 +48,6 @@ namespace Novum.Database.InterSystems.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
         /// <returns></returns>
         public Dictionary<string, Novum.Data.ServiceArea> GetServiceAreas()
         {

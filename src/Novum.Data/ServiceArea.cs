@@ -2,6 +2,10 @@ using System;
 
 namespace Novum.Data
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
     public class ServiceArea
     {
         #region Properties
@@ -27,6 +31,10 @@ namespace Novum.Data
         #endregion
 
         #region Constructor
+
+        /// <summary>
+        /// 
+        /// </summary>
         public ServiceArea()
         {
 

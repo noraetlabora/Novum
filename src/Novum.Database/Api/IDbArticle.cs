@@ -7,9 +7,33 @@ namespace Novum.Database.Api
     /// </summary>
     public interface IDbArticle
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="menuId"></param>
+        /// <returns></returns>
         Dictionary<string, Novum.Data.Article> GetArticles(string menuId);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         Dictionary<string, Novum.Data.Article> GetArticles();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="articleId"></param>
+        /// <returns></returns>
         bool IsAvailable(Novum.Data.Session session, string articleId);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="articleId"></param>
+        /// <param name="price"></param>
         void CheckEnteredPrice(Novum.Data.Session session, string articleId, decimal price);
     }
 }

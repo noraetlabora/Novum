@@ -4,7 +4,6 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <DocumentationFile>bin\NovumServer.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Novum.Log\Novum.Log.csproj" />
+    <ProjectReference Include="..\Novum.Logging\Novum.Logging.csproj" />
     <ProjectReference Include="..\Novum.Data\Novum.Data.csproj" />
     <ProjectReference Include="..\Novum.Logic\Novum.Logic.csproj" />
   </ItemGroup>

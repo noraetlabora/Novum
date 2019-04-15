@@ -2,6 +2,10 @@ using System;
 
 namespace Novum.Data
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
     public class Waiter
     {
         #region Properties
@@ -21,6 +25,10 @@ namespace Novum.Data
         #endregion
 
         #region Constructor
+
+        /// <summary>
+        /// 
+        /// </summary>
         public Waiter()
         {
 

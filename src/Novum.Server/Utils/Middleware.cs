@@ -67,7 +67,7 @@ namespace Novum.Server.Utils
             }
             catch (Exception ex)
             {
-                Log.Server.Error(ex, "Middleware.Invoke");
+                Logging.Log.Server.Error(ex, "Middleware.Invoke");
             }
         }
 
@@ -96,7 +96,7 @@ namespace Novum.Server.Utils
             sb.Append(request.Path).Append(Pipe);
             sb.Append(bodyAsText);
 
-            Log.Json.Info(sb.ToString());
+            Logging.Log.Json.Info(sb.ToString());
 
             return bodyAsText;
         }
@@ -114,7 +114,7 @@ namespace Novum.Server.Utils
             sb.Append(response.HttpContext.Request.Path).Append(Pipe);
             sb.Append(bodyAsText);
 
-            Log.Json.Info(sb.ToString());
+            Logging.Log.Json.Info(sb.ToString());
 
             return bodyAsText;
         }
@@ -126,7 +126,7 @@ namespace Novum.Server.Utils
             sb.Append(request.Path).Append(Pipe);
             sb.Append("unauthorized request - no sessionId in cookies");
 
-            Log.Server.Error(sb.ToString());
+            Logging.Log.Server.Error(sb.ToString());
         }
     }
 }

@@ -22,9 +22,8 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/actions/OrderLines/Void/{orderLineId}")]
         public virtual IActionResult VoidOrderLines([FromRoute][Required] string orderLineId, [FromBody][Required] OrderLineVoid data)
         {
-            Log.Json.Info(Request.Path.Value);
             var osError = new OsError();
-            var olVoidResult = new OrderLineVoidResult();
+            var voidResult = new OrderLineVoidResult();
 
             //
 
@@ -33,7 +32,7 @@ namespace Novum.Server.Controllers.Os
             // 204 - No Content - Delete Orderline (Orderline (1x Water, 1x Void, return NoContentResult))
             //return new NoContentResult();
             // 200 - OK - Update Orderline (Orderline 3x Water, 1x Void, return OrderLineVoidResult with 2x Water)
-            return new OkObjectResult(olVoidResult);
+            return new OkObjectResult(voidResult);
         }
 
         /// <summary>

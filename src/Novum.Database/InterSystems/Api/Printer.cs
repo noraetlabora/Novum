@@ -17,7 +17,6 @@ namespace Novum.Database.InterSystems.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
         /// <returns></returns>
         public Dictionary<string, Novum.Data.Printer> GetInvoicePrinters()
         {

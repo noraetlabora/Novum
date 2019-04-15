@@ -2,6 +2,10 @@ using System;
 
 namespace Novum.Data
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
     public class Table
     {
         #region Enums
@@ -107,6 +111,10 @@ namespace Novum.Data
 
         #region Constructor
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dbString"></param>
         public Table(string dbString)
         {
             if (string.IsNullOrEmpty(dbString))

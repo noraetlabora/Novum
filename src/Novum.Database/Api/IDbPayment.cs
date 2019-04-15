@@ -7,6 +7,10 @@ namespace Novum.Database.Api
     /// </summary>
     public interface IDbPayment
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         Dictionary<string, Novum.Data.PaymentType> GetPaymentTypes();
     }
 }

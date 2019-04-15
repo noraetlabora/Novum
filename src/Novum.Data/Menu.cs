@@ -16,15 +16,44 @@ namespace Novum.Data
     public class Menu
     {
         #region Properties
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public string Id { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public string Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public string BackgroundColor { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public string ForegroundColor { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public uint Columns { get; set; }
 
         #endregion
 
         #region Constructor
+
+        /// <summary>
+        /// 
+        /// </summary>
         public Menu()
         {
 

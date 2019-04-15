@@ -20,7 +20,6 @@ namespace Novum.Database.InterSystems.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
         /// <returns></returns>
         public Dictionary<string, Novum.Data.ModifierMenu> GetModifierMenus()
         {
@@ -50,7 +49,7 @@ namespace Novum.Database.InterSystems.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
+        /// <param name="menuId"></param>
         /// <returns></returns>
         public Dictionary<string, Novum.Data.Modifier> GetModifiers(string menuId)
         {
@@ -86,7 +85,6 @@ namespace Novum.Database.InterSystems.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
         /// <returns></returns>
         public List<Novum.Data.MenuModifier> GetMenuModifiers()
         {

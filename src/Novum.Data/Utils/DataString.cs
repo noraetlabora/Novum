@@ -12,7 +12,7 @@ namespace Novum.Data.Utils
         #region private const
         private const char Comma = (char)44;
         private const char Semicolon = (char)59;
-        public const char Char96 = (char)96;
+        private const char Char96 = (char)96;
         private const char SinglePipe = (char)124;
         private const string DoublePipes = "||";
         private const char SingleQuote = (char)39;

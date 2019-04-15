@@ -24,7 +24,6 @@ namespace Novum.Database.InterSystems.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
         /// <param name="menuId"></param>
         /// <returns></returns>
         public Dictionary<string, Novum.Data.Article> GetArticles(string menuId)
@@ -38,14 +37,20 @@ namespace Novum.Database.InterSystems.Api
             sql.Append(" AND M.UMENU = ").Append(Interaction.SqlQuote(menuId));
             sql.Append(" AND M.ANR <> '' ");
             var dataTable = Interaction.GetDataTable(sql.ToString());
+            var lastArticleId = "";
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 var article = new Novum.Data.Article();
                 article.Id = DataObject.GetString(dataRow, "ANR");
+                //articleId processed in the last loop(s)
+                if (article.Id.Equals(lastArticleId))
+                    continue;
+                lastArticleId = article.Id;
+                //check if articleId already processed
                 if (articles.ContainsKey(article.Id))
                 {
-                    Log.Database.Debug(MethodBase.GetCurrentMethod().Name + " already processed Id " + article.Id);
+                    Logging.Log.Database.Debug(MethodBase.GetCurrentMethod().Name + " already processed Id " + article.Id);
                     continue;
                 }
 
@@ -67,7 +72,6 @@ namespace Novum.Database.InterSystems.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
         /// <returns></returns>
         public Dictionary<string, Novum.Data.Article> GetArticles()
         {
@@ -87,16 +91,15 @@ namespace Novum.Database.InterSystems.Api
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 var article = new Novum.Data.Article();
-
                 article.Id = DataObject.GetString(dataRow, "Anr");
-
+                //articleId processed in the last loop(s)
                 if (article.Id.Equals(lastArticleId))
                     continue;
                 lastArticleId = article.Id;
-
+                //check if articleId already processed
                 if (articles.ContainsKey(article.Id))
                 {
-                    Log.Database.Debug(MethodBase.GetCurrentMethod().Name + " already processed Id " + article.Id);
+                    Logging.Log.Database.Debug(MethodBase.GetCurrentMethod().Name + " already processed Id " + article.Id);
                     continue;
                 }
 

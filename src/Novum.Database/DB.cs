@@ -20,9 +20,9 @@ namespace Novum.Database
         public static DB Instance { get { return lazy.Value; } }
         private DB()
         {
-            Log.Database.Info("creating InterSystems connection");
+            Logging.Log.Database.Info("creating InterSystems connection");
             xep = PersisterFactory.CreatePersister();
-            Log.Database.Info("creating InterSystems API");
+            Logging.Log.Database.Info("creating InterSystems API");
             api = new InterSystems.Api.InterSystemsApi();
         }
 
@@ -31,16 +31,31 @@ namespace Novum.Database
         private static EventPersister xep;
         private static InterSystems.Api.InterSystemsApi api;
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         internal static IRISADOConnection Connection
         {
             get { return dbConnection; }
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         internal static EventPersister Xep
         {
             get { return xep; }
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public static Api.IDbApi Api
         {
             get { return api; }
@@ -50,86 +65,129 @@ namespace Novum.Database
         /******************** IDbConnection ********************/
         /*******************************************************/
         #region IDbConnection
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void Open()
         {
             try
             {
-                Log.Database.Info("opening database connection");
+                Logging.Log.Database.Info("opening database connection");
                 xep.Connect(connectionString);
                 dbConnection = (IRISADOConnection)xep.GetAdoNetConnection();
-                Log.Database.Info("database connection is open");
+                Logging.Log.Database.Info("database connection is open");
                 api.Initialize();
             }
             catch (Exception ex)
             {
-                Log.Database.Fatal(ex, "could not open database connection");
+                Logging.Log.Database.Fatal(ex, "could not open database connection");
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Close()
         {
             try
             {
-                Log.Database.Info("closing database connection");
+                Logging.Log.Database.Info("closing database connection");
                 xep.Close();
-                Log.Database.Info("database connection is closed");
+                Logging.Log.Database.Info("database connection is closed");
             }
             catch (Exception ex)
             {
-                Log.Database.Error(ex, "could not close database connection");
+                Logging.Log.Database.Error(ex, "could not close database connection");
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public IDbTransaction BeginTransaction()
         {
             return dbConnection.BeginTransaction();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isolevel"></param>
+        /// <returns></returns>
         public IDbTransaction BeginTransaction(IsolationLevel isolevel)
         {
             return dbConnection.BeginTransaction(isolevel);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
         public void ChangeDatabase(string value)
         {
             dbConnection.ChangeDatabase(value);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public IDbCommand CreateCommand()
         {
             return dbConnection.CreateCommand();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public string ConnectionString
         {
             get { return connectionString; }
             set
             {
-                Log.Database.Info("setting connection string to: " + value.Substring(0, 50) + "...");
+                Logging.Log.Database.Info("setting connection string to: " + value.Substring(0, 50) + "...");
                 connectionString = value;
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public int ConnectionTimeout
         {
             get { return dbConnection.ConnectionTimeout; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public string Database
         {
             get { return dbConnection.Database; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public ConnectionState State
         {
             get { return dbConnection.State; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Dispose()
         {
             if (State != ConnectionState.Closed)
                 Close();
-            Log.Database.Info("disposing database connection");
+            Logging.Log.Database.Info("disposing database connection");
         }
 
         #endregion

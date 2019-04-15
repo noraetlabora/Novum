@@ -4,13 +4,29 @@ using System.Text;
 
 namespace Novum.Data
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Order
     {
         #region Enums
+
+        /// <summary>
+        /// OrderStatus defines the status of an order (ordered, new order, prebooking)
+        /// </summary>
         public enum OrderStatus
         {
+            /// <summary>
+            /// The order is confirmed.
+            /// </summary>
             Ordered = 0,
+            /// <summary>
+            /// The order is not yet confirmed, the kitchen or bar has not received the order.
+            /// </summary>
             NewOrder = 10,
+            /// <summary>
+            /// The order keeps on the table, but the kitchen or bar has not received the order.
+            /// </summary>
             Prebooked = 20
         }
 
@@ -121,11 +137,18 @@ namespace Novum.Data
 
         #region Constructor
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Order()
         {
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dbString"></param>
         public Order(string dbString)
         {
             if (string.IsNullOrEmpty(dbString))

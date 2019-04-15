@@ -8,9 +8,30 @@ namespace Novum.Database.Api
     /// </summary>
     public interface IDbWaiter
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         Dictionary<string, Waiter> GetWaiters();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
         bool ValidWaiter(Session session, string code);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
         void Login(Session session);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
         void Logout(Session session);
     }
 }

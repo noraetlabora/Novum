@@ -3,9 +3,18 @@ using System.Collections.Generic;
 
 namespace Novum.Data
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
     public class Session
     {
         private Dictionary<string, Order> orders;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public Table CurrentTable { get; set; }
 
         #region Properties
@@ -67,6 +76,10 @@ namespace Novum.Data
         #endregion
 
         #region Constructor
+
+        /// <summary>
+        /// 
+        /// </summary>
         public Session()
         {
             this.Id = Guid.NewGuid().ToString();
@@ -84,6 +97,11 @@ namespace Novum.Data
 
         #region public Methods
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
         public decimal AddOrder(Order order)
         {
             if (orders.ContainsKey(order.Id))

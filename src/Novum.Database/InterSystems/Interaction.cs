@@ -33,7 +33,7 @@ namespace Novum.Database.InterSystems
             var dataTable = new DataTable();
             var stackTrace = new System.Diagnostics.StackTrace();
             var caller = stackTrace.GetFrame(1).GetMethod().Name;
-            Log.Database.Debug(caller + "|SQL|" + sql);
+            Logging.Log.Database.Debug(caller + "|SQL|" + sql);
 
             try
             {
@@ -41,11 +41,11 @@ namespace Novum.Database.InterSystems
                 var dataAdapter = new IRISDataAdapter(sql, DB.Connection);
                 dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
-                Log.Database.Debug(caller + "|DataTableRowCount|" + dataTable.Rows.Count);
+                Logging.Log.Database.Debug(caller + "|DataTableRowCount|" + dataTable.Rows.Count);
             }
             catch (Exception ex)
             {
-                Log.Database.Error(ex, caller + "|SQL|" + sql);
+                Logging.Log.Database.Error(ex, caller + "|SQL|" + sql);
                 throw ex;
             }
             finally
@@ -123,16 +123,16 @@ namespace Novum.Database.InterSystems
             var stackTrace = new System.Diagnostics.StackTrace();
             var caller = stackTrace.GetFrame(2).GetMethod().Name;
             var classMethod = string.Format("##class({0}).{1}({2})", className, methodName, string.Join(",", args));
-            Log.Database.Debug(caller + "|ClassMethod|" + classMethod);
+            Logging.Log.Database.Debug(caller + "|ClassMethod|" + classMethod);
 
             try
             {
                 returnValue = (string)DB.Xep.CallClassMethod(className, methodName, args);
-                Log.Database.Debug(caller + "|ClassMethodReturnValueLength|" + returnValue.Length);
+                Logging.Log.Database.Debug(caller + "|ClassMethodReturnValueLength|" + returnValue.Length);
             }
             catch (Exception ex)
             {
-                Log.Database.Error(ex, caller + "|ClassMethod|" + classMethod);
+                Logging.Log.Database.Error(ex, caller + "|ClassMethod|" + classMethod);
                 throw ex;
             }
 
@@ -208,16 +208,16 @@ namespace Novum.Database.InterSystems
             var stackTrace = new System.Diagnostics.StackTrace();
             var caller = stackTrace.GetFrame(2).GetMethod().Name;
             var classMethod = string.Format("##class({0}).{1}({2})", className, methodName, string.Join(",", args));
-            Log.Database.Debug(caller + "|VoidClassMethod|" + classMethod);
+            Logging.Log.Database.Debug(caller + "|VoidClassMethod|" + classMethod);
 
             try
             {
                 DB.Xep.CallVoidClassMethod(className, methodName, args);
-                Log.Database.Debug(caller + "|VoidClassMethod|success");
+                Logging.Log.Database.Debug(caller + "|VoidClassMethod|success");
             }
             catch (Exception ex)
             {
-                Log.Database.Error(ex, caller + "|VoidClassMethod|" + classMethod);
+                Logging.Log.Database.Error(ex, caller + "|VoidClassMethod|" + classMethod);
                 throw ex;
             }
         }

@@ -2,6 +2,10 @@ using System;
 
 namespace Novum.Data
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
     public class CancellationResason
     {
 
@@ -22,11 +26,20 @@ namespace Novum.Data
         #endregion
 
         #region Constructor
+
+        /// <summary>
+        /// 
+        /// </summary>
         public CancellationResason()
         {
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
         public CancellationResason(string id, string name)
         {
             Id = id;

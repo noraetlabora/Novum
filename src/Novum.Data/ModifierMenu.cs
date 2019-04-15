@@ -43,6 +43,10 @@ namespace Novum.Data
         #endregion
 
         #region Constructor
+
+        /// <summary>
+        /// empty Constructor for ModifierMenu
+        /// </summary>
         public ModifierMenu()
         {
 

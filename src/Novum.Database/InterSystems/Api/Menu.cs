@@ -24,7 +24,6 @@ namespace Novum.Database.InterSystems.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
         /// <param name="menuId"></param>
         /// <returns></returns>
         public Dictionary<string, Novum.Data.Menu> GetMainMenu(string menuId)
@@ -56,7 +55,6 @@ namespace Novum.Database.InterSystems.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="department"></param>
         /// <param name="menuId"></param>
         /// <returns></returns>
         public Novum.Data.Menu GetSubMenu(string menuId)

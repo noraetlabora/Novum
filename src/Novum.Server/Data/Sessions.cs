@@ -48,12 +48,12 @@ namespace Novum.Server.Data
         {
             if (session == null)
             {
-                Log.Server.Error("Sessions.Add|session is null");
+                Logging.Log.Server.Error("Sessions.Add|session is null");
                 return;
             }
             if (string.IsNullOrEmpty(session.Id))
             {
-                Log.Server.Error("Sessions.Add|session.Id is null or empty");
+                Logging.Log.Server.Error("Sessions.Add|session.Id is null or empty");
                 return;
             }
             sessions.Add(session.Id, session);
@@ -68,7 +68,7 @@ namespace Novum.Server.Data
         {
             if (string.IsNullOrEmpty(sessionId))
             {
-                Log.Server.Error("Sessions.Remove|sessionId is null or empty");
+                Logging.Log.Server.Error("Sessions.Remove|sessionId is null or empty");
             }
             return sessions.Remove(sessionId);
         }

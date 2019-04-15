@@ -21,7 +21,7 @@ namespace Novum.Database
                 message.Append("DataObject.DataRow.IsNull").Append(Environment.NewLine);
                 message.Append("dataRow = ").Append(dataRow.ToString()).Append(Environment.NewLine);
                 message.Append("column = ").Append(column);
-                Log.Database.Error(ex, message.ToString());
+                Logging.Log.Database.Error(ex, message.ToString());
                 return true;
             }
             return false;

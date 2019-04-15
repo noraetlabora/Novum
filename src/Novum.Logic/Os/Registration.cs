@@ -16,6 +16,7 @@ namespace Novum.Logic.Os
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="session"></param>
         /// <param name="clientData"></param>
         /// <returns></returns>
         public static POSInfo RegisterClient(Session session, ClientInfo clientData)
@@ -33,6 +34,11 @@ namespace Novum.Logic.Os
             return posInfo;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="loginUser"></param>
         public static void Login(Session session, LoginUser loginUser)
         {
             bool validWaiter = DB.Api.Waiter.ValidWaiter(session, loginUser.Password);
@@ -41,6 +47,10 @@ namespace Novum.Logic.Os
             DB.Api.Waiter.Login(session);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
         public static void Logout(Session session)
         {
             DB.Api.Waiter.Logout(session);
