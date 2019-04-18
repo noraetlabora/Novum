@@ -41,8 +41,9 @@ namespace Nt.Database.Api
         /// <param name="articleId"></param>
         /// <param name="voidQuantity"></param>
         /// <param name="voidPrice"></param>
+        /// <param name="assignmentTypeId"></param>
         /// <param name="authorizingWaiterId"></param>
-        void VoidNewOrder(Nt.Data.Session session, string tableId, string articleId, decimal voidQuantity, decimal voidPrice, string authorizingWaiterId);
+        void VoidNewOrder(Nt.Data.Session session, string tableId, string articleId, decimal voidQuantity, decimal voidPrice, string assignmentTypeId, string authorizingWaiterId);
 
         /// <summary>
         /// 

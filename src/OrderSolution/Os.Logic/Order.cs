@@ -20,29 +20,29 @@ namespace Os.Logic
         public static List<Os.Data.OrderLine> GetOrderLines(Nt.Data.Session session, string subTableId)
         {
             var osOrderLines = new List<Os.Data.OrderLine>();
-            var novOrders = Nt.Database.DB.Api.Order.GetOrders(subTableId);
+            var ntOrders = Nt.Database.DB.Api.Order.GetOrders(subTableId);
 
             //orderd or prebooked orderlines
-            foreach (var novOrder in novOrders.Values)
+            foreach (var ntOrder in ntOrders.Values)
             {
                 var osOrderLine = new Os.Data.OrderLine();
-                osOrderLine.Id = novOrder.Id;
-                osOrderLine.ArticleId = novOrder.ArticleId;
-                osOrderLine.Quantity = (int)novOrder.Quantity;
-                osOrderLine.SinglePrice = (int)decimal.Multiply(novOrder.UnitPrice, 100);
-                osOrderLine.Status = GetOsOrderLineStatus(novOrder.Status);
+                osOrderLine.Id = ntOrder.Id;
+                osOrderLine.ArticleId = ntOrder.ArticleId;
+                osOrderLine.Quantity = (int)ntOrder.Quantity;
+                osOrderLine.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100);
+                osOrderLine.Status = GetOsOrderLineStatus(ntOrder.Status);
                 osOrderLines.Add(osOrderLine);
             }
 
             //new orders
-            foreach (var novOrder in session.GetOrders())
+            foreach (var ntOrder in session.GetOrders())
             {
                 var osOrderLine = new Os.Data.OrderLine();
-                osOrderLine.Id = novOrder.Id;
-                osOrderLine.ArticleId = novOrder.ArticleId;
-                osOrderLine.Quantity = (int)novOrder.Quantity;
-                osOrderLine.SinglePrice = (int)decimal.Multiply(novOrder.UnitPrice, 100);
-                osOrderLine.Status = GetOsOrderLineStatus(novOrder.Status);
+                osOrderLine.Id = ntOrder.Id;
+                osOrderLine.ArticleId = ntOrder.ArticleId;
+                osOrderLine.Quantity = (int)ntOrder.Quantity;
+                osOrderLine.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100);
+                osOrderLine.Status = GetOsOrderLineStatus(ntOrder.Status);
                 osOrderLines.Add(osOrderLine);
             }
 
@@ -87,37 +87,40 @@ namespace Os.Logic
             if (session.CurrentTable == null)
                 throw new Exception("no open table");
 
-            var order = session.GetOrder(orderLineId);
-            if (order == null)
-                throw new Exception("no orderLine found");
+            //search in new orders, when not found search in ordered/prebooked orders of current table
+            var ntOrder = session.GetOrder(orderLineId);
+            if (ntOrder == null)
+            {
+                var ntOrders = Nt.Database.DB.Api.Order.GetOrders(session.CurrentTable.Id);
+                if (!ntOrders.ContainsKey(orderLineId))
+                    throw new Exception("no orderline found");
+                ntOrder = ntOrders[orderLineId];
+            }
 
             // set voidResult
             var voidResult = new Os.Data.OrderLineVoidResult();
             voidResult.OrderLineId = orderLineId;
-            voidResult.SinglePrice = (int)decimal.Multiply(order.UnitPrice, 100);
-            if (data.Quantity >= order.Quantity)
+            voidResult.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100);
+            if (data.Quantity >= ntOrder.Quantity)
                 voidResult.Quantity = 0;
             else
-                voidResult.Quantity = ((int)order.Quantity - data.Quantity);
+                voidResult.Quantity = ((int)ntOrder.Quantity - data.Quantity);
 
-            // OrderStatus.NewOrder
-            if (order.Status == Nt.Data.Order.OrderStatus.NewOrder)
+            switch (ntOrder.Status)
             {
-                var price = decimal.Multiply((decimal)data.Quantity, order.UnitPrice);
-                Nt.Database.DB.Api.Order.VoidNewOrder(session, session.CurrentTable.Id, order.ArticleId, (decimal)data.Quantity, price, "");
-            }
-            // OrderStatus.Prebooked
-            else if (order.Status == Nt.Data.Order.OrderStatus.Prebooked)
-            {
-                Nt.Database.DB.Api.Order.VoidPrebookedOrder(session, session.CurrentTable.Id, (decimal)data.Quantity, order.SequenceNumber, "");
-            }
-            // OrderStatus.Ordered
-            else
-            {
-                Nt.Database.DB.Api.Order.VoidOrderedOrder(session, session.CurrentTable.Id, order, (decimal)voidResult.Quantity, data.CancellationReasonId, "");
+                case Nt.Data.Order.OrderStatus.NewOrder:
+                    var price = decimal.Multiply((decimal)data.Quantity, ntOrder.UnitPrice);
+                    Nt.Database.DB.Api.Order.VoidNewOrder(session, session.CurrentTable.Id, ntOrder.ArticleId, (decimal)data.Quantity, price, ntOrder.AssignmentTypeId, "");
+                    break;
+                case Nt.Data.Order.OrderStatus.Prebooked:
+                    Nt.Database.DB.Api.Order.VoidPrebookedOrder(session, session.CurrentTable.Id, (decimal)data.Quantity, ntOrder.SequenceNumber, "");
+                    break;
+                case Nt.Data.Order.OrderStatus.Ordered:
+                    Nt.Database.DB.Api.Order.VoidOrderedOrder(session, session.CurrentTable.Id, ntOrder, (decimal)data.Quantity, data.CancellationReasonId, "");
+                    break;
             }
 
-            session.VoidOrder(order.Id, (decimal)data.Quantity);
+            session.VoidOrder(ntOrder.Id, (decimal)data.Quantity);
             Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);
             return voidResult;
         }
@@ -169,9 +172,9 @@ namespace Os.Logic
 
         #region private static methods
 
-        private static Os.Data.OrderLine.OrderLineStatus GetOsOrderLineStatus(Nt.Data.Order.OrderStatus novOrderStatus)
+        private static Os.Data.OrderLine.OrderLineStatus GetOsOrderLineStatus(Nt.Data.Order.OrderStatus ntOrderStatus)
         {
-            switch (novOrderStatus)
+            switch (ntOrderStatus)
             {
                 case Nt.Data.Order.OrderStatus.Ordered:
                     return Os.Data.OrderLine.OrderLineStatus.CommittedEnum;

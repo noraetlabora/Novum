@@ -68,8 +68,8 @@ namespace Os.Server.Controllers
             if (session == null)
             {
                 session = new Nt.Data.Session();
-                session.ClientId = clientInfo.Id;
                 session.SerialNumber = clientInfo.Id;
+                session.ClientId = Logic.Data.GetClientId();
                 session.PosId = Logic.Data.GetPosId(clientInfo.Id);
                 session.ServiceAreaId = Logic.Data.GetServiceAreaId(session.PosId);
                 session.PriceLevel = Logic.Data.GetPriceLevel(session.ServiceAreaId);

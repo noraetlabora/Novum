@@ -114,10 +114,11 @@ namespace Nt.Database.InterSystems.Api
         /// <param name="articleId"></param>
         /// <param name="voidQuantity"></param>
         /// <param name="voidPrice"></param>
+        /// <param name="assignmentTypeId"></param>
         /// <param name="authorizingWaiterId"></param>
-        public void VoidNewOrder(Nt.Data.Session session, string tableId, string articleId, decimal voidQuantity, decimal voidPrice, string authorizingWaiterId)
+        public void VoidNewOrder(Nt.Data.Session session, string tableId, string articleId, decimal voidQuantity, decimal voidPrice, string assignmentTypeId, string authorizingWaiterId)
         {
-            Interaction.CallVoidClassMethod("cmNT.BonOman", "SetSofortStornoJournal", session.ClientId, session.PosId, session.WaiterId, tableId, articleId, voidQuantity.ToString(), voidPrice.ToString(), authorizingWaiterId);
+            Interaction.CallVoidClassMethod("cmNT.BonOman", "SetSofortStornoJournal", session.ClientId, session.PosId, session.WaiterId, tableId, articleId, voidQuantity.ToString(), voidPrice.ToString(), assignmentTypeId, authorizingWaiterId);
         }
 
         /// <summary>

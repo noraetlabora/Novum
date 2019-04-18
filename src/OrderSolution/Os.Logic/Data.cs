@@ -336,6 +336,15 @@ namespace Os.Logic
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        public static string GetClientId()
+        {
+            return Nt.Database.InterSystems.Data.ClientId;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="deviceId"></param>
         /// <returns></returns>
         public static string GetPosId(string deviceId)
