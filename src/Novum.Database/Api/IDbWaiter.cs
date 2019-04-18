@@ -17,10 +17,10 @@ namespace Novum.Database.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="session"></param>
+        /// <param name="waiterId"></param>
         /// <param name="code"></param>
         /// <returns></returns>
-        bool ValidWaiter(Session session, string code);
+        bool ValidWaiter(string waiterId, string code);
 
         /// <summary>
         /// 

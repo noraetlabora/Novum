@@ -10,6 +10,17 @@ namespace Novum.Database.InterSystems
     /// </summary>
     public class Data
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string DoublePipes = "||";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public const char Char96 = (char)96;
+
         internal static string SqlToday
         {
             get { return DateTime.Now.ToString("yyyy-MM-dd"); }

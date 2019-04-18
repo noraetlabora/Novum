@@ -134,7 +134,11 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/OrderLines")]
         public IActionResult GetOrderLines([FromQuery] string subTableId, [FromQuery] string status)
         {
-            var orderLines = Novum.Logic.Os.Data.GetOrderLines(subTableId);
+            var session = Data.Sessions.GetSession(Request);
+            if (session == null)
+                return new UnauthorizedResult();
+
+            var orderLines = Novum.Logic.Os.Order.GetOrderLines(session, subTableId);
             return new ObjectResult(orderLines);
         }
 
@@ -147,7 +151,11 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/data/Tables")]
         public IActionResult GetTables([FromQuery] string serviceAreaId)
         {
-            var tables = Novum.Logic.Os.Data.GetTables();
+            var session = Data.Sessions.GetSession(Request);
+            if (session == null)
+                return new UnauthorizedResult();
+
+            var tables = Novum.Logic.Os.Table.GetTables(session);
             return new ObjectResult(tables);
         }
     }

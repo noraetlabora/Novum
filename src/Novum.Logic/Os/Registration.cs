@@ -41,10 +41,12 @@ namespace Novum.Logic.Os
         /// <param name="loginUser"></param>
         public static void Login(Session session, LoginUser loginUser)
         {
-            bool validWaiter = DB.Api.Waiter.ValidWaiter(session, loginUser.Password);
+
+            bool validWaiter = DB.Api.Waiter.ValidWaiter(loginUser.Id, loginUser.Password);
             if (!validWaiter)
                 throw new Exception(string.Format("user {0} not valid", loginUser.Id));
             DB.Api.Waiter.Login(session);
+            session.WaiterId = loginUser.Id;
         }
 
         /// <summary>

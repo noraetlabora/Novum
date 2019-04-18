@@ -119,7 +119,6 @@ namespace Novum.Database.InterSystems
 
         private static string CallClassMethod(string className, string methodName, object[] args)
         {
-            var returnValue = "";
             var stackTrace = new System.Diagnostics.StackTrace();
             var caller = stackTrace.GetFrame(2).GetMethod().Name;
             var classMethod = string.Format("##class({0}).{1}({2})", className, methodName, string.Join(",", args));
@@ -127,16 +126,15 @@ namespace Novum.Database.InterSystems
 
             try
             {
-                returnValue = (string)DB.Xep.CallClassMethod(className, methodName, args);
-                Logging.Log.Database.Debug(caller + "|ClassMethodReturnValueLength|" + returnValue.Length);
+                Object returnValue = DB.Xep.CallClassMethod(className, methodName, args);
+                Logging.Log.Database.Debug(caller + "|ClassMethodReturnValueLength|" + returnValue.ToString().Length);
+                return returnValue.ToString();
             }
             catch (Exception ex)
             {
                 Logging.Log.Database.Error(ex, caller + "|ClassMethod|" + classMethod);
                 throw ex;
             }
-
-            return returnValue;
         }
 
         #endregion

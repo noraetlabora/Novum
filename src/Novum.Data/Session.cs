@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Novum.Data
 {
@@ -10,12 +11,6 @@ namespace Novum.Data
     public class Session
     {
         private Dictionary<string, Order> orders;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        public Table CurrentTable { get; set; }
 
         #region Properties
 
@@ -73,6 +68,12 @@ namespace Novum.Data
         /// <value></value>
         public string WaiterId { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public Table CurrentTable { get; private set; }
+
         #endregion
 
         #region Constructor
@@ -100,6 +101,28 @@ namespace Novum.Data
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
+        public Novum.Data.Order GetOrder(string orderId)
+        {
+            if (orders.ContainsKey(orderId))
+                return orders[orderId];
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<Novum.Data.Order> GetOrders()
+        {
+            return orders.Values.ToList();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="order"></param>
         /// <returns></returns>
         public decimal AddOrder(Order order)
@@ -109,6 +132,49 @@ namespace Novum.Data
             else
                 orders.Add(order.Id, order);
             return orders[order.Id].Quantity;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="voidQuantity"></param>
+        /// <returns></returns>
+        public decimal VoidOrder(string orderId, decimal voidQuantity)
+        {
+            // no order with id found
+            if (!orders.ContainsKey(orderId))
+                return decimal.Zero;
+            // remove order and return actual quantity
+            if (orders[orderId].Quantity <= voidQuantity)
+            {
+                var quantity = orders[orderId].Quantity;
+                orders.Remove(orderId);
+                return quantity;
+            }
+            // decrease quantity and return quantity of rest
+            orders[orderId].Quantity -= voidQuantity;
+            return orders[orderId].Quantity;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>number of canceld orderlines</returns>
+        public int ClearOrders()
+        {
+            var ordersCount = orders.Count;
+            orders.Clear();
+            return ordersCount;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="table"></param>
+        public void SetCurrentTable(Novum.Data.Table table)
+        {
+            this.CurrentTable = table;
         }
 
         #endregion

@@ -57,7 +57,7 @@ namespace Novum.Data.Utils
         /// <returns></returns>
         public uint GetUInt(int index)
         {
-            if (index < 0 && index >= list.Count)
+            if (index < 0 || index >= list.Count)
                 return 0;
             uint value = 0;
             if (!uint.TryParse(list[index], out value))
@@ -72,7 +72,7 @@ namespace Novum.Data.Utils
         /// <returns></returns>
         public int GetInt(int index)
         {
-            if (index < 0 && index >= list.Count)
+            if (index < 0 || index >= list.Count)
                 return 0;
             int value = 0;
             if (!int.TryParse(list[index], out value))
@@ -87,7 +87,7 @@ namespace Novum.Data.Utils
         /// <returns></returns>
         public decimal GetDecimal(int index)
         {
-            if (index < 0 && index >= list.Count)
+            if (index < 0 || index >= list.Count)
                 return decimal.Zero;
             decimal value = decimal.Zero;
             if (!decimal.TryParse(list[index], style, culture, out value))
@@ -102,7 +102,7 @@ namespace Novum.Data.Utils
         /// <returns></returns>
         public bool GetBool(int index)
         {
-            if (index < 0 && index >= list.Count)
+            if (index < 0 || index >= list.Count)
                 return false;
             bool value = false;
             if (!bool.TryParse(list[index], out value))
@@ -117,7 +117,7 @@ namespace Novum.Data.Utils
         /// <returns></returns>
         public string GetString(int index)
         {
-            if (index < 0 && index >= list.Count)
+            if (index < 0 || index >= list.Count)
                 return string.Empty;
             if (string.IsNullOrEmpty(list[index]))
                 return string.Empty;
@@ -131,7 +131,7 @@ namespace Novum.Data.Utils
         /// <returns></returns>
         public DateTime GetDateTime(int index)
         {
-            if (index < 0 && index >= list.Count)
+            if (index < 0 || index >= list.Count)
                 return new DateTime(1999, 12, 31, 23, 59, 59, 999);
             DateTime value;
             if (!DateTime.TryParse(list[index], out value))

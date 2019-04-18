@@ -26,16 +26,13 @@ namespace Novum.Server.Controllers.Os
             var session = Data.Sessions.GetSession(Request);
             try
             {
-                session.WaiterId = loginUser.Id;
                 Logic.Os.Registration.Login(session, loginUser);
-                Data.Sessions.SetSession(session);
                 //204 - No Content
                 return new NoContentResult();
             }
             catch (Exception ex)
             {
                 session.WaiterId = "";
-                Data.Sessions.SetSession(session);
                 var osError = new OsError();
                 osError.ErrorMsg = ex.Message;
                 //401 - Unauthorized
@@ -53,7 +50,6 @@ namespace Novum.Server.Controllers.Os
         {
             var session = Data.Sessions.GetSession(Request);
             session.WaiterId = "";
-            Data.Sessions.SetSession(session);
             //200 - Ok
             return new OkObjectResult(null);
         }

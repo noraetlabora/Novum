@@ -21,16 +21,21 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/actions/SubTables/Create")]
         public virtual IActionResult CreateSubTable([FromQuery] string tableId)
         {
-            var subTable = new SubTable();
-
-            //
-            subTable.Id = tableId + ".1";
-            subTable.Name = tableId + ".1";
-            subTable.IsSelected = true;
-            //
-
-            //201 - Created
-            return new CreatedResult("SubTables/Create", subTable);
+            var session = Data.Sessions.GetSession(Request);
+            try
+            {
+                //register client
+                var subTable = Logic.Os.Table.CreateSubTable(session, tableId);
+                //201 - Created
+                return new CreatedResult("SubTables/Create", subTable); ;
+            }
+            catch (Exception ex)
+            {
+                var osError = new OsError();
+                osError.ErrorMsg = ex.Message;
+                //400 - BadRequest
+                return new BadRequestObjectResult(osError);
+            }
         }
 
         /// <summary>
@@ -45,20 +50,22 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/actions/Tables/OpenByName/{name}")]
         public IActionResult OpenTableByName([FromRoute][Required] string name, [FromQuery] string serviceAreaId, [FromQuery] bool? prePayment)
         {
-            var tableResult = new TableResult();
-
-            //
-            tableResult.Id = "1001.1";
-            tableResult.Name = "1.1";
-            tableResult.BookedAmount = 12398;
-            tableResult.LastActivityTime = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds() - 5000;
-            tableResult.ServiceAreaId = "RES";
-            //
-
-            ////201 - Created
-            //return new CreatedResult("Tables/OpenByName", tableResult);
-            //200 - Ok
-            return new OkObjectResult(tableResult);
+            var session = Data.Sessions.GetSession(Request);
+            try
+            {
+                var tableResult = Logic.Os.Table.OpenByName(session, name, serviceAreaId, (bool)prePayment);
+                //201 - Created
+                //return new CreatedResult("Tables/OpenByName", tableResult);
+                //200 - Ok
+                return new OkObjectResult(tableResult);
+            }
+            catch (Exception ex)
+            {
+                var osError = new OsError();
+                osError.ErrorMsg = ex.Message;
+                //400 - BadRequest
+                return new BadRequestObjectResult(osError);
+            }
         }
 
         /// <summary>
@@ -73,12 +80,56 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/actions/Tables/FinalizeOrder/{tableId}")]
         public virtual IActionResult FinalizeTableOrder([FromRoute][Required] string tableId)
         {
-            //204 - No Content
-            return new NoContentResult();
-            ////401 - Unauthorized
-            //return new UnauthorizedResult();
-            ////409 - Conflict
-            //return new ConflictResult();
+            var session = Data.Sessions.GetSession(Request);
+            try
+            {
+                Logic.Os.Order.FinalizeOrder(session, tableId);
+                //204 - No Content
+                return new NoContentResult();
+                //401 - Unauthorized
+                //return new UnauthorizedResult();
+                //409 - Conflict
+                //return new ConflictResult();
+            }
+            catch (Exception ex)
+            {
+                var osError = new OsError();
+                osError.ErrorMsg = ex.Message;
+                //400 - BadRequest
+                return new BadRequestObjectResult(osError);
+            }
+        }
+
+        /// <summary>
+        /// Cancles the current order procedure for the table. The table will be unlocked and all uncommited orders will be deleted.
+        /// </summary>
+        /// <param name="tableId">Table to commit orders for.</param>
+        /// <response code="204">No Content</response>
+        /// <response code="401">Unauthorized</response>
+        /// <response code="403">Forbidden</response>
+        /// <response code="409">Conflict</response>
+        [HttpPost]
+        [Route("/api/v2/actions/Tables/CancelOrder/{tableId}")]
+        public virtual IActionResult CancelOrder([FromRoute][Required] string tableId)
+        {
+            var session = Data.Sessions.GetSession(Request);
+            try
+            {
+                Logic.Os.Order.CancelOrder(session, tableId);
+                //204 - No Content
+                return new NoContentResult();
+                //401 - Unauthorized
+                //return new UnauthorizedResult();
+                //409 - Conflict
+                //return new ConflictResult();
+            }
+            catch (Exception ex)
+            {
+                var osError = new OsError();
+                osError.ErrorMsg = ex.Message;
+                //400 - BadRequest
+                return new BadRequestObjectResult(osError);
+            }
         }
     }
 }

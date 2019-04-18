@@ -22,17 +22,23 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/actions/OrderLines/Void/{orderLineId}")]
         public virtual IActionResult VoidOrderLines([FromRoute][Required] string orderLineId, [FromBody][Required] OrderLineVoid data)
         {
-            var osError = new OsError();
-            var voidResult = new OrderLineVoidResult();
-
-            //
-
-            //
-
-            // 204 - No Content - Delete Orderline (Orderline (1x Water, 1x Void, return NoContentResult))
-            //return new NoContentResult();
-            // 200 - OK - Update Orderline (Orderline 3x Water, 1x Void, return OrderLineVoidResult with 2x Water)
-            return new OkObjectResult(voidResult);
+            var session = Data.Sessions.GetSession(Request);
+            try
+            {
+                var voidResult = Logic.Os.Order.Void(session, orderLineId, data);
+                // 204 - No Content - delete Orderline
+                if (voidResult.Quantity <= 0)
+                    return new NoContentResult();
+                // 200 - OK - update Orderline
+                return new OkObjectResult(voidResult);
+            }
+            catch (Exception ex)
+            {
+                var osError = new OsError();
+                osError.ErrorMsg = ex.Message;
+                //400 - BadRequest
+                return new BadRequestObjectResult(osError);
+            }
         }
 
         /// <summary>
@@ -48,9 +54,9 @@ namespace Novum.Server.Controllers.Os
             var session = Data.Sessions.GetSession(Request);
             try
             {
-                var olResult = Logic.Os.Order.Add(session, subTableId, data);
+                var orderLineResult = Logic.Os.Order.Add(session, subTableId, data);
                 //201 - Created
-                return new CreatedResult("OrderLines/Add", olResult);
+                return new CreatedResult("OrderLines/Add", orderLineResult);
             }
             catch (Exception ex)
             {
@@ -71,19 +77,10 @@ namespace Novum.Server.Controllers.Os
         [Route("/api/v2/actions/OrderLines/ModifyUncommitted/{orderLineId}")]
         public IActionResult ModifyOrderLinesUncommitted([FromRoute][Required] string orderLineId, [FromBody][Required] OrderLineModify data)
         {
-            var osError = new OsError();
-            var olResult = new OrderLineResult();
-
-            //
-            olResult.Id = "article0";
-            olResult.SinglePrice = 1299;
-            olResult.Modifiers = new List<OrderLineResultModifier>();
-            var modifier = new OrderLineResultModifier() { Id = "modifier0" };
-            olResult.Modifiers.Add(modifier);
-            //
+            var orderLineResult = new OrderLineResult();
 
             //201 - Created
-            return new CreatedResult("OrderLines/ModifyUncommitted", olResult);
+            return new CreatedResult("OrderLines/ModifyUncommitted", orderLineResult);
         }
     }
 }

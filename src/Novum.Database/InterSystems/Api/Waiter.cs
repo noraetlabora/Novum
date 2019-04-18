@@ -11,10 +11,18 @@ namespace Novum.Database.InterSystems.Api
     /// </summary>
     internal class Waiter : IDbWaiter
     {
+
+        /// <summary>
+        /// 
+        /// </summary>
         public Waiter()
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<string, Novum.Data.Waiter> GetWaiters()
         {
             var waiters = new Dictionary<string, Novum.Data.Waiter>();
@@ -36,14 +44,20 @@ namespace Novum.Database.InterSystems.Api
             return waiters;
         }
 
-        public bool ValidWaiter(Session session, string code)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="waiterId"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public bool ValidWaiter(string waiterId, string code)
         {
             var waiters = new Dictionary<string, Novum.Data.Waiter>();
             var sql = new StringBuilder();
             sql.Append(" SELECT PNR, code, name");
             sql.Append(" FROM NT.Pers ");
-            sql.Append(" WHERE FA = ").Append(session.ClientId);
-            sql.Append(" AND PNR = ").Append(Interaction.SqlQuote(session.WaiterId));
+            sql.Append(" WHERE FA = ").Append(Data.ClientId);
+            sql.Append(" AND PNR = ").Append(Interaction.SqlQuote(waiterId));
             sql.Append(" AND code = ").Append(Interaction.SqlQuote(code));
             sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
             var dataTable = Interaction.GetDataTable(sql.ToString());
@@ -54,6 +68,10 @@ namespace Novum.Database.InterSystems.Api
                 return false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
         public void Login(Session session)
         {
             var posId = DB.Api.Pos.GetPosId(session.SerialNumber);
@@ -61,6 +79,10 @@ namespace Novum.Database.InterSystems.Api
             Interaction.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", Data.ClientId, posId, session.WaiterId, session.SerialNumber, "1");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
         public void Logout(Session session)
         {
             var posId = DB.Api.Pos.GetPosId(session.SerialNumber);
