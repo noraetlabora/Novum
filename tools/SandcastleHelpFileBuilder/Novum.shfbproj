@@ -39,17 +39,18 @@
     <WarnOnMissingSourceContext>False</WarnOnMissingSourceContext>
     <SourceCodeBasePath>..\..\src\</SourceCodeBasePath>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\..\src\Novum.Server\bin\Debug\netcoreapp2.2\Novum.Server.dll" />
-      <DocumentationSource sourceFile="..\..\src\Novum.Server\bin\Debug\netcoreapp2.2\NovumServer.xml" />
-      <DocumentationSource sourceFile="..\..\src\Novum.Logic\bin\Debug\netstandard2.0\Novum.Logic.dll" />
-      <DocumentationSource sourceFile="..\..\src\Novum.Logic\bin\Debug\netstandard2.0\NovumLogic.xml" />
-      <DocumentationSource sourceFile="..\..\src\Novum.Database\bin\Debug\netstandard2.0\Novum.Database.dll" />
-      <DocumentationSource sourceFile="..\..\src\Novum.Database\bin\Debug\netstandard2.0\NovumDatabase.xml" />
-      <DocumentationSource sourceFile="..\..\src\Novum.Data\bin\Debug\netstandard2.0\Novum.Data.dll" />
-      <DocumentationSource sourceFile="..\..\src\Novum.Data\bin\Debug\netstandard2.0\NovumData.xml" />
-      <DocumentationSource sourceFile="..\..\src\Novum.Logging\bin\Debug\netstandard2.0\Novum.Logging.dll" />
-      <DocumentationSource sourceFile="..\..\src\Novum.Logging\bin\Debug\netstandard2.0\NovumLog.xml" />
-    </DocumentationSources>
+      <DocumentationSource sourceFile="..\..\src\NovaTouch\Nt.Data\bin\Debug\netstandard2.0\Nt.Data.dll" />
+<DocumentationSource sourceFile="..\..\src\NovaTouch\Nt.Data\bin\Debug\netstandard2.0\Nt.Data.xml" />
+<DocumentationSource sourceFile="..\..\src\NovaTouch\Nt.Database\bin\Debug\netstandard2.0\Nt.Database.dll" />
+<DocumentationSource sourceFile="..\..\src\NovaTouch\Nt.Database\bin\Debug\netstandard2.0\Nt.Database.xml" />
+<DocumentationSource sourceFile="..\..\src\NovaTouch\Nt.Logging\bin\Debug\netstandard2.0\Nt.Logging.dll" />
+<DocumentationSource sourceFile="..\..\src\NovaTouch\Nt.Logging\bin\Debug\netstandard2.0\Nt.Logging.xml" />
+<DocumentationSource sourceFile="..\..\src\OrderSolution\Os.Data\bin\Debug\netstandard2.0\Os.Data.dll" />
+<DocumentationSource sourceFile="..\..\src\OrderSolution\Os.Data\bin\Debug\netstandard2.0\Os.Data.xml" />
+<DocumentationSource sourceFile="..\..\src\OrderSolution\Os.Logic\bin\Debug\netstandard2.0\Os.Logic.dll" />
+<DocumentationSource sourceFile="..\..\src\OrderSolution\Os.Logic\bin\Debug\netstandard2.0\Os.Logic.xml" />
+<DocumentationSource sourceFile="..\..\src\OrderSolution\Os.Server\bin\Debug\netcoreapp2.2\Os.Server.dll" />
+<DocumentationSource sourceFile="..\..\src\OrderSolution\Os.Server\bin\Debug\netcoreapp2.2\Os.Server.xml" /></DocumentationSources>
     <PlugInConfigurations>
       <PlugInConfig id="Assembly Binding Redirection" enabled="True">
         <configuration useGAC="false">
