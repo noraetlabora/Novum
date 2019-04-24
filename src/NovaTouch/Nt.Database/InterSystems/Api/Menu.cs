@@ -30,7 +30,7 @@ namespace Nt.Database.InterSystems.Api
             sql.Append(" SELECT M.ZE, M.bez1, M.bgcolor, M.fgcolor, UM.UMENU, UM.spalten ");
             sql.Append(" FROM  NT.TouchMenuZeile M ");
             sql.Append(" INNER JOIN NT.TouchUmenu UM ON UM.FA = M.FA AND UM.UMENU = M.ZE ");
-            sql.Append(" WHERE M.FA = ").Append(Data.ClientId);
+            sql.Append(" WHERE M.FA = ").Append(InterSystemsApi.ClientId);
             sql.Append(" AND M.MENU = ").Append(Interaction.SqlQuote(menuId));
             var dataTable = Interaction.GetDataTable(sql.ToString());
 
@@ -60,7 +60,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT UMENU, bez, spalten ");
             sql.Append(" FROM NT.TouchUmenu ");
-            sql.Append(" WHERE FA = ").Append(Data.ClientId);
+            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
             sql.Append(" AND UMENU = ").Append(Interaction.SqlQuote(menuId));
             var dataTable = Interaction.GetDataTable(sql.ToString());
 

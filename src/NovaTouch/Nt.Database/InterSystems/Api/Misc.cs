@@ -24,7 +24,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT GRUND, bez ");
             sql.Append(" FROM NT.StornoGrund ");
-            sql.Append(" WHERE FA = ").Append(Data.ClientId);
+            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
             sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
             var dataTable = Interaction.GetDataTable(sql.ToString());
 
@@ -53,7 +53,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT VKO, bez, vkebene ");
             sql.Append(" FROM WW.VKO ");
-            sql.Append(" WHERE FA = ").Append(Data.ClientId);
+            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
             sql.Append(" AND  passiv > ").Append(Interaction.SqlToday);
             var dataTable = Interaction.GetDataTable(sql.ToString());
 

@@ -339,7 +339,7 @@ namespace Os.Logic
         /// <returns></returns>
         public static string GetClientId()
         {
-            return Nt.Database.InterSystems.Data.ClientId;
+            return Nt.Database.DB.Api.Pos.GetClientId();
         }
 
         /// <summary>

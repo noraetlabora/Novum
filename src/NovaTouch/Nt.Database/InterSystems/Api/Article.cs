@@ -30,7 +30,7 @@ namespace Nt.Database.InterSystems.Api
             sql.Append(" SELECT M.Anr, M.UMENU, M.ROW, M.COL, M.bez1, M.bgcolor, M.fgcolor, A.vkaend, A.nameaend ");
             sql.Append(" FROM NT.TouchUMenuZeilen M ");
             sql.Append(" LEFT JOIN WW.ANRKassa AS A ON (A.FA=M.FA AND A.ANR=M.ANR) ");
-            sql.Append(" WHERE M.FA = ").Append(Data.ClientId);
+            sql.Append(" WHERE M.FA = ").Append(InterSystemsApi.ClientId);
             sql.Append(" AND M.UMENU = ").Append(Interaction.SqlQuote(menuId));
             sql.Append(" AND M.ANR <> '' ");
             var dataTable = Interaction.GetDataTable(sql.ToString());
@@ -79,7 +79,7 @@ namespace Nt.Database.InterSystems.Api
             sql.Append(" FROM NT.TouchUMenuZeilen M");
             sql.Append(" LEFT JOIN WW.ANRKassa AS A ON (A.FA=M.FA AND A.ANR=M.ANR)");
             sql.Append(" LEFT JOIN NT.PLUTabDet AS P ON (P.FA = M.FA AND P.ANR = M.ANR)");
-            sql.Append(" WHERE M.FA = ").Append(Data.ClientId);
+            sql.Append(" WHERE M.FA = ").Append(InterSystemsApi.ClientId);
             sql.Append(" AND ISNUMERIC(M.Anr) = 1");
             var dataTable = Interaction.GetDataTable(sql.ToString());
 
@@ -126,21 +126,21 @@ namespace Nt.Database.InterSystems.Api
         public void CheckEnteredPrice(Nt.Data.Session session, string articleId, decimal price)
         {
             var dbString = Interaction.CallClassMethod("cmNT.BonOman", "CheckArtikelpreis", session.ClientId, session.PosId, session.WaiterId, "tableId", articleId, price);
-            var chPriceString = new Nt.Data.Utils.DataString(dbString);
-            var chPriceArray = chPriceString.SplitByChar96();
-            var chPriceList = new Nt.Data.Utils.DataList(chPriceArray);
+            var checkPriceString = new DataString(dbString);
+            var checkPriceArray = checkPriceString.SplitByChar96();
+            var checkPriceList = new DataList(checkPriceArray);
 
-            switch (chPriceList.GetString(0))
+            switch (checkPriceList.GetString(0))
             {
                 // 0 - entered price is ok
                 case "0":
                     break;
                 // 1 - entered price is lower than min price
                 case "1":
-                    throw new Exception(string.Format("entered price {0} for article {1} is lower than the min. price {2}", price, articleId, chPriceList.GetString(1)));
+                    throw new Exception(string.Format("entered price {0} for article {1} is lower than the min. price {2}", price, articleId, checkPriceList.GetString(1)));
                 // 2 - entered price is higher than max price
                 case "2":
-                    throw new Exception(string.Format("entered price {0} for article {1} is higher than the max. price {2}", price, articleId, chPriceList.GetString(1)));
+                    throw new Exception(string.Format("entered price {0} for article {1} is higher than the max. price {2}", price, articleId, checkPriceList.GetString(1)));
                 default:
                     break;
             }

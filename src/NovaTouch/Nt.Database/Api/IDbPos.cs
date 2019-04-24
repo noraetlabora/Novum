@@ -10,6 +10,12 @@ namespace Nt.Database.Api
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        string GetClientId();
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="deviceId"></param>
         /// <returns></returns>
         string GetPosId(string deviceId);

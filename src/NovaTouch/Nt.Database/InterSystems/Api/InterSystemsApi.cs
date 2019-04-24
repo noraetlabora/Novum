@@ -17,6 +17,12 @@ namespace Nt.Database.InterSystems.Api
         private static InterSystems.Api.Payment payment;
         private static InterSystems.Api.Order order;
         private static InterSystems.Api.Pos pos;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+         public static string ClientId { get; set; }
 
         public InterSystemsApi()
         {
@@ -77,8 +83,8 @@ namespace Nt.Database.InterSystems.Api
 
         public void Initialize()
         {
-            Data.ClientId = Interaction.CallClassMethod("cmNT.Kassa", "GetOmanFirma");
-            Logging.Log.Database.Info("ClientId = " + Data.ClientId);
+            InterSystemsApi.ClientId = Interaction.CallClassMethod("cmNT.Kassa", "GetOmanFirma");
+            Logging.Log.Database.Info("ClientId = " + InterSystemsApi.ClientId);
         }
     }
 }

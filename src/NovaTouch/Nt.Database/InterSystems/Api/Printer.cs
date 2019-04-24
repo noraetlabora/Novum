@@ -22,7 +22,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT DEV, beschreibung, devtype, device ");
             sql.Append(" FROM NT.Device ");
-            sql.Append(" WHERE FA = ").Append(Data.ClientId);
+            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
             sql.Append(" AND DEV LIKE 'RD%' ");
             sql.Append(" AND pas = 0");
             var dataTable = Interaction.GetDataTable(sql.ToString());

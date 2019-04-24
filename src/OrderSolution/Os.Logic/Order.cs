@@ -64,13 +64,13 @@ namespace Os.Logic
             var orderLineResult = new Os.Data.OrderLineResult();
 
             if (data.EnteredPrice != 0)
-                Nt.Database.DB.Api.Article.CheckEnteredPrice(session, data.ArticleId, decimal.Multiply((decimal)data.EnteredPrice, 100));
+                Nt.Database.DB.Api.Article.CheckEnteredPrice(session, data.ArticleId, decimal.Multiply((decimal)data.EnteredPrice, 100.0m));
             var order = Nt.Database.DB.Api.Order.GetNewOrder(session, data.ArticleId);
             order.Quantity = (decimal)data.Quantity;
             session.AddOrder(order);
 
             orderLineResult.Id = order.Id;
-            orderLineResult.SinglePrice = (int)decimal.Multiply(order.UnitPrice, 100);
+            orderLineResult.SinglePrice = (int)decimal.Multiply(order.UnitPrice, 100.0m);
 
             return orderLineResult;
         }

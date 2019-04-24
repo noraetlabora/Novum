@@ -24,7 +24,7 @@ namespace Nt.Database.InterSystems.Api
         {
             var tables = new Dictionary<string, Nt.Data.Table>();
             var dbString = Interaction.CallClassMethod("cmNT.Tisch", "GetTischListe2", session.ClientId, session.PosId, session.WaiterId);
-            var tablesString = new Nt.Data.Utils.DataString(dbString);
+            var tablesString = new DataString(dbString);
             var tablesArray = tablesString.SplitByDoublePipes();
 
             foreach (string tableString in tablesArray)
@@ -33,8 +33,8 @@ namespace Nt.Database.InterSystems.Api
                     continue;
 
                 var table = new Nt.Data.Table();
-                var dataString = new Nt.Data.Utils.DataString(tableString);
-                var dataList = new Nt.Data.Utils.DataList(dataString.SplitByChar96());
+                var dataString = new DataString(tableString);
+                var dataList = new DataList(dataString.SplitByChar96());
 
                 table.Id = dataList.GetString(0);
                 table.Name = dataList.GetString(1);
@@ -97,8 +97,8 @@ namespace Nt.Database.InterSystems.Api
         public void OpenTable(Nt.Data.Session session, string tableId)
         {
             var dbString = Interaction.CallClassMethod("cmNT.Tisch", "TischOpen", session.ClientId, session.PosId, session.WaiterId, tableId, "0");
-            var dataString = new Nt.Data.Utils.DataString(dbString);
-            var dataList = new Nt.Data.Utils.DataList(dataString.SplitByChar96());
+            var dataString = new DataString(dbString);
+            var dataList = new DataList(dataString.SplitByChar96());
         }
 
         /// <summary>

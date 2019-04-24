@@ -29,8 +29,8 @@ namespace Nt.Database.InterSystems.Api
         public Dictionary<string, Nt.Data.Order> GetOrders(string tableId)
         {
             var orders = new Dictionary<string, Nt.Data.Order>();
-            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetAllTischBonMitAenderer", Data.ClientId, "RK", tableId, "", "2");
-            var ordersString = new Nt.Data.Utils.DataString(dbString);
+            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetAllTischBonMitAenderer", InterSystemsApi.ClientId, "RK", tableId, "", "2");
+            var ordersString = new DataString(dbString);
             var ordersArray = ordersString.SplitByCRLF();
 
             foreach (string orderString in ordersArray)
@@ -39,8 +39,8 @@ namespace Nt.Database.InterSystems.Api
                     continue;
 
                 var order = new Nt.Data.Order();
-                var dataString = new Nt.Data.Utils.DataString(orderString);
-                var dataList = new Nt.Data.Utils.DataList(dataString.SplitByChar96());
+                var dataString = new DataString(orderString);
+                var dataList = new DataList(dataString.SplitByChar96());
 
                 order.ArticleId = dataList.GetString(3);
                 order.Name = dataList.GetString(4);
@@ -70,9 +70,9 @@ namespace Nt.Database.InterSystems.Api
         {
             var order = new Nt.Data.Order();
             var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetPLUDaten", session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", articleId);
-            var dataString = new Nt.Data.Utils.DataString(dbString);
+            var dataString = new DataString(dbString);
             var dataArray = dataString.SplitByChar96();
-            var dataList = new Nt.Data.Utils.DataList(dataArray);
+            var dataList = new DataList(dataArray);
 
             var availability = dataList.GetString(21);
             Article.CheckAvailibility(availability);
@@ -147,73 +147,73 @@ namespace Nt.Database.InterSystems.Api
 
         #endregion
 
-        #region private methods
+        #region internal methods
 
-        private static string GetOrderDataString(List<Nt.Data.Order> orders)
+        internal static string GetOrderDataString(List<Nt.Data.Order> orders)
         {
             var dataString = new StringBuilder();
-            foreach (Nt.Data.Order order in orders)
+            foreach (var order in orders)
             {
                 if (dataString.Length > 0)
-                    dataString.Append(Environment.NewLine);
+                    dataString.Append(DataString.CRLF);
                 dataString.Append(GetOrderDataString(order));
             }
             return dataString.ToString();
         }
 
-        private static string GetOrderDataString(Nt.Data.Order order)
-        {
+        internal static string GetOrderDataString(Nt.Data.Order order)
+        { 
             var dataString = new StringBuilder();
             //
-            dataString.Append(order.AssignmentTypeId).Append(Data.DoublePipes);
-            dataString.Append(order.ArticleId).Append(Data.DoublePipes);
-            dataString.Append(order.UnitPrice).Append(Data.DoublePipes);
-            dataString.Append(order.ReferenceId).Append(Data.DoublePipes);
-            dataString.Append(order.SequenceNumber).Append(Data.Char96);
+            dataString.Append(order.AssignmentTypeId).Append(DataString.DoublePipes);
+            dataString.Append(order.ArticleId).Append(DataString.DoublePipes);
+            dataString.Append(order.UnitPrice).Append(DataString.DoublePipes);
+            dataString.Append(order.ReferenceId).Append(DataString.DoublePipes);
+            dataString.Append(order.SequenceNumber).Append(DataString.Char96);
             //
-            dataString.Append(order.Quantity).Append(Data.Char96);
-            dataString.Append((int)order.Status).Append(Data.Char96);
-            dataString.Append(order.ArticleId).Append(Data.Char96);
-            dataString.Append(order.Name).Append(Data.Char96);
-            dataString.Append(order.TotalPrice).Append(Data.Char96);
-            dataString.Append("").Append(Data.Char96);
-            dataString.Append(order.CourseMenu).Append(Data.Char96);
-            dataString.Append(order.CourseNumber).Append(Data.Char96);
-            dataString.Append("").Append(Data.Char96); //SubmenuId;Zeile;Spalte
-            dataString.Append("0").Append(Data.Char96); //Gewicht
-            dataString.Append("").Append(Data.Char96); //WiegeNr
-            dataString.Append("0").Append(Data.Char96); //WiegeGrundPreis
-            dataString.Append(order.Name).Append(Data.Char96);
-            dataString.Append("0").Append(Data.Char96); //WiegeArtikel
-            dataString.Append(order.TotalPrice).Append(Data.Char96);
-            dataString.Append(order.CourseName).Append(Data.Char96);
-            dataString.Append("").Append(Data.Char96); //PlatzNr
-            dataString.Append("").Append(Data.Char96); //GutscheinNummer;GutscheinNummerDisplay;GutscheinCOPA;GutscheinWertAlt;GutscheinWertNeu;GutscheinVorlage
-            dataString.Append("").Append(Data.Char96); //RabattBetrag
-            dataString.Append("").Append(Data.Char96); //HappyHourBetrag
-            dataString.Append("").Append(Data.Char96); //ZuschussBetrag
-            dataString.Append("").Append(Data.Char96); //HappyBezeichnung
-            dataString.Append("").Append(Data.Char96); //ArtikelGruppe
-            dataString.Append("").Append(Data.Char96); //ArtikelGruppeBezeichnung
-            dataString.Append("").Append(Data.Char96); //ArtikelSuchbegriffe
-            dataString.Append("").Append(Data.Char96); //ArtikelBehandlung
-            dataString.Append("").Append(Data.Char96); //HappyStufe
-            dataString.Append("").Append(Data.Char96); //RabattBetragVerrechnet
-            dataString.Append("").Append(Data.Char96); //UstProzent
-            dataString.Append("").Append(Data.Char96); //UstProzent2
-            dataString.Append("").Append(Data.Char96); //Platzbonierung
+            dataString.Append(order.Quantity).Append(DataString.Char96);
+            dataString.Append((int)order.Status).Append(DataString.Char96);
+            dataString.Append(order.ArticleId).Append(DataString.Char96);
+            dataString.Append(order.Name).Append(DataString.Char96);
+            dataString.Append(order.TotalPrice).Append(DataString.Char96);
+            dataString.Append("").Append(DataString.Char96);
+            dataString.Append(order.CourseMenu).Append(DataString.Char96);
+            dataString.Append(order.CourseNumber).Append(DataString.Char96);
+            dataString.Append("").Append(DataString.Char96); //SubmenuId;Zeile;Spalte
+            dataString.Append("0").Append(DataString.Char96); //Gewicht
+            dataString.Append("").Append(DataString.Char96); //WiegeNr
+            dataString.Append("0").Append(DataString.Char96); //WiegeGrundPreis
+            dataString.Append(order.Name).Append(DataString.Char96);
+            dataString.Append("0").Append(DataString.Char96); //WiegeArtikel
+            dataString.Append(order.TotalPrice).Append(DataString.Char96);
+            dataString.Append(order.CourseName).Append(DataString.Char96);
+            dataString.Append("").Append(DataString.Char96); //PlatzNr
+            dataString.Append("").Append(DataString.Char96); //GutscheinNummer;GutscheinNummerDisplay;GutscheinCOPA;GutscheinWertAlt;GutscheinWertNeu;GutscheinVorlage
+            dataString.Append("").Append(DataString.Char96); //RabattBetrag
+            dataString.Append("").Append(DataString.Char96); //HappyHourBetrag
+            dataString.Append("").Append(DataString.Char96); //ZuschussBetrag
+            dataString.Append("").Append(DataString.Char96); //HappyBezeichnung
+            dataString.Append("").Append(DataString.Char96); //ArtikelGruppe
+            dataString.Append("").Append(DataString.Char96); //ArtikelGruppeBezeichnung
+            dataString.Append("").Append(DataString.Char96); //ArtikelSuchbegriffe
+            dataString.Append("").Append(DataString.Char96); //ArtikelBehandlung
+            dataString.Append("").Append(DataString.Char96); //HappyStufe
+            dataString.Append("").Append(DataString.Char96); //RabattBetragVerrechnet
+            dataString.Append("").Append(DataString.Char96); //UstProzent
+            dataString.Append("").Append(DataString.Char96); //UstProzent2
+            dataString.Append("").Append(DataString.Char96); //Platzbonierung
 
             return dataString.ToString();
         }
 
-        private static string GetVoidDataString(Nt.Data.Order order)
+        internal static string GetVoidDataString(Nt.Data.Order order)
         {
             var dataString = new StringBuilder();
-            dataString.Append(order.AssignmentTypeId).Append(Data.DoublePipes);
-            dataString.Append(order.ArticleId).Append(Data.DoublePipes);
-            dataString.Append(order.UnitPrice).Append(Data.DoublePipes);
-            dataString.Append(order.ReferenceId).Append(Data.DoublePipes);
-            dataString.Append(order.SequenceNumber).Append(Data.Char96);
+            dataString.Append(order.AssignmentTypeId).Append(DataString.DoublePipes);
+            dataString.Append(order.ArticleId).Append(DataString.DoublePipes);
+            dataString.Append(order.UnitPrice).Append(DataString.DoublePipes);
+            dataString.Append(order.ReferenceId).Append(DataString.DoublePipes);
+            dataString.Append(order.SequenceNumber).Append(DataString.Char96);
 
             return dataString.ToString();
         }

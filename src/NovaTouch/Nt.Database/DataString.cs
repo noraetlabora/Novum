@@ -2,22 +2,46 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Nt.Data.Utils
+namespace Nt.Database
 {
     /// <summary>
     /// DataString contains a string Value which can be be splitted by a comma, semicolon, pipe, double pipes or character 96.
     /// </summary>
-    public class DataString
+    internal class DataString
     {
-        #region private const
-        private const char Comma = (char)44;
-        private const char Semicolon = (char)59;
-        private const char Char96 = (char)96;
-        private const char SinglePipe = (char)124;
-        private const string DoublePipes = "||";
-        private const char SingleQuote = (char)39;
-        private const char DoubleQuotes = (char)34;
-        private const string CRLF = "\r\n";
+        #region const
+        /// <summary>
+        /// 
+        /// </summary>
+        public const char Comma = (char)44;
+        /// <summary>
+        /// 
+        /// </summary>
+        public const char Semicolon = (char)59;
+        /// <summary>
+        /// 
+        /// </summary>
+        public const char Char96 = (char)96;
+        /// <summary>
+        /// 
+        /// </summary>
+        public const char SinglePipe = (char)124;
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string DoublePipes = "||";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const char SingleQuote = (char)39;
+        /// <summary>
+        /// 
+        /// </summary>
+        public const char DoubleQuotes = (char)34;
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string CRLF = "\r\n";
 
         #endregion
 

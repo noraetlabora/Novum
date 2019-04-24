@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 
-namespace Nt.Data.Utils
+namespace Nt.Database
 {
     /// <summary>
     /// DataList is a List of strings which can be accessed.
     /// </summary>
-    public class DataList : IEnumerable<string>
+    internal class DataList : IEnumerable<string>
     {
         #region private fields
         private static NumberStyles style = NumberStyles.AllowDecimalPoint;

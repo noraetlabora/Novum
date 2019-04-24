@@ -1,6 +1,44 @@
-GET http://localhost:5000/api/v2/data/CancellationReasons HTTP/1.1
+POST http://localhost:5000/api/v2/actions/Init/RegisterClient HTTP/1.1
 Accept-Encoding: gzip,deflate
-Websurge-Request-Name: /api/v2/data/CancellationReasons
+Content-Type: application/json
+Websurge-Request-Name: /api/v2/actions/Init/RegisterClient
+
+{
+  "version": "1.2.3",
+  "id": "125-49787459",
+  "clientName": "Orderman7 125-49787459",
+  "printerPath": "thePrinterPath"
+}
+HTTP/1.1  
+Transfer-Encoding: chunked
+Content-Type: application/json; charset=utf-8
+Date: Tue, 23 Apr 2019 17:45:43 GMT
+Set-Cookie: sessionId=7538b0c7-8a80-412c-b222-59fc38ebc786; path=/
+Server: Kestrel
+
+{"restaurantName":"Stube","utcTime":1556041543,"clientName":"Orderman"}
+
+------------------------------------------------------------------
+
+POST http://localhost:5000/api/v2/actions/Auth/Login HTTP/1.1
+Accept-Encoding: gzip,deflate
+Content-Type: application/json
+Websurge-Request-Name: /api/v2/actions/Auth/Login
+
+{
+  "id": "1",
+  "password": "1"
+}
+HTTP/1.1  
+Date: Tue, 23 Apr 2019 17:46:31 GMT
+Server: Kestrel
+
+
+------------------------------------------------------------------
+
+GET http://localhost:5000/api/v2/data/OrderLines HTTP/1.1
+Accept-Encoding: gzip,deflate
+Websurge-Request-Name: /api/v2/data/OrderLines
 
 ------------------------------------------------------------------
 

@@ -21,9 +21,20 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/Pay/SubTables")]
         public virtual IActionResult PaySubTables([FromBody][Required] PaySubTables data)
         {
-
-            // 204 - No Content 
-            return new NoContentResult();
+            var session = Sessions.GetSession(Request);
+            try
+            {
+                Logic.Payment.PaySubTables(session, data);
+                // 204 - No Content 
+                return new NoContentResult();
+            }
+            catch (Exception ex)
+            {
+                var osError = new OsError();
+                osError.ErrorMsg = ex.Message;
+                //400 - BadRequest
+                return new BadRequestObjectResult(osError);
+            }
         }
 
         /// <summary>
@@ -35,7 +46,6 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/Pay/OrderLines")]
         public IActionResult PayOrderLines([FromBody] PayOrderLines data)
         {
-
             // 204 - No Content 
             return new NoContentResult();
         }

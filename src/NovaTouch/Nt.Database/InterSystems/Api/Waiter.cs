@@ -26,7 +26,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT PNR, name ");
             sql.Append(" FROM NT.Pers ");
-            sql.Append(" WHERE FA = ").Append(Data.ClientId);
+            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
             sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
             var dataTable = Interaction.GetDataTable(sql.ToString());
 
@@ -53,7 +53,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT PNR, code, name");
             sql.Append(" FROM NT.Pers ");
-            sql.Append(" WHERE FA = ").Append(Data.ClientId);
+            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
             sql.Append(" AND PNR = ").Append(Interaction.SqlQuote(waiterId));
             sql.Append(" AND code = ").Append(Interaction.SqlQuote(code));
             sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
@@ -73,7 +73,7 @@ namespace Nt.Database.InterSystems.Api
         {
             var posId = DB.Api.Pos.GetPosId(session.SerialNumber);
             Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogin", session.ClientId, posId, session.WaiterId);
-            Interaction.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", Data.ClientId, posId, session.WaiterId, session.SerialNumber, "1");
+            Interaction.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", InterSystemsApi.ClientId, posId, session.WaiterId, session.SerialNumber, "1");
         }
 
         /// <summary>
