@@ -44,6 +44,7 @@ namespace Nt.Database.InterSystems
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine("Exception: " + DB.Connection.State);
                 Logging.Log.Database.Error(ex, caller + "|SQL|" + sql);
                 throw ex;
             }
@@ -188,6 +189,7 @@ namespace Nt.Database.InterSystems
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine("Exception: " + DB.Connection.State);
                 Logging.Log.Database.Error(ex, caller + "|ClassMethod|" + classMethod);
                 throw ex;
             }
@@ -271,6 +273,7 @@ namespace Nt.Database.InterSystems
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine("Exception: " + DB.Connection.State);
                 Logging.Log.Database.Error(ex, caller + "|VoidClassMethod|" + classMethod);
                 throw ex;
             }

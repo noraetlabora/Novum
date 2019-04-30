@@ -16,8 +16,8 @@ namespace Os.Server
     {
         private static char Pipe = '|';
         private static string[] initRequests = {
-            "/api/v2/actions/Init/RegisterGateway",
-            "/api/v2/actions/Init/RegisterClient"
+            "/api/v2/actions/init/registergateway",
+            "/api/v2/actions/init/registerclient"
         };
         private readonly RequestDelegate _next;
 
@@ -75,7 +75,7 @@ namespace Os.Server
         {
             if (request.Method.Equals("GET"))
                 return false;
-            if (initRequests.Contains(request.Path.Value))
+            if (initRequests.Contains(request.Path.Value.ToLower()))
                 return false;
             return true;
         }

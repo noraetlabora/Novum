@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Os.Data;
 
 namespace Os.Server.Controllers
 {
@@ -31,7 +30,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                var osError = new OsError();
+                var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
                 return new BadRequestObjectResult(osError);
@@ -53,6 +52,8 @@ namespace Os.Server.Controllers
             var session = Sessions.GetSession(Request);
             try
             {
+                if (prePayment == null)
+                    prePayment = false;
                 var tableResult = Logic.Table.OpenByName(session, name, serviceAreaId, (bool)prePayment);
                 //201 - Created
                 //return new CreatedResult("Tables/OpenByName", tableResult);
@@ -61,7 +62,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                var osError = new OsError();
+                var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
                 return new BadRequestObjectResult(osError);
@@ -93,7 +94,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                var osError = new OsError();
+                var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
                 return new BadRequestObjectResult(osError);
@@ -125,7 +126,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                var osError = new OsError();
+                var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
                 return new BadRequestObjectResult(osError);

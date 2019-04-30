@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Os.Data;
 
 namespace Os.Server.Controllers
 {
@@ -69,7 +68,7 @@ namespace Os.Server.Controllers
         [Route("/api/v2/data/OsConfiguration")]
         public IActionResult GetOsConfiguration()
         {
-            var osConfiguration = new OsConfiguration();
+            var osConfiguration = new Models.OsConfiguration();
             osConfiguration.Global = new Dictionary<string, string>();
             osConfiguration.Global.Add("language", "de");
             osConfiguration.Global.Add("locale", "de_DE");

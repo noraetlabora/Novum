@@ -55,6 +55,11 @@ namespace Os.Server
                 Nt.Logging.Log.Server.Error("Sessions.Add|session.Id is null or empty");
                 return;
             }
+            if (string.IsNullOrEmpty(session.Id))
+            {
+                Nt.Logging.Log.Server.Error("Sessions.Add|session.Id already in dictionary");
+                return;
+            }
             sessions.Add(session.Id, session);
         }
 

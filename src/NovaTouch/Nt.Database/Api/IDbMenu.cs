@@ -10,15 +10,21 @@ namespace Nt.Database.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="menuId"></param>
         /// <returns></returns>
-        Dictionary<string, Nt.Data.Menu> GetMainMenu(string menuId);
+        Dictionary<string, Nt.Data.Menu> GetMenus();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="menuId"></param>
         /// <returns></returns>
-        Nt.Data.Menu GetSubMenu(string menuId);
+        Dictionary<string, Nt.Data.Menu> GetMainMenus(string menuId);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<Nt.Data.MenuItem> GetMenuItems();
+
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Os.Data;
 
 namespace Os.Server.Controllers
 {
@@ -19,7 +18,7 @@ namespace Os.Server.Controllers
         /// <response code="204">OK in case the payment was successfull and the receipt is moved to the printer queue.</response>
         [HttpPost]
         [Route("/api/v2/actions/Pay/SubTables")]
-        public virtual IActionResult PaySubTables([FromBody][Required] PaySubTables data)
+        public virtual IActionResult PaySubTables([FromBody][Required] Models.PaySubTables data)
         {
             var session = Sessions.GetSession(Request);
             try
@@ -30,7 +29,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                var osError = new OsError();
+                var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
                 return new BadRequestObjectResult(osError);
@@ -44,10 +43,11 @@ namespace Os.Server.Controllers
         /// <response code="204"></response>
         [HttpPost]
         [Route("/api/v2/actions/Pay/OrderLines")]
-        public IActionResult PayOrderLines([FromBody] PayOrderLines data)
+        public IActionResult PayOrderLines([FromBody] Models.PayOrderLines data)
         {
+            throw new NotImplementedException("");
             // 204 - No Content 
-            return new NoContentResult();
+            //return new NoContentResult();
         }
     }
 }

@@ -21,97 +21,27 @@ namespace Nt.Database.InterSystems.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="menuId"></param>
-        /// <returns></returns>
-        public Dictionary<string, Nt.Data.Article> GetArticles(string menuId)
-        {
-            var articles = new Dictionary<string, Nt.Data.Article>();
-            var sql = new StringBuilder();
-            sql.Append(" SELECT M.Anr, M.UMENU, M.ROW, M.COL, M.bez1, M.bgcolor, M.fgcolor, A.vkaend, A.nameaend ");
-            sql.Append(" FROM NT.TouchUMenuZeilen M ");
-            sql.Append(" LEFT JOIN WW.ANRKassa AS A ON (A.FA=M.FA AND A.ANR=M.ANR) ");
-            sql.Append(" WHERE M.FA = ").Append(InterSystemsApi.ClientId);
-            sql.Append(" AND M.UMENU = ").Append(Interaction.SqlQuote(menuId));
-            sql.Append(" AND M.ANR <> '' ");
-            var dataTable = Interaction.GetDataTable(sql.ToString());
-            var lastArticleId = "";
-
-            foreach (DataRow dataRow in dataTable.Rows)
-            {
-                var article = new Nt.Data.Article();
-                article.Id = DataObject.GetString(dataRow, "ANR");
-                //articleId processed in the last loop(s)
-                if (article.Id.Equals(lastArticleId))
-                    continue;
-                lastArticleId = article.Id;
-                //check if articleId already processed
-                if (articles.ContainsKey(article.Id))
-                {
-                    Logging.Log.Database.Debug(MethodBase.GetCurrentMethod().Name + " already processed Id " + article.Id);
-                    continue;
-                }
-
-                article.MenuId = DataObject.GetString(dataRow, "UMENU");
-                article.Name = DataObject.GetString(dataRow, "bez1");
-                article.Row = DataObject.GetUInt(dataRow, "ROW");
-                article.Column = DataObject.GetUInt(dataRow, "COL");
-                article.BackgroundColor = DataObject.GetString(dataRow, "bgcolor");
-                article.ForegroundColor = DataObject.GetString(dataRow, "fgcolor");
-                article.AskForPrice = DataObject.GetBool(dataRow, "vkaend");
-                article.AskForName = DataObject.GetBool(dataRow, "nameaend");
-
-                articles.Add(article.Id, article);
-            }
-
-            return articles;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <returns></returns>
         public Dictionary<string, Nt.Data.Article> GetArticles()
         {
             var articles = new Dictionary<string, Nt.Data.Article>();
             var sql = new StringBuilder();
-            sql.Append(" SELECT M.Anr, M.UMENU, M.ROW, M.COL, M.bez1, M.bgcolor, M.fgcolor,");
-            sql.Append(" A.vkaend, A.nameaend, P.PLU");
-            sql.Append(" FROM NT.TouchUMenuZeilen M");
-            sql.Append(" LEFT JOIN WW.ANRKassa AS A ON (A.FA=M.FA AND A.ANR=M.ANR)");
-            sql.Append(" LEFT JOIN NT.PLUTabDet AS P ON (P.FA = M.FA AND P.ANR = M.ANR)");
-            sql.Append(" WHERE M.FA = ").Append(InterSystemsApi.ClientId);
-            sql.Append(" AND ISNUMERIC(M.Anr) = 1");
+            sql.Append(" SELECT A.ANR, A.bez, AK.vkaend, AK.nameaend ");
+            sql.Append(" FROM WW.ANR A ");
+            sql.Append(" LEFT JOIN WW.ANRKassa AK ON (AK.FA=A.FA AND AK.ANR=A.ANR) ");
+            sql.Append(" WHERE A.passiv > ").Append(Interaction.SqlToday);
             var dataTable = Interaction.GetDataTable(sql.ToString());
-
-            var lastArticleId = "";
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 var article = new Nt.Data.Article();
                 article.Id = DataObject.GetString(dataRow, "Anr");
-                //articleId processed in the last loop(s)
-                if (article.Id.Equals(lastArticleId))
-                    continue;
-                lastArticleId = article.Id;
-                //check if articleId already processed
-                if (articles.ContainsKey(article.Id))
-                {
-                    Logging.Log.Database.Debug(MethodBase.GetCurrentMethod().Name + " already processed Id " + article.Id);
-                    continue;
-                }
-
-                article.Name = DataObject.GetString(dataRow, "bez1");
-                article.ReceiptName = article.Name;
-                article.MenuId = DataObject.GetString(dataRow, "UMENU");
-                article.Row = DataObject.GetUInt(dataRow, "ROW");
-                article.Column = DataObject.GetUInt(dataRow, "COL");
-                article.BackgroundColor = DataObject.GetString(dataRow, "bgcolor");
-                article.ForegroundColor = DataObject.GetString(dataRow, "fgcolor");
+                article.Name = DataObject.GetString(dataRow, "bez");
                 article.AskForPrice = DataObject.GetBool(dataRow, "vkaend");
                 article.AskForName = DataObject.GetBool(dataRow, "nameaend");
-                article.Plu = DataObject.GetString(dataRow, "PLU");
 
-                articles.Add(article.Id, article);
+                if (!articles.ContainsKey(article.Id))
+                    articles.Add(article.Id, article);
             }
 
             return articles;

@@ -35,7 +35,9 @@ namespace Nt.Database.InterSystems.Api
                 var waiter = new Nt.Data.Waiter();
                 waiter.Id = DataObject.GetString(dataRow, "PNR");
                 waiter.Name = DataObject.GetString(dataRow, "name");
-                waiters.Add(waiter.Id, waiter);
+
+                if (!waiters.ContainsKey(waiter.Id))
+                    waiters.Add(waiter.Id, waiter);
             }
 
             return waiters;

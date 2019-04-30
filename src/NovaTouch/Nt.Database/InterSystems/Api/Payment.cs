@@ -37,11 +37,14 @@ namespace Nt.Database.InterSystems.Api
                 paymentType.Program = DataObject.GetString(dataRow, "prg");
                 paymentType.ReceiptCount = DataObject.GetUInt(dataRow, "druanz");
                 var signature = DataObject.GetString(dataRow, "unterschrift");
+                
                 if (signature.Equals("0"))
                     paymentType.Signature = true;
                 else
                     paymentType.Signature = false;
-                paymentTypes.Add(paymentType.Id, paymentType);
+
+                if (!paymentTypes.ContainsKey(paymentType.Id))
+                    paymentTypes.Add(paymentType.Id, paymentType);
             }
 
             return paymentTypes;

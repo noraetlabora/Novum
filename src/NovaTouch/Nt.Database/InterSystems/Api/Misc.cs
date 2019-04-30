@@ -20,7 +20,7 @@ namespace Nt.Database.InterSystems.Api
         /// <returns></returns>
         public Dictionary<string, Nt.Data.CancellationResason> GetCancellationReason()
         {
-            var cReasons = new Dictionary<string, Nt.Data.CancellationResason>();
+            var cancellationReasons = new Dictionary<string, Nt.Data.CancellationResason>();
             var sql = new StringBuilder();
             sql.Append(" SELECT GRUND, bez ");
             sql.Append(" FROM NT.StornoGrund ");
@@ -30,13 +30,15 @@ namespace Nt.Database.InterSystems.Api
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
-                var cReason = new Nt.Data.CancellationResason();
-                cReason.Id = DataObject.GetString(dataRow, "GRUND");
-                cReason.Name = DataObject.GetString(dataRow, "bez");
-                cReasons.Add(cReason.Id, cReason);
+                var cancellationReason = new Nt.Data.CancellationResason();
+                cancellationReason.Id = DataObject.GetString(dataRow, "GRUND");
+                cancellationReason.Name = DataObject.GetString(dataRow, "bez");
+
+                if (!cancellationReasons.ContainsKey(cancellationReason.Id))
+                    cancellationReasons.Add(cancellationReason.Id, cancellationReason);
             }
 
-            return cReasons;
+            return cancellationReasons;
         }
 
         #endregion

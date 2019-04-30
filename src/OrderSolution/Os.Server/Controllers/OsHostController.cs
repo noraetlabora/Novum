@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Os.Data;
 
 namespace Os.Server.Controllers
 {
@@ -21,7 +20,7 @@ namespace Os.Server.Controllers
         [Route("/api/v2/HostStatus")]
         public IActionResult GetHostStatus()
         {
-            var posStatus = new PosStatus();
+            var posStatus = new Models.PosStatus();
             posStatus.SessionId = serverStart.ToString("dd.MM.yyyy_HH:mm:ss.ffff");
             return new OkObjectResult(posStatus);
         }

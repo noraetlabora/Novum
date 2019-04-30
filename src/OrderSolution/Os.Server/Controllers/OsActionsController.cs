@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Os.Data;
 
 namespace Os.Server.Controllers
 {
@@ -20,7 +19,7 @@ namespace Os.Server.Controllers
         /// <response code="401"></response>
         [HttpPost]
         [Route("/api/v2/actions/Auth/Login")]
-        public IActionResult AuthLogin([FromBody][Required] LoginUser loginUser)
+        public IActionResult AuthLogin([FromBody][Required] Models.LoginUser loginUser)
         {
             var session = Sessions.GetSession(Request);
             try
@@ -32,7 +31,7 @@ namespace Os.Server.Controllers
             catch (Exception ex)
             {
                 session.WaiterId = "";
-                var osError = new OsError();
+                var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //401 - Unauthorized
                 return new UnauthorizedObjectResult(osError);
@@ -62,7 +61,7 @@ namespace Os.Server.Controllers
         /// <response code="412"></response>
         [HttpPost]
         [Route("/api/v2/actions/Init/RegisterClient")]
-        public IActionResult InitRegisterClient([FromBody][Required] ClientInfo clientInfo)
+        public IActionResult InitRegisterClient([FromBody][Required] Models.ClientInfo clientInfo)
         {
             var session = Sessions.GetSession(Request);
             if (session == null)
@@ -88,7 +87,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                var osError = new OsError();
+                var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
                 return new BadRequestObjectResult(osError);
@@ -102,7 +101,7 @@ namespace Os.Server.Controllers
         /// <response code="204"></response>
         [HttpPost]
         [Route("/api/v2/actions/Init/RegisterGateway")]
-        public IActionResult InitRegisterGateway([FromBody][Required] GatewayInfo gatewayInfo)
+        public IActionResult InitRegisterGateway([FromBody][Required] Models.GatewayInfo gatewayInfo)
         {
             return new NoContentResult();
         }

@@ -24,6 +24,7 @@ namespace Nt.Database.Api
         /// 
         /// </summary>
         /// <returns></returns>
-        List<Nt.Data.MenuModifier> GetMenuModifiers();
+        List<Nt.Data.MenuItemModifierMenu> GetMenuItemModifierMenus();
+        
     }
 }

@@ -73,7 +73,8 @@ namespace Nt.Database.InterSystems.Api
                 modifier.MinAmount = 0;
                 modifier.MaxAmount = 1;
 
-                modifiers.Add(modifier.Id, modifier);
+                if (!modifiers.ContainsKey(modifier.Id))
+                    modifiers.Add(modifier.Id, modifier);
             }
 
             return modifiers;
@@ -83,9 +84,9 @@ namespace Nt.Database.InterSystems.Api
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<Nt.Data.MenuModifier> GetMenuModifiers()
+        public List<Nt.Data.MenuItemModifierMenu> GetMenuItemModifierMenus()
         {
-            var menuModifiers = new List<Nt.Data.MenuModifier>();
+            var menus = new List<Nt.Data.MenuItemModifierMenu>();
             var sql = new StringBuilder();
             sql.Append(" SELECT UMENU, ROW, COL, LFD, AendUMenu ");
             sql.Append(" FROM NT.TouchUmenuZeilenA ");
@@ -94,18 +95,18 @@ namespace Nt.Database.InterSystems.Api
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
-                var menuModifier = new Nt.Data.MenuModifier();
+                var menu = new Nt.Data.MenuItemModifierMenu();
 
-                menuModifier.MenuId = DataObject.GetString(dataRow, "UMENU");
-                menuModifier.Row = DataObject.GetUInt(dataRow, "ROW");
-                menuModifier.Column = DataObject.GetUInt(dataRow, "COL");
-                menuModifier.Sort = DataObject.GetUInt(dataRow, "LFD");
-                menuModifier.ModifierMenuId = DataObject.GetString(dataRow, "AendUMenu");
+                menu.MenuItemMenuId = DataObject.GetString(dataRow, "UMENU");
+                menu.MenuItemRow = DataObject.GetUInt(dataRow, "ROW");
+                menu.MenuItemColumn = DataObject.GetUInt(dataRow, "COL");
+                menu.Sort = DataObject.GetUInt(dataRow, "LFD");
+                menu.ModifierMenuId = DataObject.GetString(dataRow, "AendUMenu");
 
-                menuModifiers.Add(menuModifier);
+                menus.Add(menu);
             }
 
-            return menuModifiers;
+            return menus;
         }
     }
 }

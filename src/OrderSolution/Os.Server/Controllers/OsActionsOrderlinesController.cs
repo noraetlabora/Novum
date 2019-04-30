@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Os.Data;
 
 namespace Os.Server.Controllers
 {
@@ -20,7 +19,7 @@ namespace Os.Server.Controllers
         /// <response code="201">OrderLineResult informing about the new ids / prices of the modified orderline.</response>
         [HttpPost]
         [Route("/api/v2/actions/OrderLines/Void/{orderLineId}")]
-        public virtual IActionResult VoidOrderLines([FromRoute][Required] string orderLineId, [FromBody][Required] OrderLineVoid data)
+        public virtual IActionResult VoidOrderLines([FromRoute][Required] string orderLineId, [FromBody][Required] Models.OrderLineVoid data)
         {
             var session = Sessions.GetSession(Request);
             try
@@ -34,7 +33,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                var osError = new OsError();
+                var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
                 return new BadRequestObjectResult(osError);
@@ -49,7 +48,7 @@ namespace Os.Server.Controllers
         /// <response code="201"></response>
         [HttpPost]
         [Route("/api/v2/actions/OrderLines/Add/{subTableId}")]
-        public IActionResult AddOrderLines([FromRoute][Required] string subTableId, [FromBody][Required] OrderLineAdd data)
+        public IActionResult AddOrderLines([FromRoute][Required] string subTableId, [FromBody][Required] Models.OrderLineAdd data)
         {
             var session = Sessions.GetSession(Request);
             try
@@ -60,7 +59,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                var osError = new OsError();
+                var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
                 return new BadRequestObjectResult(osError);
@@ -75,9 +74,9 @@ namespace Os.Server.Controllers
         /// <response code="201">OrderLineResult informing about the new ids / prices of the modified orderline.</response>
         [HttpPost]
         [Route("/api/v2/actions/OrderLines/ModifyUncommitted/{orderLineId}")]
-        public IActionResult ModifyOrderLinesUncommitted([FromRoute][Required] string orderLineId, [FromBody][Required] OrderLineModify data)
+        public IActionResult ModifyOrderLinesUncommitted([FromRoute][Required] string orderLineId, [FromBody][Required] Models.OrderLineModify data)
         {
-            var orderLineResult = new OrderLineResult();
+            var orderLineResult = new Models.OrderLineResult();
 
             //201 - Created
             return new CreatedResult("OrderLines/ModifyUncommitted", orderLineResult);

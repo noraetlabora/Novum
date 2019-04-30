@@ -34,7 +34,9 @@ namespace Nt.Database.InterSystems.Api
                 printer.Name = DataObject.GetString(dataRow, "beschreibung");
                 printer.Type = DataObject.GetString(dataRow, "devtype");
                 printer.Device = DataObject.GetString(dataRow, "device");
-                printers.Add(printer.Id, printer);
+
+                if(!printers.ContainsKey(printer.Id))
+                    printers.Add(printer.Id, printer);
             }
 
             return printers;

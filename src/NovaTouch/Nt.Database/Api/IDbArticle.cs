@@ -7,12 +7,12 @@ namespace Nt.Database.Api
     /// </summary>
     public interface IDbArticle
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="menuId"></param>
-        /// <returns></returns>
-        Dictionary<string, Nt.Data.Article> GetArticles(string menuId);
+        // / <summary>
+        // / 
+        // / </summary>
+        // / <param name="menuId"></param>
+        // / <returns></returns>
+        //Dictionary<string, Nt.Data.Article> GetArticles(string menuId);
 
         /// <summary>
         /// 
