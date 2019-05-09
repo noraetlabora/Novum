@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
@@ -32,7 +33,12 @@ namespace Nt.Data
 
         #endregion
 
-        private const string Pipe = "|";
+        #region private fields
+
+        private List<Nt.Data.Modifier> _modifiers;
+        private const string _pipe = "|";
+
+        #endregion
 
         #region Properties
 
@@ -75,11 +81,10 @@ namespace Nt.Data
             get
             {
                 var id = new StringBuilder();
-                id.Append((int)Status).Append(Pipe);
-                id.Append(CourseNumber.ToString()).Append(Pipe);
-                id.Append(ArticleId).Append(Pipe);
-                id.Append(UnitPrice.ToString(CultureInfo.InvariantCulture)).Append(Pipe);
-                id.Append(Name);
+                id.Append(TableId).Append(_pipe);
+                id.Append((int)Status).Append(_pipe);
+                id.Append(ArticleId).Append(_pipe);
+                id.Append(Line);
                 return id.ToString();
             }
         }
@@ -115,6 +120,18 @@ namespace Nt.Data
         public OrderStatus Status { get; set; }
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <value></value>
+        public string TableId { get; set; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <value></value>
+        public int Line { get; set; }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <value></value>
@@ -139,6 +156,30 @@ namespace Nt.Data
         public Order()
         {
 
+        }
+
+        #endregion
+
+        #region public methods
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="modifier"></param>
+        public void AddModifier(Nt.Data.Modifier modifier) 
+        {
+            if (_modifiers == null)
+                _modifiers = new List<Modifier>();
+
+            _modifiers.Add(modifier);
+        }
+
+        /// <summary>
+        /// Remove All 
+        /// </summary>
+        public void ClearModifiers() 
+        {
+            _modifiers?.Clear();
         }
 
         #endregion

@@ -8,6 +8,15 @@ namespace Os.Server.Logic
     /// </summary>
     public class Data
     {
+
+        #region private fields;
+            private static string[] notSupportedArticleIds = { "PLU", "$KONTO:", "$GUTSCHEIN:", "$GUTSCHEINBET:", "$RABATT:", "GANG:", "$FILTER:" };
+            private static string[] notSupportedModifierIds = { "VORWAHL:" };
+
+        #endregion  //private fields
+
+        #region public methods
+
         #region Cancellation Reasons
 
         /// <summary>
@@ -74,7 +83,7 @@ namespace Os.Server.Logic
             return osPrinters;
         }
 
-        #endregion
+        #endregion  //Printers
 
         #region Articles
         /// <summary>
@@ -96,8 +105,6 @@ namespace Os.Server.Logic
 
                 if (ntArticle.AskForPrice)
                     osArticle.MustEnterPrice = 1;
-                else
-                    osArticle.MustEnterPrice = 0;
 
                 if (osArticleModifierGroups.ContainsKey(osArticle.Id))
                     osArticle.ModifierGroups = osArticleModifierGroups[osArticle.Id];
@@ -107,7 +114,7 @@ namespace Os.Server.Logic
 
             return osArticles;
         }
-        #endregion
+        #endregion  //Articles
 
         #region Categories
 
@@ -122,48 +129,20 @@ namespace Os.Server.Logic
             var ntMainMenus = Nt.Database.DB.Api.Menu.GetMainMenus(menuId);
             var ntMenus = Nt.Database.DB.Api.Menu.GetMenus();
             var ntMenuItems = Nt.Database.DB.Api.Menu.GetMenuItems();
-            var handledMenuIds = new List<string>();
 
             foreach (var ntMainMenu in ntMainMenus.Values)
             {
                 var osCategory = new Models.Category();
-                var osCatetgoryContentEntries = new List<Models.CategoryContentEntry>();
                 osCategory.Name = ntMainMenu.Name;
+                osCategory.Content = GetCategoryContent(ntMainMenu.Id, ntMenus, ntMenuItems, 0);
 
-                foreach(var ntMenuItem in ntMenuItems)
-                {
-                    if (!ntMenuItem.MenuId.Equals(ntMainMenu.Id))
-                        continue;
-
-                    var osCategoryContentEntry = new Models.CategoryContentEntry();
-                    osCategoryContentEntry.ArticleId = ntMenuItem.ArticleId;
-                    osCatetgoryContentEntries.Add(osCategoryContentEntry);             
-                }
-
-                osCategory.Content = osCatetgoryContentEntries;
                 osCategories.Add(osCategory);
             }
 
             return osCategories;
         }
 
-        private static string[] notSupportedArticleIds = { "PLU", "$KONTO:", "$GUTSCHEIN:", "$GUTSCHEINBET:", "$RABATT:", "GANG:", "$FILTER:" };
-        /// <summary>
-        /// Ignore all not supported articles like PLU, GANG, RABATT, etc.
-        /// </summary>
-        /// <param name="articleId"></param>
-        /// <returns></returns>
-        private static bool ArticleIdNotSupported(string articleId)
-        {
-            foreach (string notSupportedArticleId in notSupportedArticleIds)
-            {
-                if (articleId.StartsWith(notSupportedArticleId))
-                    return true;
-            }
-            return false;
-        }
-
-        #endregion
+        #endregion  //Categories
 
         #region ModifierGroups
 
@@ -176,6 +155,9 @@ namespace Os.Server.Logic
             var osModifierGroups = new List<Models.ModifierGroup>();
             var ntModifierMenus = Nt.Database.DB.Api.Modifier.GetModifierMenus();
 
+            //////////////////////////////////////
+            // iterate Modifier Menu
+            //////////////////////////////////////
             foreach (var ntModifierMenu in ntModifierMenus.Values)
             {
                 var osModifierGroup = new Models.ModifierGroup();
@@ -184,27 +166,37 @@ namespace Os.Server.Logic
                 osModifierGroup.MinChoices = (int)ntModifierMenu.MinSelection;
                 osModifierGroup.MaxChoices = (int)ntModifierMenu.MaxSelection;
                 osModifierGroup.Question = "";
-                osModifierGroup.Type = Models.ModifierGroup.ModifierType.PickOneEnum;
+                // type of modifier selection
+                if (ntModifierMenu.MaxSelection.Equals(1))
+                    osModifierGroup.Type = (int)Models.ModifierGroup.ModifierType.PickOneEnum;
+                else 
+                    osModifierGroup.Type = (int)Models.ModifierGroup.ModifierType.PickMultipleEnum;
+
                 osModifierGroup.Choices = new List<Models.ModifierChoice>();
+                var modifierItems = Nt.Database.DB.Api.Modifier.GetModifierItems(ntModifierMenu.Id);
+                var lastModifierItemId = "";
 
-                var modifiers = Nt.Database.DB.Api.Modifier.GetModifiers(ntModifierMenu.Id);
-                var lastModifierId = "";
-
-                foreach (var modifier in modifiers.Values)
+                //////////////////////////////////////
+                // Modifier Items
+                //////////////////////////////////////
+                foreach (var modifierItem in modifierItems.Values)
                 {
-                    // ignore two sequently equal modifiers (eg. rare and rare)
-                    if (lastModifierId.Equals(modifier.Id))
+                    // ignore not supported modifiers
+                    if (ModifierIdNotSupported(modifierItem.Id))
                         continue;
-                    lastModifierId = modifier.Id;
+                    // ignore two sequently equal modifiers (eg. rare and rare)
+                    if (lastModifierItemId.Equals(modifierItem.Id))
+                        continue;
+                    lastModifierItemId = modifierItem.Id;
 
                     var modifierChoice = new Models.ModifierChoice();
 
-                    modifierChoice.Id = modifier.Id;
-                    modifierChoice.Name = modifier.Name;
-                    modifierChoice.ReceiptName = modifier.Name;
+                    modifierChoice.Id = modifierItem.Id;
+                    modifierChoice.Name = modifierItem.Name;
+                    modifierChoice.ReceiptName = modifierItem.Name;
                     modifierChoice.DefaultAmount = 0;
-                    modifierChoice.MinAmount = (int)modifier.MinAmount;
-                    modifierChoice.MaxAmount = (int)modifier.MaxAmount;
+                    modifierChoice.MinAmount = (int)modifierItem.MinAmount;
+                    modifierChoice.MaxAmount = (int)modifierItem.MaxAmount;
 
                     osModifierGroup.Choices.Add(modifierChoice);
                 }
@@ -301,10 +293,16 @@ namespace Os.Server.Logic
             return Nt.Database.DB.Api.Pos.GetPriceLevel(serviceAreaId);
         }
 
-        #endregion
+        #endregion  //POS
+
+        #endregion  // public methods
 
         #region private methods  
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private static Dictionary<string, List<Models.ArticleModifierGroup>> GetArticleModifierGroups() {
             var modifierDictionary = new Dictionary<string, List<Models.ArticleModifierGroup>>();
             var ntMenuItems = Nt.Database.DB.Api.Menu.GetMenuItems();
@@ -335,6 +333,83 @@ namespace Os.Server.Logic
             return modifierDictionary;
         }
 
-        #endregion
+        /// <summary>
+        /// Ignore all not supported articles like PLU, GANG, RABATT, etc.
+        /// </summary>
+        /// <param name="articleId"></param>
+        /// <returns></returns>
+        private static bool ArticleIdNotSupported(string articleId)
+        {
+            foreach (string notSupportedArticleId in notSupportedArticleIds)
+            {
+                if (articleId.StartsWith(notSupportedArticleId))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Ignore all not supported modifiers like VORWAHL
+        /// </summary>
+        /// <param name="modifierId"></param>
+        /// <returns></returns>
+        private static bool ModifierIdNotSupported(string modifierId) {
+            foreach (string notSupportedModifierId in notSupportedModifierIds)
+            {
+                if (modifierId.StartsWith(notSupportedModifierId))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="menuId"></param>
+        /// <param name="ntMenus"></param>
+        /// <param name="ntMenuItems"></param>
+        /// <param name="subMenu">number of submenu (mainMenu = 0, subMenu = 1, subsubMenu = 2, ...)</param>
+        /// <returns></returns>
+        private static List<Models.CategoryContentEntry> GetCategoryContent(string menuId, Dictionary<string, Nt.Data.Menu> ntMenus, List<Nt.Data.MenuItem> ntMenuItems, uint subMenu) {
+            var categoryContent = new List<Models.CategoryContentEntry>();
+
+            foreach(var ntMenuItem in ntMenuItems)
+            {
+                //
+                if (!ntMenuItem.MenuId.Equals(menuId))
+                    continue;
+                //
+                if (ArticleIdNotSupported(ntMenuItem.ArticleId))
+                    continue;
+
+                var osCategoryContentEntry = new Models.CategoryContentEntry();
+
+                if (ntMenuItem.ArticleId.StartsWith("$")) {
+                    // ignore sub/sub/.../menu 
+                    if (subMenu > 3)
+                        continue;
+                    var subMenuId = ntMenuItem.ArticleId.Substring(1);
+                    // ignore submenu when equals to menuId
+                    if (subMenuId.Equals(menuId))
+                        continue;
+                    // subMenuId not known
+                    if (!ntMenus.ContainsKey(subMenuId)) 
+                        continue;
+                    //
+                    osCategoryContentEntry.Category = new Models.Category();
+                    osCategoryContentEntry.Category.Name = ntMenus[subMenuId].Name;
+                    osCategoryContentEntry.Category.Content = GetCategoryContent(subMenuId, ntMenus, ntMenuItems, subMenu + 1);
+                }
+                else {
+                    osCategoryContentEntry.ArticleId = ntMenuItem.ArticleId;
+                }
+
+                categoryContent.Add(osCategoryContentEntry);             
+            }
+
+            return categoryContent;
+        }
+
+        #endregion  //private methods
     }
 }

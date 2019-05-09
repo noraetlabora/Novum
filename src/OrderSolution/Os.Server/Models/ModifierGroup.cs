@@ -56,31 +56,31 @@ namespace Os.Server.Models
             /// Enum PickOneEnum for pickOne
             /// </summary>
             [EnumMember(Value = "pickOne")]
-            PickOneEnum = 1,
+            PickOneEnum = 0,
 
             /// <summary>
             /// Enum PickMultipleEnum for pickMultiple
             /// </summary>
             [EnumMember(Value = "pickMultiple")]
-            PickMultipleEnum = 2,
+            PickMultipleEnum = 1,
 
             /// <summary>
             /// Enum PickNumericEnum for pickNumeric
             /// </summary>
             [EnumMember(Value = "pickNumeric")]
-            PickNumericEnum = 3,
+            PickNumericEnum = 2,
 
             /// <summary>
             /// Enum TextInputEnum for textInput
             /// </summary>
             [EnumMember(Value = "textInput")]
-            TextInputEnum = 4,
+            TextInputEnum = 3,
 
             /// <summary>
             /// Enum FaxInputEnum for faxInput
             /// </summary>
             [EnumMember(Value = "faxInput")]
-            FaxInputEnum = 5
+            FaxInputEnum = 4
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Os.Server.Models
         /// </summary>
         [Required]
         [DataMember(Name = "type")]
-        public ModifierType? Type { get; set; }
+        public int? Type { get; set; }
 
         /// <summary>
         /// Gets or Sets MinChoices

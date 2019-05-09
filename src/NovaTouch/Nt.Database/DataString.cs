@@ -42,6 +42,11 @@ namespace Nt.Database
         /// 
         /// </summary>
         public const string CRLF = "\r\n";
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public const char Percent  = (char)37;
 
         #endregion
 
@@ -132,6 +137,17 @@ namespace Nt.Database
             if (string.IsNullOrEmpty(_string))
                 return new string[] { };
             return _string.Split(new string[] { CRLF }, StringSplitOptions.None);
+        }
+
+        /// <summary>
+        /// Split the current string value by percent (%)
+        /// </summary>
+        /// <returns>String Array</returns>
+        public string[] SplitByPercent()
+        {
+            if (string.IsNullOrEmpty(_string))
+                return new string[] { };
+            return _string.Split(Percent);
         }
 
         #endregion

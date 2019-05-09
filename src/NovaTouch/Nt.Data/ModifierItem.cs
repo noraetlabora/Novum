@@ -7,15 +7,15 @@ namespace Nt.Data
     /// </summary>
     /// <example>
     /// </example>
-    public class Modifier
+    public class ModifierItem
     {
         #region Properties
 
         /// <summary>
         /// 
         /// </summary>
-        /// <value></value>
-        public string ArticleId { get; set; }
+        /// <value></value>        
+        public string Id { get; set; }
 
         /// <summary>
         /// 
@@ -27,34 +27,37 @@ namespace Nt.Data
         /// 
         /// </summary>
         /// <value></value>
-        public decimal Quantity { get; set; }
+        public uint Row { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public decimal TotalPrice
-        {
-            get { return decimal.Multiply(Quantity, UnitPrice); }
-        }
+        public uint Column { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public decimal UnitPrice { get; set; }
+        public string BackgroundColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public decimal Percent { get; set; }
+        public string ForegroundColor { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public decimal Rounding { get; set; }
+        public uint MinAmount { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public uint MaxAmount { get; set; }
 
         #endregion
 
@@ -63,7 +66,7 @@ namespace Nt.Data
         /// <summary>
         /// 
         /// </summary>
-        public Modifier()
+        public ModifierItem()
         {
 
         }

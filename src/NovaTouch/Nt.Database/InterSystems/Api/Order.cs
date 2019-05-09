@@ -32,29 +32,43 @@ namespace Nt.Database.InterSystems.Api
             var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetAllTischBonMitAenderer", InterSystemsApi.ClientId, "RK", tableId, "", "2");
             var ordersString = new DataString(dbString);
             var ordersArray = ordersString.SplitByCRLF();
+            var orderLine = 0;
 
             foreach (string orderString in ordersArray)
             {
                 if (string.IsNullOrEmpty(orderString))
                     continue;
 
-                var order = new Nt.Data.Order();
                 var dataString = new DataString(orderString);
                 var dataList = new DataList(dataString.SplitByChar96());
+                var indexString = new DataString(dataList.GetString(0));
+                var indexList = new DataList(indexString.SplitByDoublePipes());
 
-                order.ArticleId = dataList.GetString(3);
-                order.Name = dataList.GetString(4);
-                order.Quantity = dataList.GetDecimal(1);
-                order.UnitPrice = dataList.GetDecimal(5);
-                order.CourseMenu = dataList.GetString(7);
-                order.CourseNumber = dataList.GetString(8);
-                order.CourseName = dataList.GetString(16);
-                order.Status = (Nt.Data.Order.OrderStatus)dataList.GetUInt(2);
-
-                if (orders.ContainsKey(order.Id))
-                    orders[order.Id].Quantity += order.Quantity;
-                else
-                    orders.Add(order.Id, order);
+                var type = dataList.GetString(2);
+                // orderline
+                if (type.Equals("0")) {
+                    var order = new Nt.Data.Order();
+                    order.TableId = tableId;
+                    orderLine++;
+                    order.Line = orderLine;
+                    order.ArticleId = indexList.GetString(1);
+                    order.UnitPrice = indexList.GetDecimal(2);
+                    order.ReferenceId = indexList.GetString(3);
+                    order.Name = dataList.GetString(4);
+                    order.Quantity = dataList.GetDecimal(1);
+                    order.CourseMenu = dataList.GetString(7);
+                    order.CourseNumber = dataList.GetString(8);
+                    order.CourseName = dataList.GetString(16);
+                    order.Status = (Nt.Data.Order.OrderStatus)dataList.GetUInt(2);
+                    if (orders.ContainsKey(order.Id))
+                        orders[order.Id].Quantity += order.Quantity;
+                    else
+                        orders.Add(order.Id, order);
+                }
+                // modifier
+                else {
+                    System.Diagnostics.Debug.WriteLine("modifier");
+                }
             }
 
             return orders;
@@ -73,10 +87,14 @@ namespace Nt.Database.InterSystems.Api
             var dataString = new DataString(dbString);
             var dataArray = dataString.SplitByChar96();
             var dataList = new DataList(dataArray);
+            var orderLine = 0;
 
             var availability = dataList.GetString(21);
             Article.CheckAvailibility(availability);
 
+            order.TableId = session.CurrentTable.Id;
+            orderLine++;
+            order.Line = orderLine;
             order.ArticleId = dataList.GetString(0);
             order.Name = dataList.GetString(1);
             order.UnitPrice = dataList.GetDecimal(4);

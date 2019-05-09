@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -47,37 +48,37 @@ namespace Nt.Database.InterSystems.Api
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="menuId"></param>
+        /// <param name="modifierMenuId"></param>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.Modifier> GetModifiers(string menuId)
+        public Dictionary<string, Nt.Data.ModifierItem> GetModifierItems(string modifierMenuId)
         {
-            var modifiers = new Dictionary<string, Nt.Data.Modifier>();
+            var modifierItems = new Dictionary<string, Nt.Data.ModifierItem>();
             var sql = new StringBuilder();
             sql.Append(" SELECT M.ROW, M.COL, M.ANR, M.bgcolor, M.fgcolor, W.bez ");
             sql.Append(" FROM NT.TouchUmenuZeilen M ");
             sql.Append(" LEFT JOIN WW.ANR AS W ON (W.FA = M.FA AND W.ANR = M.ANR) ");
             sql.Append(" WHERE M.FA = ").Append(InterSystemsApi.ClientId);
-            sql.Append(" AND M.UMENU = ").Append(menuId);
+            sql.Append(" AND M.UMENU = ").Append(modifierMenuId);
             sql.Append(" AND M.ANR <> '' ");
             var dataTable = Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
-                var modifier = new Nt.Data.Modifier();
-                modifier.Id = DataObject.GetString(dataRow, "ANR");
-                modifier.Name = DataObject.GetString(dataRow, "bez");
-                modifier.Row = DataObject.GetUInt(dataRow, "ROW");
-                modifier.Column = DataObject.GetUInt(dataRow, "COL");
-                modifier.BackgroundColor = DataObject.GetString(dataRow, "bgcolor");
-                modifier.ForegroundColor = DataObject.GetString(dataRow, "fgcolor");
-                modifier.MinAmount = 0;
-                modifier.MaxAmount = 1;
+                var modifierItem = new Nt.Data.ModifierItem();
+                modifierItem.Id = DataObject.GetString(dataRow, "ANR");
+                modifierItem.Name = DataObject.GetString(dataRow, "bez");
+                modifierItem.Row = DataObject.GetUInt(dataRow, "ROW");
+                modifierItem.Column = DataObject.GetUInt(dataRow, "COL");
+                modifierItem.BackgroundColor = DataObject.GetString(dataRow, "bgcolor");
+                modifierItem.ForegroundColor = DataObject.GetString(dataRow, "fgcolor");
+                modifierItem.MinAmount = 0;
+                modifierItem.MaxAmount = 1;
 
-                if (!modifiers.ContainsKey(modifier.Id))
-                    modifiers.Add(modifier.Id, modifier);
+                if (!modifierItems.ContainsKey(modifierItem.Id))
+                    modifierItems.Add(modifierItem.Id, modifierItem);
             }
 
-            return modifiers;
+            return modifierItems;
         }
 
         /// <summary>
@@ -107,6 +108,39 @@ namespace Nt.Database.InterSystems.Api
             }
 
             return menus;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="articleId"></param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
+        public Nt.Data.Modifier GetModifier(Nt.Data.Session session, string articleId, decimal quantity)
+        {
+            var modifier = new Nt.Data.Modifier();
+            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetArtikelDaten", session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", "", "", "", articleId, "", quantity);
+            var dataString = new DataString(dbString);
+            var dataList = new DataList(dataString.SplitByChar96());
+
+            modifier.ArticleId = dataList.GetString(0);
+            modifier.Name = dataList.GetString(1);
+            modifier.Quantity = quantity;
+
+            var priceString = dataList.GetString(4);
+            if (priceString.Contains("%")) {
+                var priceDataString = new DataString(priceString);
+                var priceDataList = new DataList(priceDataString.SplitByPercent());
+                modifier.Percent = priceDataList.GetDecimal(0);
+                modifier.Rounding = priceDataList.GetDecimal(1);
+            }
+            else {
+                modifier.UnitPrice = dataList.GetDecimal(4);
+            }
+
+            return modifier;
         }
     }
 }

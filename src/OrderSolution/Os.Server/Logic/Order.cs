@@ -25,24 +25,14 @@ namespace Os.Server.Logic
             //orderd or prebooked orderlines
             foreach (var ntOrder in ntOrders.Values)
             {
-                var osOrderLine = new Models.OrderLine();
-                osOrderLine.Id = ntOrder.Id;
-                osOrderLine.ArticleId = ntOrder.ArticleId;
-                osOrderLine.Quantity = (int)ntOrder.Quantity;
-                osOrderLine.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100);
-                osOrderLine.Status = GetOsOrderLineStatus(ntOrder.Status);
+                var osOrderLine = GetOsOrderLine(ntOrder);
                 osOrderLines.Add(osOrderLine);
             }
 
             //new orders
             foreach (var ntOrder in session.GetOrders())
             {
-                var osOrderLine = new Models.OrderLine();
-                osOrderLine.Id = ntOrder.Id;
-                osOrderLine.ArticleId = ntOrder.ArticleId;
-                osOrderLine.Quantity = (int)ntOrder.Quantity;
-                osOrderLine.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100);
-                osOrderLine.Status = GetOsOrderLineStatus(ntOrder.Status);
+                var osOrderLine = GetOsOrderLine(ntOrder);
                 osOrderLines.Add(osOrderLine);
             }
 
@@ -87,7 +77,7 @@ namespace Os.Server.Logic
             if (session.CurrentTable == null)
                 throw new Exception("no open table");
 
-            //search in new orders, when not found search in ordered/prebooked orders of current table
+            //search in new/uncommited orders, when not found search in ordered/prebooked orders of current table
             var ntOrder = session.GetOrder(orderLineId);
             if (ntOrder == null)
             {
@@ -129,15 +119,56 @@ namespace Os.Server.Logic
         /// 
         /// </summary>
         /// <param name="session"></param>
-        /// <param name="subTableId"></param>
+        /// <param name="orderLineId"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static Models.OrderLineResult Modify(Nt.Data.Session session, string subTableId, Models.OrderLineModify data)
+        public static Models.OrderLineResult Modify(Nt.Data.Session session, string orderLineId, Models.OrderLineModify data)
         {
             if (session.CurrentTable == null)
                 throw new Exception("no open table");
 
-            return null;
+            //search in new/uncommited orders
+            var ntOrder = session.GetOrder(orderLineId);
+            if (ntOrder == null)
+                throw new Exception("no orderline found");
+
+            var osOrderLineResult = new Models.OrderLineResult();
+            osOrderLineResult.Modifiers = new List<Models.OrderLineResultModifier>();
+            osOrderLineResult.SinglePrice = (int)decimal.Multiply(ntOrder.TotalPrice, 100.0m);
+            ntOrder.ClearModifiers();
+
+            foreach(var osOrderLineModifier2 in data.Modifiers)
+            {
+                var osOrderLineResultModifier = new Models.OrderLineResultModifier();
+                osOrderLineResultModifier.Id = osOrderLineModifier2.ModifierGroupId;
+                osOrderLineResultModifier.Choices = new List<Models.OrderLineResultModifierChoice>();
+
+                foreach(var osOrderLineModifierChoice2 in osOrderLineModifier2.Choices) 
+                {
+                    var ntModifier = Nt.Database.DB.Api.Modifier.GetModifier(session, osOrderLineModifierChoice2.ModifierChoiceId, 1.0m);
+                    ntOrder.AddModifier(ntModifier);
+                    var osOrderLineResultModifierChoice = new Models.OrderLineResultModifierChoice();
+                    osOrderLineResultModifierChoice.ModifierChoiceId = ntModifier.ArticleId;
+
+                    if (ntModifier.Percent != 0.0m) 
+                    {
+                        var modifierPrice = 0.0m;
+                        var onePercentPrice = decimal.Divide(ntOrder.TotalPrice, 100.0m);
+                        modifierPrice = decimal.Multiply(onePercentPrice, ntModifier.Percent);
+                        modifierPrice = Nt.Data.Utils.Math.Round(modifierPrice, ntModifier.Rounding);
+                        osOrderLineResultModifierChoice.ChoicePrice = (int)decimal.Multiply(modifierPrice, 100.0m);
+                    }
+                    else
+                    {
+                        osOrderLineResultModifierChoice.ChoicePrice = (int)decimal.Multiply(ntModifier.TotalPrice, 100.0m);
+                    }
+
+                    osOrderLineResult.SinglePrice += osOrderLineResultModifierChoice.ChoicePrice;
+                    osOrderLineResultModifier.Choices.Add(osOrderLineResultModifierChoice);
+                }
+            }
+
+            return osOrderLineResult;
         }
 
         /// <summary>
@@ -183,6 +214,16 @@ namespace Os.Server.Logic
                 default:
                     return Models.OrderLine.OrderLineStatus.UnknownEnum;
             }
+        }
+
+        private static Models.OrderLine GetOsOrderLine(Nt.Data.Order ntOrder) {
+            var osOrderLine = new Models.OrderLine();
+            osOrderLine.Id = ntOrder.Id;
+            osOrderLine.ArticleId = ntOrder.ArticleId;
+            osOrderLine.Quantity = (int)ntOrder.Quantity;
+            osOrderLine.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100);
+            osOrderLine.Status = GetOsOrderLineStatus(ntOrder.Status);
+            return osOrderLine;
         }
 
         #endregion

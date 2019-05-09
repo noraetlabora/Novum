@@ -41,19 +41,19 @@ namespace Os.Server.Logic
             }
 
             // add subtables to maintables
-            foreach (var novTable in ntTables.Values)
+            foreach (var ntTable in ntTables.Values)
             {
                 var osSubTable = new Models.SubTable();
-                osSubTable.Id = novTable.Id;
-                osSubTable.Name = novTable.Name;
+                osSubTable.Id = ntTable.Id;
+                osSubTable.Name = ntTable.Name;
                 osSubTable.IsSelected = false;
 
-                var mainTableId = GetMainTable(novTable.Id);
+                var mainTableId = GetMainTable(ntTable.Id);
                 osTables[mainTableId].SubTables.Add(osSubTable);
-                osTables[mainTableId].BookedAmount += (int)decimal.Multiply(novTable.Amount, 100.0m);
+                osTables[mainTableId].BookedAmount += (int)decimal.Multiply(ntTable.Amount, 100.0m);
 
                 //take time of the table last updated further in the past
-                var lastUpdated = (int)Nt.Data.Utils.Unix.Timestamp(novTable.Updated);
+                var lastUpdated = (int)Nt.Data.Utils.Unix.Timestamp(ntTable.Updated);
                 if (osTables[mainTableId].LastActivityTime > lastUpdated)
                     osTables[mainTableId].LastActivityTime = lastUpdated;
             }

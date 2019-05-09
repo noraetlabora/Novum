@@ -66,25 +66,25 @@ namespace Os.Server.Models
             /// Enum UnknownEnum for unknown
             /// </summary>
             [EnumMember(Value = "unknown")]
-            UnknownEnum = 1,
+            UnknownEnum = 0,
 
             /// <summary>
             /// Enum OrderedEnum for ordered
             /// </summary>
             [EnumMember(Value = "ordered")]
-            OrderedEnum = 2,
+            OrderedEnum = 1,
 
             /// <summary>
             /// Enum CommittedEnum for committed
             /// </summary>
             [EnumMember(Value = "committed")]
-            CommittedEnum = 3,
+            CommittedEnum = 2,
 
             /// <summary>
             /// Enum PaidEnum for paid
             /// </summary>
             [EnumMember(Value = "paid")]
-            PaidEnum = 4
+            PaidEnum = 3
         }
 
         /// <summary>

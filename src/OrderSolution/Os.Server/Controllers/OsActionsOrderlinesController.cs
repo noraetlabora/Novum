@@ -76,10 +76,20 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/OrderLines/ModifyUncommitted/{orderLineId}")]
         public IActionResult ModifyOrderLinesUncommitted([FromRoute][Required] string orderLineId, [FromBody][Required] Models.OrderLineModify data)
         {
-            var orderLineResult = new Models.OrderLineResult();
-
-            //201 - Created
-            return new CreatedResult("OrderLines/ModifyUncommitted", orderLineResult);
+            var session = Sessions.GetSession(Request);
+            try
+            {
+                var orderLineResult = Logic.Order.Modify(session, orderLineId, data);
+                //201 - Created
+                return new CreatedResult("OrderLines/ModifyUncommitted", orderLineResult);
+            }
+            catch (Exception ex)
+            {
+                var osError = new Models.OsError();
+                osError.ErrorMsg = ex.Message;
+                //400 - BadRequest
+                return new BadRequestObjectResult(osError);
+            }
         }
     }
 }

@@ -90,9 +90,10 @@ namespace Os.Server.Models
                     Name.Equals(other.Name)
                 ) &&
                 (
-                    Content == other.Content ||
-                    Content != null &&
-                    Content.SequenceEqual(other.Content)
+                    Content == other.Content 
+                    //||
+                    //Content != null &&
+                    //Content.SequenceEqual(other.Content)
                 );
         }
 
