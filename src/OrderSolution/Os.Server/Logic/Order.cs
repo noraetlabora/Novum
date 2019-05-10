@@ -29,12 +29,12 @@ namespace Os.Server.Logic
                 osOrderLines.Add(osOrderLine);
             }
 
-            //new orders
-            foreach (var ntOrder in session.GetOrders())
-            {
-                var osOrderLine = GetOsOrderLine(ntOrder);
-                osOrderLines.Add(osOrderLine);
-            }
+            // //new orders
+            // foreach (var ntOrder in session.GetOrders())
+            // {
+            //     var osOrderLine = GetOsOrderLine(ntOrder);
+            //     osOrderLines.Add(osOrderLine);
+            // }
 
             return osOrderLines;
         }
@@ -147,23 +147,11 @@ namespace Os.Server.Logic
                 {
                     var ntModifier = Nt.Database.DB.Api.Modifier.GetModifier(session, osOrderLineModifierChoice2.ModifierChoiceId, 1.0m);
                     ntOrder.AddModifier(ntModifier);
+                    
                     var osOrderLineResultModifierChoice = new Models.OrderLineResultModifierChoice();
                     osOrderLineResultModifierChoice.ModifierChoiceId = ntModifier.ArticleId;
-
-                    if (ntModifier.Percent != 0.0m) 
-                    {
-                        var modifierPrice = 0.0m;
-                        var onePercentPrice = decimal.Divide(ntOrder.TotalPrice, 100.0m);
-                        modifierPrice = decimal.Multiply(onePercentPrice, ntModifier.Percent);
-                        modifierPrice = Nt.Data.Utils.Math.Round(modifierPrice, ntModifier.Rounding);
-                        osOrderLineResultModifierChoice.ChoicePrice = (int)decimal.Multiply(modifierPrice, 100.0m);
-                    }
-                    else
-                    {
-                        osOrderLineResultModifierChoice.ChoicePrice = (int)decimal.Multiply(ntModifier.TotalPrice, 100.0m);
-                    }
-
-                    osOrderLineResult.SinglePrice += osOrderLineResultModifierChoice.ChoicePrice;
+                    osOrderLineResult.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100.0m);
+                    
                     osOrderLineResultModifier.Choices.Add(osOrderLineResultModifierChoice);
                 }
             }
@@ -223,6 +211,37 @@ namespace Os.Server.Logic
             osOrderLine.Quantity = (int)ntOrder.Quantity;
             osOrderLine.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100);
             osOrderLine.Status = GetOsOrderLineStatus(ntOrder.Status);
+
+            //Modifiers
+            if (ntOrder.Modifiers != null && ntOrder.Modifiers.Count > 0) {
+                osOrderLine.Modifiers = new List<Models.OrderLineModifier>();
+                
+                var osOrderLineModifier = new Models.OrderLineModifier();
+                var osOrderLineModifierId = 0;
+                var lastModifierMenuId = "";
+                    
+                foreach(var ntModifier in ntOrder.Modifiers)
+                {
+                    if (ntModifier.MenuId != lastModifierMenuId) {
+                        if (!string.IsNullOrEmpty(lastModifierMenuId))
+                            osOrderLine.Modifiers.Add(osOrderLineModifier);
+                        osOrderLineModifier = new Models.OrderLineModifier();
+                        osOrderLineModifierId++;
+                        osOrderLineModifier.Id = osOrderLineModifierId.ToString();
+                        osOrderLineModifier.ModifierGroupId = ntModifier.MenuId;
+                        lastModifierMenuId = ntModifier.MenuId;
+                        osOrderLineModifier.Choices = new List<Models.OrderLineModifierChoice>();
+                    }
+
+                    var osOrderLineModifierChoice = new Models.OrderLineModifierChoice();
+                    osOrderLineModifierChoice.ModifierChoiceId = ntModifier.ArticleId;
+                    osOrderLineModifier.Choices.Add(osOrderLineModifierChoice);
+                }
+
+                if (!string.IsNullOrEmpty(lastModifierMenuId))
+                            osOrderLine.Modifiers.Add(osOrderLineModifier);
+            }
+
             return osOrderLine;
         }
 

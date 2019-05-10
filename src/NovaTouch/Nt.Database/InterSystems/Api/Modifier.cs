@@ -128,6 +128,7 @@ namespace Nt.Database.InterSystems.Api
             modifier.ArticleId = dataList.GetString(0);
             modifier.Name = dataList.GetString(1);
             modifier.Quantity = quantity;
+            modifier.MenuId = dataList.GetString(29);
 
             var priceString = dataList.GetString(4);
             if (priceString.Contains("%")) {

@@ -146,6 +146,21 @@ namespace Nt.Data
         /// <value></value>
         public decimal UnitPrice { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public string MenuId { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public List<Modifier> Modifiers 
+        {
+            get { return _modifiers; }
+        }
+
         #endregion
 
         #region Constructor
@@ -171,14 +186,46 @@ namespace Nt.Data
             if (_modifiers == null)
                 _modifiers = new List<Modifier>();
 
+            if (modifier.Percent != 0.0m) 
+            {
+                var modifierUnitPrice = 0.0m;
+                var onePercentUnitPrice = decimal.Divide(this.UnitPrice, 100.0m);
+                modifierUnitPrice = decimal.Multiply(onePercentUnitPrice, modifier.Percent);
+                modifierUnitPrice = Nt.Data.Utils.Math.Round(modifierUnitPrice, modifier.Rounding);
+                this.UnitPrice += modifierUnitPrice;
+            }
+            else 
+            {
+                this.UnitPrice += modifier.UnitPrice;
+            }
+
             _modifiers.Add(modifier);
         }
 
         /// <summary>
-        /// Remove All 
+        /// 
         /// </summary>
         public void ClearModifiers() 
         {
+            if (_modifiers == null)
+                return;
+
+            foreach(var _modifier in _modifiers) 
+            {                
+                if (_modifier.Percent != 0.0m) 
+                {
+                    var modifierUnitPrice = 0.0m;
+                    var onePercentUnitPrice = decimal.Divide(this.UnitPrice, 100.0m);
+                    modifierUnitPrice = decimal.Multiply(onePercentUnitPrice, _modifier.Percent);
+                    modifierUnitPrice = Nt.Data.Utils.Math.Round(modifierUnitPrice, _modifier.Rounding);
+                    this.UnitPrice -= modifierUnitPrice;
+                }
+                else 
+                {
+                    this.UnitPrice -= _modifier.UnitPrice;
+                }
+            }
+
             _modifiers?.Clear();
         }
 

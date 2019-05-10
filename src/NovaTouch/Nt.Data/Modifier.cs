@@ -56,6 +56,12 @@ namespace Nt.Data
         /// <value></value>
         public decimal Rounding { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public string MenuId { get; set;}
+
         #endregion
 
         #region Constructor

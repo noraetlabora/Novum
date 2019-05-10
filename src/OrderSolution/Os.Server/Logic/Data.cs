@@ -10,6 +10,7 @@ namespace Os.Server.Logic
     {
 
         #region private fields;
+            private static List<Models.Article> osCachedArticles;
             private static string[] notSupportedArticleIds = { "PLU", "$KONTO:", "$GUTSCHEIN:", "$GUTSCHEINBET:", "$RABATT:", "GANG:", "$FILTER:" };
             private static string[] notSupportedModifierIds = { "VORWAHL:" };
 
@@ -92,6 +93,9 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static List<Models.Article> GetArticles()
         {
+            if (osCachedArticles != null)
+                return osCachedArticles;
+
             var osArticles = new List<Models.Article>();
             var ntArticles = Nt.Database.DB.Api.Article.GetArticles();
             var osArticleModifierGroups = GetArticleModifierGroups();
@@ -112,6 +116,7 @@ namespace Os.Server.Logic
                 osArticles.Add(osArticle);
             }
 
+            osCachedArticles = osArticles;
             return osArticles;
         }
         #endregion  //Articles

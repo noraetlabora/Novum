@@ -112,9 +112,15 @@ namespace Os.Server
             sb.Append(response.HttpContext.TraceIdentifier).Append(Pipe);
             sb.Append(response.StatusCode).Append(Pipe);
             sb.Append(response.HttpContext.Request.Path).Append(Pipe);
-            sb.Append(bodyAsText);
+            if (bodyAsText.Length > 2000) 
+                sb.Append(bodyAsText.Substring(0, 2000)).Append("...");
+            else 
+                sb.Append(bodyAsText);
 
             Nt.Logging.Log.Json.Info(sb.ToString());
+
+            if (bodyAsText.Length > 2000)
+                Nt.Logging.Log.Json.Debug(bodyAsText);
 
             return bodyAsText;
         }

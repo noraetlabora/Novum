@@ -33,6 +33,7 @@ namespace Nt.Database.InterSystems.Api
             var ordersString = new DataString(dbString);
             var ordersArray = ordersString.SplitByCRLF();
             var orderLine = 0;
+            var lastOrderId = "";
 
             foreach (string orderString in ordersArray)
             {
@@ -43,6 +44,8 @@ namespace Nt.Database.InterSystems.Api
                 var dataList = new DataList(dataString.SplitByChar96());
                 var indexString = new DataString(dataList.GetString(0));
                 var indexList = new DataList(indexString.SplitByDoublePipes());
+                var menuString = new DataString(dataList.GetString(9));
+                var menuList = new DataList(menuString.SplitBySemicolon());
 
                 var type = dataList.GetString(2);
                 // orderline
@@ -54,20 +57,31 @@ namespace Nt.Database.InterSystems.Api
                     order.ArticleId = indexList.GetString(1);
                     order.UnitPrice = indexList.GetDecimal(2);
                     order.ReferenceId = indexList.GetString(3);
-                    order.Name = dataList.GetString(4);
                     order.Quantity = dataList.GetDecimal(1);
+                    order.Status = (Nt.Data.Order.OrderStatus)dataList.GetUInt(2);
+                    order.Name = dataList.GetString(4);
                     order.CourseMenu = dataList.GetString(7);
                     order.CourseNumber = dataList.GetString(8);
                     order.CourseName = dataList.GetString(16);
-                    order.Status = (Nt.Data.Order.OrderStatus)dataList.GetUInt(2);
+                    order.MenuId = menuList.GetString(3);
+                    
                     if (orders.ContainsKey(order.Id))
                         orders[order.Id].Quantity += order.Quantity;
                     else
                         orders.Add(order.Id, order);
+
+                    lastOrderId = order.Id;
                 }
                 // modifier
-                else {
-                    System.Diagnostics.Debug.WriteLine("modifier");
+                else if (type.Equals("1")) {
+                    var modifier = new Nt.Data.Modifier();
+                    modifier.ArticleId = indexList.GetString(1);
+                    modifier.UnitPrice = indexList.GetDecimal(2);
+                    modifier.Quantity = dataList.GetDecimal(1);
+                    modifier.Name = dataList.GetString(4);
+                    modifier.MenuId = menuList.GetString(3);
+                    if (orders.ContainsKey(lastOrderId))
+                        orders[lastOrderId].AddModifier(modifier);
                 }
             }
 
