@@ -10,7 +10,8 @@ namespace Nt.Data
     /// </summary>
     public class Session
     {
-        private Dictionary<string, Order> orders;
+        private Dictionary<Permission.PermissionType, Permission> _permissions;
+        private Dictionary<string, Order> _orders;
 
         #region Properties
 
@@ -74,6 +75,8 @@ namespace Nt.Data
         /// <value></value>
         public Table CurrentTable { get; private set; }
 
+        
+
         #endregion
 
         #region Constructor
@@ -92,7 +95,7 @@ namespace Nt.Data
             this.ServiceAreaId = "";
             this.WaiterId = "";
             this.PriceLevel = "";
-            this.orders = new Dictionary<string, Order>();
+            this._orders = new Dictionary<string, Order>();
         }
         #endregion
 
@@ -105,8 +108,8 @@ namespace Nt.Data
         /// <returns></returns>
         public Nt.Data.Order GetOrder(string orderId)
         {
-            if (orders.ContainsKey(orderId))
-                return orders[orderId];
+            if (_orders.ContainsKey(orderId))
+                return _orders[orderId];
             else
                 return null;
         }
@@ -117,7 +120,7 @@ namespace Nt.Data
         /// <returns></returns>
         public List<Nt.Data.Order> GetOrders()
         {
-            return orders.Values.ToList();
+            return _orders.Values.ToList();
         }
 
         /// <summary>
@@ -127,11 +130,11 @@ namespace Nt.Data
         /// <returns></returns>
         public decimal AddOrder(Order order)
         {
-            if (orders.ContainsKey(order.Id))
-                orders[order.Id].Quantity += order.Quantity;
+            if (_orders.ContainsKey(order.Id))
+                _orders[order.Id].Quantity += order.Quantity;
             else
-                orders.Add(order.Id, order);
-            return orders[order.Id].Quantity;
+                _orders.Add(order.Id, order);
+            return _orders[order.Id].Quantity;
         }
 
         /// <summary>
@@ -143,18 +146,18 @@ namespace Nt.Data
         public decimal VoidOrder(string orderId, decimal voidQuantity)
         {
             // no order with id found
-            if (!orders.ContainsKey(orderId))
+            if (!_orders.ContainsKey(orderId))
                 return decimal.Zero;
             // remove order and return actual quantity
-            if (orders[orderId].Quantity <= voidQuantity)
+            if (_orders[orderId].Quantity <= voidQuantity)
             {
-                var quantity = orders[orderId].Quantity;
-                orders.Remove(orderId);
+                var quantity = _orders[orderId].Quantity;
+                _orders.Remove(orderId);
                 return quantity;
             }
             // decrease quantity and return quantity of rest
-            orders[orderId].Quantity -= voidQuantity;
-            return orders[orderId].Quantity;
+            _orders[orderId].Quantity -= voidQuantity;
+            return _orders[orderId].Quantity;
         }
 
         /// <summary>
@@ -163,8 +166,8 @@ namespace Nt.Data
         /// <returns>number of canceld orderlines</returns>
         public int ClearOrders()
         {
-            var ordersCount = orders.Count;
-            orders.Clear();
+            var ordersCount = _orders.Count;
+            _orders.Clear();
             return ordersCount;
         }
 
@@ -174,7 +177,39 @@ namespace Nt.Data
         /// <param name="table"></param>
         public void SetCurrentTable(Nt.Data.Table table)
         {
-            this.CurrentTable = table;
+            CurrentTable = table;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="permissions"></param>
+        public void SetPermissions(Dictionary<Permission.PermissionType, Permission> permissions)
+        {
+            _permissions = permissions;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="permissionType"></param>
+        /// <returns></returns>
+        public bool Permitted(Permission.PermissionType permissionType)
+        {
+            if (!_permissions.ContainsKey(permissionType))
+                return false;
+
+            return _permissions[permissionType].Permitted;
+        }
+
+                /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="permissionType"></param>
+        /// <returns></returns>
+        public bool NotPermitted(Permission.PermissionType permissionType)
+        {
+            return !Permitted(permissionType);
         }
 
         #endregion

@@ -32,5 +32,12 @@ namespace Nt.Database.Api
         /// </summary>
         /// <param name="session"></param>
         void Logout(Nt.Data.Session session);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="waiterId"></param>
+        /// <returns></returns>
+        Dictionary<Nt.Data.Permission.PermissionType, Nt.Data.Permission> GetPermissions(string waiterId);
     }
 }

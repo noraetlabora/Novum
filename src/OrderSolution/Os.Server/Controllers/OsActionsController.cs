@@ -30,6 +30,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
                 session.WaiterId = "";
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
@@ -46,10 +47,19 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/Auth/Logout")]
         public IActionResult AuthLogout()
         {
-            var session = Sessions.GetSession(Request);
-            session.WaiterId = "";
-            //200 - Ok
-            return new OkObjectResult(null);
+            try 
+            {
+                var session = Sessions.GetSession(Request);
+                session.WaiterId = "";
+                //200 - Ok
+                return new OkObjectResult(null);
+            }
+            catch (Exception ex) 
+            {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                //500 - Internal Server Error
+                return new StatusCodeResult(500);
+            }
         }
 
         /// <summary>
@@ -63,30 +73,32 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/Init/RegisterClient")]
         public IActionResult InitRegisterClient([FromBody][Required] Models.ClientInfo clientInfo)
         {
-            var session = Sessions.GetSession(Request);
-            if (session == null)
+            try 
             {
-                session = new Nt.Data.Session();
-                session.SerialNumber = clientInfo.Id;
-                session.ClientId = Logic.Data.GetClientId();
-                session.PosId = Logic.Data.GetPosId(clientInfo.Id);
-                session.ServiceAreaId = Logic.Data.GetServiceAreaId(session.PosId);
-                session.PriceLevel = Logic.Data.GetPriceLevel(session.ServiceAreaId);
-            }
-            session.WaiterId = "";
+                var session = Sessions.GetSession(Request);
+                if (session == null)
+                {
+                    session = new Nt.Data.Session();
+                    session.SerialNumber = clientInfo.Id;
+                    session.ClientId = Logic.Data.GetClientId();
+                    session.PosId = Logic.Data.GetPosId(clientInfo.Id);
+                    session.ServiceAreaId = Logic.Data.GetServiceAreaId(session.PosId);
+                    session.PriceLevel = Logic.Data.GetPriceLevel(session.ServiceAreaId);
+                }
+                session.WaiterId = "";
 
-            try
-            {
                 //register client
                 var posInfo = Logic.Registration.RegisterClient(session, clientInfo);
                 //save session internal and return the sessionId in the response
                 Sessions.SetSession(session);
                 Response.Cookies.Append("sessionId", session.Id);
+                
                 //200 - Ok
                 return new OkObjectResult(posInfo);
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -103,7 +115,16 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/Init/RegisterGateway")]
         public IActionResult InitRegisterGateway([FromBody][Required] Models.GatewayInfo gatewayInfo)
         {
-            return new NoContentResult();
+            try 
+            {
+                return new NoContentResult();
+            }
+            catch (Exception ex) 
+            {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                //500 - Internal Server Error
+                return new StatusCodeResult(500);
+            }
         }
     }
 }

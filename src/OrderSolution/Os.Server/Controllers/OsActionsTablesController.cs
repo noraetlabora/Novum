@@ -20,9 +20,9 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/SubTables/Create")]
         public virtual IActionResult CreateSubTable([FromQuery] string tableId)
         {
-            var session = Sessions.GetSession(Request);
             try
             {
+                var session = Sessions.GetSession(Request);
                 //register client
                 var subTable = Logic.Table.CreateSubTable(session, tableId);
                 //201 - Created
@@ -30,6 +30,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -49,9 +50,10 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/Tables/OpenByName/{name}")]
         public IActionResult OpenTableByName([FromRoute][Required] string name, [FromQuery] string serviceAreaId, [FromQuery] bool? prePayment)
         {
-            var session = Sessions.GetSession(Request);
             try
             {
+                var session = Sessions.GetSession(Request);
+
                 if (prePayment == null)
                     prePayment = false;
                 var tableResult = Logic.Table.OpenByName(session, name, serviceAreaId, (bool)prePayment);
@@ -62,6 +64,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -81,9 +84,9 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/Tables/FinalizeOrder/{tableId}")]
         public virtual IActionResult FinalizeTableOrder([FromRoute][Required] string tableId)
         {
-            var session = Sessions.GetSession(Request);
             try
             {
+                var session = Sessions.GetSession(Request);
                 Logic.Order.FinalizeOrder(session, tableId);
                 //204 - No Content
                 return new NoContentResult();
@@ -94,6 +97,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -113,9 +117,9 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/Tables/CancelOrder/{tableId}")]
         public virtual IActionResult CancelOrder([FromRoute][Required] string tableId)
         {
-            var session = Sessions.GetSession(Request);
             try
             {
+                var session = Sessions.GetSession(Request);
                 Logic.Order.CancelOrder(session, tableId);
                 //204 - No Content
                 return new NoContentResult();
@@ -126,6 +130,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest

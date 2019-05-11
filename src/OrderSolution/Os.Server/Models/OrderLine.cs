@@ -92,7 +92,7 @@ namespace Os.Server.Models
         /// </summary>
         [Required]
         [DataMember(Name = "status")]
-        public OrderLineStatus? Status { get; set; }
+        public int? Status { get; set; }
 
         /// <summary>
         /// Gets or Sets Modifiers

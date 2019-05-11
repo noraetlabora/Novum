@@ -159,13 +159,14 @@ namespace Os.Server.Logic
         {
             var osModifierGroups = new List<Models.ModifierGroup>();
             var ntModifierMenus = Nt.Database.DB.Api.Modifier.GetModifierMenus();
+            Models.ModifierGroup osModifierGroup;
 
             //////////////////////////////////////
             // iterate Modifier Menu
             //////////////////////////////////////
             foreach (var ntModifierMenu in ntModifierMenus.Values)
             {
-                var osModifierGroup = new Models.ModifierGroup();
+                osModifierGroup = new Models.ModifierGroup();
                 osModifierGroup.Id = ntModifierMenu.Id;
                 osModifierGroup.Name = ntModifierMenu.Name;
                 osModifierGroup.MinChoices = (int)ntModifierMenu.MinSelection;
@@ -182,7 +183,7 @@ namespace Os.Server.Logic
                 var lastModifierItemId = "";
 
                 //////////////////////////////////////
-                // Modifier Items
+                // Modifier Items / Choices
                 //////////////////////////////////////
                 foreach (var modifierItem in modifierItems.Values)
                 {
@@ -207,6 +208,24 @@ namespace Os.Server.Logic
                 }
                 osModifierGroups.Add(osModifierGroup);
             }
+
+            //////////////////////////////////////
+            // text input
+            //////////////////////////////////////
+            osModifierGroup = new Models.ModifierGroup();
+            osModifierGroup.Id = "text";
+            osModifierGroup.Name = "Text";
+            osModifierGroup.Type = (int)Models.ModifierGroup.ModifierType.TextInputEnum;
+            osModifierGroups.Add(osModifierGroup);
+
+            //////////////////////////////////////
+            // fax input
+            //////////////////////////////////////
+            osModifierGroup = new Models.ModifierGroup();
+            osModifierGroup.Id = "fax";
+            osModifierGroup.Name = "Fax";
+            osModifierGroup.Type = (int)Models.ModifierGroup.ModifierType.FaxInputEnum;
+            osModifierGroups.Add(osModifierGroup);
 
             return osModifierGroups;
         }
@@ -309,12 +328,12 @@ namespace Os.Server.Logic
         /// </summary>
         /// <returns></returns>
         private static Dictionary<string, List<Models.ArticleModifierGroup>> GetArticleModifierGroups() {
-            var modifierDictionary = new Dictionary<string, List<Models.ArticleModifierGroup>>();
+            var osModifierDictionary = new Dictionary<string, List<Models.ArticleModifierGroup>>();
             var ntMenuItems = Nt.Database.DB.Api.Menu.GetMenuItems();
             var ntMenuItemsModifierMenus = Nt.Database.DB.Api.Modifier.GetMenuItemModifierMenus();
 
             foreach(var ntMenuItem in ntMenuItems) {
-                var modifierList = new List<Models.ArticleModifierGroup>();
+                var osModifierList = new List<Models.ArticleModifierGroup>();
                 foreach(var ntMenuItemsModifierMenu in ntMenuItemsModifierMenus) {
                     if (!ntMenuItemsModifierMenu.MenuItemMenuId.Equals(ntMenuItem.MenuId))
                         continue;
@@ -324,18 +343,27 @@ namespace Os.Server.Logic
                     if (ntMenuItemsModifierMenu.MenuItemRow < ntMenuItem.FromRow ||
                         ntMenuItemsModifierMenu.MenuItemRow > ntMenuItem.ToRow     )
                         continue;
-                    var articleModifierGroup = new Models.ArticleModifierGroup();
-                    articleModifierGroup.ModifierGroupId = ntMenuItemsModifierMenu.ModifierMenuId;
-                    modifierList.Add(articleModifierGroup);
+                    //    
+                    var osArticleModifierGroup = new Models.ArticleModifierGroup();
+                    osArticleModifierGroup.ModifierGroupId = ntMenuItemsModifierMenu.ModifierMenuId;
+                    osModifierList.Add(osArticleModifierGroup);
                 }
+                // text input
+                var osTextModifierMenu = new Models.ArticleModifierGroup();
+                osTextModifierMenu.ModifierGroupId = "text";
+                osModifierList.Add(osTextModifierMenu);
+                // fax input
+                var osFaxModifierMenu = new Models.ArticleModifierGroup();
+                osFaxModifierMenu.ModifierGroupId = "fax";
+                osModifierList.Add(osFaxModifierMenu);
 
-                if (modifierList.Count > 0) {
-                    if (!modifierDictionary.ContainsKey(ntMenuItem.ArticleId))
-                        modifierDictionary.Add(ntMenuItem.ArticleId, modifierList);
+                if (osModifierList.Count > 0) {
+                    if (!osModifierDictionary.ContainsKey(ntMenuItem.ArticleId))
+                        osModifierDictionary.Add(ntMenuItem.ArticleId, osModifierList);
                 }
             }
 
-            return modifierDictionary;
+            return osModifierDictionary;
         }
 
         /// <summary>

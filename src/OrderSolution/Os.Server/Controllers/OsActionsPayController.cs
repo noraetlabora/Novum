@@ -20,15 +20,16 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/Pay/SubTables")]
         public virtual IActionResult PaySubTables([FromBody][Required] Models.PaySubTables data)
         {
-            var session = Sessions.GetSession(Request);
             try
             {
+                var session = Sessions.GetSession(Request);
                 Logic.Payment.PaySubTables(session, data);
                 // 204 - No Content 
                 return new NoContentResult();
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest

@@ -22,19 +22,11 @@ namespace Os.Server.Logic
             var osOrderLines = new List<Models.OrderLine>();
             var ntOrders = Nt.Database.DB.Api.Order.GetOrders(subTableId);
 
-            //orderd or prebooked orderlines
             foreach (var ntOrder in ntOrders.Values)
             {
                 var osOrderLine = GetOsOrderLine(ntOrder);
                 osOrderLines.Add(osOrderLine);
             }
-
-            // //new orders
-            // foreach (var ntOrder in session.GetOrders())
-            // {
-            //     var osOrderLine = GetOsOrderLine(ntOrder);
-            //     osOrderLines.Add(osOrderLine);
-            // }
 
             return osOrderLines;
         }
@@ -74,6 +66,9 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static Models.OrderLineVoidResult Void(Nt.Data.Session session, string orderLineId, Models.OrderLineVoid data)
         {
+            if (session.NotPermitted(Nt.Data.Permission.PermissionType.VoidCommitedOrder))
+                throw new Exception("not permitted");
+                
             if (session.CurrentTable == null)
                 throw new Exception("no open table");
 
@@ -140,20 +135,36 @@ namespace Os.Server.Logic
             foreach(var osOrderLineModifier2 in data.Modifiers)
             {
                 var osOrderLineResultModifier = new Models.OrderLineResultModifier();
-                osOrderLineResultModifier.Id = osOrderLineModifier2.ModifierGroupId;
-                osOrderLineResultModifier.Choices = new List<Models.OrderLineResultModifierChoice>();
+                ///////////////////////////////////
+                //choices
+                ///////////////////////////////////
+                if (osOrderLineModifier2.Choices != null && osOrderLineModifier2.Choices.Count > 0) {
+                    osOrderLineResultModifier.Id = osOrderLineModifier2.ModifierGroupId;
+                    osOrderLineResultModifier.Choices = new List<Models.OrderLineResultModifierChoice>();
 
-                foreach(var osOrderLineModifierChoice2 in osOrderLineModifier2.Choices) 
-                {
-                    var ntModifier = Nt.Database.DB.Api.Modifier.GetModifier(session, osOrderLineModifierChoice2.ModifierChoiceId, 1.0m);
-                    ntOrder.AddModifier(ntModifier);
-                    
-                    var osOrderLineResultModifierChoice = new Models.OrderLineResultModifierChoice();
-                    osOrderLineResultModifierChoice.ModifierChoiceId = ntModifier.ArticleId;
-                    osOrderLineResult.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100.0m);
-                    
-                    osOrderLineResultModifier.Choices.Add(osOrderLineResultModifierChoice);
+                    foreach(var osOrderLineModifierChoice2 in osOrderLineModifier2.Choices) 
+                    {
+                        var ntModifier = Nt.Database.DB.Api.Modifier.GetModifier(session, osOrderLineModifierChoice2.ModifierChoiceId, 1.0m);
+                        ntOrder.AddModifier(ntModifier);
+                        
+                        var osOrderLineResultModifierChoice = new Models.OrderLineResultModifierChoice();
+                        osOrderLineResultModifierChoice.ModifierChoiceId = ntModifier.ArticleId;
+                        osOrderLineResult.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100.0m);
+
+                        osOrderLineResultModifier.Choices.Add(osOrderLineResultModifierChoice);
+                    }
                 }
+                ///////////////////////////////////
+                //text input
+                ///////////////////////////////////
+                var ntTextModifier = new Nt.Data.Modifier();
+                //TODO: Modifier Text Input
+                
+                ///////////////////////////////////
+                //fax input
+                ///////////////////////////////////
+                var ntFaxModifier = new Nt.Data.Modifier();
+                //TODO: Modifier Fax Input
             }
 
             return osOrderLineResult;
@@ -210,7 +221,7 @@ namespace Os.Server.Logic
             osOrderLine.ArticleId = ntOrder.ArticleId;
             osOrderLine.Quantity = (int)ntOrder.Quantity;
             osOrderLine.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100);
-            osOrderLine.Status = GetOsOrderLineStatus(ntOrder.Status);
+            osOrderLine.Status = (int)GetOsOrderLineStatus(ntOrder.Status);
 
             //Modifiers
             if (ntOrder.Modifiers != null && ntOrder.Modifiers.Count > 0) {

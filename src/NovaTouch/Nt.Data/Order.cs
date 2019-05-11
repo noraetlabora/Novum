@@ -181,24 +181,12 @@ namespace Nt.Data
         /// 
         /// </summary>
         /// <param name="modifier"></param>
-        public void AddModifier(Nt.Data.Modifier modifier) 
+        public void AddModifier(Nt.Data.Modifier modifier)
         {
             if (_modifiers == null)
                 _modifiers = new List<Modifier>();
 
-            if (modifier.Percent != 0.0m) 
-            {
-                var modifierUnitPrice = 0.0m;
-                var onePercentUnitPrice = decimal.Divide(this.UnitPrice, 100.0m);
-                modifierUnitPrice = decimal.Multiply(onePercentUnitPrice, modifier.Percent);
-                modifierUnitPrice = Nt.Data.Utils.Math.Round(modifierUnitPrice, modifier.Rounding);
-                this.UnitPrice += modifierUnitPrice;
-            }
-            else 
-            {
-                this.UnitPrice += modifier.UnitPrice;
-            }
-
+            this.UnitPrice += GetModifierUnitPrice(modifier);
             _modifiers.Add(modifier);
         }
 
@@ -210,23 +198,34 @@ namespace Nt.Data
             if (_modifiers == null)
                 return;
 
-            foreach(var _modifier in _modifiers) 
-            {                
-                if (_modifier.Percent != 0.0m) 
-                {
-                    var modifierUnitPrice = 0.0m;
-                    var onePercentUnitPrice = decimal.Divide(this.UnitPrice, 100.0m);
-                    modifierUnitPrice = decimal.Multiply(onePercentUnitPrice, _modifier.Percent);
-                    modifierUnitPrice = Nt.Data.Utils.Math.Round(modifierUnitPrice, _modifier.Rounding);
-                    this.UnitPrice -= modifierUnitPrice;
-                }
-                else 
-                {
-                    this.UnitPrice -= _modifier.UnitPrice;
-                }
+            foreach(var modifier in _modifiers) 
+            {
+                this.UnitPrice -= GetModifierUnitPrice(modifier);
             }
 
             _modifiers?.Clear();
+        }
+
+        #endregion
+
+        #region private methods
+
+                /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="modifier"></param>
+        /// <returns></returns>
+        private decimal GetModifierUnitPrice(Modifier modifier)
+        {
+            if (modifier.Percent != 0.0m)
+            {
+                var modifierUnitPrice = 0.0m;
+                var onePercentUnitPrice = decimal.Divide(this.UnitPrice, 100.0m);
+                modifierUnitPrice = decimal.Multiply(onePercentUnitPrice, modifier.Percent);
+                modifierUnitPrice = Nt.Data.Utils.Math.Round(modifierUnitPrice, modifier.Rounding);
+                return modifierUnitPrice;
+            }
+            return modifier.UnitPrice;
         }
 
         #endregion

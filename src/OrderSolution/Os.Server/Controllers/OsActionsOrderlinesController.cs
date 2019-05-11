@@ -21,9 +21,9 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/OrderLines/Void/{orderLineId}")]
         public virtual IActionResult VoidOrderLines([FromRoute][Required] string orderLineId, [FromBody][Required] Models.OrderLineVoid data)
         {
-            var session = Sessions.GetSession(Request);
             try
             {
+                var session = Sessions.GetSession(Request);
                 var voidResult = Logic.Order.Void(session, orderLineId, data);
                 // 204 - No Content - delete Orderline
                 if (voidResult.Quantity <= 0)
@@ -33,6 +33,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -50,15 +51,16 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/OrderLines/Add/{subTableId}")]
         public IActionResult AddOrderLines([FromRoute][Required] string subTableId, [FromBody][Required] Models.OrderLineAdd data)
         {
-            var session = Sessions.GetSession(Request);
             try
             {
+                var session = Sessions.GetSession(Request);
                 var orderLineResult = Logic.Order.Add(session, subTableId, data);
                 //201 - Created
                 return new CreatedResult("OrderLines/Add", orderLineResult);
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -76,15 +78,16 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/OrderLines/ModifyUncommitted/{orderLineId}")]
         public IActionResult ModifyOrderLinesUncommitted([FromRoute][Required] string orderLineId, [FromBody][Required] Models.OrderLineModify data)
         {
-            var session = Sessions.GetSession(Request);
             try
             {
+                var session = Sessions.GetSession(Request);
                 var orderLineResult = Logic.Order.Modify(session, orderLineId, data);
                 //201 - Created
                 return new CreatedResult("OrderLines/ModifyUncommitted", orderLineResult);
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest

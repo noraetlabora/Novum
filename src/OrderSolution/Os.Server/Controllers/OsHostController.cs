@@ -20,9 +20,18 @@ namespace Os.Server.Controllers
         [Route("/api/v2/HostStatus")]
         public IActionResult GetHostStatus()
         {
-            var posStatus = new Models.PosStatus();
-            posStatus.SessionId = serverStart.ToString("dd.MM.yyyy_HH:mm:ss.ffff");
-            return new OkObjectResult(posStatus);
+            try
+            {
+                var posStatus = new Models.PosStatus();
+                posStatus.SessionId = serverStart.ToString("dd.MM.yyyy_HH:mm:ss.ffff");
+                return new OkObjectResult(posStatus);
+            }
+            catch (Exception ex) 
+            {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                //500 - Internal Server Error
+                return new StatusCodeResult(500);
+            }
         }
     }
 }

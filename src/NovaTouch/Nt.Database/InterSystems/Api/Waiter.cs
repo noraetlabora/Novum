@@ -87,5 +87,48 @@ namespace Nt.Database.InterSystems.Api
             var posId = DB.Api.Pos.GetPosId(session.SerialNumber);
             Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogout", session.ClientId, posId, session.WaiterId);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="waiterId"></param>
+        /// <returns></returns>
+        public Dictionary<Nt.Data.Permission.PermissionType, Nt.Data.Permission> GetPermissions(string waiterId) 
+        {
+            var permissions = new Dictionary<Nt.Data.Permission.PermissionType, Nt.Data.Permission>();
+            var sql = new StringBuilder();
+            sql.Append(" SELECT B.PRG, P.bez, B.bere ");
+            sql.Append(" FROM NT.PersMitglied M ");
+            sql.Append(" JOIN NT.PersStufenBere B ON B.FA=M.FA AND B.STUFE = M.STUFE ");
+            sql.Append(" JOIN NT.PersSecProg P ON P.PRG = B.PRG AND P.obsolet = 0 ");
+            sql.Append(" WHERE M.FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" AND M.PNR = ").Append(waiterId);
+            var dataTable = Interaction.GetDataTable(sql.ToString());
+
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                var name = DataObject.GetString(dataRow, "bez");
+                var program = DataObject.GetString(dataRow, "PRG");
+                var permitted = DataObject.GetBool(dataRow, "bere");
+                Nt.Data.Permission.PermissionType permissionType;
+
+                switch (program)
+                {
+                    case "SEC-4": 
+                        permissionType = Nt.Data.Permission.PermissionType.VoidCommitedOrder;
+                        break;
+                    case "SOL-FAX":
+                        permissionType = Nt.Data.Permission.PermissionType.ModifierFaxInput;
+                        break;
+                    default:
+                        continue;
+                }
+
+                var permission = new Nt.Data.Permission(name, program, permissionType, permitted);
+                permissions.Add(permission.Type, permission);
+            }
+
+            return permissions;
+        }
     }
 }

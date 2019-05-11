@@ -21,8 +21,17 @@ namespace Os.Server.Controllers
         [Route("/api/v2/images/fax/{id}")]
         public virtual IActionResult GetFaxImage([FromRoute][Required] string id)
         {
-            var image = System.IO.File.ReadAllBytes(@"C:\Temp\image.jpg");
-            return new OkObjectResult(image);
+            try 
+            {
+                var image = System.IO.File.ReadAllBytes(@"C:\Temp\image.jpg");
+                return new OkObjectResult(image);
+            }
+            catch (Exception ex) 
+            {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                //500 - Internal Server Error
+                return new StatusCodeResult(500);
+            }
         }
 
         /// <summary>
@@ -35,7 +44,16 @@ namespace Os.Server.Controllers
         [Route("/api/v2/images/fax/{id}")]
         public virtual IActionResult PutFaxImage([FromRoute][Required] string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch (Exception ex) 
+            {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                //500 - Internal Server Error
+                return new StatusCodeResult(500);
+            }
         }
 
         /// <summary>
@@ -50,7 +68,16 @@ namespace Os.Server.Controllers
         [Route("/api/v2/images/fax")]
         public IActionResult PostFaxImage([FromQuery] string subTableId)
         {
-            throw new NotImplementedException();
+            try 
+            {
+                throw new NotImplementedException();
+            }
+            catch (Exception ex) 
+            {
+                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                //500 - Internal Server Error
+                return new StatusCodeResult(500);
+            }
         }
     }
 }
