@@ -157,14 +157,19 @@ namespace Os.Server.Logic
                 ///////////////////////////////////
                 //text input
                 ///////////////////////////////////
-                var ntTextModifier = new Nt.Data.Modifier();
-                //TODO: Modifier Text Input
+                if (!string.IsNullOrEmpty(osOrderLineModifier2.TextInput)) {
+                    var ntTextModifier = new Nt.Data.Modifier();
+                    ntTextModifier.Name = osOrderLineModifier2.TextInput;
+                    ntOrder.AddModifier(ntTextModifier);
+                }
                 
                 ///////////////////////////////////
                 //fax input
                 ///////////////////////////////////
-                var ntFaxModifier = new Nt.Data.Modifier();
                 //TODO: Modifier Fax Input
+                if (!string.IsNullOrEmpty(osOrderLineModifier2.FaxInputID)) {
+                    var ntFaxModifier = new Nt.Data.Modifier();
+                }
             }
 
             return osOrderLineResult;
@@ -228,29 +233,31 @@ namespace Os.Server.Logic
                 osOrderLine.Modifiers = new List<Models.OrderLineModifier>();
                 
                 var osOrderLineModifier = new Models.OrderLineModifier();
-                var osOrderLineModifierId = 0;
-                var lastModifierMenuId = "";
-                    
+                
                 foreach(var ntModifier in ntOrder.Modifiers)
                 {
-                    if (ntModifier.MenuId != lastModifierMenuId) {
-                        if (!string.IsNullOrEmpty(lastModifierMenuId))
-                            osOrderLine.Modifiers.Add(osOrderLineModifier);
-                        osOrderLineModifier = new Models.OrderLineModifier();
-                        osOrderLineModifierId++;
-                        osOrderLineModifier.Id = osOrderLineModifierId.ToString();
+                    osOrderLineModifier = new Models.OrderLineModifier();
+                    osOrderLineModifier.Choices = new List<Models.OrderLineModifierChoice>();
+
+                    //choice
+                    if (!string.IsNullOrEmpty(ntModifier.ArticleId)) {
+                        var osOrderLineModifierChoice = new Models.OrderLineModifierChoice();
+                        osOrderLineModifierChoice.ModifierChoiceId = ntModifier.ArticleId;
+                        osOrderLineModifier.Choices.Add(osOrderLineModifierChoice);
+                        osOrderLineModifier.Id = ntModifier.MenuId + "|" + ntModifier.ArticleId;
                         osOrderLineModifier.ModifierGroupId = ntModifier.MenuId;
-                        lastModifierMenuId = ntModifier.MenuId;
-                        osOrderLineModifier.Choices = new List<Models.OrderLineModifierChoice>();
+                    }
+                    //textinput
+                    else 
+                    {
+                        osOrderLineModifier.TextInput = ntModifier.Name;
+                        ntModifier.MenuId = "text";
+                        osOrderLineModifier.Id = "text|" + ntModifier.Name;
                     }
 
-                    var osOrderLineModifierChoice = new Models.OrderLineModifierChoice();
-                    osOrderLineModifierChoice.ModifierChoiceId = ntModifier.ArticleId;
-                    osOrderLineModifier.Choices.Add(osOrderLineModifierChoice);
+                    osOrderLine.Modifiers.Add(osOrderLineModifier);
+                    
                 }
-
-                if (!string.IsNullOrEmpty(lastModifierMenuId))
-                            osOrderLine.Modifiers.Add(osOrderLineModifier);
             }
 
             return osOrderLine;

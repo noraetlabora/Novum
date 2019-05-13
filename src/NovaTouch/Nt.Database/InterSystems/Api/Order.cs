@@ -174,7 +174,8 @@ namespace Nt.Database.InterSystems.Api
         public void FinilizeOrder(Nt.Data.Session session, string tableId)
         {
             var newOrdersDataString = GetOrderDataString(session.GetOrders());
-            Interaction.CallVoidClassMethod("cmNT.BonOman", "SetAllBonDatenMitAenderer", session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, newOrdersDataString);
+            if (!string.IsNullOrEmpty(newOrdersDataString))
+                Interaction.CallVoidClassMethod("cmNT.BonOman", "SetAllBonDatenMitAenderer", session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, newOrdersDataString);
         }
 
         #endregion
@@ -234,6 +235,24 @@ namespace Nt.Database.InterSystems.Api
             dataString.Append("").Append(DataString.Char96); //UstProzent
             dataString.Append("").Append(DataString.Char96); //UstProzent2
             dataString.Append("").Append(DataString.Char96); //Platzbonierung
+
+            if (order.Modifiers != null) {
+                foreach(var modifier in order.Modifiers) {
+                    dataString.Append(DataString.CRLF);
+                    //
+                    dataString.Append(order.AssignmentTypeId).Append(DataString.DoublePipes);
+                    dataString.Append(modifier.ArticleId).Append(DataString.DoublePipes);
+                    dataString.Append(modifier.UnitPrice).Append(DataString.DoublePipes);
+                    dataString.Append("").Append(DataString.DoublePipes);
+                    dataString.Append("").Append(DataString.Char96);
+                    //
+                    dataString.Append("0").Append(DataString.Char96);
+                    dataString.Append("11").Append(DataString.Char96);
+                    dataString.Append("").Append(DataString.Char96);
+                    dataString.Append(modifier.Name).Append("``A```0;0;0;");
+                    dataString.Append(modifier.MenuId).Append("`0``0``0````;;;0;0;````````0`````0");
+                }
+            }
 
             return dataString.ToString();
         }

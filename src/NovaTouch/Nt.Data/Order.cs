@@ -186,7 +186,8 @@ namespace Nt.Data
             if (_modifiers == null)
                 _modifiers = new List<Modifier>();
 
-            this.UnitPrice += GetModifierUnitPrice(modifier);
+            if (this.Status.Equals(OrderStatus.NewOrder))
+                this.UnitPrice += GetModifierUnitPrice(modifier);
             _modifiers.Add(modifier);
         }
 
