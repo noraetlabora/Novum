@@ -45,7 +45,7 @@ namespace Os.Server.Models
         /// </summary>
         /// <value>List of order line payments that represent the orderlines (-parts) that will be paied with this set.</value>
         [DataMember(Name = "paidLines")]
-        public List<OrderLineQuanity> PaidLines { get; set; }
+        public List<OrderLineQuantity> PaidLines { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

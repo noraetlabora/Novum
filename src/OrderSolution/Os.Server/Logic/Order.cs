@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Os.Server.Logic
 {
@@ -40,7 +41,7 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static Models.OrderLineResult Add(Nt.Data.Session session, string subTableId, Models.OrderLineAdd data)
         {
-            if (session.CurrentTable == null)
+            if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
                 throw new Exception("no open table");
 
             var orderLineResult = new Models.OrderLineResult();
@@ -69,7 +70,7 @@ namespace Os.Server.Logic
             if (session.NotPermitted(Nt.Data.Permission.PermissionType.VoidCommitedOrder))
                 throw new Exception("not permitted");
                 
-            if (session.CurrentTable == null)
+            if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
                 throw new Exception("no open table");
 
             //search in new/uncommited orders, when not found search in ordered/prebooked orders of current table
@@ -119,7 +120,7 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static Models.OrderLineResult Modify(Nt.Data.Session session, string orderLineId, Models.OrderLineModify data)
         {
-            if (session.CurrentTable == null)
+            if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
                 throw new Exception("no open table");
 
             //search in new/uncommited orders
@@ -138,7 +139,8 @@ namespace Os.Server.Logic
                 ///////////////////////////////////
                 //choices
                 ///////////////////////////////////
-                if (osOrderLineModifier2.Choices != null && osOrderLineModifier2.Choices.Count > 0) {
+                if (osOrderLineModifier2.Choices != null && osOrderLineModifier2.Choices.Count > 0) 
+                {
                     osOrderLineResultModifier.Id = osOrderLineModifier2.ModifierGroupId;
                     osOrderLineResultModifier.Choices = new List<Models.OrderLineResultModifierChoice>();
 
@@ -157,7 +159,8 @@ namespace Os.Server.Logic
                 ///////////////////////////////////
                 //text input
                 ///////////////////////////////////
-                if (!string.IsNullOrEmpty(osOrderLineModifier2.TextInput)) {
+                if (!string.IsNullOrEmpty(osOrderLineModifier2.TextInput))
+                {
                     var ntTextModifier = new Nt.Data.Modifier();
                     ntTextModifier.Name = osOrderLineModifier2.TextInput;
                     ntOrder.AddModifier(ntTextModifier);
@@ -166,9 +169,11 @@ namespace Os.Server.Logic
                 ///////////////////////////////////
                 //fax input
                 ///////////////////////////////////
-                //TODO: Modifier Fax Input
-                if (!string.IsNullOrEmpty(osOrderLineModifier2.FaxInputID)) {
+                if (!string.IsNullOrEmpty(osOrderLineModifier2.FaxInputID)) 
+                {
                     var ntFaxModifier = new Nt.Data.Modifier();
+                    ntFaxModifier.Image = Image.GetImage(osOrderLineModifier2.FaxInputID);
+                    ntOrder.AddModifier(ntFaxModifier);
                 }
             }
 
@@ -182,7 +187,7 @@ namespace Os.Server.Logic
         /// <param name="tableId"></param>
         public static void CancelOrder(Nt.Data.Session session, string tableId)
         {
-            if (session.CurrentTable == null)
+            if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
                 throw new Exception("no open table");
 
             Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);
@@ -196,11 +201,13 @@ namespace Os.Server.Logic
         /// <param name="tableId"></param>
         public static void FinalizeOrder(Nt.Data.Session session, string tableId)
         {
-            if (session.CurrentTable == null)
+            if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
                 throw new Exception("no open table");
-            Nt.Database.DB.Api.Order.FinilizeOrder(session, tableId);
+                
+            Nt.Database.DB.Api.Order.FinalizeOrder(session, tableId);
             Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);
             session.ClearOrders();
+            Image.RemoveImages(session);
         }
 
         #endregion
@@ -220,7 +227,8 @@ namespace Os.Server.Logic
             }
         }
 
-        private static Models.OrderLine GetOsOrderLine(Nt.Data.Order ntOrder) {
+        private static Models.OrderLine GetOsOrderLine(Nt.Data.Order ntOrder) 
+        {
             var osOrderLine = new Models.OrderLine();
             osOrderLine.Id = ntOrder.Id;
             osOrderLine.ArticleId = ntOrder.ArticleId;
@@ -229,7 +237,8 @@ namespace Os.Server.Logic
             osOrderLine.Status = (int)GetOsOrderLineStatus(ntOrder.Status);
 
             //Modifiers
-            if (ntOrder.Modifiers != null && ntOrder.Modifiers.Count > 0) {
+            if (ntOrder.Modifiers != null && ntOrder.Modifiers.Count > 0)
+            {
                 osOrderLine.Modifiers = new List<Models.OrderLineModifier>();
                 
                 var osOrderLineModifier = new Models.OrderLineModifier();
@@ -240,7 +249,8 @@ namespace Os.Server.Logic
                     osOrderLineModifier.Choices = new List<Models.OrderLineModifierChoice>();
 
                     //choice
-                    if (!string.IsNullOrEmpty(ntModifier.ArticleId)) {
+                    if (!string.IsNullOrEmpty(ntModifier.ArticleId)) 
+                    {
                         var osOrderLineModifierChoice = new Models.OrderLineModifierChoice();
                         osOrderLineModifierChoice.ModifierChoiceId = ntModifier.ArticleId;
                         osOrderLineModifier.Choices.Add(osOrderLineModifierChoice);
@@ -248,7 +258,7 @@ namespace Os.Server.Logic
                         osOrderLineModifier.ModifierGroupId = ntModifier.MenuId;
                     }
                     //textinput
-                    else 
+                    else if (!string.IsNullOrEmpty(ntModifier.Name))
                     {
                         osOrderLineModifier.TextInput = ntModifier.Name;
                         ntModifier.MenuId = "text";

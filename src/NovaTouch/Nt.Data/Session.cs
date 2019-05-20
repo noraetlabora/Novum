@@ -73,9 +73,7 @@ namespace Nt.Data
         /// 
         /// </summary>
         /// <value></value>
-        public Table CurrentTable { get; private set; }
-
-        
+        public Nt.Data.Table CurrentTable { get; private set; }        
 
         #endregion
 

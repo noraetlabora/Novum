@@ -327,14 +327,17 @@ namespace Os.Server.Logic
         /// 
         /// </summary>
         /// <returns></returns>
-        private static Dictionary<string, List<Models.ArticleModifierGroup>> GetArticleModifierGroups() {
+        private static Dictionary<string, List<Models.ArticleModifierGroup>> GetArticleModifierGroups() 
+        {
             var osModifierDictionary = new Dictionary<string, List<Models.ArticleModifierGroup>>();
             var ntMenuItems = Nt.Database.DB.Api.Menu.GetMenuItems();
             var ntMenuItemsModifierMenus = Nt.Database.DB.Api.Modifier.GetMenuItemModifierMenus();
 
-            foreach(var ntMenuItem in ntMenuItems) {
+            foreach(var ntMenuItem in ntMenuItems) 
+            {
                 var osModifierList = new List<Models.ArticleModifierGroup>();
-                foreach(var ntMenuItemsModifierMenu in ntMenuItemsModifierMenus) {
+                foreach(var ntMenuItemsModifierMenu in ntMenuItemsModifierMenus) 
+                {
                     if (!ntMenuItemsModifierMenu.MenuItemMenuId.Equals(ntMenuItem.MenuId))
                         continue;
                     if (ntMenuItemsModifierMenu.MenuItemColumn < ntMenuItem.FromColumn ||
@@ -357,7 +360,8 @@ namespace Os.Server.Logic
                 osFaxModifierMenu.ModifierGroupId = "fax";
                 osModifierList.Add(osFaxModifierMenu);
 
-                if (osModifierList.Count > 0) {
+                if (osModifierList.Count > 0) 
+                {
                     if (!osModifierDictionary.ContainsKey(ntMenuItem.ArticleId))
                         osModifierDictionary.Add(ntMenuItem.ArticleId, osModifierList);
                 }
@@ -386,7 +390,8 @@ namespace Os.Server.Logic
         /// </summary>
         /// <param name="modifierId"></param>
         /// <returns></returns>
-        private static bool ModifierIdNotSupported(string modifierId) {
+        private static bool ModifierIdNotSupported(string modifierId) 
+        {
             foreach (string notSupportedModifierId in notSupportedModifierIds)
             {
                 if (modifierId.StartsWith(notSupportedModifierId))
@@ -403,7 +408,8 @@ namespace Os.Server.Logic
         /// <param name="ntMenuItems"></param>
         /// <param name="subMenu">number of submenu (mainMenu = 0, subMenu = 1, subsubMenu = 2, ...)</param>
         /// <returns></returns>
-        private static List<Models.CategoryContentEntry> GetCategoryContent(string menuId, Dictionary<string, Nt.Data.Menu> ntMenus, List<Nt.Data.MenuItem> ntMenuItems, uint subMenu) {
+        private static List<Models.CategoryContentEntry> GetCategoryContent(string menuId, Dictionary<string, Nt.Data.Menu> ntMenus, List<Nt.Data.MenuItem> ntMenuItems, uint subMenu) 
+        {
             var categoryContent = new List<Models.CategoryContentEntry>();
 
             foreach(var ntMenuItem in ntMenuItems)
@@ -417,7 +423,8 @@ namespace Os.Server.Logic
 
                 var osCategoryContentEntry = new Models.CategoryContentEntry();
 
-                if (ntMenuItem.ArticleId.StartsWith("$")) {
+                if (ntMenuItem.ArticleId.StartsWith("$")) 
+                {
                     // ignore sub/sub/.../menu 
                     if (subMenu > 3)
                         continue;

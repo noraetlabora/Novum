@@ -62,6 +62,12 @@ namespace Nt.Data
         /// <value></value>
         public string MenuId { get; set;}
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public Nt.Data.Image Image {get; set;}
+
         #endregion
 
         #region Constructor

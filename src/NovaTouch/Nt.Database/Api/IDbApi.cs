@@ -41,6 +41,12 @@ namespace Nt.Database.Api
         /// 
         /// </summary>
         /// <value></value>
+        Database.Api.IDbImage Image { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         Database.Api.IDbPayment Payment { get; }
 
         /// <summary>

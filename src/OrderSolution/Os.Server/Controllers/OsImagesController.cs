@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,8 +24,9 @@ namespace Os.Server.Controllers
         {
             try 
             {
-                var image = System.IO.File.ReadAllBytes(@"C:\Temp\image.jpg");
-                return new OkObjectResult(image);
+                var session = Sessions.GetSession(Request);
+                //200 - Ok
+                return new FileStreamResult(Logic.Image.GetImageStream(id), "image/png");
             }
             catch (Exception ex) 
             {
@@ -46,7 +48,10 @@ namespace Os.Server.Controllers
         {
             try
             {
-                throw new NotImplementedException();
+                var session = Sessions.GetSession(Request);
+                Logic.Image.SaveImage(id, Request.Body);
+                //204 - No Content
+                return new NoContentResult();
             }
             catch (Exception ex) 
             {
@@ -70,7 +75,10 @@ namespace Os.Server.Controllers
         {
             try 
             {
-                throw new NotImplementedException();
+                var session = Sessions.GetSession(Request);
+                var imageId = Logic.Image.SaveNewImage(session, Request.Body);
+                //201 - Created
+                return new CreatedResult("/api/v2/images/fax/" + imageId , null);
             }
             catch (Exception ex) 
             {

@@ -48,7 +48,8 @@ namespace Os.Server
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //if ("PROG-DEV" oder "PROG-MAIN") {
+            //if ("PROG-DEV" oder "PROG-MAIN") 
+            //{
             //    env.IsDevelopment();
             //}
             //else

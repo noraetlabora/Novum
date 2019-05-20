@@ -26,7 +26,7 @@ namespace Os.Server.Controllers
                 //register client
                 var subTable = Logic.Table.CreateSubTable(session, tableId);
                 //201 - Created
-                return new CreatedResult("SubTables/Create", subTable);;
+                return new CreatedResult("SubTables/Create", subTable);
             }
             catch (Exception ex)
             {

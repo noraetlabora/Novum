@@ -44,6 +44,7 @@ namespace Os.Server.Logic
             session.WaiterId = loginUser.Id;
             var permissions = Nt.Database.DB.Api.Waiter.GetPermissions(loginUser.Id);
             session.SetPermissions(permissions);
+            Image.RemoveImages(session);
         }
 
         /// <summary>
@@ -53,6 +54,7 @@ namespace Os.Server.Logic
         public static void Logout(Nt.Data.Session session)
         {
             Nt.Database.DB.Api.Waiter.Logout(session);
+            Image.RemoveImages(session);
         }
     }
 }

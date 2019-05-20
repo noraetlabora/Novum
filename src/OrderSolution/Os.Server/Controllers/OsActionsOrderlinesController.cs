@@ -56,7 +56,7 @@ namespace Os.Server.Controllers
                 var session = Sessions.GetSession(Request);
                 var orderLineResult = Logic.Order.Add(session, subTableId, data);
                 //201 - Created
-                return new CreatedResult("OrderLines/Add", orderLineResult);
+                return new CreatedResult("/api/v2/actions/OrderLines/Add/", orderLineResult);
             }
             catch (Exception ex)
             {
@@ -83,7 +83,7 @@ namespace Os.Server.Controllers
                 var session = Sessions.GetSession(Request);
                 var orderLineResult = Logic.Order.Modify(session, orderLineId, data);
                 //201 - Created
-                return new CreatedResult("OrderLines/ModifyUncommitted", orderLineResult);
+                return new CreatedResult("/api/v2/actions/OrderLines/ModifyUncommitted/" + orderLineResult.Id, orderLineResult);
             }
             catch (Exception ex)
             {

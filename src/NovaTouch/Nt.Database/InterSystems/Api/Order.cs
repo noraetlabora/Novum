@@ -47,9 +47,10 @@ namespace Nt.Database.InterSystems.Api
                 var menuString = new DataString(dataList.GetString(9));
                 var menuList = new DataList(menuString.SplitBySemicolon());
 
-                var type = dataList.GetString(2);
+                var type = dataList.GetString(6);
                 // orderline
-                if (type.Equals("0")) {
+                if (string.IsNullOrEmpty(type) || type.Equals("I")) 
+                {
                     var order = new Nt.Data.Order();
                     order.TableId = tableId;
                     orderLine++;
@@ -73,13 +74,34 @@ namespace Nt.Database.InterSystems.Api
                     lastOrderId = order.Id;
                 }
                 // modifier
-                else if (type.Equals("1")) {
+                else if (type.Equals("A")) 
+                {
                     var modifier = new Nt.Data.Modifier();
-                    modifier.ArticleId = indexList.GetString(1);
-                    modifier.UnitPrice = indexList.GetDecimal(2);
-                    modifier.Quantity = dataList.GetDecimal(1);
-                    modifier.Name = dataList.GetString(4);
-                    modifier.MenuId = menuList.GetString(3);
+                    var articleId = indexList.GetString(1);
+                    // text input
+                    if (string.IsNullOrEmpty(articleId))
+                    {
+                        modifier.Name = dataList.GetString(4);
+                    }
+                    // choice
+                    else 
+                    {
+                        modifier.ArticleId = indexList.GetString(1);
+                        modifier.UnitPrice = indexList.GetDecimal(2);
+                        modifier.Quantity = dataList.GetDecimal(1);
+                        modifier.Name = dataList.GetString(4);
+                        modifier.MenuId = menuList.GetString(3);
+                    }
+                    //
+                    if (orders.ContainsKey(lastOrderId))
+                        orders[lastOrderId].AddModifier(modifier);
+                }
+                // modifier fax input
+                else if (orderString.Contains("FAX"))
+                {
+                    var modifier = new Nt.Data.Modifier();
+                    //modifier.Fax = indexList.GetString(5);
+                    //
                     if (orders.ContainsKey(lastOrderId))
                         orders[lastOrderId].AddModifier(modifier);
                 }
@@ -171,7 +193,7 @@ namespace Nt.Database.InterSystems.Api
         /// </summary>
         /// <param name="session"></param>
         /// <param name="tableId"></param>
-        public void FinilizeOrder(Nt.Data.Session session, string tableId)
+        public void FinalizeOrder(Nt.Data.Session session, string tableId)
         {
             var newOrdersDataString = GetOrderDataString(session.GetOrders());
             if (!string.IsNullOrEmpty(newOrdersDataString))
@@ -236,21 +258,33 @@ namespace Nt.Database.InterSystems.Api
             dataString.Append("").Append(DataString.Char96); //UstProzent2
             dataString.Append("").Append(DataString.Char96); //Platzbonierung
 
-            if (order.Modifiers != null) {
-                foreach(var modifier in order.Modifiers) {
+            if (order.Modifiers != null) 
+            {
+                foreach(var modifier in order.Modifiers)
+                {
                     dataString.Append(DataString.CRLF);
-                    //
                     dataString.Append(order.AssignmentTypeId).Append(DataString.DoublePipes);
-                    dataString.Append(modifier.ArticleId).Append(DataString.DoublePipes);
-                    dataString.Append(modifier.UnitPrice).Append(DataString.DoublePipes);
-                    dataString.Append("").Append(DataString.DoublePipes);
-                    dataString.Append("").Append(DataString.Char96);
-                    //
-                    dataString.Append("0").Append(DataString.Char96);
-                    dataString.Append("11").Append(DataString.Char96);
-                    dataString.Append("").Append(DataString.Char96);
-                    dataString.Append(modifier.Name).Append("``A```0;0;0;");
-                    dataString.Append(modifier.MenuId).Append("`0``0``0````;;;0;0;````````0`````0");
+                    
+                    if (modifier.Image == null)
+                    {
+                        dataString.Append(modifier.ArticleId).Append(DataString.DoublePipes);
+                        dataString.Append(modifier.UnitPrice).Append(DataString.DoublePipes);
+                        dataString.Append("").Append(DataString.DoublePipes);
+                        dataString.Append("").Append(DataString.Char96);
+                        dataString.Append("0").Append(DataString.Char96);
+                        dataString.Append("11").Append(DataString.Char96);
+                        dataString.Append("").Append(DataString.Char96);
+                        dataString.Append(modifier.Name).Append("``A```0;0;0;");
+                        dataString.Append(modifier.MenuId).Append("`0``0``0````;;;0;0;````````0`````0");
+                    }
+                    else 
+                    {
+                        dataString.Append(order.ArticleId).Append(DataString.DoublePipes);
+                        dataString.Append(order.UnitPrice).Append(DataString.DoublePipes);
+                        dataString.Append("").Append(DataString.DoublePipes);
+                        dataString.Append("").Append(DataString.DoublePipes);
+                        dataString.Append(Image.GetDataString(modifier.Image));
+                    }
                 }
             }
 

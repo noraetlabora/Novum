@@ -45,10 +45,6 @@
 <DocumentationSource sourceFile="..\..\src\NovaTouch\Nt.Database\bin\Debug\netstandard2.0\Nt.Database.xml" />
 <DocumentationSource sourceFile="..\..\src\NovaTouch\Nt.Logging\bin\Debug\netstandard2.0\Nt.Logging.dll" />
 <DocumentationSource sourceFile="..\..\src\NovaTouch\Nt.Logging\bin\Debug\netstandard2.0\Nt.Logging.xml" />
-<DocumentationSource sourceFile="..\..\src\OrderSolution\Os.Data\bin\Debug\netstandard2.0\Os.Data.dll" />
-<DocumentationSource sourceFile="..\..\src\OrderSolution\Os.Data\bin\Debug\netstandard2.0\Os.Data.xml" />
-<DocumentationSource sourceFile="..\..\src\OrderSolution\Os.Logic\bin\Debug\netstandard2.0\Os.Logic.dll" />
-<DocumentationSource sourceFile="..\..\src\OrderSolution\Os.Logic\bin\Debug\netstandard2.0\Os.Logic.xml" />
 <DocumentationSource sourceFile="..\..\src\OrderSolution\Os.Server\bin\Debug\netcoreapp2.2\Os.Server.dll" />
 <DocumentationSource sourceFile="..\..\src\OrderSolution\Os.Server\bin\Debug\netcoreapp2.2\Os.Server.xml" /></DocumentationSources>
     <PlugInConfigurations>

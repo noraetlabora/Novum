@@ -25,7 +25,7 @@ namespace Os.Server.Models
     /// 
     /// </summary>
     [DataContract]
-    public partial class OrderLineQuanity : IEquatable<OrderLineQuanity>
+    public partial class OrderLineQuantity : IEquatable<OrderLineQuantity>
     {
         /// <summary>
         /// The ID of the orderline to be paid.
@@ -74,7 +74,7 @@ namespace Os.Server.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((OrderLineQuanity)obj);
+            return obj.GetType() == GetType() && Equals((OrderLineQuantity)obj);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Os.Server.Models
         /// </summary>
         /// <param name="other">Instance of OrderLineQuanity to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(OrderLineQuanity other)
+        public bool Equals(OrderLineQuantity other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -121,12 +121,12 @@ namespace Os.Server.Models
         #region Operators
 #pragma warning disable 1591
 
-        public static bool operator ==(OrderLineQuanity left, OrderLineQuanity right)
+        public static bool operator ==(OrderLineQuantity left, OrderLineQuantity right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(OrderLineQuanity left, OrderLineQuanity right)
+        public static bool operator !=(OrderLineQuantity left, OrderLineQuantity right)
         {
             return !Equals(left, right);
         }

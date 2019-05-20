@@ -14,6 +14,7 @@ namespace Nt.Database.InterSystems.Api
         private static InterSystems.Api.Article article;
         private static InterSystems.Api.Modifier modifier;
         private static InterSystems.Api.Printer printer;
+        private static InterSystems.Api.Image image;
         private static InterSystems.Api.Payment payment;
         private static InterSystems.Api.Order order;
         private static InterSystems.Api.Pos pos;
@@ -33,6 +34,7 @@ namespace Nt.Database.InterSystems.Api
             article = new InterSystems.Api.Article();
             modifier = new InterSystems.Api.Modifier();
             printer = new InterSystems.Api.Printer();
+            image = new InterSystems.Api.Image();
             payment = new InterSystems.Api.Payment();
             order = new InterSystems.Api.Order();
             pos = new InterSystems.Api.Pos();
@@ -50,22 +52,32 @@ namespace Nt.Database.InterSystems.Api
         {
             get { return waiter; }
         }
+
         public IDbMenu Menu
         {
             get { return menu; }
         }
+
         public IDbArticle Article
         {
             get { return article; }
         }
+
         public IDbModifier Modifier
         {
             get { return modifier; }
         }
+
         public IDbPrinter Printer
         {
             get { return printer; }
         }
+
+        public IDbImage Image
+        {
+            get { return image; }
+        }
+
         public IDbPayment Payment
         {
             get { return payment; }

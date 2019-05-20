@@ -60,7 +60,7 @@ namespace Nt.Database.Api
         /// </summary>
         /// <param name="session"></param>
         /// <param name="tableId"></param>
-        void FinilizeOrder(Nt.Data.Session session, string tableId);
+        void FinalizeOrder(Nt.Data.Session session, string tableId);
 
     }
 }
