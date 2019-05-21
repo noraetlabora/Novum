@@ -346,9 +346,6 @@ namespace Os.Server.Logic
 
             foreach(var ntMenuItem in ntMenuItems) 
             {
-                if (ntMenuItem.ArticleId.Equals("11017"))
-                    System.Diagnostics.Debug.WriteLine("11017");
-
                 foreach(var ntMenuItemsModifierMenu in ntMenuItemsModifierMenus)
                 {
                     if (!ntMenuItemsModifierMenu.MenuItemMenuId.Equals(ntMenuItem.MenuId))
