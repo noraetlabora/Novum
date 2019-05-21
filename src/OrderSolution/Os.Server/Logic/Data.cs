@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Os.Server.Logic
@@ -98,6 +99,7 @@ namespace Os.Server.Logic
 
             var osArticles = new List<Models.Article>();
             var ntArticles = Nt.Database.DB.Api.Article.GetArticles();
+            var ntModifierMenus = Nt.Database.DB.Api.Modifier.GetModifierMenus();
             var osArticleModifierGroups = GetArticleModifierGroups();
 
             foreach (var ntArticle in ntArticles.Values)
@@ -106,13 +108,22 @@ namespace Os.Server.Logic
 
                 osArticle.Id = ntArticle.Id;
                 osArticle.Name = ntArticle.Name;
-
+                // must enter price
                 if (ntArticle.AskForPrice)
                     osArticle.MustEnterPrice = 1;
+                // force show modifiers
+                if (osArticleModifierGroups.ContainsKey(osArticle.Id)) {
+                    osArticle.ModifierGroups = osArticleModifierGroups[osArticle.Id].Values.ToList();
 
-                if (osArticleModifierGroups.ContainsKey(osArticle.Id))
-                    osArticle.ModifierGroups = osArticleModifierGroups[osArticle.Id];
-
+                    foreach(var modifierGroup in osArticle.ModifierGroups) 
+                    {
+                        if (ntModifierMenus.ContainsKey(modifierGroup.ModifierGroupId))
+                        {
+                            if (ntModifierMenus[modifierGroup.ModifierGroupId].MinSelection > 0) 
+                                osArticle.ForceShowModifiers = true;
+                        }
+                    }
+                }
                 osArticles.Add(osArticle);
             }
 
@@ -179,30 +190,30 @@ namespace Os.Server.Logic
                     osModifierGroup.Type = (int)Models.ModifierGroup.ModifierType.PickMultipleEnum;
 
                 osModifierGroup.Choices = new List<Models.ModifierChoice>();
-                var modifierItems = Nt.Database.DB.Api.Modifier.GetModifierItems(ntModifierMenu.Id);
+                var ntModifierItems = Nt.Database.DB.Api.Modifier.GetModifierItems(ntModifierMenu.Id);
                 var lastModifierItemId = "";
 
                 //////////////////////////////////////
                 // Modifier Items / Choices
                 //////////////////////////////////////
-                foreach (var modifierItem in modifierItems.Values)
+                foreach (var ntModifierItem in ntModifierItems.Values)
                 {
                     // ignore not supported modifiers
-                    if (ModifierIdNotSupported(modifierItem.Id))
+                    if (ModifierIdNotSupported(ntModifierItem.Id))
                         continue;
                     // ignore two sequently equal modifiers (eg. rare and rare)
-                    if (lastModifierItemId.Equals(modifierItem.Id))
+                    if (lastModifierItemId.Equals(ntModifierItem.Id))
                         continue;
-                    lastModifierItemId = modifierItem.Id;
+                    lastModifierItemId = ntModifierItem.Id;
 
                     var modifierChoice = new Models.ModifierChoice();
 
-                    modifierChoice.Id = modifierItem.Id;
-                    modifierChoice.Name = modifierItem.Name;
-                    modifierChoice.ReceiptName = modifierItem.Name;
+                    modifierChoice.Id = ntModifierItem.Id;
+                    modifierChoice.Name = ntModifierItem.Name;
+                    modifierChoice.ReceiptName = ntModifierItem.Name;
                     modifierChoice.DefaultAmount = 0;
-                    modifierChoice.MinAmount = (int)modifierItem.MinAmount;
-                    modifierChoice.MaxAmount = (int)modifierItem.MaxAmount;
+                    modifierChoice.MinAmount = (int)ntModifierItem.MinAmount;
+                    modifierChoice.MaxAmount = (int)ntModifierItem.MaxAmount;
 
                     osModifierGroup.Choices.Add(modifierChoice);
                 }
@@ -327,47 +338,64 @@ namespace Os.Server.Logic
         /// 
         /// </summary>
         /// <returns></returns>
-        private static Dictionary<string, List<Models.ArticleModifierGroup>> GetArticleModifierGroups() 
+        private static Dictionary<string, Dictionary<string, Models.ArticleModifierGroup>> GetArticleModifierGroups() 
         {
-            var osModifierDictionary = new Dictionary<string, List<Models.ArticleModifierGroup>>();
+            var osModifierDictionary = new Dictionary<string, Dictionary<string, Models.ArticleModifierGroup>>();
             var ntMenuItems = Nt.Database.DB.Api.Menu.GetMenuItems();
             var ntMenuItemsModifierMenus = Nt.Database.DB.Api.Modifier.GetMenuItemModifierMenus();
 
             foreach(var ntMenuItem in ntMenuItems) 
             {
-                var osModifierList = new List<Models.ArticleModifierGroup>();
-                foreach(var ntMenuItemsModifierMenu in ntMenuItemsModifierMenus) 
+                if (ntMenuItem.ArticleId.Equals("11017"))
+                    System.Diagnostics.Debug.WriteLine("11017");
+
+                foreach(var ntMenuItemsModifierMenu in ntMenuItemsModifierMenus)
                 {
                     if (!ntMenuItemsModifierMenu.MenuItemMenuId.Equals(ntMenuItem.MenuId))
                         continue;
                     if (ntMenuItemsModifierMenu.MenuItemColumn < ntMenuItem.FromColumn ||
-                        ntMenuItemsModifierMenu.MenuItemColumn > ntMenuItem.ToColumn     )
+                        ntMenuItemsModifierMenu.MenuItemColumn > ntMenuItem.ToColumn)
                         continue;
                     if (ntMenuItemsModifierMenu.MenuItemRow < ntMenuItem.FromRow ||
-                        ntMenuItemsModifierMenu.MenuItemRow > ntMenuItem.ToRow     )
+                        ntMenuItemsModifierMenu.MenuItemRow > ntMenuItem.ToRow)
                         continue;
                     //    
                     var osArticleModifierGroup = new Models.ArticleModifierGroup();
                     osArticleModifierGroup.ModifierGroupId = ntMenuItemsModifierMenu.ModifierMenuId;
-                    osModifierList.Add(osArticleModifierGroup);
+                    AddArticleModifierGroup(osModifierDictionary, ntMenuItem.ArticleId, osArticleModifierGroup);
                 }
                 // text input
                 var osTextModifierMenu = new Models.ArticleModifierGroup();
                 osTextModifierMenu.ModifierGroupId = "text";
-                osModifierList.Add(osTextModifierMenu);
+                AddArticleModifierGroup(osModifierDictionary, ntMenuItem.ArticleId, osTextModifierMenu);
                 // fax input
                 var osFaxModifierMenu = new Models.ArticleModifierGroup();
                 osFaxModifierMenu.ModifierGroupId = "fax";
-                osModifierList.Add(osFaxModifierMenu);
-
-                if (osModifierList.Count > 0) 
-                {
-                    if (!osModifierDictionary.ContainsKey(ntMenuItem.ArticleId))
-                        osModifierDictionary.Add(ntMenuItem.ArticleId, osModifierList);
-                }
+                AddArticleModifierGroup(osModifierDictionary, ntMenuItem.ArticleId, osFaxModifierMenu);
             }
 
             return osModifierDictionary;
+        }
+
+        /// <summary>
+        /// Add 
+        /// </summary>
+        /// <param name="osModifierDictionary"></param>
+        /// <param name="articleId"></param>
+        /// <param name="osArticleModifierGroup"></param>
+        private static void AddArticleModifierGroup(Dictionary<string, Dictionary<string, Models.ArticleModifierGroup>> osModifierDictionary, string articleId, Models.ArticleModifierGroup osArticleModifierGroup)
+        {
+            if (osModifierDictionary.ContainsKey(articleId))
+            {
+                if (!osModifierDictionary[articleId].ContainsKey(osArticleModifierGroup.ModifierGroupId))
+                    osModifierDictionary[articleId].Add(osArticleModifierGroup.ModifierGroupId, osArticleModifierGroup);
+            }
+            else
+            {
+                var osModifierList = new Dictionary<string, Models.ArticleModifierGroup>();
+                osModifierList.Add(osArticleModifierGroup.ModifierGroupId, osArticleModifierGroup);
+                osModifierDictionary.Add(articleId, osModifierList);
+            }
         }
 
         /// <summary>

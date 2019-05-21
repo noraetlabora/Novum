@@ -129,8 +129,9 @@ namespace Os.Server.Logic
                 throw new Exception("no orderline found");
 
             var osOrderLineResult = new Models.OrderLineResult();
+            var singlePrice = ntOrder.UnitPrice;
             osOrderLineResult.Modifiers = new List<Models.OrderLineResultModifier>();
-            osOrderLineResult.SinglePrice = (int)decimal.Multiply(ntOrder.TotalPrice, 100.0m);
+            
             ntOrder.ClearModifiers();
 
             foreach(var osOrderLineModifier2 in data.Modifiers)
@@ -151,7 +152,15 @@ namespace Os.Server.Logic
                         
                         var osOrderLineResultModifierChoice = new Models.OrderLineResultModifierChoice();
                         osOrderLineResultModifierChoice.ModifierChoiceId = ntModifier.ArticleId;
-                        osOrderLineResult.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100.0m);
+                        if (ntModifier.Percent != 0.0m) 
+                        {
+                            singlePrice += ntOrder.UnitPrice * 0.01m * ntModifier.Percent;
+                            singlePrice = Nt.Data.Utils.Math.Round(singlePrice, ntModifier.Rounding);
+                        }
+                        else 
+                        {
+                            singlePrice += ntModifier.UnitPrice;
+                        }
 
                         osOrderLineResultModifier.Choices.Add(osOrderLineResultModifierChoice);
                     }
@@ -177,6 +186,7 @@ namespace Os.Server.Logic
                 }
             }
 
+            osOrderLineResult.SinglePrice = (int)decimal.Multiply(singlePrice, 100.0m);
             return osOrderLineResult;
         }
 

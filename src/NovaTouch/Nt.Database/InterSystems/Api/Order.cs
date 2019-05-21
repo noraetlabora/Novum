@@ -39,6 +39,8 @@ namespace Nt.Database.InterSystems.Api
             {
                 if (string.IsNullOrEmpty(orderString))
                     continue;
+                if (orderString.Contains("FAX"))
+                    continue;
 
                 var dataString = new DataString(orderString);
                 var dataList = new DataList(dataString.SplitByChar96());
@@ -46,14 +48,14 @@ namespace Nt.Database.InterSystems.Api
                 var indexList = new DataList(indexString.SplitByDoublePipes());
                 var menuString = new DataString(dataList.GetString(9));
                 var menuList = new DataList(menuString.SplitBySemicolon());
-
                 var type = dataList.GetString(6);
+
                 // orderline
                 if (string.IsNullOrEmpty(type) || type.Equals("I")) 
                 {
                     var order = new Nt.Data.Order();
-                    order.TableId = tableId;
                     orderLine++;
+                    order.TableId = tableId;
                     order.Line = orderLine;
                     order.ArticleId = indexList.GetString(1);
                     order.UnitPrice = indexList.GetDecimal(2);
@@ -92,15 +94,6 @@ namespace Nt.Database.InterSystems.Api
                         modifier.Name = dataList.GetString(4);
                         modifier.MenuId = menuList.GetString(3);
                     }
-                    //
-                    if (orders.ContainsKey(lastOrderId))
-                        orders[lastOrderId].AddModifier(modifier);
-                }
-                // modifier fax input
-                else if (orderString.Contains("FAX"))
-                {
-                    var modifier = new Nt.Data.Modifier();
-                    //modifier.Fax = indexList.GetString(5);
                     //
                     if (orders.ContainsKey(lastOrderId))
                         orders[lastOrderId].AddModifier(modifier);
