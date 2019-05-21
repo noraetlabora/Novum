@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Nt.Database.Api;
 
@@ -98,7 +99,25 @@ namespace Nt.Database.InterSystems.Api
         {
             var dbString = Interaction.CallClassMethod("cmNT.Tisch", "TischOpen", session.ClientId, session.PosId, session.WaiterId, tableId, "0");
             var dataString = new DataString(dbString);
-            var dataList = new DataList(dataString.SplitByChar96());
+            var dataList = new DataList(dataString.SplitByPipe());
+
+            var error = dataList.GetString(0).Equals("0");
+            if (error)
+            {
+                var errorCode = dataList.GetString(1);
+                var errorMessage = dataList.GetString(2);
+                switch (errorCode)
+                {
+                case "2":
+                    throw new Exception("table not defined");
+                case "5":
+                    throw new Exception("no permission to opent a table");
+                case "6":
+                    throw new Exception("table already open");
+                default:
+                    throw new Exception("error while opening the table");
+                }
+            }
         }
 
         /// <summary>
