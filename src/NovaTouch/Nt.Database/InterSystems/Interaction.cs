@@ -40,11 +40,16 @@ namespace Nt.Database.InterSystems
                 var dataAdapter = new IRISDataAdapter(sql, DB.Connection);
                 dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
-                Logging.Log.Database.Debug(caller + "|DataTableRowCount|" + dataTable.Rows.Count);
+                Logging.Log.Database.Debug(caller + "|SQLRowCount|" + dataTable.Rows.Count);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("Exception: " + DB.Connection.State);
+                if (DB.Connection.State == ConnectionState.Closed || 
+                    DB.Connection.State == ConnectionState.Broken) 
+                {
+                    Logging.Log.Database.Error(ex, caller + "|SQL|no connection to database");
+                    throw new Exception("no connection to database");
+                }
                 Logging.Log.Database.Error(ex, caller + "|SQL|" + sql);
                 throw ex;
             }
@@ -185,11 +190,18 @@ namespace Nt.Database.InterSystems
             {
                 Object returnValue = DB.Xep.CallClassMethod(className, methodName, args);
                 Logging.Log.Database.Debug(caller + "|ClassMethodReturnValueLength|" + returnValue.ToString().Length);
+                Logging.Log.Database.Trace(caller + "|ClassMethodReturnValue|" + returnValue.ToString());
                 return returnValue.ToString();
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("Exception: " + DB.Connection.State);
+                if (DB.Connection.State == ConnectionState.Closed || 
+                    DB.Connection.State == ConnectionState.Broken) 
+                {
+                    Logging.Log.Database.Error(ex, caller + "|ClassMethod|no connection to database");
+                    throw new Exception("no connection to database");
+                }
+                
                 Logging.Log.Database.Error(ex, caller + "|ClassMethod|" + classMethod);
                 throw ex;
             }
@@ -273,7 +285,12 @@ namespace Nt.Database.InterSystems
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine("Exception: " + DB.Connection.State);
+                if (DB.Connection.State == ConnectionState.Closed || 
+                    DB.Connection.State == ConnectionState.Broken) 
+                {
+                    Logging.Log.Database.Error(ex, caller + "|VoidClassMethod|no connection to database");
+                    throw new Exception("no connection to database");
+                }
                 Logging.Log.Database.Error(ex, caller + "|VoidClassMethod|" + classMethod);
                 throw ex;
             }

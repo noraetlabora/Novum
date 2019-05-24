@@ -58,6 +58,28 @@ namespace Nt.Data
         }
         #endregion
 
+        #region public methods
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="menuItem"></param>
+        /// <returns></returns>
+        public bool ContainsMenuItem(Nt.Data.MenuItem menuItem) 
+        {
+            if (!this.MenuItemMenuId.Equals(menuItem.MenuId))
+                return false;
+            if (this.MenuItemColumn < menuItem.FromColumn ||
+                this.MenuItemColumn > menuItem.ToColumn)
+                return false;
+            if (this.MenuItemRow < menuItem.FromRow ||
+                this.MenuItemRow > menuItem.ToRow)
+                return false;
+            return true;
+        }
+
+        #endregion
+
     }
 
 }

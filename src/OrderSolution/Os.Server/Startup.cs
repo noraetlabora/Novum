@@ -33,12 +33,14 @@ namespace Os.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                .AddHostedService<DatabaseService>()
                 .AddMvcCore()
                 .AddJsonFormatters()
                 .AddJsonOptions(jsonOptions =>
                 {
                     jsonOptions.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 });
+
         }
 
         /// <summary>
@@ -48,18 +50,6 @@ namespace Os.Server
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //if ("PROG-DEV" oder "PROG-MAIN") 
-            //{
-            //    env.IsDevelopment();
-            //}
-            //else
-            //{
-            //env.IsProduction();
-            //}
-
-            //app.UseHsts();
-            //app.UseHttpsRedirection();
-
             app
                 .UseMiddleware<Middleware>()
                 .UseMvc();

@@ -61,7 +61,7 @@ namespace Nt.Data
         /// ids of the modifier menu
         /// </summary>
         /// <value>eg. 904 for meat preparation, 905 for accompaniment</value>
-        public List<string> ModifierMenuId { get; set; }
+        public List<string> ModifierMenuIds { get; set; }
 
         #endregion
 

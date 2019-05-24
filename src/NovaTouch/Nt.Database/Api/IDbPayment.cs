@@ -23,5 +23,11 @@ namespace Nt.Database.Api
         /// <param name="paymentInformation"></param>
         /// <returns></returns>
         Nt.Data.PaymentResult Pay(Nt.Data.Session session, string tableId, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        Dictionary<string, Nt.Data.AssignmentType> GetAssignmentTypes();
     }
 }

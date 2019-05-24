@@ -187,6 +187,14 @@ namespace Nt.Database
             Logging.Log.Database.Info("disposing database connection");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Ping()
+        {
+            dbConnection.ping();
+        }
+
         #endregion
 
     }

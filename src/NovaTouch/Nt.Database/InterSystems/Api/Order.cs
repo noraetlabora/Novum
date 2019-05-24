@@ -116,14 +116,12 @@ namespace Nt.Database.InterSystems.Api
             var dataString = new DataString(dbString);
             var dataArray = dataString.SplitByChar96();
             var dataList = new DataList(dataArray);
-            var orderLine = 0;
 
             var availability = dataList.GetString(21);
             Article.CheckAvailibility(availability);
 
             order.TableId = session.CurrentTable.Id;
-            orderLine++;
-            order.Line = orderLine;
+            order.Line = session.GetOrders().Count + 1;
             order.ArticleId = dataList.GetString(0);
             order.Name = dataList.GetString(1);
             order.UnitPrice = dataList.GetDecimal(4);

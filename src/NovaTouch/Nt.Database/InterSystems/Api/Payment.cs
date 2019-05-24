@@ -71,6 +71,39 @@ namespace Nt.Database.InterSystems.Api
             return result;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, Nt.Data.AssignmentType> GetAssignmentTypes()
+        {
+            var assignmentTypes = new Dictionary<string, Nt.Data.AssignmentType>();
+            var sql = new StringBuilder();
+            sql.Append(" SELECT VA, bez, unterschrift ");
+            sql.Append(" FROM WW.VA ");
+            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
+            var dataTable = Interaction.GetDataTable(sql.ToString());
+
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                var assignmentType = new Nt.Data.AssignmentType();
+                assignmentType.Id = DataObject.GetString(dataRow, "VA");
+                assignmentType.Name = DataObject.GetString(dataRow, "bez");
+                var signature = DataObject.GetString(dataRow, "unterschrift");
+                
+                if (signature.Equals("0"))
+                    assignmentType.Signature = true;
+                else
+                    assignmentType.Signature = false;
+
+                if (!assignmentTypes.ContainsKey(assignmentType.Id))
+                    assignmentTypes.Add(assignmentType.Id, assignmentType);
+            }
+
+            return assignmentTypes;
+        }
+
         #endregion 
 
         #region internal methods

@@ -12,6 +12,8 @@ namespace Os.Server.Logic
 
         #region private fields;
             private static List<Models.Article> osCachedArticles;
+            internal static Dictionary<string, Nt.Data.PaymentType> ntCachedPaymentTypes;
+            internal static Dictionary<string, Nt.Data.AssignmentType> ntCachedAssignmentTypes;
             private static string[] notSupportedArticleIds = { "PLU", "$KONTO:", "$GUTSCHEIN:", "$GUTSCHEINBET:", "$RABATT:", "GANG:", "$FILTER:" };
             private static string[] notSupportedModifierIds = { "VORWAHL:" };
 
@@ -49,13 +51,21 @@ namespace Os.Server.Logic
         public static List<Models.PaymentMedium> GetPaymentMedia()
         {
             var osPaymentMedia = new List<Models.PaymentMedium>();
-            var ntPaymentTypes = Nt.Database.DB.Api.Payment.GetPaymentTypes();
-
-            foreach (var ntPaymentType in ntPaymentTypes.Values)
+            ntCachedPaymentTypes = Nt.Database.DB.Api.Payment.GetPaymentTypes();
+            foreach (var ntPaymentType in ntCachedPaymentTypes.Values)
             {
                 var osPaymentMedium = new Models.PaymentMedium();
                 osPaymentMedium.Id = ntPaymentType.Id;
                 osPaymentMedium.Name = ntPaymentType.Name;
+                osPaymentMedia.Add(osPaymentMedium);
+            }
+
+            ntCachedAssignmentTypes = Nt.Database.DB.Api.Payment.GetAssignmentTypes();
+            foreach (var ntAssignmentType in ntCachedAssignmentTypes.Values)
+            {
+                var osPaymentMedium = new Models.PaymentMedium();
+                osPaymentMedium.Id = ntAssignmentType.Id;
+                osPaymentMedium.Name = ntAssignmentType.Name;
                 osPaymentMedia.Add(osPaymentMedium);
             }
 
@@ -344,31 +354,37 @@ namespace Os.Server.Logic
             var ntMenuItems = Nt.Database.DB.Api.Menu.GetMenuItems();
             var ntMenuItemsModifierMenus = Nt.Database.DB.Api.Modifier.GetMenuItemModifierMenus();
 
+            // loop through all ntMenuItems again and tne modifierMenus
             foreach(var ntMenuItem in ntMenuItems) 
             {
                 foreach(var ntMenuItemsModifierMenu in ntMenuItemsModifierMenus)
                 {
-                    if (!ntMenuItemsModifierMenu.MenuItemMenuId.Equals(ntMenuItem.MenuId))
-                        continue;
-                    if (ntMenuItemsModifierMenu.MenuItemColumn < ntMenuItem.FromColumn ||
-                        ntMenuItemsModifierMenu.MenuItemColumn > ntMenuItem.ToColumn)
-                        continue;
-                    if (ntMenuItemsModifierMenu.MenuItemRow < ntMenuItem.FromRow ||
-                        ntMenuItemsModifierMenu.MenuItemRow > ntMenuItem.ToRow)
+                    if (!ntMenuItemsModifierMenu.ContainsMenuItem(ntMenuItem))
                         continue;
                     //    
                     var osArticleModifierGroup = new Models.ArticleModifierGroup();
                     osArticleModifierGroup.ModifierGroupId = ntMenuItemsModifierMenu.ModifierMenuId;
                     AddArticleModifierGroup(osModifierDictionary, ntMenuItem.ArticleId, osArticleModifierGroup);
                 }
-                // text input
-                var osTextModifierMenu = new Models.ArticleModifierGroup();
-                osTextModifierMenu.ModifierGroupId = "text";
-                AddArticleModifierGroup(osModifierDictionary, ntMenuItem.ArticleId, osTextModifierMenu);
-                // fax input
-                var osFaxModifierMenu = new Models.ArticleModifierGroup();
-                osFaxModifierMenu.ModifierGroupId = "fax";
-                AddArticleModifierGroup(osModifierDictionary, ntMenuItem.ArticleId, osFaxModifierMenu);
+            }
+
+            // loop again through all ntMenuItems again and add text input and fax input
+            // the second loop makes sure, that the text and fax modifiers are at the end of the list
+            foreach(var ntMenuItem in ntMenuItems) 
+            {
+                foreach(var ntMenuItemsModifierMenu in ntMenuItemsModifierMenus)
+                {
+                    if (!ntMenuItemsModifierMenu.ContainsMenuItem(ntMenuItem))
+                        continue;
+                    // text input
+                    var osTextModifierMenu = new Models.ArticleModifierGroup();
+                    osTextModifierMenu.ModifierGroupId = "text";
+                    AddArticleModifierGroup(osModifierDictionary, ntMenuItem.ArticleId, osTextModifierMenu);
+                    // fax input
+                    var osFaxModifierMenu = new Models.ArticleModifierGroup();
+                    osFaxModifierMenu.ModifierGroupId = "fax";
+                    AddArticleModifierGroup(osModifierDictionary, ntMenuItem.ArticleId, osFaxModifierMenu);
+                }
             }
 
             return osModifierDictionary;

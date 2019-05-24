@@ -20,7 +20,7 @@ namespace Os.Server
         {
             Nt.Database.DB.Instance.ConnectionString = "Server=192.168.0.4; Port=1972; Namespace=PROG-DEV; User ID=_SYSTEM; Password=SYS";
             Nt.Database.DB.Instance.Open();
-            var state = Nt.Database.DB.Instance.State;
+            
 
             BuildWebHost(args).Run();
         }
