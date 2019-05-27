@@ -211,10 +211,22 @@ namespace Os.Server.Logic
         /// <param name="tableId"></param>
         public static void FinalizeOrder(Nt.Data.Session session, string tableId)
         {
-            if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
-                throw new Exception("no open table");
+            var subTableOrders = new List<Nt.Data.Order>();
+            var lastSubTableId = "";
+            //
+            foreach(var order in session.GetOrders())
+            {
+                if (order.TableId != lastSubTableId)
+                {
+                    Nt.Database.DB.Api.Order.FinalizeOrder(session, subTableOrders, lastSubTableId);
+                    subTableOrders = new List<Nt.Data.Order>();
+                }
                 
-            Nt.Database.DB.Api.Order.FinalizeOrder(session, tableId);
+                subTableOrders.Add(order);
+                lastSubTableId = order.TableId;
+            }
+            //
+            Nt.Database.DB.Api.Order.FinalizeOrder(session, subTableOrders, lastSubTableId);
             Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);
             session.ClearOrders();
             Image.RemoveImages(session);

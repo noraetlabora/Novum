@@ -62,5 +62,13 @@ namespace Nt.Database.Api
         /// <param name="tableId"></param>
         void FinalizeOrder(Nt.Data.Session session, string tableId);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="orders"></param>
+        /// <param name="tableId"></param>
+        void FinalizeOrder(Nt.Data.Session session, List<Nt.Data.Order> orders, string tableId);
+
     }
 }

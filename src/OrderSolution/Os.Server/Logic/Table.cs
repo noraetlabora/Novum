@@ -129,10 +129,10 @@ namespace Os.Server.Logic
 
             DB.Api.Table.OpenTable(session, osTableResult.Id);
             //set current table in session
-            var novCurrentTable = new Nt.Data.Table();
-            novCurrentTable.Id = osTableResult.SubTables[0].Id;
-            novCurrentTable.Name = osTableResult.SubTables[0].Name;
-            session.SetCurrentTable(novCurrentTable);
+            var ntCurrentTable = new Nt.Data.Table();
+            ntCurrentTable.Id = osTableResult.SubTables[0].Id;
+            ntCurrentTable.Name = osTableResult.SubTables[0].Name;
+            session.SetCurrentTable(ntCurrentTable);
             //
             return osTableResult;
         }
@@ -145,10 +145,18 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static Models.SubTable CreateSubTable(Nt.Data.Session session, string tableId)
         {
+            var ntNewSubTable = new Nt.Data.Table();
+            ntNewSubTable.Id = DB.Api.Table.GetNewSubTableId(session, session.CurrentTable.Id);
+            if (session.TableIdIsOpen(ntNewSubTable.Id))
+                ntNewSubTable.Id = session.GetNewTableId(session.CurrentTable.Id);
+            ntNewSubTable.Name = DB.Api.Table.GetTableName(session, ntNewSubTable.Id);
+            session.SetCurrentTable(ntNewSubTable);
+            //
             var subTable = new Models.SubTable();
-            subTable.Id = DB.Api.Table.GetNewSubTableId(session, tableId);
-            subTable.Name = DB.Api.Table.GetTableName(session, subTable.Id);
+            subTable.Id = ntNewSubTable.Id;
+            subTable.Name = ntNewSubTable.Name;
             subTable.IsSelected = false;
+            //
             return subTable;
         }
 

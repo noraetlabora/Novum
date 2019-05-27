@@ -12,6 +12,7 @@ namespace Nt.Data
     {
         private Dictionary<Permission.PermissionType, Permission> _permissions;
         private Dictionary<string, Order> _orders;
+        private Dictionary<string, Table> _openTables;
 
         #region Properties
 
@@ -93,7 +94,8 @@ namespace Nt.Data
             this.ServiceAreaId = "";
             this.WaiterId = "";
             this.PriceLevel = "";
-            this._orders = new Dictionary<string, Order>();
+            this._orders = new Dictionary<string, Nt.Data.Order>();
+            this._openTables = new Dictionary<string, Nt.Data.Table>();
         }
         #endregion
 
@@ -175,7 +177,42 @@ namespace Nt.Data
         /// <param name="table"></param>
         public void SetCurrentTable(Nt.Data.Table table)
         {
+            if (!_openTables.ContainsKey(table.Id))
+                _openTables.Add(table.Id, table);
             CurrentTable = table;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tableId"></param>
+        /// <returns></returns>
+        public bool TableIdIsOpen(string tableId) 
+        {
+            if (_openTables.ContainsKey(tableId))
+                return true;
+            return false;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tableId"></param>
+        /// <returns></returns>
+        public string GetNewTableId(string tableId) 
+        {
+            //tableId is not yet open
+            if (!TableIdIsOpen(tableId))
+                return tableId;
+            //return first subtable xxxx.1
+            if (!tableId.Contains("."))
+                return tableId + ".1";
+            //get subtablenumber, icrement the number and return xxxx.yy
+            var index = tableId.IndexOf('.');
+            var subTableString = tableId.Substring(index+1);
+            var mainTableId = tableId.Substring(0,index);
+            var subTableNumber = uint.Parse(subTableString);
+            subTableNumber++;
+            return mainTableId + "." + subTableNumber.ToString();
         }
 
         /// <summary>

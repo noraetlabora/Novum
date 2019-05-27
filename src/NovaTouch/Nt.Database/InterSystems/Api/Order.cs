@@ -186,9 +186,31 @@ namespace Nt.Database.InterSystems.Api
         /// <param name="tableId"></param>
         public void FinalizeOrder(Nt.Data.Session session, string tableId)
         {
-            var newOrdersDataString = GetOrderDataString(session.GetOrders());
-            if (!string.IsNullOrEmpty(newOrdersDataString))
-                Interaction.CallVoidClassMethod("cmNT.BonOman", "SetAllBonDatenMitAenderer", session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, newOrdersDataString);
+            var orders = session.GetOrders();
+            FinalizeOrder(session, orders, tableId);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="orders"></param>
+        /// <param name="tableId"></param>
+        public void FinalizeOrder(Nt.Data.Session session, List<Nt.Data.Order> orders, string tableId) 
+        {
+            //
+            if (orders == null || orders.Count == 0)
+                return;
+            //
+            if (string.IsNullOrEmpty(tableId))
+                return;
+            //
+            var newOrdersDataString = GetOrderDataString(orders);
+            //
+            if (string.IsNullOrEmpty(newOrdersDataString))
+                return;
+            //
+            Interaction.CallVoidClassMethod("cmNT.BonOman", "SetAllBonDatenMitAenderer", session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, newOrdersDataString);
         }
 
         #endregion
