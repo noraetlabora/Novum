@@ -22,13 +22,24 @@ namespace Os.Server.Logic
         {
             var osOrderLines = new List<Models.OrderLine>();
             var ntOrders = Nt.Database.DB.Api.Order.GetOrders(subTableId);
-
+            //committed
             foreach (var ntOrder in ntOrders.Values)
             {
                 var osOrderLine = GetOsOrderLine(ntOrder);
                 osOrderLines.Add(osOrderLine);
             }
-
+            //uncommited
+            foreach(var ntOrder in session.GetOrders())
+            {
+                if (ntOrder.TableId.Equals(subTableId)) 
+                {
+                    var osOrderLine = GetOsOrderLine(ntOrder);
+                    osOrderLines.Add(osOrderLine);
+                }
+            }
+            //
+            Table.SetCurrentTable(session, subTableId);
+            //
             return osOrderLines;
         }
 

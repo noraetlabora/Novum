@@ -128,11 +128,7 @@ namespace Os.Server.Logic
             }
 
             DB.Api.Table.OpenTable(session, osTableResult.Id);
-            //set current table in session
-            var ntCurrentTable = new Nt.Data.Table();
-            ntCurrentTable.Id = osTableResult.SubTables[0].Id;
-            ntCurrentTable.Name = osTableResult.SubTables[0].Name;
-            session.SetCurrentTable(ntCurrentTable);
+            Table.SetCurrentTable(session, osTableResult.SubTables[0].Id);
             //
             return osTableResult;
         }
@@ -145,16 +141,14 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static Models.SubTable CreateSubTable(Nt.Data.Session session, string tableId)
         {
-            var ntNewSubTable = new Nt.Data.Table();
-            ntNewSubTable.Id = DB.Api.Table.GetNewSubTableId(session, session.CurrentTable.Id);
-            if (session.TableIdIsOpen(ntNewSubTable.Id))
-                ntNewSubTable.Id = session.GetNewTableId(session.CurrentTable.Id);
-            ntNewSubTable.Name = DB.Api.Table.GetTableName(session, ntNewSubTable.Id);
-            session.SetCurrentTable(ntNewSubTable);
+            var subTableId = DB.Api.Table.GetNewSubTableId(session, session.CurrentTable.Id);
+            if (session.TableIdIsOpen(subTableId))
+                subTableId = session.GetNewTableId(session.CurrentTable.Id);
+            Table.SetCurrentTable(session, subTableId);
             //
             var subTable = new Models.SubTable();
-            subTable.Id = ntNewSubTable.Id;
-            subTable.Name = ntNewSubTable.Name;
+            subTable.Id = subTableId;
+            subTable.Name = DB.Api.Table.GetTableName(session, subTableId);
             subTable.IsSelected = false;
             //
             return subTable;
@@ -172,6 +166,18 @@ namespace Os.Server.Logic
             ntTable.Name = osTable.Name;
             ntTable.Amount = decimal.Multiply((decimal)osTable.BookedAmount, 100.0m);
             return ntTable;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="subTableId"></param>
+        public static void SetCurrentTable(Nt.Data.Session session, string subTableId)
+        {
+            var ntTable = new Nt.Data.Table();
+            ntTable.Id = subTableId;
+            session.SetCurrentTable(ntTable);
         }
 
         #endregion
