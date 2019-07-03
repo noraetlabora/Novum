@@ -24,12 +24,13 @@ namespace Os.Server.Controllers
             {
                 var session = Sessions.GetSession(Request);
                 Logic.Payment.PaySubTables(session, data);
+                Logic.Printer.Print(session);
                 // 204 - No Content 
                 return new NoContentResult();
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -50,12 +51,13 @@ namespace Os.Server.Controllers
             {
                 var session = Sessions.GetSession(Request);
                 Logic.Payment.PayOrderLines(session, data);
+                Logic.Printer.Print(session);
                 // 204 - No Content 
                 return new NoContentResult();
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest

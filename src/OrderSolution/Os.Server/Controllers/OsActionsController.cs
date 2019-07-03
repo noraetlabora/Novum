@@ -30,7 +30,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 session.WaiterId = "";
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
@@ -56,7 +56,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -84,21 +84,22 @@ namespace Os.Server.Controllers
                     session.PosId = Logic.Data.GetPosId(clientInfo.Id);
                     session.ServiceAreaId = Logic.Data.GetServiceAreaId(session.PosId);
                     session.PriceLevel = Logic.Data.GetPriceLevel(session.ServiceAreaId);
+                    session.Printer = clientInfo.PrinterPath;
                 }
                 session.WaiterId = "";
 
                 //register client
-                var posInfo = Logic.Registration.RegisterClient(session, clientInfo);
+                var registerClientResponse = Logic.Registration.RegisterClient(session, clientInfo);
                 //save session internal and return the sessionId in the response
                 Sessions.SetSession(session);
                 Response.Cookies.Append("sessionId", session.Id);
                 
                 //200 - Ok
-                return new OkObjectResult(posInfo);
+                return new OkObjectResult(registerClientResponse);
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -110,18 +111,24 @@ namespace Os.Server.Controllers
         /// Informs about a gateway (like OsServer) that is configured to work with this POS. A gateway is a system / server that clients use to communicate with the server.
         /// </summary>
         /// <param name="gatewayInfo">Information about the gateway.</param>
-        /// <response code="204"></response>
+        /// <response code="200"></response>
         [HttpPost]
         [Route("/api/v2/actions/Init/RegisterGateway")]
         public IActionResult InitRegisterGateway([FromBody][Required] Models.GatewayInfo gatewayInfo)
         {
             try 
             {
-                return new NoContentResult();
+                //register gateway
+                var registerGatewayResponse = new Models.RegisterGatewayResponse();
+                //var serviceAreaId = Nt.Database.DB.Api.Pos.GetServiceAreaId(posId);
+                //registerGatewayResponse.RestaurantName = Nt.Database.DB.Api.Pos.GetServiceAreaName(serviceAreaId);
+                registerGatewayResponse.PartnerId = "1OSZATNOVACOMSOF1HdRnQ3bZ0t2BED3003";
+                //200 - Ok
+                return new OkObjectResult(registerGatewayResponse);
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }

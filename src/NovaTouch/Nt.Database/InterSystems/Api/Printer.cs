@@ -41,5 +41,39 @@ namespace Nt.Database.InterSystems.Api
 
             return printers;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
+        public string GetPrintJobId(Nt.Data.Session session) 
+        {
+            return Interaction.CallClassMethod("cmNT.OmPrint", "GetNextAuftrag", session.ClientId, session.SerialNumber);
+        }
+
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="printJobId"></param>
+        /// <returns></returns>
+        public List<string> GetPrintData(Nt.Data.Session session, string printJobId)
+        {
+            var printData = Interaction.CallClassMethod("cmNT.OmPrint", "GetAuftrag", session.ClientId, session.SerialNumber, printJobId);
+            var printDataString = new DataString(printData);
+            return new List<string>(printDataString.SplitByCRLF());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="printJobId"></param>
+        public void DeletePrintJobId(Nt.Data.Session session, string printJobId)
+        {
+            Interaction.CallVoidClassMethod("cmNT.OmPrint", "SetAuftragFertig", session.ClientId, session.SerialNumber, printJobId);
+        }
     }
 }

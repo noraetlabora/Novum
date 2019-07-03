@@ -26,7 +26,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -48,7 +48,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -69,7 +69,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -90,7 +90,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -114,7 +114,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -135,7 +135,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -156,7 +156,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -177,7 +177,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -198,7 +198,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -225,7 +225,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -251,7 +251,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }

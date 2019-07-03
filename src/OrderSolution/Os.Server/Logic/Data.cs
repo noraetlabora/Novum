@@ -12,6 +12,8 @@ namespace Os.Server.Logic
 
         #region private fields;
             private static List<Models.Article> osCachedArticles;
+            private static List<Models.Category> osCachedCategories;
+
             internal static Dictionary<string, Nt.Data.PaymentType> ntCachedPaymentTypes;
             internal static Dictionary<string, Nt.Data.AssignmentType> ntCachedAssignmentTypes;
             private static string[] notSupportedArticleIds = { "PLU", "$KONTO:", "$GUTSCHEIN:", "$GUTSCHEINBET:", "$RABATT:", "GANG:", "$FILTER:" };
@@ -151,6 +153,9 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static List<Models.Category> GetCategories(string menuId)
         {
+            if (osCachedCategories!= null)
+                return osCachedCategories;
+
             var osCategories = new List<Models.Category>();
             var ntMainMenus = Nt.Database.DB.Api.Menu.GetMainMenus(menuId);
             var ntMenus = Nt.Database.DB.Api.Menu.GetMenus();
@@ -165,6 +170,7 @@ namespace Os.Server.Logic
                 osCategories.Add(osCategory);
             }
 
+            osCachedCategories = osCategories;
             return osCategories;
         }
 
@@ -195,9 +201,9 @@ namespace Os.Server.Logic
                 osModifierGroup.Question = "";
                 // type of modifier selection
                 if (ntModifierMenu.MaxSelection.Equals(1))
-                    osModifierGroup.Type = (int)Models.ModifierGroup.ModifierType.PickOneEnum;
+                    osModifierGroup.Type = Models.ModifierGroup.ModifierType.PickOneEnum;
                 else 
-                    osModifierGroup.Type = (int)Models.ModifierGroup.ModifierType.PickMultipleEnum;
+                    osModifierGroup.Type = Models.ModifierGroup.ModifierType.PickMultipleEnum;
 
                 osModifierGroup.Choices = new List<Models.ModifierChoice>();
                 var ntModifierItems = Nt.Database.DB.Api.Modifier.GetModifierItems(ntModifierMenu.Id);
@@ -236,7 +242,7 @@ namespace Os.Server.Logic
             osModifierGroup = new Models.ModifierGroup();
             osModifierGroup.Id = "text";
             osModifierGroup.Name = "Text";
-            osModifierGroup.Type = (int)Models.ModifierGroup.ModifierType.TextInputEnum;
+            osModifierGroup.Type = Models.ModifierGroup.ModifierType.TextInputEnum;
             osModifierGroups.Add(osModifierGroup);
 
             //////////////////////////////////////
@@ -245,7 +251,7 @@ namespace Os.Server.Logic
             osModifierGroup = new Models.ModifierGroup();
             osModifierGroup.Id = "fax";
             osModifierGroup.Name = "Fax";
-            osModifierGroup.Type = (int)Models.ModifierGroup.ModifierType.FaxInputEnum;
+            osModifierGroup.Type = Models.ModifierGroup.ModifierType.FaxInputEnum;
             osModifierGroups.Add(osModifierGroup);
 
             return osModifierGroups;

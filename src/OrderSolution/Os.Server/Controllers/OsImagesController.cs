@@ -30,7 +30,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -55,7 +55,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -66,7 +66,7 @@ namespace Os.Server.Controllers
         /// </summary>
 
         /// <param name="subTableId">Context information about the sub table to which the fax image is planned to be sent for. When later reffering to the fax image id we will always do so in the context of that sub table. This also means in case the sub table is not valid anymore (e.g. closed via payment) the OrderSolution also does not have a need for that image anymore which means the image can safely be deleted (from the OrderSolution perspective).</param>
-        /// <response code="201">On success it will return the location of the newly stored image in location header.</response>
+        /// <response code="201">Reports the location of the newly created resource in the http header</response>
         /// <response code="400"></response>
         /// <response code="403"></response>
         [HttpPost]
@@ -82,7 +82,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex) 
             {
-                Nt.Logging.Log.Server.Error(ex, this.HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }

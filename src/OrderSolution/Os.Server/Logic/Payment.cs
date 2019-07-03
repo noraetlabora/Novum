@@ -35,7 +35,7 @@ namespace Os.Server.Logic
             {
                 var ntPaymentMethod = new Nt.Data.PaymentMethod();
                 ntPaymentMethod.Amount = decimal.Divide((decimal)osPayment.AmountPaid, 100.0m);
-                ntPaymentMethod.PaymentTypeId = osPayment.PaymentMediaId;
+                ntPaymentMethod.PaymentTypeId = osPayment.PaymentMediumId;
                 ntPaymentMethod.AssignmentTypeId = "N";
                 ntPaymentMethods.Add(ntPaymentMethod);
             }
@@ -64,7 +64,7 @@ namespace Os.Server.Logic
             {
                 var ntPaymentMethod = new Nt.Data.PaymentMethod();
                 ntPaymentMethod.Amount = decimal.Divide((decimal)osPayment.AmountPaid, 100.0m);
-                ntPaymentMethod.PaymentTypeId = osPayment.PaymentMediaId;
+                ntPaymentMethod.PaymentTypeId = osPayment.PaymentMediumId;
                 ntPaymentMethod.AssignmentTypeId = "N";
                 ntPaymentMethods.Add(ntPaymentMethod);
             }

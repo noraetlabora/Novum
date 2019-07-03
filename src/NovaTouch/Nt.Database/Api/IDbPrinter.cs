@@ -12,5 +12,25 @@ namespace Nt.Database.Api
         /// </summary>
         /// <returns></returns>
         Dictionary<string, Nt.Data.Printer> GetInvoicePrinters();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        string GetPrintJobId(Nt.Data.Session session);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        List<string> GetPrintData(Nt.Data.Session session, string printJobId);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="printJobId"></param>
+        /// <returns></returns>
+        void DeletePrintJobId(Nt.Data.Session session, string printJobId);
     }
 }

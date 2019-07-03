@@ -74,6 +74,12 @@ namespace Nt.Data
         /// 
         /// </summary>
         /// <value></value>
+        public string Printer { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public Nt.Data.Table CurrentTable { get; private set; }        
 
         #endregion

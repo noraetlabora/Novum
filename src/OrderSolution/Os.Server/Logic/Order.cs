@@ -118,7 +118,6 @@ namespace Os.Server.Logic
             }
 
             session.VoidOrder(ntOrder.Id, (decimal)data.Quantity);
-            Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);
             return voidResult;
         }
 
@@ -205,6 +204,18 @@ namespace Os.Server.Logic
         /// 
         /// </summary>
         /// <param name="session"></param>
+        /// <param name="orderLineId"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static Models.OrderLineResult Split(Nt.Data.Session session, string orderLineId, Models.OrderLineSplit data)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
         /// <param name="tableId"></param>
         public static void CancelOrder(Nt.Data.Session session, string tableId)
         {
@@ -267,7 +278,7 @@ namespace Os.Server.Logic
             osOrderLine.ArticleId = ntOrder.ArticleId;
             osOrderLine.Quantity = (int)ntOrder.Quantity;
             osOrderLine.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100);
-            osOrderLine.Status = (int)GetOsOrderLineStatus(ntOrder.Status);
+            osOrderLine.Status = GetOsOrderLineStatus(ntOrder.Status);
 
             //Modifiers
             if (ntOrder.Modifiers != null && ntOrder.Modifiers.Count > 0)
