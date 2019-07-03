@@ -110,7 +110,9 @@ namespace Os.Server.Client.Model
             line = line.Replace("<FONT1>", "");
             line = line.Replace("<FONT2>", "");
             line = line.Replace("<FONT3>", "");
-            Send(System.Text.Encoding.Default.GetBytes(line + "\n"));
+            var sourceBytes = System.Text.Encoding.Default.GetBytes(line + "\n");
+            var targetBytes = System.Text.Encoding.Convert(System.Text.Encoding.UTF8, System.Text.Encoding.Unicode, sourceBytes);
+            Send(targetBytes);
         }
 
         private void PaperFeed(int times)
