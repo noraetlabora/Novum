@@ -20,11 +20,11 @@ namespace Os.Server.Logic
             if (data.SubTableIds == null || data.SubTableIds.Count < 1)
                 throw new Exception("no sub tables");
 
-            if (data.SubTableIds.Count > 1)
-                throw new Exception("can't handle more than one subtable");
-
             if (data.Payments == null || data.Payments.Count < 1)
                 throw new Exception("no payments");
+
+            if (data.SubTableIds.Count > 1)
+                throw new Exception("can't handle more than one subtable");
 
             var tableId = data.SubTableIds[0];
             var ntOrders = Nt.Database.DB.Api.Order.GetOrders(tableId);

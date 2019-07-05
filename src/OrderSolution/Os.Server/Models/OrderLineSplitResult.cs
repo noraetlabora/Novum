@@ -32,14 +32,14 @@ namespace Os.Server.Models
         /// </summary>
         /// <value>The original orderline from which data was splitted away with it&#39;s updated data. e.g. if from 3xCoke we slipt 2xCoke away this one will be the 1xCoke line.</value>
         [DataMember(Name="originalOl")]
-        public Object OriginalOl { get; set; }
+        public OrderLineSplitPart OriginalOl { get; set; }
 
         /// <summary>
         /// The new orderline that was created by this split operation. e.g. if from 3xCoke we slipt 2xCoke away this one will be the 2xCoke line.
         /// </summary>
         /// <value>The new orderline that was created by this split operation. e.g. if from 3xCoke we slipt 2xCoke away this one will be the 2xCoke line.</value>
         [DataMember(Name="splittedOl")]
-        public Object SplittedOl { get; set; }
+        public OrderLineSplitPart SplittedOl { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -132,5 +132,58 @@ namespace Os.Server.Models
 
         #pragma warning restore 1591
         #endregion Operators
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [DataContract]
+    public class OrderLineSplitPart 
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        [DataMember(Name="id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        [DataMember(Name="articleId")]
+        public string ArticleId { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+
+        [DataMember(Name="quantity")]
+        public int? Quantity { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+
+        [DataMember(Name="singelPrice")]
+        public int? SingelPrice { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        [DataMember(Name="status")]
+        public OrderLineStatus? Status { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        [DataMember(Name="modifiers")]
+        public List<OrderLineModifier> Modifiers { get; set; }
+
+        
     }
 }

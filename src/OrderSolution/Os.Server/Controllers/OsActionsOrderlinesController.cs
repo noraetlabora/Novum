@@ -78,9 +78,9 @@ namespace Os.Server.Controllers
             try
             {
                 var session = Sessions.GetSession(Request);
-                var orderLineResult = Logic.Order.Split(session, orderLineId, data);
+                var orderLineSplitResult = Logic.Order.Split(session, orderLineId, data);
                 //201 - Created
-                return new CreatedResult("/api/v2/actions/OrderLines/Split/" + orderLineResult.Id, orderLineResult);
+                return new CreatedResult("/api/v2/actions/OrderLines/Split/" + orderLineId, orderLineSplitResult);
             }
             catch (Exception ex)
             {

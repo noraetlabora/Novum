@@ -40,6 +40,13 @@ namespace Os.Server.Client.Model
             GERMANY = 2
         }
 
+        private enum CharacterCodeTable
+        {
+            USA = 0x00,
+            LATIN1 = 0x10,
+            LATIN2 = 0x12
+        }
+
         #endregion
 
         #region Constructor
@@ -50,7 +57,7 @@ namespace Os.Server.Client.Model
         public PrintData(List<string> printLines)
         {
             _buffer = new List<byte>();
-            Initialize(CharacterSet.GERMANY);
+            Initialize(CharacterSet.GERMANY, CharacterCodeTable.LATIN1);
 
             PaperFeed(1);
             foreach(var printLine in printLines)
@@ -95,10 +102,10 @@ namespace Os.Server.Client.Model
 
         #region private methods
 
-        private void Initialize(CharacterSet characterSet)
+        private void Initialize(CharacterSet characterSet, CharacterCodeTable characterCodeTable)
 		{
-			Send(0x1B, 0x40);
-            Send(0x1B, 0x52, (byte)characterSet);
+			Send(0x1B, 0x40, 0x1B, 0x52, (byte)characterSet);
+            Send(0x1B, 0x74, (byte)characterCodeTable);
 		}
 
         private void Send(params byte[] values) {
@@ -110,9 +117,8 @@ namespace Os.Server.Client.Model
             line = line.Replace("<FONT1>", "");
             line = line.Replace("<FONT2>", "");
             line = line.Replace("<FONT3>", "");
-            var sourceBytes = System.Text.Encoding.Default.GetBytes(line + "\n");
-            var targetBytes = System.Text.Encoding.Convert(System.Text.Encoding.UTF8, System.Text.Encoding.Unicode, sourceBytes);
-            Send(targetBytes);
+            var bytes = System.Text.Encoding.Unicode.GetBytes(line + "\n");
+            Send(bytes);
         }
 
         private void PaperFeed(int times)

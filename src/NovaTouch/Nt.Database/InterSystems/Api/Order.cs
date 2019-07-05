@@ -212,7 +212,7 @@ namespace Nt.Database.InterSystems.Api
             //
             Interaction.CallVoidClassMethod("cmNT.BonOman", "SetAllBonDatenMitAenderer", session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, newOrdersDataString);
         }
-
+        
         #endregion
 
         #region internal methods

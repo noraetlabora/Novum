@@ -112,6 +112,16 @@ namespace Nt.Data
         /// </summary>
         /// <param name="orderId"></param>
         /// <returns></returns>
+        public bool ContainsOrder(string orderId)
+        {
+            return _orders.ContainsKey(orderId);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <returns></returns>
         public Nt.Data.Order GetOrder(string orderId)
         {
             if (_orders.ContainsKey(orderId))
@@ -164,6 +174,32 @@ namespace Nt.Data
             // decrease quantity and return quantity of rest
             _orders[orderId].Quantity -= voidQuantity;
             return _orders[orderId].Quantity;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orderId"></param>
+        /// <param name="splitQuantity"></param>
+        /// <returns></returns>
+        public string SplitOrder(string orderId, decimal splitQuantity)
+        {
+            // no order with id found
+            if (!_orders.ContainsKey(orderId))
+                return null;
+            // splitQuantity is larger/equal to orderline quantity => nothing to do
+            if (_orders[orderId].Quantity >= splitQuantity)
+                return null;
+            // decrease quantity and return quantity of rest
+            _orders[orderId].Quantity -= splitQuantity;
+            var splitOrder = _orders[orderId];
+            splitOrder.Quantity = splitQuantity;
+            while(_orders.ContainsKey(splitOrder.Id)) 
+            {
+                splitOrder.Line++;
+            }    
+            _orders.Add(splitOrder.Id, splitOrder);
+            return splitOrder.Id;
         }
 
         /// <summary>

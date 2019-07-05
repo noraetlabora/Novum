@@ -1,0 +1,348 @@
+openapi: 3.0.0
+servers:
+  - url: 'http://localhost:12344/api/v1'
+info:
+  description: OrderSolution-Server HTTP Status API
+  version: 0.0.0
+  title: OrderSolution-Server HTTP Status API
+  license:
+    name: proprietary
+paths:
+  /status:
+    get:
+      summary: Provides status information about the OsServer and conencted systems
+      operationId: getStatus
+      description: |
+        Used to get information about the current state of the system.
+      responses:
+        '200':
+          description: Current status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OsServerStatus'
+  /pubsub/topics:
+    get:
+      tags:
+        - pubsub
+      summary: Provides a list of known topics.
+      operationId: getTopics
+      responses:
+        '200':
+          description: List known topics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PubSubTopics'
+    put:
+      tags:
+        - pubsub
+      summary: Subscribe to an existing topic.
+      parameters:
+        - in: path
+          name: topic
+          required: true
+          description: The topic to subscribe to.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PubSubSubscription'
+      responses:
+        '201':
+          description: Subscription successfully created
+          headers:
+            Location:
+              schema:
+                type: string
+                example: '/pubsub/topics/{topicId}/{subscriptionId}'
+        '204':
+          description: Subscription already existed
+          headers:
+            Location:
+              schema:
+                type: string
+                example: '/pubsub/topics/{topicId}/{subscriptionId}'
+    post:
+      tags:
+        - pubsub
+      summary: Publish messages to a topic.
+      description: >
+        The OsServer is providing the following topics
+
+        + host_staticDataChanged - this topic without any payload ("") will
+        trigger a static data synchronization.
+      parameters:
+        - in: path
+          name: topic
+          required: true
+          description: the topic to publish the message to
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PubSubMessage'
+      responses:
+        '200':
+          description: Returns the message id assigned by the server
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msgIds:
+                    type: array
+                    items:
+                      type: string
+                      example: '18238921'
+  '/printers/{printerId}':
+    get:
+      tags:
+        - printing
+      summary: Get information for this printer
+      operationId: getPrinter
+      parameters:
+        - name: printerId
+          in: path
+          description: printer id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Get printer information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Printer'
+  '/printers/{printerId}/jobs':
+    post:
+      tags:
+        - printing
+      summary: Add a new print job to this printer queue
+      operationId: postPrintJob
+      parameters:
+        - name: printerId
+          in: path
+          description: printer id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '201':
+          description: >-
+            The new print job was created and the location header will inform
+            where to get status information
+          headers:
+            Location:
+              schema:
+                type: string
+                example: '/printers/{printerId}/jobs/{jobId}'
+    get:
+      tags:
+        - printing
+      summary: >-
+        Get list of jobs for this printer; note: the list of jobs will be
+        cleaned up after some time
+      description: >
+        Get a list of print jobs for this printer with `id` on the local server
+        (the one you are currently talking to)
+      parameters:
+        - name: printerId
+          in: path
+          description: printer id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of current print jobs for this printers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PrintJob'
+  '/printers/{printerId}/jobs/{jobId}':
+    get:
+      tags:
+        - printing
+      summary: Get Job information
+      operationId: getPrintJobInfo
+      description: >
+        Get a list of print jobs for this printer with `id` on the local server
+        (the one you are currently talking to)
+      parameters:
+        - name: printerId
+          in: path
+          description: printer id
+          required: true
+          schema:
+            type: string
+        - name: jobId
+          in: path
+          description: print job id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of current print jobs for this printers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrintJob'
+components:
+  schemas:
+    PrintJob:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 78dfa378-02c1-11e9-8eb2-f2801f1b9fd1
+        createdTime:
+          type: integer
+          example: '1545138048'
+          description: The timestamp (Unix Epoch seconds) when this job was created
+        status:
+          type: string
+          example: pending
+          description: >
+            we support several types of print job status - pending / done /
+            error
+        statusTime:
+          type: integer
+          example: '1545138048'
+          description: >-
+            The timestamp (Unix Epoch seconds) when the jobs status was last
+            updated
+        statusCode:
+          type: string
+          example: SUCCESS
+          description: >-
+            Detailed enum about the status;
+            SUCCESS/FAILURE_COVER_OPEN/FAILURE_OUT_OF_PAPER/FAILURE_PRINTER_MALFUNCTION/FAILURE_NO_PRINTER_PAIRED/FAILURE_PRINTER_UNREACHABLE
+    Printer:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 125-49944541
+          description: >-
+            The printers id we can identify it with; this must only be unique on
+            this server and must not be interpreted
+        type:
+          type: string
+          example: OM BP-114
+          description: >-
+            The printer type is providing information which protocol this
+            printer supports. ATTENTION: use contains for the string and not
+            1to1 string comparison as the type string can have additional
+            characters
+    PubSubTopics:
+      type: object
+      properties:
+        id:
+          type: string
+          example: host_staticDataChanged
+    PubSubMessage:
+      type: object
+      properties:
+        payload:
+          type: string
+          description: Base64 encoded data
+    PubSubSubscription:
+      type: object
+      properties:
+        pushConfig:
+          type: object
+          properties:
+            pushEndpoint:
+              type: string
+              example: 'http://localhost:3829/mySubscriptReceiveEndpoint'
+    OsServerStatus:
+      type: object
+      properties:
+        server:
+          type: object
+          properties:
+            process:
+              type: object
+              properties:
+                memoryUsage:
+                  type: object
+                  properties:
+                    rss:
+                      type: integer
+                      description: Resident Set Size in bytes
+                      example: 4935680
+                    heapTotal:
+                      type: integer
+                      description: engine memory total in bytes
+                      example: 1826816
+                    heapUsed:
+                      type: integer
+                      description: engine memory used in bytes
+                      example: 650472
+                    external:
+                      type: integer
+                      description: >-
+                        native memory used for objects bound to the engine in
+                        bytes
+                      example: 49879
+        clients:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClientStatus'
+        hosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/HostStatus'
+    ClientStatus:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 125-49944541
+        sessionAddress:
+          type: string
+          example: 'fe80::2e0:dff:fef4:4156%enp0s20u9u4u4'
+        sessionMedium:
+          type: string
+          example: ethernet
+        timestamp:
+          type: integer
+          example: 1542897355669
+        printerPath:
+          type: string
+          example: /priners/125-49944541
+          description: >-
+            If the client supports simple printing this is the path to the
+            printer to use for getting printer status information and post print
+            jobs; the same path is also provided via the registerClient request
+            to the POS
+    HostStatus:
+      properties:
+        sessionId:
+          type: string
+          example: 378f07ba-0773-4229-b319-1a060d2be9f4
+        remoteIp:
+          type: string
+        timestamp:
+          type: integer
+          example: 1542897369126
+      type: object

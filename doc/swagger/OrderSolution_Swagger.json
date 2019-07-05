@@ -1,38 +1,15 @@
 {
-  "x-generator": "NSwag v11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v12.0.0.0))",
+  "x-generator": "NSwag v12.2.5.0 (NJsonSchema v9.13.37.0 (Newtonsoft.Json v12.0.0.0))",
   "swagger": "2.0",
   "info": {
     "title": "OrderSolution HTTP API",
-    "version": "0.0.0"
+    "version": "0.9.8.36"
   },
   "host": "10.0.0.136:12346",
   "schemes": [
     "http"
   ],
-  "consumes": [
-    "application/json-patch+json",
-    "application/json",
-    "text/json",
-    "application/*+json"
-  ],
   "paths": {
-    "/Documentation/Index": {
-      "undefined": {
-        "tags": [
-          "Documentation"
-        ],
-        "operationId": "Documentation_Index",
-        "responses": {
-          "200": {
-            "x-nullable": true,
-            "description": "",
-            "schema": {
-              "type": "file"
-            }
-          }
-        }
-      }
-    },
     "/api/v2/data/CancellationReasons": {
       "get": {
         "tags": [
@@ -255,7 +232,7 @@
         ],
         "responses": {
           "201": {
-            "description": "On success it will return the location of the newly stored image in location header."
+            "description": "Reports the location of the newly created resource in the http header"
           },
           "400": {
             "x-nullable": true,
@@ -447,7 +424,7 @@
           }
         ],
         "responses": {
-          "201": {
+          "204": {
             "description": ""
           },
           "401": {
@@ -506,7 +483,7 @@
             "x-nullable": true,
             "description": "",
             "schema": {
-              "$ref": "#/definitions/POSInfo"
+              "$ref": "#/definitions/RegisterClientResponse"
             }
           },
           "412": {
@@ -531,7 +508,7 @@
         "tags": [
           "actions"
         ],
-        "summary": "Informs about a gateway (like OsServer) that is configured to work with this POS.\nA gateway is a system / server that clients use to communicate with the server.",
+        "summary": "Informs about a gateway (like OsServer) that is configured to work with this POS.\nA gateway is a system / server that clients use to communicate with the server.\n\nIMPORTANT: The response of type POSInfo must include a valid PartnerId. If no valid ID is provided the OsServer\nwill exit.",
         "operationId": "Init_RegisterGateway",
         "consumes": [
           "application/json-patch+json",
@@ -552,10 +529,12 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "x-nullable": true,
             "description": "",
-            "schema": {}
+            "schema": {
+              "$ref": "#/definitions/RegisterGatewayResponse"
+            }
           }
         }
       }
@@ -646,6 +625,50 @@
             "description": "",
             "schema": {
               "$ref": "#/definitions/OrderLineResult"
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/actions/OrderLines/Split/{orderLineId}": {
+      "post": {
+        "tags": [
+          "actions/orderlines"
+        ],
+        "summary": "Split an existing orderline into 2 orderlines so that they can later be modified / moved / ... independently.\nIMPORTANT: The split action is done to allow this operation in a singel transaction instead of calling void and add separately.\nE.g. if the original orderline is \"3xCoke\" and the provided split quantity is 2 the expected result is \nfirst/original orderline with 1xCoke second orderline (new one) with 2xCoke.",
+        "operationId": "OrderLines_Split",
+        "consumes": [
+          "application/json-patch+json",
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "name": "orderLineId",
+            "in": "path",
+            "required": true,
+            "description": "The orderline to split.",
+            "x-nullable": true
+          },
+          {
+            "name": "data",
+            "in": "body",
+            "required": true,
+            "description": "Details about how to split this orderlin.",
+            "schema": {
+              "$ref": "#/definitions/OrderLineSplit"
+            },
+            "x-nullable": false
+          }
+        ],
+        "responses": {
+          "201": {
+            "x-nullable": true,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/OrderLineSplitResult"
             }
           }
         }
@@ -821,14 +844,14 @@
         "responses": {
           "200": {
             "x-nullable": true,
-            "description": "",
+            "description": "Existing table opened.",
             "schema": {
               "$ref": "#/definitions/TableResult"
             }
           },
           "201": {
             "x-nullable": true,
-            "description": "",
+            "description": "New table opened.",
             "schema": {
               "$ref": "#/definitions/TableResult"
             }
@@ -1318,18 +1341,13 @@
         }
       }
     },
-    "POSInfo": {
+    "RegisterClientResponse": {
       "type": "object",
-      "description": "Provides site specific data on successful initialization.",
       "additionalProperties": false,
       "required": [
         "utcTime"
       ],
       "properties": {
-        "restaurantName": {
-          "type": "string",
-          "description": "The name of the restaurant we are working with."
-        },
         "utcTime": {
           "type": "integer",
           "description": "The current UTC time stamp (in seconds since epoch time).\nUsed for synchronization between clients and the server.",
@@ -1361,6 +1379,29 @@
         "printerPath": {
           "type": "string",
           "description": "Optional. A path to the printer that can be used for send print jobs to this client if it supports them.\nFor Orderman handheld devices this path will be provided if an Orderman belt printer is paired with that device.\nTo send print jobs you can use the \"/printers\" api of the OsServer instance this init request was coming from.\nExample (we assume the OsServer is running on local host and it's httpApi port is configured to 12344:\n    - You receive the path \"/printers/125-49944541\"\n    - You can query details about this printer via \"GET http://localhost:12344/api/v1/printers/125-49944541\"\n    - To send a new print job: \"POST http://localhost:12344/api/v1/printers/125-49944541/jobs\" which will return \n      with a print job id immediately (in this example 38428)\n    - to query the print job status: \"GET http://localhost:12344/api/v1/printers/125-49944541/jobs/38428\""
+        }
+      }
+    },
+    "RegisterGatewayResponse": {
+      "type": "object",
+      "description": "Provides site specific data on successful initialization to OsServer.",
+      "additionalProperties": false,
+      "required": [
+        "utcTime"
+      ],
+      "properties": {
+        "restaurantName": {
+          "type": "string",
+          "description": "The name of the restaurant we are working with."
+        },
+        "partnerId": {
+          "type": "string",
+          "description": "A partner ID is necessary to run OrderSolution beyond demonstration mode. To get your free partner ID, please contact SystemIntegration@orderman.com.\nIn case you have more than one product, you should ask for seperate partner IDs.\nPartner IDs should be kept confidential.\nIn future versions, it is possible we display the given integration name visibly to the end customer."
+        },
+        "utcTime": {
+          "type": "integer",
+          "description": "The current UTC time stamp (in seconds since epoch time).\nUsed for synchronization between clients and the server.",
+          "format": "int32"
         }
       }
     },
@@ -1551,6 +1592,41 @@
         }
       }
     },
+    "OrderLineSplitResult": {
+      "type": "object",
+      "description": "The result of a successful orderline split operation.",
+      "additionalProperties": false,
+      "properties": {
+        "originalOl": {
+          "description": "The original orderline from which data was splitted away with it's updated data.\ne.g. if from 3xCoke we slipt 2xCoke away this one will be the 1xCoke line.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/OrderLine"
+            }
+          ]
+        },
+        "splittedOl": {
+          "description": "The new orderline that was created by this split operation.\ne.g. if from 3xCoke we slipt 2xCoke away this one will be the 2xCoke line.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/OrderLine"
+            }
+          ]
+        }
+      }
+    },
+    "OrderLineSplit": {
+      "type": "object",
+      "description": "Detailes about how an orderline should be splitted.",
+      "additionalProperties": false,
+      "properties": {
+        "quantity": {
+          "type": "integer",
+          "description": "The quantity that should get split away from the original orderline.            ",
+          "format": "int32"
+        }
+      }
+    },
     "OrderLineModify": {
       "type": "object",
       "additionalProperties": false,
@@ -1630,7 +1706,7 @@
           "description": "The amount that will get paid.",
           "format": "int32"
         },
-        "paymentMediaId": {
+        "paymentMediumId": {
           "type": "string",
           "description": "The payment media type (id) used for this amount. (example: Cash, Credit Card, ...)"
         }
@@ -1649,14 +1725,14 @@
               "type": "array",
               "description": "List of order line payments that represent the orderlines (-parts) that will be paied with this set.",
               "items": {
-                "$ref": "#/definitions/OrderLineQuanity"
+                "$ref": "#/definitions/OrderLineQuantity"
               }
             }
           }
         }
       ]
     },
-    "OrderLineQuanity": {
+    "OrderLineQuantity": {
       "type": "object",
       "additionalProperties": false,
       "required": [

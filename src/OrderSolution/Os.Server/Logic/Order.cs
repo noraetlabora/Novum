@@ -133,10 +133,11 @@ namespace Os.Server.Logic
             if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
                 throw new Exception("no open table");
 
+            if (!session.ContainsOrder(orderLineId))
+                throw new Exception("no orderline found");
+
             //search in new/uncommited orders
             var ntOrder = session.GetOrder(orderLineId);
-            if (ntOrder == null)
-                throw new Exception("no orderline found");
 
             var osOrderLineResult = new Models.OrderLineResult();
             var singlePrice = ntOrder.UnitPrice;
@@ -204,18 +205,6 @@ namespace Os.Server.Logic
         /// 
         /// </summary>
         /// <param name="session"></param>
-        /// <param name="orderLineId"></param>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        public static Models.OrderLineResult Split(Nt.Data.Session session, string orderLineId, Models.OrderLineSplit data)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="session"></param>
         /// <param name="tableId"></param>
         public static void CancelOrder(Nt.Data.Session session, string tableId)
         {
@@ -252,6 +241,40 @@ namespace Os.Server.Logic
             Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);
             session.ClearOrders();
             Image.RemoveImages(session);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="orderLineId"></param>
+        /// <param name="data"></param>
+        public static Models.OrderLineSplitResult Split(Nt.Data.Session session, string orderLineId, Models.OrderLineSplit data)
+        {
+            var osOrderLineSplitResult = new Models.OrderLineSplitResult();
+
+            if (!session.ContainsOrder(orderLineId))
+                throw new Exception("ordered/prebooked orders can not yet be split");
+
+            var ntSplitOrderId = session.SplitOrder(orderLineId, (decimal)data.Quantity);
+            //
+            var ntOrder = session.GetOrder(orderLineId);
+            var osOrderLine = GetOsOrderLine(ntOrder);
+            osOrderLineSplitResult.OriginalOl.Id = osOrderLine.Id;
+            osOrderLineSplitResult.OriginalOl.ArticleId = osOrderLine.ArticleId;
+            osOrderLineSplitResult.OriginalOl.Quantity = osOrderLine.Quantity;
+            osOrderLineSplitResult.OriginalOl.SingelPrice = osOrderLine.SinglePrice;
+            osOrderLineSplitResult.OriginalOl.Modifiers = osOrderLine.Modifiers;
+            //
+            var ntSplitOrder = session.GetOrder(ntSplitOrderId);
+            var osSplitOrderLine = GetOsOrderLine(ntSplitOrder);
+            osOrderLineSplitResult.SplittedOl.Id = osSplitOrderLine.Id;
+            osOrderLineSplitResult.SplittedOl.ArticleId = osSplitOrderLine.ArticleId;
+            osOrderLineSplitResult.SplittedOl.Quantity = osSplitOrderLine.Quantity;
+            osOrderLineSplitResult.SplittedOl.SingelPrice = osSplitOrderLine.SinglePrice;
+            osOrderLineSplitResult.SplittedOl.Modifiers = osSplitOrderLine.Modifiers;
+            //
+            return osOrderLineSplitResult;
         }
 
         #endregion
