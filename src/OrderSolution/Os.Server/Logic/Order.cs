@@ -58,7 +58,7 @@ namespace Os.Server.Logic
             var orderLineResult = new Models.OrderLineResult();
 
             if (data.EnteredPrice != null && data.EnteredPrice != 0)
-                Nt.Database.DB.Api.Article.CheckEnteredPrice(session, data.ArticleId, decimal.Multiply((decimal)data.EnteredPrice, 100.0m));
+                Nt.Database.DB.Api.Article.CheckEnteredPrice(session, data.ArticleId, decimal.Divide((decimal)data.EnteredPrice, 100.0m));
             var order = Nt.Database.DB.Api.Order.GetNewOrder(session, data.ArticleId);
             order.Quantity = (decimal)data.Quantity;
             session.AddOrder(order);
