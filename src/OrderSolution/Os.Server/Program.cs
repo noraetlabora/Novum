@@ -60,6 +60,11 @@ namespace Os.Server
         /// <value></value>
         public string OsClientPort  { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public Nov.NT.POS.Fiscal.IFiscalProvider FiscalProvider;
+
         private static ClientApi _clientApi;
 
 
@@ -72,6 +77,11 @@ namespace Os.Server
             Nt.Database.DB.Instance.ConnectionString = "Server=192.168.0.4; Port=1972; Namespace=PROG-DEV; User ID=_SYSTEM; Password=SYS";
             Nt.Database.DB.Instance.Open();
             _clientApi = new ClientApi("http://localhost:12344");
+
+            //Logging for fiscalization
+            var logRepository = log4net.LogManager.GetRepository(System.Reflection.Assembly.GetEntryAssembly());
+            log4net.Config.XmlConfigurator.Configure(logRepository, new System.IO.FileInfo("log4net.config"));
+
             Logic.Data.GetArticles();
 
             BuildWebHost(args).Run();

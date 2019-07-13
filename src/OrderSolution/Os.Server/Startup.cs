@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 
 namespace Os.Server
 {
@@ -32,15 +31,12 @@ namespace Os.Server
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddHostedService<DatabaseService>()
-                .AddMvcCore()
-                .AddJsonFormatters()
-                .AddJsonOptions(jsonOptions =>
-                {
-                    jsonOptions.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                });
-
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+            });
+            services.AddHostedService<DatabaseService>();
         }
 
         /// <summary>
@@ -48,11 +44,14 @@ namespace Os.Server
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app
-                .UseMiddleware<Middleware>()
-                .UseMvc();
+            app.UseMiddleware<Middleware>();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

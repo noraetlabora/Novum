@@ -82,6 +82,12 @@ namespace Nt.Data
         /// <value></value>
         public Nt.Data.Table CurrentTable { get; private set; }        
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public object FiscalProvider { get; set; }
+
         #endregion
 
         #region Constructor

@@ -96,7 +96,7 @@ namespace Os.Server
             sb.Append(request.Path).Append(Pipe);
             sb.Append(bodyAsText);
 
-            Nt.Logging.Log.Json.Info(sb.ToString());
+            Nt.Logging.Log.Communication.Info(sb.ToString());
 
             return bodyAsText;
         }
@@ -117,10 +117,10 @@ namespace Os.Server
             else 
                 sb.Append(bodyAsText);
 
-            Nt.Logging.Log.Json.Info(sb.ToString());
+            Nt.Logging.Log.Communication.Info(sb.ToString());
 
             if (bodyAsText.Length > 500)
-                Nt.Logging.Log.Json.Debug(bodyAsText);
+                Nt.Logging.Log.Communication.Debug(bodyAsText);
 
             return bodyAsText;
         }

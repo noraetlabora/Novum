@@ -11,10 +11,10 @@ namespace Nt.Logging
     public static class Log
     {
         /// <summary>
-        /// Logger for all Json Data
+        /// Logger for all Communication Data between server and client
         /// </summary>
         /// <returns></returns>
-        public static Logger Json = LogManager.GetLogger("JsonLog");
+        public static Logger Communication = LogManager.GetLogger("CommunicationLog");
 
         /// <summary>
         /// Logger for Database
