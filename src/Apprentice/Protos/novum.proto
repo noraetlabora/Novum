@@ -5,10 +5,10 @@ option csharp_namespace = "Novum.Server";
 package Novum.Server;
 
 // The greeting service definition.
-service Greeter {
+service Authentication {
   rpc Initialize (InitializeRequest) returns (InitializeReply);
-  rpc Login (LoginRequest) return (LoginReply);
-  rpc Logou (LogoutRequest) return (LogoutReply);
+  rpc Login (LoginRequest) returns (LoginReply);
+  rpc Logou (LogoutRequest) returns (LogoutReply);
 }
 
 // The request message containing the user's name.
@@ -31,7 +31,7 @@ message InitializeReply {
 
 message LoginRequest {
   string input = 1;
-  LoginInputType = 2;
+  LoginInputType inputType = 2;
 }
 
 enum LoginInputType {
