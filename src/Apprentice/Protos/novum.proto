@@ -16,12 +16,14 @@ message InitializeRequest {
   string id = 1;
   ClientType clientType = 2;
   string clientVersion = 3;
+  uint32 test = 4;
 }
 
 enum ClientType {
-    ORDERMAN = 0;
-    WINDOWS = 1;
-    WEB = 2;
+    NONE = 0;
+    ORDERMAN = 1;
+    WINDOWS = 2;
+    WEB = 3;
 }
 
 // The response message containing the greetings.
@@ -35,8 +37,9 @@ message LoginRequest {
 }
 
 enum LoginInputType {
-  MANUALLY = 0;
-  KEY = 1;
+  NONE = 0;
+  MANUALLY = 1;
+  KEY = 2;
 }
 
 message LoginReply {}
