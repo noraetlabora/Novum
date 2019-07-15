@@ -12,6 +12,8 @@ namespace Novum.Server
     {
         public static void Main(string[] args)
         {
+            Nt.Database.DB.Instance.ConnectionString = "Server=192.168.0.4; Port=1972; Namespace=PROG-DEV; User ID=_SYSTEM; Password=SYS";
+            Nt.Database.DB.Instance.Open();
             CreateHostBuilder(args).Build().Run();
         }
 

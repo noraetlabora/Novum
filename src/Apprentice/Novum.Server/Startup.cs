@@ -15,7 +15,12 @@ namespace Novum.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddGrpc();
+            services.AddGrpc(options =>
+            {
+                // This registers a global interceptor with a Singleton lifetime. The interceptor must be added to the service collection in addition to being registered here.
+                options.Interceptors.Add<LoggerInterceptor>();
+            });
+            services.AddSingleton(new LoggerInterceptor());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
