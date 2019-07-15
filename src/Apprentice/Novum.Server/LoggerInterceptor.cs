@@ -14,12 +14,14 @@ namespace Novum.Server
         {
 
             var sb = new StringBuilder();
-            sb.Append("|Request|").Append(request.ToString());
+            sb.Append("Request|").Append(request.ToString());
             Nt.Logging.Log.Communication.Info(sb.ToString());
             var response = await base.UnaryServerHandler(request, context, continuation);
             sb = new StringBuilder();
-            sb.Append("|Response|").Append(response.ToString());
+            sb.Append("Response|").Append(response.ToString());
             Nt.Logging.Log.Communication.Info(sb.ToString());
+
+        
 
             return response;
         }

@@ -20,10 +20,10 @@ message InitializeRequest {
 }
 
 enum ClientType {
-    NONE = 0;
-    ORDERMAN = 1;
-    WINDOWS = 2;
-    WEB = 3;
+    
+    ORDERMAN = 0;
+    WINDOWS = 1;
+    WEB = 2;
 }
 
 // The response message containing the greetings.
@@ -37,9 +37,27 @@ message LoginRequest {
 }
 
 enum LoginInputType {
-  NONE = 0;
-  MANUALLY = 1;
-  KEY = 2;
+  
+  MANUALLY = 0;
+  KEY = 1;
+}
+
+message Error {
+
+  message Status {
+    
+    int32 code = 1;
+    
+    string message = 2;
+
+    string title = 3;
+    
+    google.rpc.Code status = 4;
+   
+    repeated google.protobuf.Any details = 5;
+  }
+ 
+  Status error = 1;
 }
 
 message LoginReply {}
