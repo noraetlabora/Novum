@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Core.Interceptors;
+using System.Text;
 
 namespace Novum.Server
 {
@@ -12,12 +13,13 @@ namespace Novum.Server
         public override async Task<TResponse> UnaryServerHandler<TRequest, TResponse>(TRequest request, ServerCallContext context, UnaryServerMethod<TRequest, TResponse> continuation)
         {
 
-            var stopWatch = Stopwatch.StartNew();
+            var sb = new StringBuilder();
+            sb.Append("|Request|").Append(request.ToString());
+            Nt.Logging.Log.Communication.Info(sb.ToString());
             var response = await base.UnaryServerHandler(request, context, continuation);
-
-
-            stopWatch.Stop();
-            System.Diagnostics.Debug.WriteLine("request - response took " + stopWatch.ElapsedMilliseconds + "ms");
+            sb = new StringBuilder();
+            sb.Append("|Response|").Append(response.ToString());
+            Nt.Logging.Log.Communication.Info(sb.ToString());
 
             return response;
         }

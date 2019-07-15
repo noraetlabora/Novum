@@ -13,19 +13,8 @@ namespace Novum.Server.Services
             var reply = new InitializeReply();
             try 
             {
-                var xx = Nt.Database.DB.Api.Misc.GetCancellationReason();       
-                System.Diagnostics.Debug.WriteLine("juhu");      
-                Nt.Logging.Log.Server.Error("shit");
-                Nt.Logging.Log.Server.Info("happens");   
-
-                
-                
-                
-
-
-
-                
-                
+                //var xx = Nt.Database.DB.Api.Misc.GetCancellationReason();       
+                reply.UnixTimestamp = 123;       
             }
             catch (Exception ex)
             {
