@@ -43,11 +43,6 @@ enum LoginInputType {
   KEY = 1;
 }
 
-message Error {
-  uint32 code = 1;
-  string title = 2;
-  string message = 3;
-}
 
 message LoginReply {}
 
@@ -55,5 +50,5 @@ message LogoutRequest {}
 
 message LogoutReply {}
 
-message ErrorReply{}
+
 
