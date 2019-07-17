@@ -33,7 +33,7 @@ class Login extends StatelessWidget{
                     height: 65.0,
                     child: RaisedButton(
                       onPressed: () {},
-                      child: Text("Funktion"),
+                      child: Text("Funktionen", style: TextStyle(fontSize: 17),),
                     ),
                   ),
               ),
@@ -46,7 +46,7 @@ class Login extends StatelessWidget{
                     height: 65.0,
                     child: RaisedButton(
                       onPressed: () {},
-                      child: Text("OK"),
+                      child: Text("OK", style: TextStyle(fontSize: 17),),
                     ),
                   ),
                 ),
