@@ -1,21 +1,27 @@
+import 'dart:async';
+import "dialogs.dart";
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-void main() => runApp(MyApp());
+void main(){
+  runApp(Client());
+} 
 
-class MyApp extends StatelessWidget {
+class Client extends StatelessWidget {
   // This widget is the root of your application.
+
+  
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
+    timer(5);
     return MaterialApp(   
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.yellow,
-      ),
-      home: MyHomePage(title: 'Flutter Page'),
+      title: 'novum_client',
+      home: MyHomePage(title: 'initialize screen'),
     );
+
   }
 }
 
@@ -27,13 +33,18 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+void timer(int _seconds){
+  Timer(Duration(seconds: _seconds), () {
+    // navigate to Login screen
+});
+}
+
+
+
+
+
 class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController _textFieldController = TextEditingController();
-  void _incrementCounter() {
-
-  }
-
-
+  
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _displayDialog(context),
+        onPressed: () => dialogSelection.errorDialog(404, "Page not found", 2, context),
         tooltip: 'Increment',
         child: Icon(Icons.settings),
       ), // This trailing comma makes auto-formatting nicer for build methods.
@@ -62,35 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
 
-   _displayDialog(BuildContext context) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Server Konfiguration'),
-            content: TextField(
-              controller: _textFieldController,
-              decoration: InputDecoration(hintText: "Port"),
-            ),
-            actions: <Widget>[
-              new FlatButton(
-                textColor: Colors.black,
-                child: new Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                } ,
-              ),
-              new FlatButton(
-                textColor: Colors.black,
-                child: new Text('CANCEL'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                } ,
-              )
-            ],
-          );
-        });
-  }
+  
+  
 }
 
 
