@@ -19,6 +19,7 @@ class Login extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
+     double width = MediaQuery.of(context).size.width;
     return new Scaffold(
       body: new Center(
         child: new Row(
@@ -28,7 +29,7 @@ class Login extends StatelessWidget{
               child: Align(
                 alignment: Alignment.bottomCenter,
                   child: ButtonTheme(
-                    minWidth: 180.0,
+                    minWidth: width/2,
                     height: 65.0,
                     child: RaisedButton(
                       onPressed: () {},
@@ -41,7 +42,7 @@ class Login extends StatelessWidget{
               child: Align(
               alignment: Alignment.bottomCenter,
                   child: ButtonTheme(
-                    minWidth: 180.0,
+                    minWidth: width/2,
                     height: 65.0,
                     child: RaisedButton(
                       onPressed: () {},
