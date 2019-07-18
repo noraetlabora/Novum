@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:novum_client/pinpad.dart';
 
 void main() => runApp(LoginApp());
 
-class LoginApp extends StatelessWidget{
+class LoginApp extends StatelessWidget {
   Widget build(BuildContext context) {
-     SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.yellow,
@@ -19,9 +20,10 @@ class Login extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-     double width = MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width;
     return new Scaffold(
       body: new Center(
+        
         child: new Row(
           mainAxisSize: MainAxisSize.min, // this will take space as minimum as posible(to center)
           children: <Widget>[
@@ -33,7 +35,7 @@ class Login extends StatelessWidget{
                     height: 65.0,
                     child: RaisedButton(
                       onPressed: () {},
-                      child: Text("Funktionen", style: TextStyle(fontSize: 17),),
+                      child: Text("Funktion"),
                     ),
                   ),
               ),
@@ -46,7 +48,7 @@ class Login extends StatelessWidget{
                     height: 65.0,
                     child: RaisedButton(
                       onPressed: () {},
-                      child: Text("OK", style: TextStyle(fontSize: 17),),
+                      child: Text("OK"),
                     ),
                   ),
                 ),

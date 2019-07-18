@@ -1,27 +1,26 @@
 import 'dart:async';
 import "dialogs.dart";
+import "login.dart";
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-void main(){
+void main() {
   runApp(Client());
-} 
+}
+int kill = 0;
 
 class Client extends StatelessWidget {
   // This widget is the root of your application.
 
-  
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
-    timer(5);
-    return MaterialApp(   
+    return MaterialApp(
       title: 'novum_client',
       home: MyHomePage(title: 'initialize screen'),
     );
-
   }
 }
 
@@ -33,21 +32,23 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-void timer(int _seconds){
-  Timer(Duration(seconds: _seconds), () {
-    // navigate to Login screen
-});
-}
-
-
-
-
-
 class _MyHomePageState extends State<MyHomePage> {
-  
-
   @override
   Widget build(BuildContext context) {
+    
+    Timer(Duration(seconds: 5), () {
+      if (kill == 0) {
+        kill = -1;
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginApp()),
+        );
+        
+      }
+
+      //killed
+    });
+
     return Scaffold(
       body: Container(
         color: Colors.white,
@@ -65,16 +66,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () => dialogSelection.errorDialog(404, "Page not found", 2, context),
+        onPressed: () => dialogSelection.inputDialog(
+            context, "Texteingabe", "Text", "OK", "Abbruch"),
         tooltip: 'Increment',
         child: Icon(Icons.settings),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-
-
-  
-  
 }
-
-
