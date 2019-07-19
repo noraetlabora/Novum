@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     
-    Timer(Duration(seconds: 5), () {
+    Timer(Duration(seconds: 3), () {
       if (kill == 0) {
         kill = -1;
         Navigator.push(
