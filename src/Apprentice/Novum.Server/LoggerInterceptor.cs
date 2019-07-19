@@ -20,6 +20,9 @@ namespace Novum.Server
             sb = new StringBuilder();
             sb.Append("Response|").Append(response.ToString());
             Nt.Logging.Log.Communication.Info(sb.ToString());
+            
+
+            
 
         
 
