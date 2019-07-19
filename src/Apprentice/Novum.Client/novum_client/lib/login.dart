@@ -1,12 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:novum_client/pinpad.dart';
+import 'package:battery/battery.dart';
 
 void main() => runApp(LoginApp());
 
 class LoginApp extends StatelessWidget {
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([]);
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.yellow,
@@ -16,11 +17,11 @@ class LoginApp extends StatelessWidget {
   }
 }
 
-class Login extends StatelessWidget{
+class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("launched PinPad");
+    SystemChrome.setEnabledSystemUIOverlays([]);
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -29,9 +30,39 @@ class Login extends StatelessWidget{
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
+          Container(
+            height: 30,
+            color: Colors.black,
+            child: Column(
+              children: <Widget>[
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Icon(
+                      Icons.person,
+                      color: Colors.white,
+                    ),
+                    Center(
+                      child: Text(
+                        "Kassa 1",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                  
+                  ],
+                )
+              ],
+            ),
+          ),
           new Container(
               width: width,
-              height:  MediaQuery.of(context).size.height / 3,
+              height: MediaQuery.of(context).size.height / 3.34,
               decoration: new BoxDecoration(
                 image: new DecorationImage(
                   image: ExactAssetImage('assets/NovaTouch-logo.jpg'),
