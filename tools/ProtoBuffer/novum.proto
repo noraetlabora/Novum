@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+option csharp_namespace = "Novum.Server";
+
+package Novum.Server;
+
+// The greeting service definition.
+service Authentication {
+  rpc Initialize (InitializeRequest) returns (InitializeReply);
+  rpc Login (LoginRequest) returns (LoginReply);
+  rpc Logou (LogoutRequest) returns (LogoutReply);
+  
+}
+
+// The request message containing the user's name.
+message InitializeRequest {
+  string id = 1;
+  ClientType clientType = 2;
+  string clientVersion = 3;
+  uint32 test = 4;
+}
+
+enum ClientType {
+    
+    ORDERMAN = 0;
+    WINDOWS = 1;
+    WEB = 2;
+}
+
+// The response message containing the greetings.
+message InitializeReply {
+  uint32 unixTimestamp = 1;
+}
+
+message LoginRequest {
+  string input = 1;
+  LoginInputType inputType = 2;
+}
+
+enum LoginInputType {
+  
+  MANUALLY = 0;
+  KEY = 1;
+}
+
+message LoginReply {}
+
+message LogoutRequest {}
+
+message LogoutReply {}
+
+

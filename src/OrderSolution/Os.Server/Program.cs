@@ -79,8 +79,8 @@ namespace Os.Server
             _clientApi = new ClientApi("http://localhost:12344");
 
             //Logging for fiscalization
-            var logRepository = log4net.LogManager.GetRepository(System.Reflection.Assembly.GetEntryAssembly());
-            log4net.Config.XmlConfigurator.Configure(logRepository, new System.IO.FileInfo("log4net.config"));
+            //var logRepository = log4net.LogManager.GetRepository(System.Reflection.Assembly.GetEntryAssembly());
+            //log4net.Config.XmlConfigurator.Configure(logRepository, new System.IO.FileInfo("Nov.NT.log4net"));
 
             Logic.Data.GetArticles();
 
@@ -91,6 +91,7 @@ namespace Os.Server
         /// 
         /// </summary>
         /// <param name="args"></param>
+        /// 
         /// <returns></returns>
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
