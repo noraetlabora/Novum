@@ -1,15 +1,32 @@
 import 'dart:async';
+import 'package:protobuf/protobuf.dart';
+
 import "dialogs.dart";
 import "login.dart";
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:grpc/grpc.dart';
+import 'services/protobuf/novum.pb.dart' as grpc;
+
+const serverIp = "127.0.0.1";
+const serverPort = "50051";
+
+int kill = 0;
 
 void main() {
+  // RpcClient client = new RpcClient();
+  // grpc.AuthenticationApi(client);
+
+  // final channel = new ClientChannel(serverIp,
+  //     port: 50051,
+  //     options: const ChannelOptions(
+  //         credentials: const ChannelCredentials.insecure()));
+  // final stub = ;
+
   runApp(Client());
 }
-int kill = 0;
 
 class Client extends StatelessWidget {
   // This widget is the root of your application.
@@ -35,7 +52,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    
     Timer(Duration(seconds: 3), () {
       if (kill == 0) {
         kill = -1;
@@ -43,7 +59,6 @@ class _MyHomePageState extends State<MyHomePage> {
           context,
           MaterialPageRoute(builder: (context) => LoginApp()),
         );
-        
       }
 
       //killed
