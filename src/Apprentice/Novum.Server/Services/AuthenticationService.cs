@@ -13,12 +13,16 @@ namespace Novum.Server.Services
             var reply = new InitializeReply();
             try 
             {
-                //var xx = Nt.Database.DB.Api.Misc.GetCancellationReason();       
-                reply.UnixTimestamp = 123;       
+                var posId = Nt.Database.DB.Api.Pos.GetPosId(request.Id);     
+                // if (string.IsNullOrEmpty(posId))
+                //     throw Exception
             }
             catch (Exception ex)
             {
-                throw new RpcException(new Status(StatusCode.InvalidArgument, ex.Message));
+                var metadata = new Metadata();
+                metadata.Add(new Metadata.Entry("title", ""));
+                metadata.Add(new Metadata.Entry("message", string.Format("Seriennummer {0} nicht bekannt", request.Id)));
+                throw new RpcException(Status.DefaultCancelled, metadata);
             }
             return Task.FromResult(reply);
         }
