@@ -14,6 +14,7 @@ namespace Novum.Server.Services
             try 
             {
                 var posId = Nt.Database.DB.Api.Pos.GetPosId(request.Id);     
+                reply.UnixTimestamp = 4711;
                 // if (string.IsNullOrEmpty(posId))
                 //     throw Exception
             }

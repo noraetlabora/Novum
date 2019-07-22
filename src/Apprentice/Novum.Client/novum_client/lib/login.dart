@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:grpc/grpc.dart';
+import 'services/protobuf/novum.pb.dart' as grpc;
+import 'package:novum_client/services/protobuf/novum.pbgrpc.dart';
+import 'package:protobuf/protobuf.dart';
+import 'package:http2/transport.dart';
 
 void main() => runApp(LoginApp());
 
@@ -327,7 +332,9 @@ class Login extends StatelessWidget {
                 height: heigth * 0.1015,
                 child: RaisedButton(
                   shape: new ContinuousRectangleBorder(),
-                  onPressed: () {},
+                  onPressed: () {
+                    initialize();
+                  },
                   child: Text("OK"),
                 ),
               ),
@@ -337,6 +344,24 @@ class Login extends StatelessWidget {
       ),
     );
   }
+
+Future initialize() async {
+    final channel = new ClientChannel("192.168.0.160",
+      port: 50051,
+    
+      options: const ChannelOptions(
+        credentials: const ChannelCredentials.insecure(),
+        idleTimeout: Duration(seconds: 30)));
+
+  final grpcClient = new AuthenticationClient(channel);
+  final request = new InitializeRequest();
+  request.clientType = ClientType.ORDERMAN;
+  request.clientVersion = "1.1.1";
+  request.id = "125-123456789";
+  request.test = 5;
+  final reply =  await grpcClient.initialize(request);
+  print(reply.toString());
+}
 
   void pinText(int c) {
     if (c != -1 && c != null) {

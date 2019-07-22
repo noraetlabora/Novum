@@ -59,21 +59,3 @@ const LogoutReply$json = const {
   '1': 'LogoutReply',
 };
 
-const AuthenticationServiceBase$json = const {
-  '1': 'Authentication',
-  '2': const [
-    const {'1': 'Initialize', '2': '.Novum.Server.InitializeRequest', '3': '.Novum.Server.InitializeReply'},
-    const {'1': 'Login', '2': '.Novum.Server.LoginRequest', '3': '.Novum.Server.LoginReply'},
-    const {'1': 'Logou', '2': '.Novum.Server.LogoutRequest', '3': '.Novum.Server.LogoutReply'},
-  ],
-};
-
-const AuthenticationServiceBase$messageJson = const {
-  '.Novum.Server.InitializeRequest': InitializeRequest$json,
-  '.Novum.Server.InitializeReply': InitializeReply$json,
-  '.Novum.Server.LoginRequest': LoginRequest$json,
-  '.Novum.Server.LoginReply': LoginReply$json,
-  '.Novum.Server.LogoutRequest': LogoutRequest$json,
-  '.Novum.Server.LogoutReply': LogoutReply$json,
-};
-
