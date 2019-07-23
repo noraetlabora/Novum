@@ -13,7 +13,7 @@ namespace Novum.Server.Services
             var reply = new InitializeReply();
             try 
             {
-                var posId = Nt.Database.DB.Api.Pos.GetPosId(request.Id);     
+                //var posId = Nt.Database.DB.Api.Pos.GetPosId(request.Id);     
                 reply.UnixTimestamp = 4711;
                 // if (string.IsNullOrEmpty(posId))
                 //     throw Exception
