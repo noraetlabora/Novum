@@ -21,6 +21,7 @@ class LoginApp extends StatelessWidget {
 
 class Login extends StatelessWidget {
   String pin = "";
+  bool tof = true;
   @override
   Widget build(BuildContext context) {
     TextEditingController tfController = TextEditingController();
@@ -297,17 +298,29 @@ class Login extends StatelessWidget {
                   ButtonTheme(
                     minWidth: width / 3,
                     height: heigth * 0.1172,
+                    child: GestureDetector(
+                      onLongPress: (){
+                        tof = true;
+                        while(tof == true){
+                          pinText(-1);
+                          tfController.text = pin;
+                          if(pin.length == 0){
+                            tof = false;
+                          }
+                        }
+                      },
                     child: RaisedButton(
+                      onPressed: (){
+                        pinText(-1);
+                        tfController.text = pin;
+                      },
                         color: Color.fromRGBO(100, 100, 100, 1.0),
                         shape: new ContinuousRectangleBorder(),
                         textColor: Colors.white,
-                        onPressed: () {
-                          pinText(-1);
-                          tfController.text = pin;
-                        },
                         child: Column(
                           children: <Widget>[Icon(Icons.backspace)],
                         )),
+                  ),
                   ),
                 ],
               ),
