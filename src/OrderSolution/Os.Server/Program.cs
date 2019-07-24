@@ -83,6 +83,7 @@ namespace Os.Server
             //log4net.Config.XmlConfigurator.Configure(logRepository, new System.IO.FileInfo("Nov.NT.log4net"));
 
             Logic.Data.GetArticles();
+            Logic.Data.GetCategories("1");
 
             BuildWebHost(args).Run();
         }

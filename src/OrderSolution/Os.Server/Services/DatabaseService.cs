@@ -38,6 +38,7 @@ internal class DatabaseService : IHostedService, IDisposable
                 Nt.Database.DB.Instance.Open();
                 System.Diagnostics.Debug.WriteLine("DatabaseService: State = " + Nt.Database.DB.Instance.State);
             }
+            Os.Server.Logic.Data.CheckStaticData();
         }
         catch(Exception ex)
         {

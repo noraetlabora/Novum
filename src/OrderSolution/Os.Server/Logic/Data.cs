@@ -13,7 +13,6 @@ namespace Os.Server.Logic
         #region private fields;
             private static List<Models.Article> osCachedArticles;
             private static List<Models.Category> osCachedCategories;
-
             internal static Dictionary<string, Nt.Data.PaymentType> ntCachedPaymentTypes;
             internal static Dictionary<string, Nt.Data.AssignmentType> ntCachedAssignmentTypes;
             private static string[] notSupportedArticleIds = { "PLU", "$KONTO:", "$GUTSCHEIN:", "$GUTSCHEINBET:", "$RABATT:", "GANG:", "$FILTER:" };
@@ -21,7 +20,50 @@ namespace Os.Server.Logic
 
         #endregion  //private fields
 
+        #region Properties
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public static bool InitialStaticDataSent {get; set;}
+
+        #endregion
+
         #region public methods
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void CheckStaticData()
+        {
+            if (!InitialStaticDataSent) 
+            {
+                System.Diagnostics.Debug.WriteLine("initial static not yet sent");
+                return;
+            }
+
+            // snapshot time exists, data is up to date
+            if (Nt.Database.DB.Api.Misc.HasSnapshotTime(Controllers.OsHostController.PosStatus.SessionId))
+            {   
+                System.Diagnostics.Debug.WriteLine("static data are up to date");
+                return;
+            }
+
+            System.Diagnostics.Debug.WriteLine("static data are up not up to date");
+
+            Logic.Data.GetArticles();
+            Logic.Data.GetCategories("1");
+
+            var pubSubMessages = new List<Client.Model.PubSubMessage>();
+            var pubSubMessage = new Client.Model.PubSubMessage();
+            pubSubMessage.Payload = "";
+            pubSubMessages.Add(pubSubMessage);
+            ClientApi.Subscribe.PubsubTopicsPost("host_staticDataChanged", pubSubMessages);
+
+            // set snapshot time
+            Nt.Database.DB.Api.Misc.SetSnapshotTime(Controllers.OsHostController.PosStatus.SessionId);
+        }
 
         #region Cancellation Reasons
 
@@ -104,11 +146,17 @@ namespace Os.Server.Logic
         /// 
         /// </summary>
         /// <returns></returns>
+        public static List<Models.Article> GetCachedArticles()
+        {
+                return osCachedArticles;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static List<Models.Article> GetArticles()
         {
-            if (osCachedArticles != null)
-                return osCachedArticles;
-
             var osArticles = new List<Models.Article>();
             var ntArticles = Nt.Database.DB.Api.Article.GetArticles();
             var ntModifierMenus = Nt.Database.DB.Api.Modifier.GetModifierMenus();
@@ -151,11 +199,18 @@ namespace Os.Server.Logic
         /// </summary>
         /// <param name="menuId"></param>
         /// <returns></returns>
+        public static List<Models.Category> GetCachedCategories(string menuId)
+        {
+                return osCachedCategories;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="menuId"></param>
+        /// <returns></returns>
         public static List<Models.Category> GetCategories(string menuId)
         {
-            if (osCachedCategories!= null)
-                return osCachedCategories;
-
             var osCategories = new List<Models.Category>();
             var ntMainMenus = Nt.Database.DB.Api.Menu.GetMainMenus(menuId);
             var ntMenus = Nt.Database.DB.Api.Menu.GetMenus();

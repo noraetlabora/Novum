@@ -108,9 +108,9 @@ namespace Os.Server.Logic
             try 
             {
                 //TODO:
-                fiscalProvider = Nov.NT.POS.Fiscal.ProviderFactory.GetFiscalProvider(fiscalServiceType);
-                fiscalProvider.ApplyConfiguration(fiscalConfiguration);
-                fiscalProvider.Open(serialNumber);
+                // fiscalProvider = Nov.NT.POS.Fiscal.ProviderFactory.GetFiscalProvider(fiscalServiceType);
+                // fiscalProvider.ApplyConfiguration(fiscalConfiguration);
+                // fiscalProvider.Open(serialNumber);
             }
             catch (Exception ex)
             {

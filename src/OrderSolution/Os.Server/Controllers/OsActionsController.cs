@@ -119,6 +119,7 @@ namespace Os.Server.Controllers
         {
             try 
             {
+                Logic.Data.InitialStaticDataSent = false;
                 //register gateway
                 var registerGatewayResponse = new Models.RegisterGatewayResponse();
                 //var serviceAreaId = Nt.Database.DB.Api.Pos.GetServiceAreaId(posId);

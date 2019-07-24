@@ -21,7 +21,7 @@ namespace Os.Server.Controllers
         {
             try 
             {
-                var articles = Logic.Data.GetArticles();
+                var articles = Logic.Data.GetCachedArticles();
                 return new ObjectResult(articles);
             }
             catch (Exception ex) 
@@ -64,7 +64,7 @@ namespace Os.Server.Controllers
         {
             try 
             {
-                var categories = Logic.Data.GetCategories("1");
+                var categories = Logic.Data.GetCachedCategories("1");
                 return new ObjectResult(categories);
             }
             catch (Exception ex) 
@@ -131,6 +131,8 @@ namespace Os.Server.Controllers
             try 
             {
                 var paymentMedia = Logic.Data.GetPaymentMedia();
+                Logic.Data.InitialStaticDataSent = true;
+                Nt.Database.DB.Api.Misc.SetSnapshotTime(Controllers.OsHostController.PosStatus.SessionId);
                 return new ObjectResult(paymentMedia);
             }
             catch (Exception ex) 

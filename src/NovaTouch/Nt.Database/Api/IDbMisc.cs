@@ -19,5 +19,19 @@ namespace Nt.Database.Api
         /// <returns></returns>
         Dictionary<string, Nt.Data.ServiceArea> GetServiceAreas();
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        bool HasSnapshotTime(string guid);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        void SetSnapshotTime(string guid);
     }
 }

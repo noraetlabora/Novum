@@ -14,10 +14,13 @@ namespace Os.Server
     /// </summary>
     public class Middleware
     {
-        private static char Pipe = '|';
         private static string[] initRequests = {
-            "/api/v2/actions/init/registergateway",
-            "/api/v2/actions/init/registerclient"
+            "/api/v2/actions/init/registerGateway",
+            "/api/v2/actions/init/registerClient"
+        };
+
+        private static string[] notLoggingRequests = {
+            "/api/v2/hostStatus"
         };
         private readonly RequestDelegate _next;
 
@@ -75,7 +78,7 @@ namespace Os.Server
         {
             if (request.Method.Equals("GET"))
                 return false;
-            if (initRequests.Contains(request.Path.Value.ToLower()))
+            if (initRequests.Contains(request.Path.Value))
                 return false;
             return true;
         }
@@ -90,13 +93,14 @@ namespace Os.Server
             request.Body.Seek(0, SeekOrigin.Begin);
 
             var sb = new StringBuilder();
-            sb.Append("Request ").Append(Pipe);
-            sb.Append(request.HttpContext.TraceIdentifier).Append(Pipe);
-            sb.Append(request.Method.Substring(0, 3)).Append(Pipe);
-            sb.Append(request.Path).Append(Pipe);
+            sb.Append("Client Request ").Append("|");
+            sb.Append(request.HttpContext.TraceIdentifier).Append("|");
+            sb.Append(request.Method.Substring(0, 3)).Append("|");
+            sb.Append(request.Path.Value).Append("|");
             sb.Append(bodyAsText);
 
-            Nt.Logging.Log.Communication.Info(sb.ToString());
+            if (!notLoggingRequests.Contains(request.Path.Value))
+                Nt.Logging.Log.Communication.Info(sb.ToString());
 
             return bodyAsText;
         }
@@ -108,16 +112,17 @@ namespace Os.Server
             response.Body.Seek(0, SeekOrigin.Begin);
 
             var sb = new StringBuilder();
-            sb.Append("Response").Append(Pipe);
-            sb.Append(response.HttpContext.TraceIdentifier).Append(Pipe);
-            sb.Append(response.StatusCode).Append(Pipe);
-            sb.Append(response.HttpContext.Request.Path).Append(Pipe);
+            sb.Append("Server Response").Append("|");
+            sb.Append(response.HttpContext.TraceIdentifier).Append("|");
+            sb.Append(response.StatusCode).Append("|");
+            sb.Append(response.HttpContext.Request.Path.Value).Append("|");
             if (bodyAsText.Length > 500) 
                 sb.Append(bodyAsText.Substring(0, 500)).Append("...");
             else 
                 sb.Append(bodyAsText);
 
-            Nt.Logging.Log.Communication.Info(sb.ToString());
+            if (!notLoggingRequests.Contains(response.HttpContext.Request.Path.Value))
+                Nt.Logging.Log.Communication.Info(sb.ToString());
 
             if (bodyAsText.Length > 500)
                 Nt.Logging.Log.Communication.Debug(bodyAsText);
@@ -128,8 +133,8 @@ namespace Os.Server
         private void LogUnauthorizedRequest(HttpRequest request)
         {
             var sb = new StringBuilder();
-            sb.Append(request.Method).Append(Pipe);
-            sb.Append(request.Path).Append(Pipe);
+            sb.Append(request.Method).Append("|");
+            sb.Append(request.Path.Value).Append("|");
             sb.Append("unauthorized request - no sessionId in cookies");
 
             Nt.Logging.Log.Server.Error(sb.ToString());

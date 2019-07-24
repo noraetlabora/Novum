@@ -71,5 +71,32 @@ namespace Nt.Database.InterSystems.Api
             return serviceAreas;
         }
         #endregion
+
+        #region Snapshot    
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        public bool HasSnapshotTime(string guid) 
+        {
+            var lastSnapshotTime = Interaction.CallClassMethod("cmNT.Kasse", "GetOrdermanSnapshot", InterSystemsApi.ClientId, guid);
+            if (string.IsNullOrEmpty(lastSnapshotTime))
+                return false;
+            return true;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        public void SetSnapshotTime(string guid) 
+        {
+            Interaction.CallClassMethod("cmNT.Kasse", "SetOrdermanSnapshot", InterSystemsApi.ClientId, guid);
+        }
+
+        #endregion
     }
 }

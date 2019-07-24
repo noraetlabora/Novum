@@ -10,8 +10,13 @@ namespace Os.Server.Controllers
     /// </summary>
     public class OsHostController : Controller
     {
-        private static DateTime serverStart = DateTime.Now;
-
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public static Models.PosStatus PosStatus = new Models.PosStatus {SessionId = DateTime.Now.ToString("dd.MM.yyyy_HH:mm:ss.ffff") };
+        
         /// <summary>
         /// Get the status of the host / POS. This will be regularly called by clients to detect status changes (like host / POS restarts)
         /// </summary>
@@ -21,10 +26,8 @@ namespace Os.Server.Controllers
         public IActionResult GetHostStatus()
         {
             try
-            {
-                var posStatus = new Models.PosStatus();
-                posStatus.SessionId = serverStart.ToString("dd.MM.yyyy_HH:mm:ss.ffff");
-                return new OkObjectResult(posStatus);
+            {              
+                return new OkObjectResult(PosStatus);
             }
             catch (Exception ex) 
             {

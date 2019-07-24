@@ -1,5 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using Newtonsoft.Json;
 using Os.Server.Client.Model;
 
 namespace Os.Server.Client.Api
@@ -20,7 +24,7 @@ namespace Os.Server.Client.Api
         /// <param name="topic">the topic to publish the message to</param>
         /// <param name="body"></param>
         /// <returns>InlineResponse200</returns>
-        InlineResponse200 PubsubTopicsPost (string topic, List<PubSubMessage> body);
+        void PubsubTopicsPost (string topic, List<PubSubMessage> body);
         /// <summary>
         /// Subscribe to an existing topic. 
         /// </summary>
@@ -65,10 +69,43 @@ namespace Os.Server.Client.Api
         /// </summary>
         /// <param name="topic">the topic to publish the message to</param>
         /// <param name="body"></param>
-        /// <returns>InlineResponse200</returns>
-        public InlineResponse200 PubsubTopicsPost (string topic, List<PubSubMessage> body)
+        /// <returns></returns>
+        public async void PubsubTopicsPost (string topic, List<PubSubMessage> body)
         {
-            return null;
+            var requestPath = "/api/v1/pubsub/topics/" + topic;
+            try 
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    var jsonString = JsonConvert.SerializeObject(body);
+                    var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    var requestIdentifier = new Microsoft.AspNetCore.Http.Features.HttpRequestIdentifierFeature();
+
+                    var sb = new StringBuilder();
+                    sb.Append("Server Request ").Append("|");
+                    sb.Append(requestIdentifier.TraceIdentifier).Append(":00000000").Append("|");
+                    sb.Append("POS").Append("|");
+                    sb.Append(requestPath).Append("|");
+                    sb.Append(jsonString);
+                    Nt.Logging.Log.Communication.Info(sb.ToString());
+                    
+                    var requestUri = BaseUrl + requestPath;
+                    var response = await httpClient.PostAsync(requestUri, content);
+
+                    sb = new StringBuilder();
+                    sb.Append("Client Response").Append("|");
+                    sb.Append(requestIdentifier.TraceIdentifier).Append(":00000000").Append("|");
+                    sb.Append((int)response.StatusCode).Append("|");
+                    Nt.Logging.Log.Communication.Info(sb.ToString());
+                }
+            }
+            catch(Exception ex)
+            {
+                Nt.Logging.Log.Server.Error(ex, requestPath); 
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
+    
+            return;
         }
     
         /// <summary>

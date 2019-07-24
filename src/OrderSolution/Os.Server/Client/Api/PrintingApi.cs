@@ -88,19 +88,38 @@ namespace Os.Server.Client.Api
         /// <returns></returns>
         public async void PostPrintJob (string printerId, List<string> printLines)
         {
+            var requestPath = printerId + "/jobs";
             try {
                 using (var httpClient = new HttpClient())
                 {
                     var printData = new PrintData(printLines);
                     var printBytes = printData.ToBytes();
-                    HttpContent content = new ByteArrayContent(printBytes);
+                    var requestIdentifier = new Microsoft.AspNetCore.Http.Features.HttpRequestIdentifierFeature();
+                    
+                    var content = new ByteArrayContent(printBytes);
                     content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-                    var requestUri = string.Format("{0}{1}/jobs", BaseUrl, printerId);
+
+                    var sb = new StringBuilder();
+                    sb.Append("Server Request ").Append("|");
+                    sb.Append(requestIdentifier.TraceIdentifier).Append(":00000000").Append("|");
+                    sb.Append("POS").Append("|");
+                    sb.Append(requestPath).Append("|");
+                    sb.Append(printData.ToString());
+                    Nt.Logging.Log.Communication.Info(sb.ToString());
+
+                    var requestUri = BaseUrl + requestPath;
                     var response = await httpClient.PostAsync(requestUri, content);
+
+                    sb = new StringBuilder();
+                    sb.Append("Client Response").Append("|");
+                    sb.Append(requestIdentifier.TraceIdentifier).Append(":00000000").Append("|");
+                    sb.Append((int)response.StatusCode).Append("|");
+                    Nt.Logging.Log.Communication.Info(sb.ToString());
                 }
             }
             catch(Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, requestPath); 
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
     

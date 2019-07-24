@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 
 namespace Os.Server.Client.Model
 {
@@ -11,6 +12,7 @@ namespace Os.Server.Client.Model
         /// buffer contains a list of bytes to be printed
         /// </summary>
         private List<byte> _buffer;
+        private StringBuilder _stringBuilder;
 
         #region private enums
         private enum OnOff
@@ -57,11 +59,14 @@ namespace Os.Server.Client.Model
         public PrintData(List<string> printLines)
         {
             _buffer = new List<byte>();
+            _stringBuilder = new StringBuilder();
             Initialize(CharacterSet.GERMANY, CharacterCodeTable.LATIN1);
 
             PaperFeed(1);
             foreach(var printLine in printLines)
             {
+                _stringBuilder.Append(printLine).Append(System.Environment.NewLine);
+                
                 if (printLine.StartsWith("<FC>"))
                     continue;
                 if (printLine.StartsWith("<QR>"))
@@ -96,6 +101,15 @@ namespace Os.Server.Client.Model
         public byte[] ToBytes()
         {
             return _buffer.ToArray();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return _stringBuilder.ToString();
         }
 
         #endregion
