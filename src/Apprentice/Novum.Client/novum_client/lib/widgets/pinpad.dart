@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:novum_client/widgets/pinpadbutton.dart';
 
+
+TextEditingController tfController = TextEditingController();
+
 class PinPad extends StatelessWidget {
+  static String pin = "";
+  
   @override
   Widget build(BuildContext context) {
-    TextEditingController tfController = TextEditingController();
     double width = MediaQuery.of(context).size.width;
     double heigth = MediaQuery.of(context).size.height;
     return Column(
@@ -38,32 +42,32 @@ class PinPad extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                PinPadButton(buttontext: "1"),
-                PinPadButton(buttontext: "2"),
-                PinPadButton(buttontext: "3"),
+                PinPadButton(buttonValue: "1"),
+                PinPadButton(buttonValue: "2"),
+                PinPadButton(buttonValue: "3"),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                PinPadButton(buttontext: "4"),
-                PinPadButton(buttontext: "5"),
-                PinPadButton(buttontext: "6"),
+                PinPadButton(buttonValue: "4"),
+                PinPadButton(buttonValue: "5"),
+                PinPadButton(buttonValue: "6"),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                PinPadButton(buttontext: "7"),
-                PinPadButton(buttontext: "8"),
-                PinPadButton(buttontext: "9"),
+                PinPadButton(buttonValue: "7"),
+                PinPadButton(buttonValue: "8"),
+                PinPadButton(buttonValue: "9"),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                PinPadButton(buttontext: ""),
-                PinPadButton(buttontext: "0"),
+                PinPadButton(buttonValue: ""),
+                PinPadButton(buttonValue: "0"),
                 PinPadBackspace(),
               ],
             ),
@@ -72,4 +76,32 @@ class PinPad extends StatelessWidget {
       ],
     );
   }
+
+  static void onPressed(String buttonValue) {
+    pinText(buttonValue);
+    tfController.text = pin;
+  }
+
+  static void pinText(String c) {
+  print(c);
+  if (c != "BACKSPACE" && c != null) {
+    pin += c;
+  } else {
+    pin = removeLastCharacter(pin);
+  }
+  print(pin);
+}
+}
+
+
+
+String removeLastCharacter(String s) {
+  if (s.length > 0) {
+    if (s.length == 1) {
+      return "";
+    } else {
+      return s.substring(0, s.length - 1);
+    }
+  }
+  return "";
 }

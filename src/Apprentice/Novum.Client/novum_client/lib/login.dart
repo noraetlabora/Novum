@@ -77,23 +77,5 @@ class Login extends StatelessWidget {
     }
   }
 
-  void pinText(String c) {
-    if (c != "BACKSPACE") {
-      pin += c.toString();
-    } else {
-      pin = removeLastCharacter(pin);
-    }
-    print(pin);
-  }
 
-  String removeLastCharacter(String s) {
-    if (s.length > 0) {
-      if (s.length == 1) {
-        return "";
-      } else {
-        return s.substring(0, s.length - 1);
-      }
-    }
-    return "";
-  }
 }

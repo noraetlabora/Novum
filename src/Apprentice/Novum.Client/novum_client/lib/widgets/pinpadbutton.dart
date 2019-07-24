@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:novum_client/login.dart';
-
-String pin;
+import 'package:novum_client/widgets/pinpad.dart';
 
 class PinPadButton extends StatelessWidget {
-  final String buttontext;
-  PinPadButton({@required this.buttontext});
+  final String buttonValue;
+  PinPadButton({@required this.buttonValue});
 
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -16,9 +15,11 @@ class PinPadButton extends StatelessWidget {
       child: RaisedButton(
         shape: new ContinuousRectangleBorder(),
         textColor: Colors.white,
-        onPressed: () {},
+        onPressed: () {
+          PinPad.onPressed(buttonValue);
+        },
         child: Text(
-          buttontext,
+          buttonValue,
           style: TextStyle(fontSize: 17),
         ),
         color: Color.fromRGBO(100, 100, 100, 1.0),
@@ -39,13 +40,16 @@ class PinPadBackspace extends StatelessWidget {
         onLongPress: () {
           tof = true;
           while (tof == true) {
-            if (Login.pin.length == 0) {
+            PinPad.onPressed("BACKSPACE");
+            if (PinPad.pin.length == 0) {
               tof = false;
             }
           }
         },
         child: RaisedButton(
-            onPressed: () {},
+            onPressed: () {
+              PinPad.onPressed("BACKSPACE");
+            },
             color: Color.fromRGBO(100, 100, 100, 1.0),
             shape: new ContinuousRectangleBorder(),
             textColor: Colors.white,
