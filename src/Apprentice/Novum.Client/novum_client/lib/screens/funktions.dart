@@ -12,33 +12,41 @@ class FClient extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double heigth = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
+      appBar: PreferredSize(
+      preferredSize: Size.fromHeight(heigth*0.095),
+      child: AppBar(
+        backgroundColor: Colors.grey[400],
         title: Text("Information"),
       ),
+      ),
       body: Column(
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          Padding(
+          Container(
+          height: heigth*0.813,
+          child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 18),
             child: new DeviceInfo(),
-            ),
+          ),
+          ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-            ButtonTheme(
-          buttonColor: Colors.yellow,
-          minWidth: width / 2,
-          height: heigth * 0.1015,
-          child: RaisedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text("Zurück"),
-          ),
-        ),
-          ],
+              ButtonTheme(
+                buttonColor: Colors.yellow[850],
+                minWidth: width,
+                height: heigth * 0.0915,
+                child: RaisedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Zurück"),
+                ),
+              ),
+            ],
           )
-      ],
+        ],
       ),
     );
   }

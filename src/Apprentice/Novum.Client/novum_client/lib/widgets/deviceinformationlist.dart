@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:android_device_info/android_device_info.dart';
 
@@ -96,6 +97,7 @@ class _NetworkTabState extends State<DeviceInfo> {
           RowItem('iPv4 Address', '${data['iPv4Address']}'),
           RowItem('iPv6 Address', '${data['iPv6Address']}'),
           RowItem('WiFi Enabled', '${data['isWifiEnabled']}'),
+          Divider(),
         ],
       ),
     );

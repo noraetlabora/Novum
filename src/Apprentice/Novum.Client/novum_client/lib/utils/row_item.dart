@@ -9,7 +9,7 @@ class RowItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5),
+      padding: EdgeInsets.symmetric(vertical: 11),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -23,6 +23,7 @@ class RowItem extends StatelessWidget {
               flex: 48,
               child: Text(value,
                   style: TextStyle(
+                    fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: Colors.blueGrey,
                   )))
