@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () => dialogSelection.inputDialog(
+        onPressed: () => DialogSelection.inputDialog(
             context, "Texteingabe", "Text", "OK", "Abbruch"),
         tooltip: 'Increment',
         child: Icon(Icons.settings),

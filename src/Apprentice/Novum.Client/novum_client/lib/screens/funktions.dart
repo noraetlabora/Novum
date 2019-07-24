@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:novum_client/widgets/deviceinformationlist.dart';
 
 class FClient extends StatelessWidget {
   // This widget is the root of your application.
@@ -7,60 +9,36 @@ class FClient extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.yellow,
-      ),
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double heigth = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Funktionen"),
-        actions: <Widget>[
-          Column(
-            mainAxisSize: MainAxisSize.max,
+        title: Text("Information"),
+      ),
+      body: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 18),
+            child: new DeviceInfo(),
+            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              ListView(
-                children: <Widget>[
-                  Container(
-                    child: RaisedButton(
-                      onPressed: () {},
-                      child: Text("Sprache"),
-                    ),
-                  )
-                ],
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ButtonTheme(
-                buttonColor: Colors.yellow,
-                child: RaisedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("Zurück"),
-                ),
-              ),
-                ],
-              )
-            ],
+            ButtonTheme(
+          buttonColor: Colors.yellow,
+          minWidth: width / 2,
+          height: heigth * 0.1015,
+          child: RaisedButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text("Zurück"),
           ),
-        ],
+        ),
+          ],
+          )
+      ],
       ),
     );
   }

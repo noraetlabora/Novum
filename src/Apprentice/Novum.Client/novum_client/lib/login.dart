@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grpc/grpc.dart';
-import 'package:novum_client/widgets/bottombuttonbar.dart' as prefix0;
-import 'package:novum_client/widgets/pinpadbutton.dart';
 import 'services/protobuf/novum.pb.dart' as grpc;
 import 'package:novum_client/services/protobuf/novum.pbgrpc.dart';
 import 'package:protobuf/protobuf.dart';
 import 'package:http2/transport.dart';
 import 'package:novum_client/widgets/pinpad.dart';
-import 'package:novum_client/widgets/bottombuttonbar.dart';
 import 'package:novum_client/widgets/statusbar.dart';
+import 'package:novum_client/widgets/bottombuttonbar.dart';
 
 void main() => runApp(LoginApp());
 

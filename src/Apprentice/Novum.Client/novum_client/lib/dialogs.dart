@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class dialogSelection {
+class DialogSelection {
   
-  static void InformationDialog(
+  static void informationDialog(
       String title, String message, BuildContext context) {
     _displayDialog(context) async {
       return showDialog(
