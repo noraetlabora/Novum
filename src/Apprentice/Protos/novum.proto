@@ -4,12 +4,21 @@ option csharp_namespace = "Novum.Server";
 
 package Novum.Server;
 
+import "google/protobuf/empty.proto";
+
 // The greeting service definition.
 service Authentication {
   rpc Initialize (InitializeRequest) returns (InitializeReply);
   rpc Login (LoginRequest) returns (LoginReply);
-  rpc Logout (LogoutRequest) returns (LogoutReply);
-  rpc GetTables (GetTablesRequest) returns (GetTablesReply);
+  rpc Logout (google.protobuf.Empty) returns (google.protobuf.Empty);
+}
+
+service StaticData {
+  rpc GetCancellationReasons (google.protobuf.Empty) returns (CancellationReasons);
+}
+
+service RuntimeData {
+  rpc GetTables (google.protobuf.Empty) returns (Tables);
 }
 
 // The request message containing the user's name.
@@ -36,16 +45,14 @@ message LoginRequest {
   LoginInputType inputType = 2;
 }
 
+message LoginReply {
+
+}
+
 enum LoginInputType {
   MANUALLY = 0;
   KEY = 1;
 }
-
-message LoginReply {}
-
-message LogoutRequest {}
-
-message LogoutReply {}
 
 message GetTablesRequest {}
 
@@ -53,8 +60,19 @@ message GetTablesReply{
 	repeated Table tables = 1;
 }
 
+message Tables {
+  repeated Table tables = 1;
+}
 message Table {
 	string id = 1;
 	string name = 2;
 	double amount = 3;
+}
+
+message CancellationReasons {
+  repeated CancellationReason cancellationReasons = 1;
+}
+message CancellationReason {
+	string id = 1;
+	string name = 2;
 }

@@ -51,14 +51,6 @@ const LoginReply$json = const {
   '1': 'LoginReply',
 };
 
-const LogoutRequest$json = const {
-  '1': 'LogoutRequest',
-};
-
-const LogoutReply$json = const {
-  '1': 'LogoutReply',
-};
-
 const GetTablesRequest$json = const {
   '1': 'GetTablesRequest',
 };
@@ -70,12 +62,34 @@ const GetTablesReply$json = const {
   ],
 };
 
+const Tables$json = const {
+  '1': 'Tables',
+  '2': const [
+    const {'1': 'tables', '3': 1, '4': 3, '5': 11, '6': '.Novum.Server.Table', '10': 'tables'},
+  ],
+};
+
 const Table$json = const {
   '1': 'Table',
   '2': const [
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
     const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
     const {'1': 'amount', '3': 3, '4': 1, '5': 1, '10': 'amount'},
+  ],
+};
+
+const CancellationReasons$json = const {
+  '1': 'CancellationReasons',
+  '2': const [
+    const {'1': 'cancellationReasons', '3': 1, '4': 3, '5': 11, '6': '.Novum.Server.CancellationReason', '10': 'cancellationReasons'},
+  ],
+};
+
+const CancellationReason$json = const {
+  '1': 'CancellationReason',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'name', '3': 2, '4': 1, '5': 9, '10': 'name'},
   ],
 };
 
