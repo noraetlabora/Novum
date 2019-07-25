@@ -8,6 +8,11 @@ TextEditingController tfController = TextEditingController();
 
 class PinPad extends StatelessWidget {
   static String pin = "";
+
+  PinPad({@required this.hide,
+          @required this.hintText});
+  final bool hide;
+  final String hintText;
   
   @override
   Widget build(BuildContext context) {
@@ -29,11 +34,11 @@ class PinPad extends StatelessWidget {
                   child: TextField(
                       controller: tfController,
                       decoration: InputDecoration(
-                          hintText: "PIN eingeben", border: InputBorder.none),
+                          hintText: hintText, border: InputBorder.none),
                       textAlign: TextAlign.center,
                       enabled: false,
                       style: TextStyle(fontSize: 25),
-                      obscureText: true)),
+                      obscureText: hide)),
             ),
           ],
         ),

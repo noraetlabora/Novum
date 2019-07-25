@@ -38,7 +38,7 @@ abstract class AuthenticationServiceBase extends $pb.GeneratedService {
     }
   }
 
-  $core.Map<$core.String, $core.dynamic> get $json => AuthenticationServiceBase$json;
-  $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> get $messageJson => AuthenticationServiceBase$messageJson;
+  //$core.Map<$core.String, $core.dynamic> get $json => AuthenticationServiceBase$json;
+  //$core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> get $messageJson => AuthenticationServiceBase$messageJson;
 }
 

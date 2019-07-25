@@ -11,9 +11,9 @@ class PinPadButton extends StatelessWidget {
     double heigth = MediaQuery.of(context).size.height;
     return ButtonTheme(
       minWidth: width / 3,
-      height: heigth * 0.1172,
+      height: heigth * 0.1,
       child: RaisedButton(
-        shape: new ContinuousRectangleBorder(),
+        shape: new ContinuousRectangleBorder(side: BorderSide(color: Colors.white, width: 0.5)),
         textColor: Colors.white,
         onPressed: () {
           PinPad.onPressed(buttonValue);
@@ -35,7 +35,7 @@ class PinPadBackspace extends StatelessWidget {
     bool tof;
     return ButtonTheme(
       minWidth: width / 3,
-      height: heigth * 0.1172,
+      height: heigth * 0.1,
       child: GestureDetector(
         onLongPress: () {
           tof = true;
@@ -51,7 +51,7 @@ class PinPadBackspace extends StatelessWidget {
               PinPad.onPressed("BACKSPACE");
             },
             color: Color.fromRGBO(100, 100, 100, 1.0),
-            shape: new ContinuousRectangleBorder(),
+            shape: new ContinuousRectangleBorder(side: BorderSide(color: Colors.white, width: 0.5)),
             textColor: Colors.white,
             child: Column(
               children: <Widget>[Icon(Icons.backspace)],

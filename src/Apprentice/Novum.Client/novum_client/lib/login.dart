@@ -44,8 +44,8 @@ class Login extends StatelessWidget {
                 ),
               )
             ),
-          new PinPad(),
-          new BottomButtonBar(),
+          new PinPad(hide: true, hintText: "PIN eingeben",),
+          new BottomButtonBar(amount: 2, text: "Funktionen OK",),
         ],
       ),
     );
