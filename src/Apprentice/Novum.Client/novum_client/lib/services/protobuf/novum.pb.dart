@@ -135,46 +135,6 @@ class LoginReply extends $pb.GeneratedMessage {
   static LoginReply _defaultInstance;
 }
 
-class LogoutRequest extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('LogoutRequest', package: const $pb.PackageName('Novum.Server'))
-    ..hasRequiredFields = false
-  ;
-
-  LogoutRequest._() : super();
-  factory LogoutRequest() => create();
-  factory LogoutRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory LogoutRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  LogoutRequest clone() => LogoutRequest()..mergeFromMessage(this);
-  LogoutRequest copyWith(void Function(LogoutRequest) updates) => super.copyWith((message) => updates(message as LogoutRequest));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static LogoutRequest create() => LogoutRequest._();
-  LogoutRequest createEmptyInstance() => create();
-  static $pb.PbList<LogoutRequest> createRepeated() => $pb.PbList<LogoutRequest>();
-  static LogoutRequest getDefault() => _defaultInstance ??= create()..freeze();
-  static LogoutRequest _defaultInstance;
-}
-
-class LogoutReply extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('LogoutReply', package: const $pb.PackageName('Novum.Server'))
-    ..hasRequiredFields = false
-  ;
-
-  LogoutReply._() : super();
-  factory LogoutReply() => create();
-  factory LogoutReply.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory LogoutReply.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  LogoutReply clone() => LogoutReply()..mergeFromMessage(this);
-  LogoutReply copyWith(void Function(LogoutReply) updates) => super.copyWith((message) => updates(message as LogoutReply));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static LogoutReply create() => LogoutReply._();
-  LogoutReply createEmptyInstance() => create();
-  static $pb.PbList<LogoutReply> createRepeated() => $pb.PbList<LogoutReply>();
-  static LogoutReply getDefault() => _defaultInstance ??= create()..freeze();
-  static LogoutReply _defaultInstance;
-}
-
 class GetTablesRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetTablesRequest', package: const $pb.PackageName('Novum.Server'))
     ..hasRequiredFields = false
@@ -218,6 +178,29 @@ class GetTablesReply extends $pb.GeneratedMessage {
   $core.List<Table> get tables => $_getList(0);
 }
 
+class Tables extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Tables', package: const $pb.PackageName('Novum.Server'))
+    ..pc<Table>(1, 'tables', $pb.PbFieldType.PM,Table.create)
+    ..hasRequiredFields = false
+  ;
+
+  Tables._() : super();
+  factory Tables() => create();
+  factory Tables.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Tables.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  Tables clone() => Tables()..mergeFromMessage(this);
+  Tables copyWith(void Function(Tables) updates) => super.copyWith((message) => updates(message as Tables));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Tables create() => Tables._();
+  Tables createEmptyInstance() => create();
+  static $pb.PbList<Tables> createRepeated() => $pb.PbList<Tables>();
+  static Tables getDefault() => _defaultInstance ??= create()..freeze();
+  static Tables _defaultInstance;
+
+  $core.List<Table> get tables => $_getList(0);
+}
+
 class Table extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Table', package: const $pb.PackageName('Novum.Server'))
     ..aOS(1, 'id')
@@ -254,5 +237,60 @@ class Table extends $pb.GeneratedMessage {
   set amount($core.double v) { $_setDouble(2, v); }
   $core.bool hasAmount() => $_has(2);
   void clearAmount() => clearField(3);
+}
+
+class CancellationReasons extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('CancellationReasons', package: const $pb.PackageName('Novum.Server'))
+    ..pc<CancellationReason>(1, 'cancellationReasons', $pb.PbFieldType.PM,CancellationReason.create)
+    ..hasRequiredFields = false
+  ;
+
+  CancellationReasons._() : super();
+  factory CancellationReasons() => create();
+  factory CancellationReasons.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CancellationReasons.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  CancellationReasons clone() => CancellationReasons()..mergeFromMessage(this);
+  CancellationReasons copyWith(void Function(CancellationReasons) updates) => super.copyWith((message) => updates(message as CancellationReasons));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static CancellationReasons create() => CancellationReasons._();
+  CancellationReasons createEmptyInstance() => create();
+  static $pb.PbList<CancellationReasons> createRepeated() => $pb.PbList<CancellationReasons>();
+  static CancellationReasons getDefault() => _defaultInstance ??= create()..freeze();
+  static CancellationReasons _defaultInstance;
+
+  $core.List<CancellationReason> get cancellationReasons => $_getList(0);
+}
+
+class CancellationReason extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('CancellationReason', package: const $pb.PackageName('Novum.Server'))
+    ..aOS(1, 'id')
+    ..aOS(2, 'name')
+    ..hasRequiredFields = false
+  ;
+
+  CancellationReason._() : super();
+  factory CancellationReason() => create();
+  factory CancellationReason.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CancellationReason.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  CancellationReason clone() => CancellationReason()..mergeFromMessage(this);
+  CancellationReason copyWith(void Function(CancellationReason) updates) => super.copyWith((message) => updates(message as CancellationReason));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static CancellationReason create() => CancellationReason._();
+  CancellationReason createEmptyInstance() => create();
+  static $pb.PbList<CancellationReason> createRepeated() => $pb.PbList<CancellationReason>();
+  static CancellationReason getDefault() => _defaultInstance ??= create()..freeze();
+  static CancellationReason _defaultInstance;
+
+  $core.String get id => $_getS(0, '');
+  set id($core.String v) { $_setString(0, v); }
+  $core.bool hasId() => $_has(0);
+  void clearId() => clearField(1);
+
+  $core.String get name => $_getS(1, '');
+  set name($core.String v) { $_setString(1, v); }
+  $core.bool hasName() => $_has(1);
+  void clearName() => clearField(2);
 }
 
