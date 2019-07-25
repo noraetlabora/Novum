@@ -8,8 +8,8 @@ package Novum.Server;
 service Authentication {
   rpc Initialize (InitializeRequest) returns (InitializeReply);
   rpc Login (LoginRequest) returns (LoginReply);
-  rpc Logou (LogoutRequest) returns (LogoutReply);
-  
+  rpc Logout (LogoutRequest) returns (LogoutReply);
+  rpc GetTables (GetTablesRequest) returns (GetTablesReply);
 }
 
 // The request message containing the user's name.
@@ -21,7 +21,6 @@ message InitializeRequest {
 }
 
 enum ClientType {
-    
     ORDERMAN = 0;
     WINDOWS = 1;
     WEB = 2;
@@ -38,11 +37,9 @@ message LoginRequest {
 }
 
 enum LoginInputType {
-  
   MANUALLY = 0;
   KEY = 1;
 }
-
 
 message LoginReply {}
 
@@ -50,5 +47,14 @@ message LogoutRequest {}
 
 message LogoutReply {}
 
+message GetTablesRequest {}
 
+message GetTablesReply{
+	repeated Table tables = 1;
+}
 
+message Table {
+	string id = 1;
+	string name = 2;
+	double amount = 3;
+}

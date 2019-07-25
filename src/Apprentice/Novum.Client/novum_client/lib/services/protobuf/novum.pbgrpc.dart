@@ -24,10 +24,15 @@ class AuthenticationClient extends $grpc.Client {
       '/Novum.Server.Authentication/Login',
       ($0.LoginRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.LoginReply.fromBuffer(value));
-  static final _$logou = $grpc.ClientMethod<$0.LogoutRequest, $0.LogoutReply>(
-      '/Novum.Server.Authentication/Logou',
+  static final _$logout = $grpc.ClientMethod<$0.LogoutRequest, $0.LogoutReply>(
+      '/Novum.Server.Authentication/Logout',
       ($0.LogoutRequest value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.LogoutReply.fromBuffer(value));
+  static final _$getTables =
+      $grpc.ClientMethod<$0.GetTablesRequest, $0.GetTablesReply>(
+          '/Novum.Server.Authentication/GetTables',
+          ($0.GetTablesRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) => $0.GetTablesReply.fromBuffer(value));
 
   AuthenticationClient($grpc.ClientChannel channel, {$grpc.CallOptions options})
       : super(channel, options: options);
@@ -48,9 +53,16 @@ class AuthenticationClient extends $grpc.Client {
     return $grpc.ResponseFuture(call);
   }
 
-  $grpc.ResponseFuture<$0.LogoutReply> logou($0.LogoutRequest request,
+  $grpc.ResponseFuture<$0.LogoutReply> logout($0.LogoutRequest request,
       {$grpc.CallOptions options}) {
-    final call = $createCall(_$logou, $async.Stream.fromIterable([request]),
+    final call = $createCall(_$logout, $async.Stream.fromIterable([request]),
+        options: options);
+    return $grpc.ResponseFuture(call);
+  }
+
+  $grpc.ResponseFuture<$0.GetTablesReply> getTables($0.GetTablesRequest request,
+      {$grpc.CallOptions options}) {
+    final call = $createCall(_$getTables, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseFuture(call);
   }
@@ -75,12 +87,19 @@ abstract class AuthenticationServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) => $0.LoginRequest.fromBuffer(value),
         ($0.LoginReply value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$0.LogoutRequest, $0.LogoutReply>(
-        'Logou',
-        logou_Pre,
+        'Logout',
+        logout_Pre,
         false,
         false,
         ($core.List<$core.int> value) => $0.LogoutRequest.fromBuffer(value),
         ($0.LogoutReply value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GetTablesRequest, $0.GetTablesReply>(
+        'GetTables',
+        getTables_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.GetTablesRequest.fromBuffer(value),
+        ($0.GetTablesReply value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.InitializeReply> initialize_Pre($grpc.ServiceCall call,
@@ -93,15 +112,22 @@ abstract class AuthenticationServiceBase extends $grpc.Service {
     return login(call, await request);
   }
 
-  $async.Future<$0.LogoutReply> logou_Pre(
+  $async.Future<$0.LogoutReply> logout_Pre(
       $grpc.ServiceCall call, $async.Future<$0.LogoutRequest> request) async {
-    return logou(call, await request);
+    return logout(call, await request);
+  }
+
+  $async.Future<$0.GetTablesReply> getTables_Pre($grpc.ServiceCall call,
+      $async.Future<$0.GetTablesRequest> request) async {
+    return getTables(call, await request);
   }
 
   $async.Future<$0.InitializeReply> initialize(
       $grpc.ServiceCall call, $0.InitializeRequest request);
   $async.Future<$0.LoginReply> login(
       $grpc.ServiceCall call, $0.LoginRequest request);
-  $async.Future<$0.LogoutReply> logou(
+  $async.Future<$0.LogoutReply> logout(
       $grpc.ServiceCall call, $0.LogoutRequest request);
+  $async.Future<$0.GetTablesReply> getTables(
+      $grpc.ServiceCall call, $0.GetTablesRequest request);
 }

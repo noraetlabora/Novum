@@ -5,7 +5,6 @@
 // @dart = 2.3
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
 
-import 'dart:async' as $async;
 import 'dart:core' as $core show bool, Deprecated, double, int, List, Map, override, pragma, String;
 
 import 'package:protobuf/protobuf.dart' as $pb;
@@ -176,21 +175,84 @@ class LogoutReply extends $pb.GeneratedMessage {
   static LogoutReply _defaultInstance;
 }
 
-class AuthenticationApi {
-  $pb.RpcClient _client;
-  AuthenticationApi(this._client);
+class GetTablesRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetTablesRequest', package: const $pb.PackageName('Novum.Server'))
+    ..hasRequiredFields = false
+  ;
 
-  $async.Future<InitializeReply> initialize($pb.ClientContext ctx, InitializeRequest request) {
-    var emptyResponse = InitializeReply();
-    return _client.invoke<InitializeReply>(ctx, 'Authentication', 'Initialize', request, emptyResponse);
-  }
-  $async.Future<LoginReply> login($pb.ClientContext ctx, LoginRequest request) {
-    var emptyResponse = LoginReply();
-    return _client.invoke<LoginReply>(ctx, 'Authentication', 'Login', request, emptyResponse);
-  }
-  $async.Future<LogoutReply> logou($pb.ClientContext ctx, LogoutRequest request) {
-    var emptyResponse = LogoutReply();
-    return _client.invoke<LogoutReply>(ctx, 'Authentication', 'Logou', request, emptyResponse);
-  }
+  GetTablesRequest._() : super();
+  factory GetTablesRequest() => create();
+  factory GetTablesRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetTablesRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetTablesRequest clone() => GetTablesRequest()..mergeFromMessage(this);
+  GetTablesRequest copyWith(void Function(GetTablesRequest) updates) => super.copyWith((message) => updates(message as GetTablesRequest));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetTablesRequest create() => GetTablesRequest._();
+  GetTablesRequest createEmptyInstance() => create();
+  static $pb.PbList<GetTablesRequest> createRepeated() => $pb.PbList<GetTablesRequest>();
+  static GetTablesRequest getDefault() => _defaultInstance ??= create()..freeze();
+  static GetTablesRequest _defaultInstance;
+}
+
+class GetTablesReply extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetTablesReply', package: const $pb.PackageName('Novum.Server'))
+    ..pc<Table>(1, 'tables', $pb.PbFieldType.PM,Table.create)
+    ..hasRequiredFields = false
+  ;
+
+  GetTablesReply._() : super();
+  factory GetTablesReply() => create();
+  factory GetTablesReply.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetTablesReply.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetTablesReply clone() => GetTablesReply()..mergeFromMessage(this);
+  GetTablesReply copyWith(void Function(GetTablesReply) updates) => super.copyWith((message) => updates(message as GetTablesReply));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetTablesReply create() => GetTablesReply._();
+  GetTablesReply createEmptyInstance() => create();
+  static $pb.PbList<GetTablesReply> createRepeated() => $pb.PbList<GetTablesReply>();
+  static GetTablesReply getDefault() => _defaultInstance ??= create()..freeze();
+  static GetTablesReply _defaultInstance;
+
+  $core.List<Table> get tables => $_getList(0);
+}
+
+class Table extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Table', package: const $pb.PackageName('Novum.Server'))
+    ..aOS(1, 'id')
+    ..aOS(2, 'name')
+    ..a<$core.double>(3, 'amount', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false
+  ;
+
+  Table._() : super();
+  factory Table() => create();
+  factory Table.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Table.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  Table clone() => Table()..mergeFromMessage(this);
+  Table copyWith(void Function(Table) updates) => super.copyWith((message) => updates(message as Table));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Table create() => Table._();
+  Table createEmptyInstance() => create();
+  static $pb.PbList<Table> createRepeated() => $pb.PbList<Table>();
+  static Table getDefault() => _defaultInstance ??= create()..freeze();
+  static Table _defaultInstance;
+
+  $core.String get id => $_getS(0, '');
+  set id($core.String v) { $_setString(0, v); }
+  $core.bool hasId() => $_has(0);
+  void clearId() => clearField(1);
+
+  $core.String get name => $_getS(1, '');
+  set name($core.String v) { $_setString(1, v); }
+  $core.bool hasName() => $_has(1);
+  void clearName() => clearField(2);
+
+  $core.double get amount => $_getN(2);
+  set amount($core.double v) { $_setDouble(2, v); }
+  $core.bool hasAmount() => $_has(2);
+  void clearAmount() => clearField(3);
 }
 
