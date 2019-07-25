@@ -3,6 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:grpc/grpc.dart';
 import 'package:novum_client/screens/funktions.dart';
 import 'package:novum_client/screens/tablescreen.dart';
+import 'package:novum_client/services/authenticationService.dart';
 import 'package:novum_client/services/protobuf/novum.pbgrpc.dart';
 import 'package:novum_client/widgets/pinpad.dart';
 
@@ -23,7 +24,7 @@ class BottomButton extends StatelessWidget {
           switch (text) {
             case "OK":
               if (PinPad.pin == "1234") {
-               // initialize();
+                AuthenticationService.login(PinPad.pin);
                 PinPad.pin = "";
                 Navigator.push(
                   context,

@@ -31,6 +31,9 @@ namespace Novum.Server
             {
                 // Communication with gRPC endpoints must be made through a gRPC client.
                 // To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909
+                endpoints.MapGrpcService<Services.SystemService>();
+                endpoints.MapGrpcService<Services.StaticDataService>();
+                endpoints.MapGrpcService<Services.RuntimeDataService>();
                 endpoints.MapGrpcService<Services.AuthenticationService>();
             });
         }

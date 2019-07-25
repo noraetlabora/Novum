@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Google.Protobuf.WellKnownTypes;
 
 namespace Novum.Server.Services
 {
     public class StaticDataService : StaticData.StaticDataBase
     {
-        public override Task<CancellationReasons> GetCancellationReasons(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+        public override Task<CancellationReasons> GetCancellationReasons(Empty request, ServerCallContext context)
         {
             var cancellationReasons = new CancellationReasons();
 

@@ -10,31 +10,69 @@ import 'dart:async' as $async;
 import 'dart:core' as $core show int, String, List;
 
 import 'package:grpc/service_api.dart' as $grpc;
-import 'novum.pb.dart' as $0;
-import 'google/protobuf/empty.pb.dart' as $1;
+import 'google/protobuf/empty.pb.dart' as $0;
+import 'novum.pb.dart' as $1;
 export 'novum.pb.dart';
+
+class SystemClient extends $grpc.Client {
+  static final _$ping = $grpc.ClientMethod<$0.Empty, $0.Empty>(
+      '/Novum.Server.System/Ping',
+      ($0.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
+
+  SystemClient($grpc.ClientChannel channel, {$grpc.CallOptions options})
+      : super(channel, options: options);
+
+  $grpc.ResponseFuture<$0.Empty> ping($0.Empty request,
+      {$grpc.CallOptions options}) {
+    final call = $createCall(_$ping, $async.Stream.fromIterable([request]),
+        options: options);
+    return $grpc.ResponseFuture(call);
+  }
+}
+
+abstract class SystemServiceBase extends $grpc.Service {
+  $core.String get $name => 'Novum.Server.System';
+
+  SystemServiceBase() {
+    $addMethod($grpc.ServiceMethod<$0.Empty, $0.Empty>(
+        'Ping',
+        ping_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($0.Empty value) => value.writeToBuffer()));
+  }
+
+  $async.Future<$0.Empty> ping_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
+    return ping(call, await request);
+  }
+
+  $async.Future<$0.Empty> ping($grpc.ServiceCall call, $0.Empty request);
+}
 
 class AuthenticationClient extends $grpc.Client {
   static final _$initialize =
-      $grpc.ClientMethod<$0.InitializeRequest, $0.InitializeReply>(
+      $grpc.ClientMethod<$1.InitializeRequest, $1.InitializeReply>(
           '/Novum.Server.Authentication/Initialize',
-          ($0.InitializeRequest value) => value.writeToBuffer(),
+          ($1.InitializeRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
-              $0.InitializeReply.fromBuffer(value));
-  static final _$login = $grpc.ClientMethod<$0.LoginRequest, $0.LoginReply>(
+              $1.InitializeReply.fromBuffer(value));
+  static final _$login = $grpc.ClientMethod<$1.LoginRequest, $1.LoginReply>(
       '/Novum.Server.Authentication/Login',
-      ($0.LoginRequest value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.LoginReply.fromBuffer(value));
-  static final _$logout = $grpc.ClientMethod<$1.Empty, $1.Empty>(
+      ($1.LoginRequest value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.LoginReply.fromBuffer(value));
+  static final _$logout = $grpc.ClientMethod<$0.Empty, $0.Empty>(
       '/Novum.Server.Authentication/Logout',
-      ($1.Empty value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $1.Empty.fromBuffer(value));
+      ($0.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
 
   AuthenticationClient($grpc.ClientChannel channel, {$grpc.CallOptions options})
       : super(channel, options: options);
 
-  $grpc.ResponseFuture<$0.InitializeReply> initialize(
-      $0.InitializeRequest request,
+  $grpc.ResponseFuture<$1.InitializeReply> initialize(
+      $1.InitializeRequest request,
       {$grpc.CallOptions options}) {
     final call = $createCall(
         _$initialize, $async.Stream.fromIterable([request]),
@@ -42,14 +80,14 @@ class AuthenticationClient extends $grpc.Client {
     return $grpc.ResponseFuture(call);
   }
 
-  $grpc.ResponseFuture<$0.LoginReply> login($0.LoginRequest request,
+  $grpc.ResponseFuture<$1.LoginReply> login($1.LoginRequest request,
       {$grpc.CallOptions options}) {
     final call = $createCall(_$login, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseFuture(call);
   }
 
-  $grpc.ResponseFuture<$1.Empty> logout($1.Empty request,
+  $grpc.ResponseFuture<$0.Empty> logout($0.Empty request,
       {$grpc.CallOptions options}) {
     final call = $createCall(_$logout, $async.Stream.fromIterable([request]),
         options: options);
@@ -61,64 +99,64 @@ abstract class AuthenticationServiceBase extends $grpc.Service {
   $core.String get $name => 'Novum.Server.Authentication';
 
   AuthenticationServiceBase() {
-    $addMethod($grpc.ServiceMethod<$0.InitializeRequest, $0.InitializeReply>(
+    $addMethod($grpc.ServiceMethod<$1.InitializeRequest, $1.InitializeReply>(
         'Initialize',
         initialize_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $0.InitializeRequest.fromBuffer(value),
-        ($0.InitializeReply value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$0.LoginRequest, $0.LoginReply>(
+        ($core.List<$core.int> value) => $1.InitializeRequest.fromBuffer(value),
+        ($1.InitializeReply value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$1.LoginRequest, $1.LoginReply>(
         'Login',
         login_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $0.LoginRequest.fromBuffer(value),
-        ($0.LoginReply value) => value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$1.Empty, $1.Empty>(
+        ($core.List<$core.int> value) => $1.LoginRequest.fromBuffer(value),
+        ($1.LoginReply value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Empty, $0.Empty>(
         'Logout',
         logout_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
-        ($1.Empty value) => value.writeToBuffer()));
+        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($0.Empty value) => value.writeToBuffer()));
   }
 
-  $async.Future<$0.InitializeReply> initialize_Pre($grpc.ServiceCall call,
-      $async.Future<$0.InitializeRequest> request) async {
+  $async.Future<$1.InitializeReply> initialize_Pre($grpc.ServiceCall call,
+      $async.Future<$1.InitializeRequest> request) async {
     return initialize(call, await request);
   }
 
-  $async.Future<$0.LoginReply> login_Pre(
-      $grpc.ServiceCall call, $async.Future<$0.LoginRequest> request) async {
+  $async.Future<$1.LoginReply> login_Pre(
+      $grpc.ServiceCall call, $async.Future<$1.LoginRequest> request) async {
     return login(call, await request);
   }
 
-  $async.Future<$1.Empty> logout_Pre(
-      $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
+  $async.Future<$0.Empty> logout_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
     return logout(call, await request);
   }
 
-  $async.Future<$0.InitializeReply> initialize(
-      $grpc.ServiceCall call, $0.InitializeRequest request);
-  $async.Future<$0.LoginReply> login(
-      $grpc.ServiceCall call, $0.LoginRequest request);
-  $async.Future<$1.Empty> logout($grpc.ServiceCall call, $1.Empty request);
+  $async.Future<$1.InitializeReply> initialize(
+      $grpc.ServiceCall call, $1.InitializeRequest request);
+  $async.Future<$1.LoginReply> login(
+      $grpc.ServiceCall call, $1.LoginRequest request);
+  $async.Future<$0.Empty> logout($grpc.ServiceCall call, $0.Empty request);
 }
 
 class StaticDataClient extends $grpc.Client {
   static final _$getCancellationReasons =
-      $grpc.ClientMethod<$1.Empty, $0.CancellationReasons>(
+      $grpc.ClientMethod<$0.Empty, $1.CancellationReasons>(
           '/Novum.Server.StaticData/GetCancellationReasons',
-          ($1.Empty value) => value.writeToBuffer(),
+          ($0.Empty value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
-              $0.CancellationReasons.fromBuffer(value));
+              $1.CancellationReasons.fromBuffer(value));
 
   StaticDataClient($grpc.ClientChannel channel, {$grpc.CallOptions options})
       : super(channel, options: options);
 
-  $grpc.ResponseFuture<$0.CancellationReasons> getCancellationReasons(
-      $1.Empty request,
+  $grpc.ResponseFuture<$1.CancellationReasons> getCancellationReasons(
+      $0.Empty request,
       {$grpc.CallOptions options}) {
     final call = $createCall(
         _$getCancellationReasons, $async.Stream.fromIterable([request]),
@@ -131,34 +169,34 @@ abstract class StaticDataServiceBase extends $grpc.Service {
   $core.String get $name => 'Novum.Server.StaticData';
 
   StaticDataServiceBase() {
-    $addMethod($grpc.ServiceMethod<$1.Empty, $0.CancellationReasons>(
+    $addMethod($grpc.ServiceMethod<$0.Empty, $1.CancellationReasons>(
         'GetCancellationReasons',
         getCancellationReasons_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
-        ($0.CancellationReasons value) => value.writeToBuffer()));
+        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($1.CancellationReasons value) => value.writeToBuffer()));
   }
 
-  $async.Future<$0.CancellationReasons> getCancellationReasons_Pre(
-      $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
+  $async.Future<$1.CancellationReasons> getCancellationReasons_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
     return getCancellationReasons(call, await request);
   }
 
-  $async.Future<$0.CancellationReasons> getCancellationReasons(
-      $grpc.ServiceCall call, $1.Empty request);
+  $async.Future<$1.CancellationReasons> getCancellationReasons(
+      $grpc.ServiceCall call, $0.Empty request);
 }
 
 class RuntimeDataClient extends $grpc.Client {
-  static final _$getTables = $grpc.ClientMethod<$1.Empty, $0.Tables>(
+  static final _$getTables = $grpc.ClientMethod<$0.Empty, $1.Tables>(
       '/Novum.Server.RuntimeData/GetTables',
-      ($1.Empty value) => value.writeToBuffer(),
-      ($core.List<$core.int> value) => $0.Tables.fromBuffer(value));
+      ($0.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Tables.fromBuffer(value));
 
   RuntimeDataClient($grpc.ClientChannel channel, {$grpc.CallOptions options})
       : super(channel, options: options);
 
-  $grpc.ResponseFuture<$0.Tables> getTables($1.Empty request,
+  $grpc.ResponseFuture<$1.Tables> getTables($0.Empty request,
       {$grpc.CallOptions options}) {
     final call = $createCall(_$getTables, $async.Stream.fromIterable([request]),
         options: options);
@@ -170,19 +208,19 @@ abstract class RuntimeDataServiceBase extends $grpc.Service {
   $core.String get $name => 'Novum.Server.RuntimeData';
 
   RuntimeDataServiceBase() {
-    $addMethod($grpc.ServiceMethod<$1.Empty, $0.Tables>(
+    $addMethod($grpc.ServiceMethod<$0.Empty, $1.Tables>(
         'GetTables',
         getTables_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $1.Empty.fromBuffer(value),
-        ($0.Tables value) => value.writeToBuffer()));
+        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($1.Tables value) => value.writeToBuffer()));
   }
 
-  $async.Future<$0.Tables> getTables_Pre(
-      $grpc.ServiceCall call, $async.Future<$1.Empty> request) async {
+  $async.Future<$1.Tables> getTables_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
     return getTables(call, await request);
   }
 
-  $async.Future<$0.Tables> getTables($grpc.ServiceCall call, $1.Empty request);
+  $async.Future<$1.Tables> getTables($grpc.ServiceCall call, $0.Empty request);
 }

@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:novum_client/services/grpc.dart';
+import 'package:novum_client/services/systemService.dart';
+
 import "dialogs.dart";
 import "login.dart";
 
@@ -37,6 +40,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    Grpc.set("192.168.1.113", 50051);
+    SystemService.ping();
     Timer(Duration(seconds: 3), () {
       if (kill == 0) {
         kill = -1;
