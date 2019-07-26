@@ -13,6 +13,7 @@ class SystemService {
     }
     catch(e) { 
       print(e); 
+      throw e;
    } 
   }
 }

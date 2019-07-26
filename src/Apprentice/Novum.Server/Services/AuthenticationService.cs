@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
+using Google.Protobuf.WellKnownTypes;
 
 namespace Novum.Server.Services
 {
@@ -25,6 +26,24 @@ namespace Novum.Server.Services
             }
             return Task.FromResult(reply);
         }
-        
+
+        public override Task<LoginReply> Login(LoginRequest request, ServerCallContext context)
+        {
+            var reply = new LoginReply();
+            try 
+            {
+                //logic
+            }
+            catch (Exception ex)
+            {
+                Nt.Logging.Log.Communication.Error(ex);
+            }
+            return Task.FromResult(reply);
+        }
+
+        public override Task<Empty> Logout(Empty request, ServerCallContext context)
+        {
+            return Task.FromResult(new Empty());
+        }
     }
 }
