@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:grpc/grpc.dart';
-import 'package:novum_client/screens/funktions.dart';
+import 'package:novum_client/screens/functions.dart';
 import 'package:novum_client/screens/tablescreen.dart';
-import 'package:novum_client/services/authenticationService.dart';
-import 'package:novum_client/services/protobuf/novum.pbgrpc.dart';
+import 'package:novum_client/widgets/deviceinformationlist.dart';
 import 'package:novum_client/widgets/pinpad.dart';
 
 class BottomButton extends StatelessWidget {
@@ -24,8 +23,7 @@ class BottomButton extends StatelessWidget {
           switch (text) {
             case "OK":
               if (PinPad.pin == "1234") {
-                AuthenticationService.login(PinPad.pin);
-                PinPad.pin = "";
+                // initializ
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => TableScreen()),
@@ -35,7 +33,7 @@ class BottomButton extends StatelessWidget {
             case "Funktionen":
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (con) => FClient()),
+                MaterialPageRoute(builder: (con) => Functions()),
               );
               break;
           }
@@ -44,24 +42,24 @@ class BottomButton extends StatelessWidget {
       ),
     );
   }
-  Future initialize() async {
-    final channel = new ClientChannel("0.0.0.0",
-        port: 50051,
-        options: const ChannelOptions(
-            credentials: const ChannelCredentials.insecure(),
-            idleTimeout: Duration(seconds: 5)));
+  // Future initialize() async {
+  //   final channel = new ClientChannel("0.0.0.0",
+  //       port: 50051,
+  //       options: const ChannelOptions(
+  //           credentials: const ChannelCredentials.insecure(),
+  //           idleTimeout: Duration(seconds: 5)));
 
-    final grpcClient = new AuthenticationClient(channel);
-    final request = new InitializeRequest();
-    request.clientType = ClientType.ORDERMAN;
-    request.clientVersion = "1.1.1";
-    request.id = "125-123456789";
-    request.test = 5;
-    try {
-      final reply = await grpcClient.initialize(request);
-      print(reply.toString());
-    } catch (exception) {
-      print(exception);
-    }
-  }
+  //   final grpcClient = new AuthenticationClient(channel);
+  //   final request = new InitializeRequest();
+  //   request.clientType = ClientType.ORDERMAN;
+  //   request.clientVersion = "1.1.1";
+  //   request.id = "125-123456789";
+  //   request.test = 5;
+  //   try {
+  //     final reply = await grpcClient.initialize(request);
+  //     print(reply.toString());
+  //   } catch (exception) {
+  //     print(exception);
+  //   }
+  // }
 }

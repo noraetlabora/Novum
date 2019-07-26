@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:novum_client/widgets/buttombutton.dart';
+import 'package:novum_client/widgets/bottombutton.dart';
 
 class BottomButtonBar extends StatelessWidget {
   final int amount;

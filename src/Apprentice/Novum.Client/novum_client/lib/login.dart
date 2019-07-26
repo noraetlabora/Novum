@@ -36,7 +36,7 @@ class Login extends StatelessWidget {
           new StatusBar(),
           new Container(
               width: width,
-              height: heigth * 0.2995,
+              height: heigth * 0.3684,
               decoration: new BoxDecoration(
                 image: new DecorationImage(
                   image: ExactAssetImage('assets/NovaTouch-logo.jpg'),

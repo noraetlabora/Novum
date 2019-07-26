@@ -3,21 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:novum_client/widgets/pinpadbutton.dart';
 
-
 TextEditingController tfController = TextEditingController();
 
 class PinPad extends StatelessWidget {
   static String pin = "";
 
-  PinPad({@required this.hide,
-          @required this.hintText});
+  PinPad({@required this.hide, @required this.hintText});
   final bool hide;
   final String hintText;
-  
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double heigth = MediaQuery.of(context).size.height;
+    tfController.text = "";
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -88,17 +87,15 @@ class PinPad extends StatelessWidget {
   }
 
   static void pinText(String c) {
-  print(c);
-  if (c != "BACKSPACE" && c != null) {
-    pin += c;
-  } else {
-    pin = removeLastCharacter(pin);
+    print(c);
+    if (c != "BACKSPACE" && c != null) {
+      pin += c;
+    } else {
+      pin = removeLastCharacter(pin);
+    }
+    print(pin);
   }
-  print(pin);
 }
-}
-
-
 
 String removeLastCharacter(String s) {
   if (s.length > 0) {
