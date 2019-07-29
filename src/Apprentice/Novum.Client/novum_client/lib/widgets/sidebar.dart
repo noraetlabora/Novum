@@ -21,6 +21,10 @@ class SideBar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 10),
         itemCount: buttons.length,
         itemBuilder: (context, int index) {
+          DrawerHeader(
+            child: Text("Funktionen"),
+            decoration: BoxDecoration(color: Colors.blue),
+          );
           return Container(
               height: 50,
               child: Center(
