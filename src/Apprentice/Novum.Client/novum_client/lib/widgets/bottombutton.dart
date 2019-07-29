@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:grpc/grpc.dart';
 import 'package:novum_client/screens/functions.dart';
 import 'package:novum_client/screens/tablescreen.dart';
-import 'package:novum_client/widgets/deviceinformationlist.dart';
 import 'package:novum_client/widgets/pinpad.dart';
 import 'package:novum_client/widgets/bottombuttonbar.dart';
 
