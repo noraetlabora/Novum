@@ -40,7 +40,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    Grpc.set("192.168.0.160", 50051);
+    Grpc.set("192.168.0.43", 50051);
     SystemService.ping();
     Timer(Duration(seconds: 3), () {
       if (kill == 0) {
