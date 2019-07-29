@@ -86,56 +86,60 @@ class _NetworkTabState extends State<DeviceInfo> {
     final availableInternalMemorySize =
         data['availableInternalMemorySize'].round();
 
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Divider(),
-          RowItem('Model', data['model']),
-          RowItem('Product', data['product']),
-          RowItem('Device Type', data['deviceType']),
-          RowItem('Android Version', data['osVersion']),
-          Divider(),
-          RowItem('Display Resolution', data['resolution']),
-          RowItem(
-            'Physical Size',
-            data['physicalSize'].toStringAsFixed(2) + ' in',
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Informationen"),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Divider(),
+              RowItem('Model', data['model']),
+              RowItem('Product', data['product']),
+              RowItem('Device Type', data['deviceType']),
+              RowItem('Android Version', data['osVersion']),
+              Divider(),
+              RowItem('Display Resolution', data['resolution']),
+              RowItem(
+                'Physical Size',
+                data['physicalSize'].toStringAsFixed(2) + ' in',
+              ),
+              Divider(),
+              RowItem('Total RAM', '$totalRam $memoryUnit'),
+              RowItem(
+                'Total Internal Memory',
+                '$totalInternalMemorySize $memoryUnit',
+              ),
+              RowItem(
+                'Available Internal Memory',
+                '$availableInternalMemorySize $memoryUnit',
+              ),
+              RowItem(
+                'Total External Storage',
+                '$totalExternalMemorySize $memoryUnit',
+              ),
+              RowItem('Available External Storage',
+                  '$availableExternalMemorySize $memoryUnit'),
+              Divider(),
+              RowItem('Charge Level', '${bData['batteryPercentage']}%'),
+              RowItem('Health', bData['batteryHealth']),
+              RowItem('is Charging', '${bData['isDeviceCharging']}'),
+              RowItem('Source', '${bData['chargingSource']}'),
+              RowItem('Technology', bData['batteryTechnology']),
+              RowItem('Temperature', '${bData['batteryTemperature']}°c'),
+              RowItem('Voltage', '${bData['batteryVoltage']}'),
+              Divider(),
+              RowItem('Network Available', '${data['isNetworkAvailable']}'),
+              RowItem('Network', '${data['networkType']}'),
+              RowItem('iPv4 Address', '${data['iPv4Address']}'),
+              RowItem('iPv6 Address', '${data['iPv6Address']}'),
+              RowItem('WiFi Enabled', '${data['isWifiEnabled']}'),
+              Divider(),
+              RowItem('NFC Present', '${data['isNfcPresent']}'),
+              RowItem('NFC Enabled', '${data['isNfcEnabled']}'),
+              Divider(),
+            ],
           ),
-          Divider(),
-          RowItem('Total RAM', '$totalRam $memoryUnit'),
-          RowItem(
-            'Total Internal Memory',
-            '$totalInternalMemorySize $memoryUnit',
-          ),
-          RowItem(
-            'Available Internal Memory',
-            '$availableInternalMemorySize $memoryUnit',
-          ),
-          RowItem(
-            'Total External Storage',
-            '$totalExternalMemorySize $memoryUnit',
-          ),
-          RowItem('Available External Storage',
-              '$availableExternalMemorySize $memoryUnit'),
-          Divider(),
-          RowItem('Charge Level', '${bData['batteryPercentage']}%'),
-          RowItem('Health', bData['batteryHealth']),
-          RowItem('is Charging', '${bData['isDeviceCharging']}'),
-          RowItem('Source', '${bData['chargingSource']}'),
-          RowItem('Technology', bData['batteryTechnology']),
-          RowItem('Temperature', '${bData['batteryTemperature']}°c'),
-          RowItem('Voltage', '${bData['batteryVoltage']}'),
-          Divider(),
-          RowItem('Network Available', '${data['isNetworkAvailable']}'),
-          RowItem('Network', '${data['networkType']}'),
-          RowItem('iPv4 Address', '${data['iPv4Address']}'),
-          RowItem('iPv6 Address', '${data['iPv6Address']}'),
-          RowItem('WiFi Enabled', '${data['isWifiEnabled']}'),
-          Divider(),
-          RowItem('NFC Present', '${data['isNfcPresent']}'),
-          RowItem('NFC Enabled', '${data['isNfcEnabled']}'),
-          Divider(),
-        ],
-      ),
-    );
+        ));
   }
 }

@@ -41,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     Grpc.set("192.168.0.160", 50051);
-    SystemService.ping();
+    //SystemService.ping();
     Timer(Duration(seconds: 3), () {
       if (kill == 0) {
         kill = -1;
