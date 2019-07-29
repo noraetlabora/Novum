@@ -42,10 +42,13 @@ class Login extends StatelessWidget {
                   image: ExactAssetImage('assets/NovaTouch-logo.jpg'),
                   fit: BoxFit.cover,
                 ),
-              )
-            ),
-          new PinPad(hide: true, hintText: "PIN eingeben",),
-          new BottomButtonBar(amount: 2, text: "Funktionen OK",),
+              )),
+          new PinPad(hide: true, hintText: "PIN eingeben"),
+          new BottomButtonBar(
+            amount: 2,
+            text: "Funktionen OK",
+            id: "login",
+          ),
         ],
       ),
     );

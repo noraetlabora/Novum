@@ -12,11 +12,13 @@ class PinPad extends StatelessWidget {
   final bool hide;
   final String hintText;
 
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double heigth = MediaQuery.of(context).size.height;
     tfController.text = "";
+    pin = "";
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,

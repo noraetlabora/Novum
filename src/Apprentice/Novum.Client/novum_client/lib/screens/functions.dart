@@ -7,6 +7,7 @@ class Functions extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double heigth = MediaQuery.of(context).size.height;
     final List<FunctionButton> buttons = <FunctionButton>[];
+    
     buttons.add(new FunctionButton(
       buttonText: "Abmelden",
       widht: width,

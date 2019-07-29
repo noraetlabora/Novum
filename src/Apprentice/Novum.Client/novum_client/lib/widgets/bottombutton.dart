@@ -5,13 +5,17 @@ import 'package:novum_client/screens/functions.dart';
 import 'package:novum_client/screens/tablescreen.dart';
 import 'package:novum_client/widgets/deviceinformationlist.dart';
 import 'package:novum_client/widgets/pinpad.dart';
+import 'package:novum_client/widgets/bottombuttonbar.dart';
 
 class BottomButton extends StatelessWidget {
   final int amount;
   final String text;
-  BottomButton({@required this.amount, this.text});
+  final BottomButtonBar bar;
+  BottomButton(
+      {@required this.amount, @required this.text, @required this.bar});
 
   Widget build(BuildContext context) {
+    var id = bar.getId();
     double width = MediaQuery.of(context).size.width;
     double heigth = MediaQuery.of(context).size.height;
     return ButtonTheme(
@@ -20,22 +24,35 @@ class BottomButton extends StatelessWidget {
       height: heigth * 0.1015,
       child: RaisedButton(
         onPressed: () {
-          switch (text) {
-            case "OK":
-              if (PinPad.pin == "1234") {
-                // initializ
+          if (id == "login") {
+            switch (text) {
+              case "OK":
+                if (PinPad.pin == "1234") {
+                  // initializ
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TableScreen()),
+                  );
+                }
+                break;
+              case "Funktionen":
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => TableScreen()),
+                  MaterialPageRoute(builder: (context) => Functions()),
                 );
-              }
-              break;
-            case "Funktionen":
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Functions()),
-              );
-              break;
+                break;
+            }
+          } else if (id == "table") {
+            switch (text) {
+              case "OK":
+                break;
+              case "Funktionen":
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Functions()),
+                );
+                break;
+            }
           }
         },
         child: AutoSizeText(text),

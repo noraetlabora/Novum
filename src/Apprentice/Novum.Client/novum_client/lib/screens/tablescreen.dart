@@ -6,7 +6,6 @@ import 'package:novum_client/widgets/pinpad.dart';
 import 'package:novum_client/widgets/statusbar.dart';
 import 'package:novum_client/widgets/table.dart' as const1;
 
-
 class TableScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
@@ -23,15 +22,13 @@ class TableScreen extends StatelessWidget {
         new Container(
           width: width,
           height: heigth * 0.3684,
-          child: const1.Table(amount:20,id: "1", height:(heigth*0.2995)),
+          child: const1.Table(amount: 20, id: "1", height: (heigth * 0.2995)),
         ),
-        new PinPad(
-          hide: false,
-          hintText: "Tischnummer",
-        ),
+        new PinPad(hide: false, hintText: "Tischnummer"),
         new BottomButtonBar(
           text: "Funktionen Rechnungen OK",
           amount: 3,
+          id: "table"
         )
       ],
     ));

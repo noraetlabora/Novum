@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:novum_client/login.dart';
 
 import 'deviceinformationlist.dart';
 
 class FunctionButton extends StatelessWidget {
-  FunctionButton({@required this.buttonText, @required this.widht, @required this.height});
+  FunctionButton(
+      {@required this.buttonText, @required this.widht, @required this.height});
   final String buttonText;
   final double widht;
   final double height;
 
-  
   @override
   Widget build(BuildContext context) {
     // double width = MediaQuery.of(context).size.width;
@@ -21,12 +22,16 @@ class FunctionButton extends StatelessWidget {
             side: BorderSide(color: Colors.white, width: 0.5)),
         textColor: Colors.white,
         onPressed: () {
-          switch(buttonText){
-              case "Informationen":
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => DeviceInfo()),
-                );
+          switch (buttonText) {
+            case "Informationen":
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DeviceInfo()),
+              );
+              break;
+            case "Abmelden":
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Login()));
               break;
           }
         },
