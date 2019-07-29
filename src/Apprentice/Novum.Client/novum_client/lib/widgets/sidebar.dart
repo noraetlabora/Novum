@@ -17,17 +17,23 @@ class SideBar extends StatelessWidget {
     }
 
     return Drawer(
-      child: (ListView.builder(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        itemCount: buttons.length,
-        itemBuilder: (context, int index) {
-          return Container(
-              height: 50,
-              child: Center(
-                child: buttons[index],
-              ));
-        },
-      )),
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          DrawerHeader(
+            child: Text("Test"),
+            decoration: BoxDecoration(color: Colors.yellow),
+            ),
+          ListTile(
+            title: Text("Abmelden"),
+            onTap: (){},
+          ),
+          ListTile(
+            title: Text("Funktionen"),
+            onTap: (){},
+          ),
+      ],
+      ),
     );
   }
 }
