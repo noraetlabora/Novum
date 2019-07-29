@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:novum_client/widgets/functionbutton.dart';
 
-class Functions extends StatelessWidget {
+class SideBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -16,19 +16,18 @@ class Functions extends StatelessWidget {
           buttonText: buttonNames[i], height: heigth, widht: width));
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Funktionen"),
-      ),
-      drawer: Drawer(
-        child: (ListView.builder(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          itemCount: buttons.length,
-          itemBuilder: (context, int index) {
-            return Container(height: 50, child: Center(child: buttons[index]));
-          },
-        )),
-      ),
+    return Drawer(
+      child: (ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        itemCount: buttons.length,
+        itemBuilder: (context, int index) {
+          return Container(
+              height: 50,
+              child: Center(
+                child: buttons[index],
+              ));
+        },
+      )),
     );
   }
 }

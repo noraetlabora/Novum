@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:novum_client/screens/functions.dart';
+import 'package:novum_client/widgets/sidebar.dart';
 import 'package:novum_client/widgets/pinpad.dart';
 import 'package:novum_client/widgets/statusbar.dart';
 import 'package:novum_client/widgets/bottombuttonbar.dart';
@@ -51,6 +53,7 @@ class Login extends StatelessWidget {
           ),
         ],
       ),
+      drawer: new SideBar(),
     );
   }
 }

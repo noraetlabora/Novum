@@ -15,7 +15,7 @@ class FunctionButton extends StatelessWidget {
     // double width = MediaQuery.of(context).size.width;
     // double heigth = MediaQuery.of(context).size.height;
     return ButtonTheme(
-      minWidth: widht - 30,
+      minWidth: widht - widht * 0.3,
       height: height * 0.1,
       child: RaisedButton(
         shape: new ContinuousRectangleBorder(
