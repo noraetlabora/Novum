@@ -1,11 +1,17 @@
 import 'dart:async';
 
+import 'package:novum_client/services/authenticationService.dart';
+
 import "dialogs.dart";
 import "login.dart";
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import 'services/grpc.dart';
+import 'services/protobuf/novum.pb.dart';
+import 'services/systemService.dart';
 
 int kill = 0;
 
@@ -38,41 +44,21 @@ class _MyHomePageState extends State<MyHomePage> {
   bool init = false;
   @override
   Widget build(BuildContext context) {
-    //Grpc.set("192.168.0.43", 50051);
-    //SystemService.ping();
+    Grpc.set("192.168.0.160", 50051);
+    SystemService.ping();
+    AuthenticationService.initialize();
 
-    // var request = new InitializeRequest();
-
-    // request.clientType = ClientType.ORDERMAN;
-    // request.clientVersion = "1.1.1.1";
-    // request.id = "125-123456";
-    // try {
-    //   while (init == false) {
-    //     var reply = Grpc.authenticationClient.initialize(request);
-
-    //     if (reply != null) {
-    //       init = true;
-    //       Navigator.push(
-    //         context,
-    //         MaterialPageRoute(builder: (context) => LoginApp()),
-    //       );
-    //     }
+    // Timer(Duration(seconds: 3), () {
+    //   if (kill == 0) {
+    //     kill = -1;
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(builder: (context) => LoginApp()),
+    //     );
     //   }
-    // } catch (e) {
-    //   init = false;
-    // }
-
-    Timer(Duration(seconds: 3), () {
-      if (kill == 0) {
-        kill = -1;
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => LoginApp()),
-        );
-      }
 
       //killed
-    });
+    // });
 
     return Scaffold(
       body: Container(
