@@ -33,7 +33,7 @@ class BottomButton extends StatelessWidget {
             case "Funktionen":
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (con) => Functions()),
+                MaterialPageRoute(builder: (context) => Functions()),
               );
               break;
           }

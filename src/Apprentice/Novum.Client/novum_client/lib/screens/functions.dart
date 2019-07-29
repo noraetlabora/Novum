@@ -18,16 +18,19 @@ class Functions extends StatelessWidget {
       height: heigth,
     ));
 
-    return Column(
-      children: <Widget>[
-      ListView.separated(
-        padding: const EdgeInsets.all(8.0),
+    return Scaffold( 
+      appBar: AppBar(
+        title: Text("Funktionen"),
+      ),
+      body:(
+    ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 10),
         itemCount: buttons.length,
-        itemBuilder: (BuildContext context, int index) {
+        itemBuilder: (context, int index) {
           return Container(height: 50, child: Center(child: buttons[index]));
         },
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
-      )
-    ]);
+        )
+      ),
+    );
   }
 }
