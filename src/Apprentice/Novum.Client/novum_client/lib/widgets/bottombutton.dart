@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:novum_client/screens/functions.dart';
 import 'package:novum_client/screens/tablescreen.dart';
+import 'package:novum_client/widgets/table.dart' as t;
 import 'package:novum_client/widgets/pinpad.dart';
 import 'package:novum_client/widgets/bottombuttonbar.dart';
+import 'package:novum_client/widgets/tablebutton.dart';
 
 class BottomButton extends StatelessWidget {
   final int amount;
@@ -26,12 +28,13 @@ class BottomButton extends StatelessWidget {
             switch (text) {
               case "OK":
                 if (PinPad.pin == "1234") {
-                  // initializ
+                  reset();
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TableScreen()),
                   );
                 }
+
                 break;
               case "Funktionen":
                 Navigator.push(
@@ -43,6 +46,12 @@ class BottomButton extends StatelessWidget {
           } else if (id == "table") {
             switch (text) {
               case "OK":
+                t.Table.add(new TableButton(
+                  height: heigth,
+                  name: PinPad.pin,
+                  price: 5.00,
+                ));
+                reset();
                 break;
               case "Funktionen":
                 Navigator.push(
@@ -57,24 +66,9 @@ class BottomButton extends StatelessWidget {
       ),
     );
   }
-  // Future initialize() async {
-  //   final channel = new ClientChannel("0.0.0.0",
-  //       port: 50051,
-  //       options: const ChannelOptions(
-  //           credentials: const ChannelCredentials.insecure(),
-  //           idleTimeout: Duration(seconds: 5)));
 
-  //   final grpcClient = new AuthenticationClient(channel);
-  //   final request = new InitializeRequest();
-  //   request.clientType = ClientType.ORDERMAN;
-  //   request.clientVersion = "1.1.1";
-  //   request.id = "125-123456789";
-  //   request.test = 5;
-  //   try {
-  //     final reply = await grpcClient.initialize(request);
-  //     print(reply.toString());
-  //   } catch (exception) {
-  //     print(exception);
-  //   }
-  // }
+  void reset() {
+    PinPad.pin = "";
+    PinPad.tfController.text = "";
+  }
 }

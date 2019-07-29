@@ -1,8 +1,5 @@
 import 'dart:async';
 
-import 'package:novum_client/services/grpc.dart';
-import 'package:novum_client/services/systemService.dart';
-
 import "dialogs.dart";
 import "login.dart";
 
@@ -38,10 +35,32 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool init = false;
   @override
   Widget build(BuildContext context) {
-    // Grpc.set("192.168.0.43", 50051);
-    // SystemService.ping();
+    //Grpc.set("192.168.0.43", 50051);
+    //SystemService.ping();
+
+    // var request = new InitializeRequest();
+
+    // request.clientType = ClientType.ORDERMAN;
+    // request.clientVersion = "1.1.1.1";
+    // request.id = "125-123456";
+    // try {
+    //   while (init == false) {
+    //     var reply = Grpc.authenticationClient.initialize(request);
+
+    //     if (reply != null) {
+    //       init = true;
+    //       Navigator.push(
+    //         context,
+    //         MaterialPageRoute(builder: (context) => LoginApp()),
+    //       );
+    //     }
+    //   }
+    // } catch (e) {
+    //   init = false;
+    // }
 
     Timer(Duration(seconds: 3), () {
       if (kill == 0) {

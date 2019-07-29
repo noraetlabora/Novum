@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:novum_client/login.dart';
 import 'package:novum_client/widgets/deviceinformationlist.dart';
-import 'package:novum_client/widgets/functionbutton.dart';
 
 class SideBar extends StatelessWidget {
   @override
@@ -10,7 +9,7 @@ class SideBar extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
 
     return Container(
-        width: width * 0.7,
+        width: width * 0.8,
         child: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -18,20 +17,45 @@ class SideBar extends StatelessWidget {
               Container(
                 height: height * 0.15,
                 child: DrawerHeader(
-                  child: Text("Test"),
+                  child: Text(
+                    "Funktionen",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 35,
+                        fontWeight: FontWeight.w300),
+                  ),
                   decoration: BoxDecoration(color: Colors.yellow),
                 ),
               ),
               ListTile(
-                title: Text("Abmelden"),
-                onTap: () {},
+                title: listText("Abmelden"),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Login()),
+                  );
+                },
               ),
+              Divider(),
               ListTile(
-                title: Text("Funktionen"),
-                onTap: () {},
+                title: listText("Informationen"),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DeviceInfo()),
+                  );
+                },
               ),
+              Divider(),
             ],
           ),
         ));
+  }
+
+  Text listText(String text) {
+    return Text(
+      text,
+      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+    );
   }
 }

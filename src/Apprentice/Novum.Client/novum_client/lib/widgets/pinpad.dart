@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:novum_client/widgets/pinpadbutton.dart';
 
-TextEditingController tfController = TextEditingController();
+
 
 class PinPad extends StatelessWidget {
+  static TextEditingController tfController = TextEditingController();
   static String pin = "";
 
   PinPad({@required this.hide, @required this.hintText});
   final bool hide;
   final String hintText;
-
 
   @override
   Widget build(BuildContext context) {
