@@ -5,35 +5,31 @@ class SideBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double heigth = MediaQuery.of(context).size.height;
-    final List<FunctionButton> buttons = <FunctionButton>[];
-    final List<String> buttonNames = <String>[];
-    buttonNames.add("Abmelden");
-    buttonNames.add("Informationen");
+    double height = MediaQuery.of(context).size.height;
 
-    for (int i = 0; i < buttonNames.length; i++) {
-      buttons.add(new FunctionButton(
-          buttonText: buttonNames[i], height: heigth, widht: width));
-    }
-
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: Text("Test"),
-            decoration: BoxDecoration(color: Colors.yellow),
+    return Container(
+        width: width * 0.7,
+        child: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              Container(
+                height: height*0.15,
+                child: DrawerHeader(
+                  child: Text("Test"),
+                  decoration: BoxDecoration(color: Colors.yellow),
+                ),
+              ),
+              ListTile(
+                title: Text("Abmelden"),
+                onTap: () {},
+              ),
+              ListTile(
+                title: Text("Funktionen"),
+                onTap: () {},
+              ),
+            ],
           ),
-          ListTile(
-            title: Text("Abmelden"),
-            onTap: () {},
-          ),
-          ListTile(
-            title: Text("Funktionen"),
-            onTap: () {},
-          ),
-        ],
-      ),
-    );
+        ));
   }
 }
