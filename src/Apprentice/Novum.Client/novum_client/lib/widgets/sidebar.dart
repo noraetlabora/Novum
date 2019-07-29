@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:novum_client/login.dart';
+import 'package:novum_client/widgets/deviceinformationlist.dart';
 import 'package:novum_client/widgets/functionbutton.dart';
 
 class SideBar extends StatelessWidget {
@@ -21,16 +23,26 @@ class SideBar extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
-            child: Text("Test"),
+            child: Text("Funktionen"),
             decoration: BoxDecoration(color: Colors.yellow),
           ),
           ListTile(
             title: Text("Abmelden"),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Login()),
+              );
+            },
           ),
           ListTile(
-            title: Text("Funktionen"),
-            onTap: () {},
+            title: Text("Informationen"),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => DeviceInfo()),
+              );
+            },
           ),
         ],
       ),
