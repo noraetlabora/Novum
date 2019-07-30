@@ -3,21 +3,29 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:novum_client/services/protobuf/novum.pb.dart';
 import 'package:novum_client/services/runtimeDataService.dart';
+import 'package:novum_client/widgets/bottombutton.dart';
 import 'package:novum_client/widgets/tablebutton.dart';
 
-class Table extends StatelessWidget {
+class Table extends StatefulWidget {
+  @override
+  TableState createState() => TableState();
+}
+
+class TableState extends State<Table> {
   static List<TableButton> tables = <TableButton>[];
-  Table({@required this.height});
-  final double height;
 
   @override
   Widget build(BuildContext context) {
-    Timer.periodic(Duration(seconds: 10), (timer) async {
+    Timer.periodic(Duration(seconds: 20), (timer) async {
       Tables tableList = await RuntimeDataService.GetTables();
-      print(tableList.toString());
-      print(tableList.tables.length);
       var list = tableList.tables;
-      list.first.name;
+      List<TableButton> tableButtonList = <TableButton>[];
+      for(int i = 0; i<list.length; i++){
+      tableButtonList.add(TableButton(height: BottomButton.heigth, price: list[i].amount, name: list[i].name,));
+      }
+      setState(() {
+       tables = tableButtonList; 
+      });
     });
 
     return GridView.builder(

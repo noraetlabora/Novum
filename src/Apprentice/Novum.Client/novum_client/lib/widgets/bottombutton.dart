@@ -12,13 +12,16 @@ class BottomButton extends StatelessWidget {
   final int amount;
   final String text;
   final BottomButtonBar bar;
+
+  static double heigth;
+
   BottomButton(
       {@required this.amount, @required this.text, @required this.bar});
 
   Widget build(BuildContext context) {
     var id = bar.getId();
     double width = MediaQuery.of(context).size.width;
-    double heigth = MediaQuery.of(context).size.height;
+    heigth = MediaQuery.of(context).size.height;
     return ButtonTheme(
       buttonColor: Colors.yellow,
       minWidth: width / amount,
@@ -57,11 +60,11 @@ class BottomButton extends StatelessWidget {
           } else if (id == "table") {
             switch (text) {
               case "OK":
-                t.Table.add(new TableButton(
-                  height: heigth,
-                  name: PinPad.pin,
-                  price: 5.00,
-                ));
+                // t.Table.add(new TableButton(
+                //   height: heigth,
+                //   name: PinPad.pin,
+                //   price: 5.00,
+                // ));
                 reset();
                 break;
               case "Funktionen":
@@ -76,8 +79,8 @@ class BottomButton extends StatelessWidget {
         child: AutoSizeText(text),
       ),
     );
-  }
-
+    
+    }
   void reset() {
     PinPad.pin = "";
     PinPad.tfController.text = "";

@@ -23,7 +23,7 @@ class TableScreen extends StatelessWidget {
           new Container(
             width: width,
             height: heigth * 0.3684,
-            child: const1.Table(height: (heigth * 0.2995)),
+            child: const1.Table(),
           ),
           new PinPad(hide: false, hintText: "Tischnummer"),
           new BottomButtonBar(text: "Rechnungen OK", amount: 2, id: "table")
