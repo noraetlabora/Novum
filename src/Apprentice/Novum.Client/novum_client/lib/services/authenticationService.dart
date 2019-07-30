@@ -8,15 +8,12 @@ class AuthenticationService {
       request.clientType = ClientType.ORDERMAN;
       request.clientVersion = "1.1.1.1";
       request.id = "125-123456";
-      print("extecuted before");
 
       var reply = await Grpc.authenticationClient
           .initialize(request)
           .timeout(Duration(seconds: 2), onTimeout: () {
         print("timeouted");
       });
-
-      print("extecuted after");
 
       print("rep: " + reply.toString());
       print("timestamp: " + reply.unixTimestamp.toString());

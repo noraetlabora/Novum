@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:novum_client/main.dart';
 import 'package:novum_client/widgets/sidebar.dart';
 import 'package:novum_client/widgets/pinpad.dart';
 import 'package:novum_client/widgets/statusbar.dart';
@@ -9,6 +10,7 @@ void main() => runApp(LoginApp());
 
 class LoginApp extends StatelessWidget {
   Widget build(BuildContext context) {
+    Initialize.isInit = true;
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.yellow,

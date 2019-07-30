@@ -40,7 +40,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class Initialize extends State<MyHomePage> {
+  static bool isInit = false;
   static String ip = "192.168.0.150";
+  static int port = 50051;
 
   bool init = false;
   @override
@@ -48,24 +50,33 @@ class Initialize extends State<MyHomePage> {
     Grpc.set(ip, 50051);
     SystemService.ping();
 
-    Timer.periodic(Duration(seconds: 3), (timer) async {
-      if (init == false) {
-        try {
-          print("timer hit");
-          var initReply = await AuthenticationService.initialize();
+    if (!isInit) {
+      Timer.periodic(Duration(seconds: 3), (timer) async {
+        if (kill != -1) {
+          if (init == false) {
+            try {
+              print("timer hit");
+              var initReply = await AuthenticationService.initialize();
 
-          if (initReply) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => LoginApp()),
-            );
-            init = true;
+              if (initReply) {
+                kill = -1;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginApp()),
+                );
+                init = true;
+              }
+            } catch (e) {
+              init = false;
+            }
           }
-        } catch (e) {
-          init = false;
         }
-      }
-    });
+      });
+
+      Timer.periodic(Duration(seconds: 1), (timer) {
+        Grpc.set(ip, port);
+      });
+    }
 
     return Scaffold(
       body: Container(
@@ -84,16 +95,18 @@ class Initialize extends State<MyHomePage> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () => DialogSelection.inputDialog(
-            context, "IP Konfiguration", "IP Adresse", "OK", "Abbruch"),
+        onPressed: () => DialogSelection.inputDialog(context,
+            "IP/Port Konfiguration", "IP Adresse:Port", "OK", "Abbruch"),
         tooltip: 'Increment',
         child: Icon(Icons.settings),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
-  static void changeIp(String ipAddress) {
-    ip = ipAddress;
-    Grpc.set(ip, 50051);
+  static void changeIp(String newConfig) {
+    var split = newConfig.split(":");
+    ip = split[0];
+    port = int.parse(split[1]);
+    Grpc.set(ip, port);
   }
 }
