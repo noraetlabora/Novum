@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 
 namespace Os.Server
 {
@@ -15,12 +14,12 @@ namespace Os.Server
     public class Middleware
     {
         private static string[] initRequests = {
-            "/api/v2/actions/init/registerGateway",
-            "/api/v2/actions/init/registerClient"
+            "/api/v2/actions/init/registergateway",
+            "/api/v2/actions/init/registerclient"
         };
 
         private static string[] notLoggingRequests = {
-            "/api/v2/hostStatus"
+            "/api/v2/hoststatus"
         };
         private readonly RequestDelegate _next;
 
@@ -78,15 +77,14 @@ namespace Os.Server
         {
             if (request.Method.Equals("GET"))
                 return false;
-            if (initRequests.Contains(request.Path.Value))
+            if (initRequests.Contains(request.Path.Value.ToLower()))
                 return false;
             return true;
         }
 
         private async Task<string> ReadRequestBody(HttpRequest request)
         {
-            request.EnableRewind();
-
+            request.EnableBuffering();
             var buffer = new byte[Convert.ToInt32(request.ContentLength)];
             await request.Body.ReadAsync(buffer, 0, buffer.Length);
             var bodyAsText = Encoding.UTF8.GetString(buffer).Replace("\n", string.Empty);
@@ -99,7 +97,7 @@ namespace Os.Server
             sb.Append(request.Path.Value).Append("|");
             sb.Append(bodyAsText);
 
-            if (!notLoggingRequests.Contains(request.Path.Value))
+            if (!notLoggingRequests.Contains(request.Path.Value.ToLower()))
                 Nt.Logging.Log.Communication.Info(sb.ToString());
 
             return bodyAsText;
@@ -121,7 +119,7 @@ namespace Os.Server
             else 
                 sb.Append(bodyAsText);
 
-            if (!notLoggingRequests.Contains(response.HttpContext.Request.Path.Value))
+            if (!notLoggingRequests.Contains(response.HttpContext.Request.Path.Value.ToLower()))
                 Nt.Logging.Log.Communication.Info(sb.ToString());
 
             if (bodyAsText.Length > 500)
