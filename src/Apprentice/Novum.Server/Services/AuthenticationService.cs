@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
-using Google.Protobuf.WellKnownTypes;
+using Google.Protobuf.WellKnownTypes;5
 
 namespace Novum.Server.Services
 {

@@ -2,7 +2,7 @@ import 'package:novum_client/services/grpc.dart';
 import 'package:novum_client/services/protobuf/novum.pbgrpc.dart';
 
 class AuthenticationService {
-  static Future initialize() async {
+  static Future<bool> initialize() async {
     var request = new InitializeRequest();
     try {
       request.clientType = ClientType.ORDERMAN;
@@ -12,14 +12,17 @@ class AuthenticationService {
 
       var reply = await Grpc.authenticationClient
           .initialize(request)
-          .timeout(Duration(seconds: 4));
+          .timeout(Duration(seconds: 2), onTimeout: () {
+        print("timeouted");
+      });
 
       print("extecuted after");
 
       print("rep: " + reply.toString());
-      print(reply.unixTimestamp);
+      print("timestamp: " + reply.unixTimestamp.toString());
+      return true;
     } catch (e) {
-      throw new Exception();
+      return false;
     }
   }
 

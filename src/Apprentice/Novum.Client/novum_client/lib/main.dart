@@ -36,51 +36,36 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  Initialize createState() => Initialize();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class Initialize extends State<MyHomePage> {
+  static String ip = "192.168.0.150";
+
   bool init = false;
   @override
   Widget build(BuildContext context) {
-    Grpc.set("192.168.0.150", 50051);
+    Grpc.set(ip, 50051);
     SystemService.ping();
 
-    Timer.periodic(Duration(seconds: 2), (timer) async {
+    Timer.periodic(Duration(seconds: 3), (timer) async {
       if (init == false) {
         try {
+          print("timer hit");
           var initReply = await AuthenticationService.initialize();
 
-          init = true;
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LoginApp()),
-          );
+          if (initReply) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginApp()),
+            );
+            init = true;
+          }
         } catch (e) {
-          init = true;
+          init = false;
         }
       }
     });
-
-    // new Timer.periodic(
-    //     Duration(seconds: 1),
-    //     (Timer t) => () async {
-    //           if (init == false) {
-    //             try {
-    //               var initReply = await AuthenticationService.initialize();
-    //               init = true;
-    //               Navigator.push(
-    //                 context,
-    //                 MaterialPageRoute(builder: (context) => LoginApp()),
-    //               );
-    //             } catch (e) {
-    //               init = false;
-    //             }
-    //           }
-    //         });
-
-    //killed
-    // });
 
     return Scaffold(
       body: Container(
@@ -100,10 +85,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () => DialogSelection.inputDialog(
-            context, "Texteingabe", "Text", "OK", "Abbruch"),
+            context, "IP Konfiguration", "IP Adresse", "OK", "Abbruch"),
         tooltip: 'Increment',
         child: Icon(Icons.settings),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  static void changeIp(String ipAddress) {
+    ip = ipAddress;
+    Grpc.set(ip, 50051);
   }
 }
