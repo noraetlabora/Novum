@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:novum_client/services/grpc.dart';
-import 'package:novum_client/services/systemService.dart';
+import 'package:novum_client/services/authenticationService.dart';
 
 import "dialogs.dart";
 import "login.dart";
@@ -9,6 +8,10 @@ import "login.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+import 'services/grpc.dart';
+import 'services/protobuf/novum.pb.dart';
+import 'services/systemService.dart';
 
 int kill = 0;
 
@@ -38,21 +41,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool init = false;
   @override
   Widget build(BuildContext context) {
     Grpc.set("192.168.0.160", 50051);
     SystemService.ping();
-    Timer(Duration(seconds: 3), () {
-      if (kill == 0) {
-        kill = -1;
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => LoginApp()),
-        );
-      }
+    AuthenticationService.initialize();
+
+    // Timer(Duration(seconds: 3), () {
+    //   if (kill == 0) {
+    //     kill = -1;
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(builder: (context) => LoginApp()),
+    //     );
+    //   }
 
       //killed
-    });
+    // });
 
     return Scaffold(
       body: Container(

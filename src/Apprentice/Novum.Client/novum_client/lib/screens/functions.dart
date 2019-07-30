@@ -7,27 +7,28 @@ class Functions extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double heigth = MediaQuery.of(context).size.height;
     final List<FunctionButton> buttons = <FunctionButton>[];
-    buttons.add(new FunctionButton(
-      buttonText: "Abmelden",
-      widht: width,
-      height: heigth,
-    ));
-    buttons.add(new FunctionButton(
-      buttonText: "Informationen",
-      widht: width,
-      height: heigth,
-    ));
+    final List<String> buttonNames = <String>[];
+    buttonNames.add("Abmelden");
+    buttonNames.add("Informationen");
 
-    return Column(
-      children: <Widget>[
-      ListView.separated(
-        padding: const EdgeInsets.all(8.0),
-        itemCount: buttons.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(height: 50, child: Center(child: buttons[index]));
-        },
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
-      )
-    ]);
+    for (int i = 0; i < buttonNames.length; i++) {
+      buttons.add(new FunctionButton(
+          buttonText: buttonNames[i], height: heigth, widht: width));
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Funktionen"),
+      ),
+      drawer: Drawer(
+        child: (ListView.builder(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          itemCount: buttons.length,
+          itemBuilder: (context, int index) {
+            return Container(height: 50, child: Center(child: buttons[index]));
+          },
+        )),
+      ),
+    );
   }
 }
