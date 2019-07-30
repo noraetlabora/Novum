@@ -47,7 +47,7 @@ class Initialize extends State<MyHomePage> {
   bool init = false;
   @override
   Widget build(BuildContext context) {
-    Grpc.set(ip, 50051);
+    Grpc.set(ip, port);
     SystemService.ping();
 
     if (!isInit) {

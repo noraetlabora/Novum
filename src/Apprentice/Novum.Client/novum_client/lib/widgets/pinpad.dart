@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:novum_client/widgets/pinpadbutton.dart';
 
-
-
 class PinPad extends StatelessWidget {
   static TextEditingController tfController = TextEditingController();
   static String pin = "";
@@ -89,13 +87,11 @@ class PinPad extends StatelessWidget {
   }
 
   static void pinText(String c) {
-    print(c);
     if (c != "BACKSPACE" && c != null) {
       pin += c;
     } else {
       pin = removeLastCharacter(pin);
     }
-    print(pin);
   }
 }
 

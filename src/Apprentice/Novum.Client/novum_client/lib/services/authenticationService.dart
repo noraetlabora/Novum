@@ -29,6 +29,7 @@ class AuthenticationService {
       request.input = pin;
       request.inputType = LoginInputType.MANUALLY;
       var reply = await Grpc.authenticationClient.login(request);
+
       print("login success");
     } catch (e) {
       print(e);

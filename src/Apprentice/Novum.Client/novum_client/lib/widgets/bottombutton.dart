@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:novum_client/screens/functions.dart';
 import 'package:novum_client/screens/tablescreen.dart';
+import 'package:novum_client/services/authenticationService.dart';
 import 'package:novum_client/widgets/table.dart' as t;
 import 'package:novum_client/widgets/pinpad.dart';
 import 'package:novum_client/widgets/bottombuttonbar.dart';
@@ -27,13 +28,23 @@ class BottomButton extends StatelessWidget {
           if (id == "login") {
             switch (text) {
               case "OK":
-                if (PinPad.pin == "1234") {
-                  reset();
+                try {
+                  AuthenticationService.login(PinPad.pin);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TableScreen()),
                   );
+                } catch (e) {
+                  throw e;
                 }
+
+                // if (PinPad.pin == "1234") {
+                //   reset();
+                //   Navigator.push(
+                //     context,
+                //     MaterialPageRoute(builder: (context) => TableScreen()),
+                //   );
+                // }
 
                 break;
               case "Funktionen":

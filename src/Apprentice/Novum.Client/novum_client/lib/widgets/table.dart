@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
+import 'package:novum_client/services/protobuf/novum.pb.dart';
+import 'package:novum_client/services/runtimeDataService.dart';
 import 'package:novum_client/widgets/tablebutton.dart';
 
 class Table extends StatelessWidget {
@@ -10,6 +12,14 @@ class Table extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Timer.periodic(Duration(seconds: 10), (timer) async {
+      Tables tableList = await RuntimeDataService.GetTables();
+      print(tableList.toString());
+      print(tableList.tables.length);
+      var list = tableList.tables;
+      list.first.name;
+    });
+
     return GridView.builder(
         itemCount: tables.length,
         gridDelegate:
