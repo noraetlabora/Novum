@@ -1,16 +1,15 @@
 import 'dart:async';
 
+import 'package:novum_client/login.dart';
 import 'package:novum_client/services/authenticationService.dart';
 
 import "dialogs.dart";
-import "login.dart";
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'services/grpc.dart';
-import 'services/protobuf/novum.pb.dart';
 import 'services/systemService.dart';
 
 int kill = 0;
@@ -44,20 +43,43 @@ class _MyHomePageState extends State<MyHomePage> {
   bool init = false;
   @override
   Widget build(BuildContext context) {
-    Grpc.set("192.168.0.160", 50051);
+    Grpc.set("192.168.0.150", 50051);
     SystemService.ping();
-    AuthenticationService.initialize();
 
-    // Timer(Duration(seconds: 3), () {
-    //   if (kill == 0) {
-    //     kill = -1;
-    //     Navigator.push(
-    //       context,
-    //       MaterialPageRoute(builder: (context) => LoginApp()),
-    //     );
-    //   }
+    Timer.periodic(Duration(seconds: 2), (timer) async {
+      if (init == false) {
+        try {
+          var initReply = await AuthenticationService.initialize();
 
-      //killed
+          init = true;
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => LoginApp()),
+          );
+        } catch (e) {
+          init = true;
+        }
+      }
+    });
+
+    // new Timer.periodic(
+    //     Duration(seconds: 1),
+    //     (Timer t) => () async {
+    //           if (init == false) {
+    //             try {
+    //               var initReply = await AuthenticationService.initialize();
+    //               init = true;
+    //               Navigator.push(
+    //                 context,
+    //                 MaterialPageRoute(builder: (context) => LoginApp()),
+    //               );
+    //             } catch (e) {
+    //               init = false;
+    //             }
+    //           }
+    //         });
+
+    //killed
     // });
 
     return Scaffold(

@@ -11,9 +11,6 @@ class SystemService {
       var duration = Duration(milliseconds: stop.millisecondsSinceEpoch - start.millisecondsSinceEpoch);
       print("ping lastet " + duration.inMilliseconds.toString() + " ms");
     }
-    on Exception {
-      print("XX");
-    }
     catch(e) { 
       print(e); 
       //throw e;
