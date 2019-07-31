@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:novum_client/services/grpc.dart';
-import 'package:novum_client/services/systemService.dart';
 
 import 'login.dart';
 
@@ -47,7 +46,7 @@ class Initialize extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     Grpc.set(ip, port);
-    SystemService.ping();
+    //SystemService.ping();
 
     Timer.periodic(Duration(seconds: 3), (timer) async {
       if (kill != -1) {

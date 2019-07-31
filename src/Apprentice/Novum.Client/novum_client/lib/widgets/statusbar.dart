@@ -4,6 +4,9 @@ import 'package:android_device_info/android_device_info.dart';
 import 'package:battery/battery.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:novum_client/screens/main.dart';
+import 'package:novum_client/services/grpc.dart';
+import 'package:novum_client/services/systemService.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class StatusBar extends StatefulWidget {
@@ -14,6 +17,7 @@ class StatusBar extends StatefulWidget {
 class StatusBarState extends State<StatusBar> {
   var battery = Battery();
   var batteryPercent = 0;
+  String ping = "";
   bool killswitch = false;
   Icon icon =
       Icon(FontAwesomeIcons.batteryEmpty, color: Colors.white, size: 20);
@@ -22,11 +26,15 @@ class StatusBarState extends State<StatusBar> {
     double heigth = MediaQuery.of(context).size.height;
     if (!killswitch) {
       getIcon();
+      getPing();
       killswitch = true;
     }
 
     Timer.periodic(const Duration(minutes: 10), (timer) async {
       getIcon();
+    });
+    Timer.periodic(const Duration(seconds: 20), (timer) async {
+      getPing();
     });
 
     return Container(
@@ -50,6 +58,10 @@ class StatusBarState extends State<StatusBar> {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   icon,
+                  Text(
+                    "    " + ping,
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ],
               )
             ],
@@ -100,5 +112,13 @@ class StatusBarState extends State<StatusBar> {
       print(ex);
       throw ex;
     }
+  }
+
+  Future<void> getPing() async {
+    Grpc.set(Initialize.ip, Initialize.port);
+    ping = await SystemService.ping();
+    setState(() {
+      ping = ping;
+    });
   }
 }

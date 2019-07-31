@@ -9,12 +9,22 @@ class DialogSelection {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text(title),
-              content: Text(message),
+              title: Text(
+                "Ping",
+                textAlign: TextAlign.center,
+              ),
+              content: Text(
+                message,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20),
+              ),
               actions: <Widget>[
                 new FlatButton(
                   textColor: Colors.black,
-                  child: new Text('OK'),
+                  child: new Text(
+                    'OK',
+                    textAlign: TextAlign.center,
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },

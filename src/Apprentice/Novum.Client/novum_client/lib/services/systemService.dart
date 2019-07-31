@@ -2,7 +2,7 @@ import 'package:novum_client/services/grpc.dart';
 import 'package:novum_client/services/protobuf/google/protobuf/empty.pb.dart';
 
 class SystemService {
-  static Future ping() async {
+  static Future<String> ping() async {
     try {
       var start = new DateTime.now();
       await Grpc.systemClient.ping(new Empty());
@@ -11,6 +11,8 @@ class SystemService {
           milliseconds:
               stop.millisecondsSinceEpoch - start.millisecondsSinceEpoch);
       print("ping lastet " + duration.inMilliseconds.toString() + " ms");
+
+      return (duration.inMilliseconds.toString() + " ms");
     } catch (e) {
       print(e);
       //throw e;

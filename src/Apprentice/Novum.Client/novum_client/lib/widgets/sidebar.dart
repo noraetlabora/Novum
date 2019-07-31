@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:novum_client/popups/dialogs.dart';
 import 'package:novum_client/screens/login.dart';
+import 'package:novum_client/screens/main.dart';
+import 'package:novum_client/services/grpc.dart';
+import 'package:novum_client/services/systemService.dart';
 import 'package:novum_client/widgets/deviceinformationlist.dart';
 
 class SideBar extends StatelessWidget {
@@ -44,6 +48,15 @@ class SideBar extends StatelessWidget {
                     context,
                     MaterialPageRoute(builder: (context) => DeviceInfo()),
                   );
+                },
+              ),
+              Divider(),
+              ListTile(
+                title: listText("Ping"),
+                onTap: () async {
+                  Grpc.set(Initialize.ip, Initialize.port);
+                  String ping = await SystemService.ping();
+                  DialogSelection.informationDialog("Ping", ping, context);
                 },
               ),
               Divider(),
