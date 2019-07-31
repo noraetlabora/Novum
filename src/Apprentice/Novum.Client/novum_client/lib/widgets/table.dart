@@ -13,19 +13,16 @@ class Table extends StatefulWidget {
 
 class TableState extends State<Table> {
   static List<TableButton> tables = <TableButton>[];
+  bool killswitch = false;
 
   @override
   Widget build(BuildContext context) {
+    if (!killswitch){
+      getTables();
+      killswitch = true;
+    }
     Timer.periodic(Duration(seconds: 20), (timer) async {
-      Tables tableList = await RuntimeDataService.GetTables();
-      var list = tableList.tables;
-      List<TableButton> tableButtonList = <TableButton>[];
-      for(int i = 0; i<list.length; i++){
-      tableButtonList.add(TableButton(height: BottomButton.heigth, price: list[i].amount, name: list[i].name,));
-      }
-      setState(() {
-       tables = tableButtonList; 
-      });
+     getTables();
     });
 
     return GridView.builder(
@@ -40,6 +37,18 @@ class TableState extends State<Table> {
             ),
           );
         });
+  }
+
+  Future<void> getTables() async{
+    Tables tableList = await RuntimeDataService.GetTables();
+      var list = tableList.tables;
+      List<TableButton> tableButtonList = <TableButton>[];
+      for(int i = 0; i<list.length; i++){
+      tableButtonList.add(TableButton(height: BottomButton.heigth, price: list[i].amount, name: list[i].name,));
+      }
+      setState(() {
+       tables = tableButtonList; 
+      });
   }
 
   static void add(TableButton bt) {

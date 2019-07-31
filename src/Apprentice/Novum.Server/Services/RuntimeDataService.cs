@@ -12,24 +12,30 @@ namespace Novum.Server.Services
         public override Task<Tables> GetTables(Empty request, ServerCallContext context)
         {
             var tables = new Tables();
+            var session = new Nt.Data.Session();
+            session.ClientId = "1001";
+            session.WaiterId = "987";
+            session.PosId = "RK2";
+            session.SerialNumber = "125-123456789";
 
-            var table = new Table();
-            table.Id = "1010";
-            table.Name = "10";
-            table.Amount = 12.34;
-            tables.Tables_.Add(table);
+            var ntTables = Nt.Database.DB.Api.Table.GetTables(session);
 
-            table = new Table();
-            table.Id = "1012";
-            table.Name = "12";
-            table.Amount = 34.56;
-            tables.Tables_.Add(table);
+            foreach(var ntTable in ntTables.Values) {
+                var table = new Table();
+                table.Id = ntTable.Id;
+                table.Name = ntTable.Name;
+                table.Amount = (double)ntTable.Amount;
 
-            table = new Table();
-            table.Id = "1020";
-            table.Name = "20";
-            table.Amount = 987.65;
-            tables.Tables_.Add(table);
+                // DateTime.Now - ntTable.Updated
+                // < 2min dann Ordered  grün
+                // < 5min dann Waiting  orange
+                // sonst Impatient      rot
+
+                var timespan = new TimeSpan(DateTime.Now.Ticks - ntTable.Updated.Ticks);
+                timespan.TotalMinutes
+
+                tables.Tables_.Add(table);
+            }
 
             return Task.FromResult(tables);
         }
