@@ -20,11 +20,14 @@ namespace Novum.Server.Services
 
             var ntTables = Nt.Database.DB.Api.Table.GetTables(session);
 
-            foreach(var ntTable in ntTables.Values) {
+            foreach (var ntTable in ntTables.Values)
+            {
                 var table = new Table();
                 table.Id = ntTable.Id;
                 table.Name = ntTable.Name;
                 table.Amount = (double)ntTable.Amount;
+                table.Guests = ntTable.Guests;
+
 
                 // DateTime.Now - ntTable.Updated
                 // < 2min dann Ordered  grün
@@ -32,7 +35,7 @@ namespace Novum.Server.Services
                 // sonst Impatient      rot
 
                 var timespan = new TimeSpan(DateTime.Now.Ticks - ntTable.Updated.Ticks);
-                timespan.TotalMinutes
+
 
                 tables.Tables_.Add(table);
             }
@@ -41,6 +44,7 @@ namespace Novum.Server.Services
             table.Id = "1030";
             table.Name = "67";
             table.Amount = 15.88;
+
             tables.Tables_.Add(table);
 
             table = new Table();

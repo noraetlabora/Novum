@@ -41,3 +41,20 @@ class LoginInputType extends $pb.ProtobufEnum {
   const LoginInputType._($core.int v, $core.String n) : super(v, n);
 }
 
+class TableState extends $pb.ProtobufEnum {
+  static const TableState ORDERED = TableState._(0, 'ORDERED');
+  static const TableState WAITING = TableState._(1, 'WAITING');
+  static const TableState IMPATIENT = TableState._(2, 'IMPATIENT');
+
+  static const $core.List<TableState> values = <TableState> [
+    ORDERED,
+    WAITING,
+    IMPATIENT,
+  ];
+
+  static final $core.Map<$core.int, TableState> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static TableState valueOf($core.int value) => _byValue[value];
+
+  const TableState._($core.int v, $core.String n) : super(v, n);
+}
+
