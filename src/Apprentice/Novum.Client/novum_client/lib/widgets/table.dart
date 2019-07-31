@@ -7,7 +7,6 @@ import 'package:novum_client/services/runtimeDataService.dart';
 import 'buttons/bottombutton.dart';
 import 'buttons/tablebutton.dart';
 
-
 class Table extends StatefulWidget {
   @override
   TableState createState() => TableState();
@@ -50,6 +49,7 @@ class TableState extends State<Table> {
         height: BottomButton.heigth,
         price: list[i].amount,
         name: list[i].name,
+        state: list[i].state,
       ));
     }
     setState(() {

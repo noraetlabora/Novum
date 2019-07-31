@@ -29,29 +29,29 @@ namespace Novum.Server.Services
                 table.Guests = ntTable.Guests;
 
 
-                // DateTime.Now - ntTable.Updated
-                // < 2min dann Ordered  grün
-                // < 5min dann Waiting  orange
-                // sonst Impatient      rot
 
-                var timespan = new TimeSpan(DateTime.Now.Ticks - ntTable.Updated.Ticks);
+                var timespan = (DateTime.Now - ntTable.Updated).TotalMinutes;
+
+                if (timespan > 5)
+                {
+                    table.State = TableState.Impatient;
+
+                }
+                else if (timespan > 2)
+                {
+                    table.State = TableState.Waiting;
+                }
+                else
+                {
+                    table.State = TableState.Ordered;
+                }
+
 
 
                 tables.Tables_.Add(table);
             }
 
-            table = new Table();
-            table.Id = "1030";
-            table.Name = "67";
-            table.Amount = 15.88;
 
-            tables.Tables_.Add(table);
-
-            table = new Table();
-            table.Id = "1040";
-            table.Name = "1";
-            table.Amount = 14.33;
-            tables.Tables_.Add(table);
 
 
 
