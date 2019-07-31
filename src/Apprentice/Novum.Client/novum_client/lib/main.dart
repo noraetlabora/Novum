@@ -50,8 +50,8 @@ class Initialize extends State<MyHomePage> {
     Grpc.set(ip, port);
     SystemService.ping();
 
-    if (!isInit) {
-      Timer.periodic(Duration(seconds: 3), (timer) async {
+    Timer.periodic(Duration(seconds: 3), (timer) async {
+      if (!isInit) {
         if (kill != -1) {
           if (init == false) {
             try {
@@ -71,12 +71,14 @@ class Initialize extends State<MyHomePage> {
             }
           }
         }
-      });
+      }
+    });
 
-      Timer.periodic(Duration(seconds: 1), (timer) {
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if (!isInit) {
         Grpc.set(ip, port);
-      });
-    }
+      }
+    });
 
     return Scaffold(
       body: Container(

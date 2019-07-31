@@ -3,10 +3,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:novum_client/screens/functions.dart';
 import 'package:novum_client/screens/tablescreen.dart';
 import 'package:novum_client/services/authenticationService.dart';
-import 'package:novum_client/widgets/table.dart' as t;
 import 'package:novum_client/widgets/pinpad.dart';
 import 'package:novum_client/widgets/bottombuttonbar.dart';
-import 'package:novum_client/widgets/tablebutton.dart';
 
 class BottomButton extends StatelessWidget {
   final int amount;
@@ -79,8 +77,8 @@ class BottomButton extends StatelessWidget {
         child: AutoSizeText(text),
       ),
     );
-    
-    }
+  }
+
   void reset() {
     PinPad.pin = "";
     PinPad.tfController.text = "";

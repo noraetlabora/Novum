@@ -16,7 +16,11 @@ class BottomButtonBar extends StatelessWidget {
     final children = <Widget>[];
     var split = text.split(" ");
     for (var i = 0; i < amount; i++) {
-      children.add(new BottomButton(amount: amount, text: split[i], bar: this,));
+      children.add(new BottomButton(
+        amount: amount,
+        text: split[i],
+        bar: this,
+      ));
     }
     return Row(
       mainAxisSize: MainAxisSize

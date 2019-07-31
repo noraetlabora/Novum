@@ -16,15 +16,19 @@ class TableState extends State<Table> {
 
   @override
   Widget build(BuildContext context) {
-    Timer.periodic(Duration(seconds: 20), (timer) async {
+    Timer.periodic(Duration(seconds: 10), (timer) async {
       Tables tableList = await RuntimeDataService.GetTables();
       var list = tableList.tables;
       List<TableButton> tableButtonList = <TableButton>[];
-      for(int i = 0; i<list.length; i++){
-      tableButtonList.add(TableButton(height: BottomButton.heigth, price: list[i].amount, name: list[i].name,));
+      for (int i = 0; i < list.length; i++) {
+        tableButtonList.add(TableButton(
+          height: BottomButton.heigth,
+          price: list[i].amount,
+          name: list[i].name,
+        ));
       }
       setState(() {
-       tables = tableButtonList; 
+        tables = tableButtonList;
       });
     });
 

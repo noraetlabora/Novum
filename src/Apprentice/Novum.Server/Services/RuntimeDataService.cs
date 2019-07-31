@@ -37,6 +37,12 @@ namespace Novum.Server.Services
             table.Amount = 15.88;
             tables.Tables_.Add(table);
 
+            table = new Table();
+            table.Id = "1040";
+            table.Name = "1";
+            table.Amount = 14.33;
+            tables.Tables_.Add(table);
+
 
 
             return Task.FromResult(tables);
