@@ -41,7 +41,7 @@ class MyHomePage extends StatefulWidget {
 
 class Initialize extends State<MyHomePage> {
   static bool isInit = false;
-  static String ip = "192.168.0.150";
+  static String ip = "192.168.0.160";
   static int port = 50051;
 
   bool init = false;
@@ -60,11 +60,11 @@ class Initialize extends State<MyHomePage> {
 
               if (initReply) {
                 kill = -1;
+                init = true;
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => LoginApp()),
                 );
-                init = true;
               }
             } catch (e) {
               init = false;
