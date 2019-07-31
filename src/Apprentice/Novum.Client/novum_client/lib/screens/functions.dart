@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:novum_client/widgets/functionbutton.dart';
+import 'package:novum_client/widgets/buttons/functionbutton.dart';
+
 
 class Functions extends StatelessWidget {
   @override

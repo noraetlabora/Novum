@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:novum_client/widgets/bottombutton.dart';
+
+import 'buttons/bottombutton.dart';
 
 class BottomButtonBar extends StatelessWidget {
   final String id;

@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:novum_client/services/protobuf/novum.pb.dart';
 import 'package:novum_client/services/runtimeDataService.dart';
-import 'package:novum_client/widgets/bottombutton.dart';
-import 'package:novum_client/widgets/tablebutton.dart';
+
+import 'buttons/bottombutton.dart';
+import 'buttons/tablebutton.dart';
+
 
 class Table extends StatefulWidget {
   @override

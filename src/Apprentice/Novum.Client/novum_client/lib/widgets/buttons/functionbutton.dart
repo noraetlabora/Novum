@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:novum_client/screens/login.dart';
 
-import 'deviceinformationlist.dart';
+import '../deviceinformationlist.dart';
 
 class FunctionButton extends StatelessWidget {
   FunctionButton(
