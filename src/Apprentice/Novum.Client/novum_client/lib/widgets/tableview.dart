@@ -47,9 +47,12 @@ class TableState extends State<Table> {
     for (int i = 0; i < list.length; i++) {
       tableButtonList.add(TableButton(
         height: BottomButton.heigth,
-        price: list[i].amount,
+        amount: list[i].amount,
         name: list[i].name,
         state: list[i].state,
+        guests: list[i].guests,
+        id: list[i].id,
+        waiterId: list[i].waiterId,
       ));
     }
     setState(() {

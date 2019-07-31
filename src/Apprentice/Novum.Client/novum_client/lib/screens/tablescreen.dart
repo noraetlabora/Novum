@@ -5,7 +5,7 @@ import 'package:novum_client/widgets/bottombuttonbar.dart';
 import 'package:novum_client/widgets/pinpad.dart';
 import 'package:novum_client/widgets/sidebar.dart';
 import 'package:novum_client/widgets/statusbar.dart';
-import 'package:novum_client/widgets/table.dart' as const1;
+import 'package:novum_client/widgets/tableview.dart' as tv;
 
 class TableScreen extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class TableScreen extends StatelessWidget {
           new Container(
             width: width,
             height: heigth * 0.3684,
-            child: const1.Table(),
+            child: tv.Table(),
           ),
           new PinPad(hide: false, hintText: "Tischnummer"),
           new BottomButtonBar(text: "Rechnungen OK", amount: 2, id: "table")

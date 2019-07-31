@@ -40,7 +40,7 @@ class MyHomePage extends StatefulWidget {
 
 class Initialize extends State<MyHomePage> {
   static bool isInit = false;
-  static String ip = "192.168.0.150";
+  static String ip = "192.168.0.160";
   static int port = 50051;
 
   bool init = false;
@@ -50,33 +50,29 @@ class Initialize extends State<MyHomePage> {
     SystemService.ping();
 
     Timer.periodic(Duration(seconds: 3), (timer) async {
-      if (!isInit) {
-        if (kill != -1) {
-          if (init == false) {
-            try {
-              print("timer hit");
-              var initReply = await AuthenticationService.initialize();
+      if (kill != -1) {
+        if (init == false) {
+          try {
+            print("timer hit");
+            var initReply = await AuthenticationService.initialize();
 
-              if (initReply) {
-                kill = -1;
-                init = true;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginApp()),
-                );
-              }
-            } catch (e) {
-              init = false;
+            if (initReply) {
+              kill = -1;
+              init = true;
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginApp()),
+              );
             }
+          } catch (e) {
+            init = false;
           }
         }
       }
     });
 
     Timer.periodic(Duration(seconds: 1), (timer) {
-      if (!isInit) {
-        Grpc.set(ip, port);
-      }
+      Grpc.set(ip, port);
     });
 
     return Scaffold(

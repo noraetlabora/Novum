@@ -5,14 +5,19 @@ import 'package:novum_client/services/protobuf/novum.pbgrpc.dart';
 class TableButton extends StatelessWidget {
   TableButton(
       {@required this.height,
-      @required this.price,
+      @required this.amount,
       @required this.name,
-      @required this.state});
-  String id;
+      @required this.state,
+      @required this.guests,
+      @required this.waiterId,
+      @required this.id});
+  final String id;
   final double height;
-  final double price;
+  final double amount;
   final String name;
   final TableState state;
+  final int guests;
+  final String waiterId;
 
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -40,12 +45,8 @@ class TableButton extends StatelessWidget {
               side: BorderSide(color: Colors.white, width: 0.4)),
           textColor: Colors.white,
           onPressed: () {},
-          // child: Text(
-          //   id,
-          //   style: TextStyle(fontSize: 20),
-          // ),
           child: GridTile(
-            footer: Text(price.toString()),
+            footer: Text(amount.toString()),
             child: Text(
               name,
               style: TextStyle(fontWeight: FontWeight.w300, fontSize: 40),
