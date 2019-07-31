@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:novum_client/main.dart';
+import 'package:novum_client/screens/main.dart';
 
 class DialogSelection {
   static void informationDialog(

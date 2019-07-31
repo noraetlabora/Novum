@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:novum_client/login.dart';
+import 'package:novum_client/screens/login.dart';
 
 import 'deviceinformationlist.dart';
 

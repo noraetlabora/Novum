@@ -1,16 +1,15 @@
 import 'dart:async';
 
-import 'package:novum_client/login.dart';
+import 'package:novum_client/popups/dialogs.dart';
 import 'package:novum_client/services/authenticationService.dart';
-
-import "dialogs.dart";
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:novum_client/services/grpc.dart';
+import 'package:novum_client/services/systemService.dart';
 
-import 'services/grpc.dart';
-import 'services/systemService.dart';
+import 'login.dart';
 
 int kill = 0;
 

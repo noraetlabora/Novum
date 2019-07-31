@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:novum_client/login.dart';
+import 'package:novum_client/screens/login.dart';
 import 'package:novum_client/widgets/deviceinformationlist.dart';
 
 class SideBar extends StatelessWidget {
@@ -13,7 +13,6 @@ class SideBar extends StatelessWidget {
         child: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
-            
             children: <Widget>[
               Container(
                 height: height * 0.15,

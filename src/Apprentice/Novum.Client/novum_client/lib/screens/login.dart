@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:novum_client/main.dart';
 import 'package:novum_client/widgets/sidebar.dart';
 import 'package:novum_client/widgets/pinpad.dart';
 import 'package:novum_client/widgets/statusbar.dart';
 import 'package:novum_client/widgets/bottombuttonbar.dart';
+
+import 'main.dart';
 
 void main() => runApp(LoginApp());
 
