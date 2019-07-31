@@ -12,40 +12,23 @@ class StatusBar extends StatefulWidget {
 }
 
 class StatusBarState extends State<StatusBar> {
+  var battery = Battery();
+  var batteryPercent = 0;
+  bool killswitch = false;
+  Icon icon =
+      Icon(FontAwesomeIcons.batteryEmpty, color: Colors.white, size: 20);
   @override
   Widget build(BuildContext context) {
-    var battery = Battery();
-    var batteryPercent;
-    Icon batteryIcon = Icon(
-      FontAwesomeIcons.batteryEmpty,
-      color: Colors.white,
-      size: 20,
-    );
-    Timer.periodic(const Duration(seconds: 10), (timer) async {
-      try {
-        batteryPercent = await battery.batteryLevel;
-        Icon batteryIcon1 = Icon(
-          FontAwesomeIcons.batteryEmpty,
-          color: Colors.white,
-          size: 20,
-        );
-        print(batteryPercent);
-        if (batteryPercent >= 80) {
-          batteryIcon1 = Icon(FontAwesomeIcons.batteryFull);
-        } else if (batteryPercent >= 60) {
-          batteryIcon1 = Icon(FontAwesomeIcons.batteryThreeQuarters);
-        } else if (batteryPercent >= 40) {
-          batteryIcon1 = Icon(FontAwesomeIcons.batteryHalf);
-        } else if (batteryPercent >= 5) {
-          batteryIcon1 = Icon(FontAwesomeIcons.batteryQuarter);
-        } else {
-          batteryIcon1 = Icon(FontAwesomeIcons.batteryEmpty);
-        }
-        setState(() => {batteryIcon = batteryIcon1});
-      } catch (ex) {}
+    double heigth = MediaQuery.of(context).size.height;
+    if (!killswitch) {
+      getIcon();
+      killswitch = true;
+    }
+
+    Timer.periodic(const Duration(minutes: 10), (timer) async {
+      getIcon();
     });
 
-    double heigth = MediaQuery.of(context).size.height;
     return Container(
       height: heigth * 0.0469,
       color: Colors.black,
@@ -66,7 +49,7 @@ class StatusBarState extends State<StatusBar> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  batteryIcon,
+                  icon,
                 ],
               )
             ],
@@ -74,5 +57,48 @@ class StatusBarState extends State<StatusBar> {
         ],
       ),
     );
+  }
+
+  Future<void> getIcon() async {
+    try {
+      batteryPercent = await battery.batteryLevel;
+
+      //print(batteryPercent);
+      if (batteryPercent >= 80) {
+        icon = Icon(
+          FontAwesomeIcons.batteryFull,
+          color: Colors.white,
+          size: 20,
+        );
+      } else if (batteryPercent >= 60) {
+        icon = Icon(
+          FontAwesomeIcons.batteryThreeQuarters,
+          color: Colors.white,
+          size: 20,
+        );
+      } else if (batteryPercent >= 40) {
+        icon = Icon(
+          FontAwesomeIcons.batteryHalf,
+          color: Colors.white,
+          size: 20,
+        );
+      } else if (batteryPercent >= 5) {
+        icon = Icon(
+          FontAwesomeIcons.batteryQuarter,
+          color: Colors.white,
+          size: 20,
+        );
+      } else {
+        icon = Icon(
+          FontAwesomeIcons.batteryEmpty,
+          color: Colors.white,
+          size: 20,
+        );
+      }
+      setState(() => {icon = icon});
+    } catch (ex) {
+      print(ex);
+      throw ex;
+    }
   }
 }
