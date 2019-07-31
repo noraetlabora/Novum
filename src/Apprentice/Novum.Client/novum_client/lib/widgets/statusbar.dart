@@ -24,6 +24,7 @@ class StatusBarState extends State<StatusBar> {
   @override
   Widget build(BuildContext context) {
     double heigth = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     if (!killswitch) {
       getIcon();
       getPing();
@@ -53,17 +54,19 @@ class StatusBarState extends State<StatusBar> {
                 "Kassa 1",
                 style: TextStyle(color: Colors.white),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  icon,
-                  Text(
-                    "    " + ping,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              )
+              Padding(
+                  padding: EdgeInsets.fromLTRB(width - 180, 0, 0, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      icon,
+                      Text(
+                        "      "+ping,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  )),
             ],
           ),
         ],
