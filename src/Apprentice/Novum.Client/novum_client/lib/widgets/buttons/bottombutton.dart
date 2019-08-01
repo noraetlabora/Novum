@@ -48,12 +48,6 @@ class BottomButton extends StatelessWidget {
                 // }
 
                 break;
-              case "Funktionen":
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Functions()),
-                );
-                break;
             }
           } else if (id == "table") {
             switch (text) {

@@ -32,21 +32,21 @@ class SideBar extends StatelessWidget {
                 ),
               ),
               ListTile(
-                title: listText("Abmelden"),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Login()),
-                  );
-                },
-              ),
-              Divider(),
-              ListTile(
                 title: listText("Informationen"),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => DeviceInfo()),
+                  );
+                },
+              ),
+              Divider(),
+              ListTile(
+                title: listText("Abmelden"),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Login()),
                   );
                 },
               ),

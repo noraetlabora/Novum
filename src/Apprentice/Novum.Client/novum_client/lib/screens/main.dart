@@ -13,6 +13,7 @@ import 'login.dart';
 int kill = 0;
 
 void main() {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(Client());
 }
 
@@ -39,7 +40,7 @@ class MyHomePage extends StatefulWidget {
 
 class Initialize extends State<MyHomePage> {
   static bool isInit = false;
-  static String ip = "192.168.0.160";
+  static String ip = "192.168.0.150";
   static int port = 50051;
 
   bool init = false;
@@ -49,6 +50,10 @@ class Initialize extends State<MyHomePage> {
     //SystemService.ping();
 
     Timer.periodic(Duration(seconds: 3), (timer) async {
+      if (isInit) {
+        print("Timer 1 canceled");
+        timer.cancel();
+      }
       if (kill != -1) {
         if (init == false) {
           try {
@@ -70,7 +75,11 @@ class Initialize extends State<MyHomePage> {
       }
     });
 
-    Timer.periodic(Duration(seconds: 1), (timer) {
+    Timer.periodic(Duration(seconds: 3), (timer) {
+      if (isInit) {
+        print("Timer 2 canceled");
+        timer.cancel();
+      }
       Grpc.set(ip, port);
     });
 
@@ -89,7 +98,6 @@ class Initialize extends State<MyHomePage> {
           ),
         ),
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () => DialogSelection.inputDialog(context,
             "IP/Port Konfiguration", "IP Adresse:Port", "OK", "Abbruch"),

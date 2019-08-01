@@ -18,11 +18,14 @@ class TableState extends State<Table> {
 
   @override
   Widget build(BuildContext context) {
+    print("table view build");
+    print(killswitch);
     if (!killswitch) {
       getTables();
       killswitch = true;
     }
-    Timer.periodic(Duration(seconds: 20), (timer) async {
+
+    Timer(Duration(seconds: 20), () async {
       getTables();
     });
 
@@ -55,9 +58,11 @@ class TableState extends State<Table> {
         waiterId: list[i].waiterId,
       ));
     }
-    setState(() {
-      tables = tableButtonList;
-    });
+    if (mounted) {
+      setState(() {
+        tables = tableButtonList;
+      });
+    }
   }
 
   static void add(TableButton bt) {

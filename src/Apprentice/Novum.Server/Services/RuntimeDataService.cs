@@ -28,29 +28,62 @@ namespace Novum.Server.Services
                 table.Amount = (double)ntTable.Amount;
                 table.Guests = ntTable.Guests;
 
+                var timespan = (DateTime.Now - ntTable.Updated);
 
-
-                var timespan = (DateTime.Now - ntTable.Updated).TotalMinutes;
-
-                if (timespan > 5)
-                {
-                    table.State = TableState.Impatient;
-
-                }
-                else if (timespan > 2)
-                {
-                    table.State = TableState.Waiting;
-                }
-                else
-                {
+                if (timespan.TotalMinutes < 2) 
                     table.State = TableState.Ordered;
-                }
-
-
-
+                else if (timespan.TotalMinutes < 5)
+                    table.State = TableState.Waiting;  
+                else
+                    table.State = TableState.Impatient;
+                
                 tables.Tables_.Add(table);
             }
 
+            // var tables = new Tables();
+
+            // var table = new Table();
+            // table.Id = "1010";
+            // table.Name = "10";
+            // table.Amount = 12.34;
+            // table.State = TableState.Ordered;
+            // tables.Tables_.Add(table);
+
+
+            // table = new Table();
+            // table.Id = "1012";
+            // table.Name = "12";
+            // table.Amount = 34.56;
+            // table.State = TableState.Waiting;
+            // tables.Tables_.Add(table);
+
+            // table = new Table();
+            // table.Id = "1020";
+            // table.Name = "20";
+            // table.Amount = 987.65;
+            // table.State = TableState.Impatient;
+            // tables.Tables_.Add(table);
+
+            // table = new Table();
+            // table.Id = "1030";
+            // table.Name = "30";
+            // table.Amount = 45.90;
+            // table.State = TableState.Ordered;
+            // tables.Tables_.Add(table);
+
+            // table = new Table();
+            // table.Id = "1040";
+            // table.Name = "40";
+            // table.Amount = 30.34;
+            // table.State = TableState.Impatient;
+            // tables.Tables_.Add(table);
+
+            // table = new Table();
+            // table.Id = "1013";
+            // table.Name = "13";
+            // table.Amount = 105.55;
+            // table.State = TableState.Ordered;
+            // tables.Tables_.Add(table);
 
 
 
