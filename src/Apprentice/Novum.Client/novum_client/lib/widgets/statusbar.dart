@@ -51,7 +51,7 @@ class StatusBarState extends State<StatusBar> {
                 style: TextStyle(color: Colors.white),
               ),
               Padding(
-                  padding: EdgeInsets.fromLTRB(width - 110, 0, 0, 0),
+                  padding: EdgeInsets.fromLTRB(width - 100, 0, 0, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     mainAxisSize: MainAxisSize.max,
