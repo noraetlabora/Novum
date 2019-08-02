@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:novum_client/popups/dialogs.dart';
 import 'package:novum_client/screens/login.dart';
-import 'package:novum_client/screens/main.dart';
+import 'package:novum_client/main.dart';
 import 'package:novum_client/services/grpc.dart';
 import 'package:novum_client/services/systemService.dart';
 import 'package:novum_client/widgets/deviceinformationlist.dart';

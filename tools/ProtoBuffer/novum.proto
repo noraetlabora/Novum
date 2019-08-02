@@ -20,8 +20,7 @@ message InitializeRequest {
   uint32 test = 4;
 }
 
-enum ClientType {
-    
+enum ClientType {  
     ORDERMAN = 0;
     WINDOWS = 1;
     WEB = 2;

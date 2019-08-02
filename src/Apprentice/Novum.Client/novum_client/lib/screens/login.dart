@@ -5,7 +5,7 @@ import 'package:novum_client/widgets/pinpad.dart';
 import 'package:novum_client/widgets/statusbar.dart';
 import 'package:novum_client/widgets/bottombuttonbar.dart';
 
-import 'main.dart';
+import '../main.dart';
 
 void main() => runApp(LoginApp());
 
@@ -24,11 +24,10 @@ class LoginApp extends StatelessWidget {
 class Login extends StatelessWidget {
   static String pin = "";
   bool tof = true;
-  static BuildContext context1 = null;
+  static BuildContext context1;
   @override
   Widget build(BuildContext context) {
     context1 = context;
-    //TextEditingController tfController = TextEditingController();
     SystemChrome.setEnabledSystemUIOverlays([]);
     double width = MediaQuery.of(context).size.width;
     double heigth = MediaQuery.of(context).size.height;
