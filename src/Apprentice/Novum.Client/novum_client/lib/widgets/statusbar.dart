@@ -55,6 +55,7 @@ class StatusBarState extends State<StatusBar> {
                 style: TextStyle(color: Colors.white),
               ),
               getBatteryIcon(),
+
             ],
           ),
         ],

@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="Nt.Services.UserControls.OrderSolutions"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Nt.Services.UserControls"
+             mc:Ignorable="d" 
+             Background="{StaticResource Background}"
+             Width="880" Height="554">
+    <Grid Height="544" Width="880">
+        <Border BorderThickness="1" HorizontalAlignment="Left" Height="298" Margin="319,9,0,0" VerticalAlignment="Top" Width="300" Background="{DynamicResource Primary}" CornerRadius="5,5,5,5" />
+        <Border BorderThickness="1" HorizontalAlignment="Left" Height="300" Margin="10,10,0,0" VerticalAlignment="Top" Width="300" Background="{DynamicResource PrimaryVariant}" CornerRadius="5,5,5,5" />
+        <Label Content="Database Configuration" Margin="329,6,261,498" FontSize="24" />
+        <Button x:Name="btnServiceInstall" Content="Start Service" HorizontalAlignment="Left" Margin="706,504,0,0" VerticalAlignment="Top" Background="{DynamicResource Secondary}" Width="164" Height="30"/>
+        <Button x:Name="btnServiceRun" Content="Uninstall Service" HorizontalAlignment="Left" Margin="706,469,0,0" VerticalAlignment="Top" Background="{DynamicResource Secondary}" Width="164" Height="30"/>
+        <Label  x:Name="lblDbIp" Content="Ip" HorizontalAlignment="Left" Margin="329,48,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label  x:Name="lblDbPort" Content="Port" HorizontalAlignment="Left" Margin="329,76,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox  x:Name="txtDbPort" HorizontalAlignment="Left" Height="23" Margin="434,77,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" BorderBrush="{DynamicResource OnPrimary}" Foreground="{DynamicResource OnPrimary}" CaretBrush="{DynamicResource OnPrimary}" SelectionBrush="{DynamicResource Secondary}"/>
+        <Label  x:Name="lblDbNamespace" Content="Namespace" HorizontalAlignment="Left" Margin="329,107,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox  x:Name="txtDbNamespace" HorizontalAlignment="Left" Height="23" Margin="434,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" BorderBrush="{DynamicResource OnPrimary}" Foreground="{DynamicResource OnPrimary}" CaretBrush="{DynamicResource OnPrimary}" SelectionBrush="{DynamicResource Secondary}"/>
+        <Label  x:Name="lblDbUser" Content="User" HorizontalAlignment="Left" Margin="329,135,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox  x:Name="txtDbUser" HorizontalAlignment="Left" Height="23" Margin="434,136,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" BorderBrush="{DynamicResource OnPrimary}" Foreground="{DynamicResource OnPrimary}" CaretBrush="{DynamicResource OnPrimary}" SelectionBrush="{DynamicResource Secondary}"/>
+        <Label  x:Name="lblDbPassword" Content="Password" HorizontalAlignment="Left" Margin="329,163,0,0" VerticalAlignment="Top" Width="100"/>
+        <PasswordBox x:Name="txtDbPassword" HorizontalAlignment="Left" Margin="434,166,0,0" VerticalAlignment="Top" Width="120" Height="23" BorderBrush="{DynamicResource OnPrimary}" Foreground="{DynamicResource OnPrimary}" CaretBrush="{DynamicResource OnPrimary}" SelectionBrush="{DynamicResource Secondary}"/>
+        <TextBox  x:Name="txtDbIp" HorizontalAlignment="Left" Height="23" Margin="434,48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" BorderBrush="{DynamicResource OnPrimary}" Foreground="{DynamicResource OnPrimary}" CaretBrush="{DynamicResource OnPrimary}" SelectionBrush="{DynamicResource Secondary}"/>
+        <Label  x:Name="lblServerPort" Content="Server Port" HorizontalAlignment="Left" Margin="15,48,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label  x:Name="lblClientPort" Content="Client Port" HorizontalAlignment="Left" Margin="15,76,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox  x:Name="txtClientPort" HorizontalAlignment="Left" Height="23" Margin="120,77,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" BorderBrush="{DynamicResource OnPrimary}" Foreground="{DynamicResource OnPrimary}" CaretBrush="{DynamicResource OnPrimary}" SelectionBrush="{DynamicResource Secondary}"/>
+        <TextBox  x:Name="txtServerPort" HorizontalAlignment="Left" Height="23" Margin="120,48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" BorderBrush="{DynamicResource OnPrimary}" Foreground="{DynamicResource OnPrimary}" CaretBrush="{DynamicResource OnPrimary}" SelectionBrush="{DynamicResource Secondary}"/>
+        <Label Content="Service Configuration" Margin="10,6,570,498" FontSize="24" />
+        <Border x:Name="brdServiceStatus" BorderThickness="1" HorizontalAlignment="Left" Height="90" Margin="15,323,0,0" VerticalAlignment="Top" Width="855" Background="{DynamicResource Success}" CornerRadius="5,5,5,5" >
+            <Label Content="Service Status" Margin="9,18,0,0" FontSize="24" VerticalAlignment="Top" HorizontalAlignment="Left" />
+        </Border>
+        <Label  x:Name="lblServiceStatus" Content="Service is running" HorizontalAlignment="Left" Margin="208,350,0,0" VerticalAlignment="Top" Width="646" FontSize="18"/>
+    </Grid>
+</UserControl>
