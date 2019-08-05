@@ -1,4 +1,3 @@
 class Utils{
-  static double width;
-  static double height;
+  static bool isWindows = false;
 }

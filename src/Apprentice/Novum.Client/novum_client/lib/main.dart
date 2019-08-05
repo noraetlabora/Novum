@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:novum_client/popups/dialogs.dart';
 import 'package:novum_client/services/authenticationService.dart';
 
@@ -7,13 +9,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:novum_client/services/grpc.dart';
+import 'package:novum_client/utils/utils.dart';
 
 import 'screens/login.dart';
 
 int kill = 0;
 
 void main() {
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  if (Platform.isWindows) {
+    Utils.isWindows = true;
+    debugDefaultTargetPlatformOverride = TargetPlatform.fuchsia;
+  } else {
+    Utils.isWindows = false;
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+  }
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(Client());
 }
 

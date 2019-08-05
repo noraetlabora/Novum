@@ -4,6 +4,7 @@ import 'package:novum_client/screens/login.dart';
 import 'package:novum_client/main.dart';
 import 'package:novum_client/services/grpc.dart';
 import 'package:novum_client/services/systemService.dart';
+import 'package:novum_client/utils/utils.dart';
 import 'package:novum_client/widgets/deviceinformationlist.dart';
 
 class SideBar extends StatelessWidget {
@@ -32,16 +33,6 @@ class SideBar extends StatelessWidget {
                 ),
               ),
               ListTile(
-                title: listText("Informationen"),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => DeviceInfo()),
-                  );
-                },
-              ),
-              Divider(),
-              ListTile(
                 title: listText("Abmelden"),
                 onTap: () {
                   Navigator.push(
@@ -51,6 +42,7 @@ class SideBar extends StatelessWidget {
                 },
               ),
               Divider(),
+              informationListTile(context),
               ListTile(
                 title: listText("Ping"),
                 onTap: () async {
@@ -63,6 +55,26 @@ class SideBar extends StatelessWidget {
             ],
           ),
         ));
+  }
+
+  Container informationListTile(BuildContext context) {
+    if (!Utils.isWindows) {
+      return Container(
+        child: ListTile(
+          title: listText("Informationen"),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DeviceInfo()),
+            );
+          },
+        ),
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.grey[200]))),
+      );
+    } else {
+      
+    }
   }
 
   Text listText(String text) {
