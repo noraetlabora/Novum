@@ -55,7 +55,6 @@ class StatusBarState extends State<StatusBar> {
                 style: TextStyle(color: Utils.colorScheme.onSurface),
               ),
               getBatteryIcon(),
-
             ],
           ),
         ],
@@ -114,7 +113,6 @@ class StatusBarState extends State<StatusBar> {
           children: <Widget>[
             icon,
           ],
-        )
-      );
+        ));
   }
 }
