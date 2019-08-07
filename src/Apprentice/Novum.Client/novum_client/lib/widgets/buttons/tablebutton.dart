@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:novum_client/services/protobuf/novum.pbgrpc.dart';
+import 'package:novum_client/utils/utils.dart';
 
 class TableButton extends StatelessWidget {
   TableButton(
@@ -42,7 +43,7 @@ class TableButton extends StatelessWidget {
       height: height / 3,
       child: RaisedButton(
           shape: new ContinuousRectangleBorder(
-              side: BorderSide(color: Colors.white, width: 0.4)),
+              side: BorderSide(color: Utils.colorScheme.background, width: 0.4)),
           textColor: Colors.white,
           onPressed: () {},
           child: GridTile(

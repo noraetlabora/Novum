@@ -19,6 +19,7 @@ service Authentication {
 
 service StaticData {
   rpc GetCancellationReasons (google.protobuf.Empty) returns (CancellationReasons);
+  rpc GetTheme (google.protobuf.Empty) returns (Theme);
 }
 
 service RuntimeData {
@@ -88,4 +89,17 @@ message CancellationReasons {
 message CancellationReason {
 	string id = 1;
 	string name = 2;
+}
+
+message Theme {
+  uint32 primary = 1;
+  uint32 primaryVariant = 2;
+  uint32 secondary = 3;
+  uint32 secondaryVariant = 4;
+  uint32 background = 10;
+  uint32 surface = 11;
+  uint32 onPrimary = 20;
+  uint32 onSecondary = 21;
+  uint32 onBackground = 22;
+  uint32 onSurface = 23;
 }

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:novum_client/services/grpc.dart';
+import 'package:novum_client/services/staticDataService.dart';
 import 'package:novum_client/utils/utils.dart';
 
 import 'screens/login.dart';
@@ -50,7 +51,7 @@ class MyHomePage extends StatefulWidget {
 
 class Initialize extends State<MyHomePage> {
   static bool isInit = false;
-  static String ip = "192.168.0.150";
+  static String ip = "192.168.0.160";
   static int port = 50051;
 
   bool init = false;
@@ -64,21 +65,23 @@ class Initialize extends State<MyHomePage> {
         timer.cancel();
       }
       if (kill != -1) {
-        if (init == false) {
+        if (!init) {
           try {
             print("timer hit");
             var initReply = await AuthenticationService.initialize();
+            var themeReply = await StaticDataService.theme();
 
             if (initReply) {
               kill = -1;
               init = true;
+             // Utils.setColors(themeReply.primary, themeReply.secondary, themeReply.secondaryVariant, themeReply.background, themeReply.surface, themeReply.onPrimary, themeReply.onSecondary);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => LoginApp()),
               );
             }
           } catch (e) {
-            init = false;
+            init = null;
           }
         }
       }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:novum_client/utils/utils.dart';
 import 'package:novum_client/widgets/sidebar.dart';
 import 'package:novum_client/widgets/pinpad.dart';
 import 'package:novum_client/widgets/statusbar.dart';
@@ -13,9 +14,6 @@ class LoginApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Initialize.isInit = true;
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.yellow,
-      ),
       home: Login(),
     );
   }

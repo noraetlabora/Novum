@@ -29,6 +29,7 @@ enum ClientType {
 // The response message containing the greetings.
 message InitializeReply {
   uint32 unixTimestamp = 1;
+  uint32 primary = 2;
 }
 
 message LoginRequest {

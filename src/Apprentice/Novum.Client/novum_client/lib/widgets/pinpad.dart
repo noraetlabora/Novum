@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/widgets.dart';
+import 'package:novum_client/utils/utils.dart';
 
 import 'buttons/pinpadbutton.dart';
 
@@ -33,7 +34,7 @@ class PinPad extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             Container(
-              color: Color.fromRGBO(200, 200, 200, 1.0),
+              color: Utils.colorScheme.secondary,
               width: width,
               height: heigth * 0.0832,
               child: Center(

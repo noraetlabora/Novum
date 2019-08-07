@@ -1,6 +1,6 @@
 ///
 //  Generated code. Do not modify.
-//  source: novum.proto
+//  source: Desktop/novum.proto
 //
 // @dart = 2.3
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
@@ -151,6 +151,10 @@ class StaticDataClient extends $grpc.Client {
           ($0.Empty value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $1.CancellationReasons.fromBuffer(value));
+  static final _$getTheme = $grpc.ClientMethod<$0.Empty, $1.Theme>(
+      '/Novum.Server.StaticData/GetTheme',
+      ($0.Empty value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.Theme.fromBuffer(value));
 
   StaticDataClient($grpc.ClientChannel channel, {$grpc.CallOptions options})
       : super(channel, options: options);
@@ -160,6 +164,13 @@ class StaticDataClient extends $grpc.Client {
       {$grpc.CallOptions options}) {
     final call = $createCall(
         _$getCancellationReasons, $async.Stream.fromIterable([request]),
+        options: options);
+    return $grpc.ResponseFuture(call);
+  }
+
+  $grpc.ResponseFuture<$1.Theme> getTheme($0.Empty request,
+      {$grpc.CallOptions options}) {
+    final call = $createCall(_$getTheme, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseFuture(call);
   }
@@ -176,6 +187,13 @@ abstract class StaticDataServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
         ($1.CancellationReasons value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Empty, $1.Theme>(
+        'GetTheme',
+        getTheme_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($1.Theme value) => value.writeToBuffer()));
   }
 
   $async.Future<$1.CancellationReasons> getCancellationReasons_Pre(
@@ -183,8 +201,14 @@ abstract class StaticDataServiceBase extends $grpc.Service {
     return getCancellationReasons(call, await request);
   }
 
+  $async.Future<$1.Theme> getTheme_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
+    return getTheme(call, await request);
+  }
+
   $async.Future<$1.CancellationReasons> getCancellationReasons(
       $grpc.ServiceCall call, $0.Empty request);
+  $async.Future<$1.Theme> getTheme($grpc.ServiceCall call, $0.Empty request);
 }
 
 class RuntimeDataClient extends $grpc.Client {

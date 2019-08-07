@@ -3,6 +3,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:novum_client/screens/functions.dart';
 import 'package:novum_client/screens/tablescreen.dart';
 import 'package:novum_client/services/authenticationService.dart';
+import 'package:novum_client/utils/utils.dart';
 import 'package:novum_client/widgets/pinpad.dart';
 import 'package:novum_client/widgets/bottombuttonbar.dart';
 
@@ -21,7 +22,7 @@ class BottomButton extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     heigth = MediaQuery.of(context).size.height;
     return ButtonTheme(
-      buttonColor: Colors.yellow,
+      buttonColor: Utils.colorScheme.primary,
       minWidth: width / amount,
       height: heigth * 0.1015,
       child: RaisedButton(

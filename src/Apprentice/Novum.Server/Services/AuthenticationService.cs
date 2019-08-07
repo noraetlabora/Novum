@@ -10,7 +10,7 @@ namespace Novum.Server.Services
         public override Task<InitializeReply> Initialize(InitializeRequest request, ServerCallContext context)
         {
             var reply = new InitializeReply();
-            try 
+            try
             {
                 reply.UnixTimestamp = 4711;
             }
@@ -28,7 +28,7 @@ namespace Novum.Server.Services
         public override Task<LoginReply> Login(LoginRequest request, ServerCallContext context)
         {
             var reply = new LoginReply();
-            try 
+            try
             {
                 //logic
             }

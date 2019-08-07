@@ -26,5 +26,22 @@ namespace Novum.Server.Services
             return Task.FromResult(cancellationReasons);
         }
 
+        public override Task<Theme> GetTheme(Empty request, ServerCallContext context)
+        {
+            var theme = new Theme();
+
+            theme.Primary = 0xFFFFEB3B;
+            theme.Secondary = 0xFFC8C8C8;
+            theme.SecondaryVariant = 0xFF646464;
+            theme.Background = 0xFFFFFFFF;
+            theme.Surface = 0xFF000000;
+            theme.OnPrimary = 0xFF000000;
+            theme.OnSecondary = 0xFFAAAAAA;
+            theme.OnBackground = 0xFF000000;
+            theme.OnSurface = 0xFFFFFFFF;
+            
+            return Task.FromResult(theme);
+        }
+
     }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:novum_client/utils/utils.dart';
 import 'package:novum_client/widgets/pinpad.dart';
 
 class PinPadButton extends StatelessWidget {
@@ -13,7 +14,7 @@ class PinPadButton extends StatelessWidget {
       height: heigth * 0.1,
       child: RaisedButton(
         shape: new ContinuousRectangleBorder(
-            side: BorderSide(color: Colors.white, width: 0.5)),
+            side: BorderSide(color: Utils.colorScheme.background, width: 0.5)),
         textColor: Colors.white,
         onPressed: () {
           PinPad.onPressed(buttonValue);
@@ -22,7 +23,7 @@ class PinPadButton extends StatelessWidget {
           buttonValue,
           style: TextStyle(fontSize: 17),
         ),
-        color: Color.fromRGBO(100, 100, 100, 1.0),
+        color: Utils.colorScheme.secondaryVariant,
       ),
     );
   }
@@ -50,10 +51,10 @@ class PinPadBackspace extends StatelessWidget {
             onPressed: () {
               PinPad.onPressed("BACKSPACE");
             },
-            color: Color.fromRGBO(100, 100, 100, 1.0),
+            color: Utils.colorScheme.secondaryVariant,
             shape: new ContinuousRectangleBorder(
-                side: BorderSide(color: Colors.white, width: 0.5)),
-            textColor: Colors.white,
+                side: BorderSide(color: Utils.colorScheme.background, width: 0.5)),
+            textColor: Utils.colorScheme.background,
             child: Column(
               children: <Widget>[Icon(Icons.backspace)],
             )),

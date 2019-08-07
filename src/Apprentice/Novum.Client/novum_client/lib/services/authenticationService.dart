@@ -16,7 +16,7 @@ class AuthenticationService {
       });
 
       print("rep: " + reply.toString());
-      print("timestamp: " + reply.unixTimestamp.toString());
+      print("timestamp: " + reply.unixTimestamp.toString()); 
       return true;
     } catch (e) {
       return false;

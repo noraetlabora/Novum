@@ -25,11 +25,11 @@ class SideBar extends StatelessWidget {
                   child: Text(
                     "Funktionen",
                     style: TextStyle(
-                        color: Colors.black,
+                        color: Utils.colorScheme.onPrimary,
                         fontSize: 35,
                         fontWeight: FontWeight.w300),
                   ),
-                  decoration: BoxDecoration(color: Colors.yellow),
+                  decoration: BoxDecoration(color: Utils.colorScheme.primary),
                 ),
               ),
               ListTile(
@@ -70,7 +70,7 @@ class SideBar extends StatelessWidget {
           },
         ),
         decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey[200]))),
+            border: Border(bottom: BorderSide(color: Utils.colorScheme.secondary))),
       );
     } else {
       

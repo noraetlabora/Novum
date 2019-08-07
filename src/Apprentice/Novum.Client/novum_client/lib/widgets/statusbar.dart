@@ -18,7 +18,7 @@ class StatusBarState extends State<StatusBar> {
   var batteryPercent = 0;
   bool killswitch = false;
   Icon icon =
-      Icon(FontAwesomeIcons.batteryEmpty, color: Colors.white, size: 20);
+      Icon(FontAwesomeIcons.batteryEmpty, color: Utils.colorScheme.background, size: 20);
   @override
   Widget build(BuildContext context) {
     heigth = MediaQuery.of(context).size.height;
@@ -40,7 +40,7 @@ class StatusBarState extends State<StatusBar> {
 
     return Container(
       height: heigth * 0.0469,
-      color: Colors.black,
+      color: Utils.colorScheme.surface,
       child: Column(
         children: <Widget>[
           Row(
@@ -48,11 +48,11 @@ class StatusBarState extends State<StatusBar> {
             children: <Widget>[
               Icon(
                 Icons.person,
-                color: Colors.white,
+                color: Utils.colorScheme.onSurface,
               ),
               Text(
                 "Kassa 1",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Utils.colorScheme.onSurface),
               ),
               getBatteryIcon(),
 
@@ -70,31 +70,31 @@ class StatusBarState extends State<StatusBar> {
       if (batteryPercent >= 80) {
         icon = Icon(
           FontAwesomeIcons.batteryFull,
-          color: Colors.white,
+          color: Utils.colorScheme.onSurface,
           size: 20,
         );
       } else if (batteryPercent >= 60) {
         icon = Icon(
           FontAwesomeIcons.batteryThreeQuarters,
-          color: Colors.white,
+          color: Utils.colorScheme.onSurface,
           size: 20,
         );
       } else if (batteryPercent >= 40) {
         icon = Icon(
           FontAwesomeIcons.batteryHalf,
-          color: Colors.white,
+          color: Utils.colorScheme.onSurface,
           size: 20,
         );
       } else if (batteryPercent >= 5) {
         icon = Icon(
           FontAwesomeIcons.batteryQuarter,
-          color: Colors.white,
+          color: Utils.colorScheme.onSurface,
           size: 20,
         );
       } else {
         icon = Icon(
           FontAwesomeIcons.batteryEmpty,
-          color: Colors.white,
+          color: Utils.colorScheme.onSurface,
           size: 20,
         );
       }

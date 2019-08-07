@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:novum_client/screens/login.dart';
+import 'package:novum_client/utils/utils.dart';
 
 import '../deviceinformationlist.dart';
 
@@ -19,8 +20,7 @@ class FunctionButton extends StatelessWidget {
       height: height * 0.1,
       child: RaisedButton(
         shape: new ContinuousRectangleBorder(
-            side: BorderSide(color: Colors.white, width: 0.5)),
-        textColor: Colors.white,
+            side: BorderSide(color: Utils.colorScheme.background, width: 0.5)),
         onPressed: () {
           switch (buttonText) {
             case "Informationen":
