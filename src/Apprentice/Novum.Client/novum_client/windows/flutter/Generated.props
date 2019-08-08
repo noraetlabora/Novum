@@ -3,9 +3,9 @@
   <ImportGroup Label="PropertySheets"/>
   <PropertyGroup Label="UserMacros">
     <FLUTTER_ROOT>C:\src\flutter</FLUTTER_ROOT>
-    <PROJECT_DIR>D:\Novacom\Novum\src\Apprentice\Novum.Client\novum_client</PROJECT_DIR>
+    <PROJECT_DIR>C:\Users\User1\Desktop\Novum\src\Apprentice\Novum.Client\novum_client</PROJECT_DIR>
     <TRACK_WIDGET_CREATION>false</TRACK_WIDGET_CREATION>
-    <FLUTTER_TARGET>D:\Novacom\Novum\src\Apprentice\Novum.Client\novum_client\lib\main.dart</FLUTTER_TARGET>
+    <FLUTTER_TARGET>C:\Users\User1\Desktop\Novum\src\Apprentice\Novum.Client\novum_client\lib\main.dart</FLUTTER_TARGET>
   </PropertyGroup>
   <PropertyGroup/>
   <ItemDefinitionGroup/>

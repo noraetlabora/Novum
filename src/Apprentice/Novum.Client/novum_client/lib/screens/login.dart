@@ -42,8 +42,9 @@ class Login extends StatelessWidget {
               width: width,
               height: heigth * 0.3684,
               decoration: new BoxDecoration(
+                color: Utils.colorScheme.background,
                 image: new DecorationImage(
-                  image: ExactAssetImage('assets/NovaTouch-logo.jpg'),
+                  image: ExactAssetImage('assets/NovaTouch-logo.png'),
                   fit: BoxFit.cover,
                 ),
               )),
