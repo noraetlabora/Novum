@@ -29,7 +29,7 @@ class SideBar extends StatelessWidget {
                           fontSize: 35,
                           fontWeight: FontWeight.w300),
                     ),
-                    decoration: BoxDecoration(color: Colors.yellow),
+                    decoration: BoxDecoration(color: Utils.colorScheme.primary),
                   ),
                 ),
                 ListTile(
@@ -71,7 +71,7 @@ class SideBar extends StatelessWidget {
                           fontSize: 35,
                           fontWeight: FontWeight.w300),
                     ),
-                    decoration: BoxDecoration(color: Colors.yellow),
+                    decoration: BoxDecoration(color: Utils.colorScheme.primary),
                   ),
                 ),
                 ListTile(

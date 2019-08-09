@@ -20,14 +20,15 @@ class TableState extends State<Table> {
   Widget build(BuildContext context) {
     print("table view build");
     print(killswitch);
-    if (!killswitch) {
-      getTables();
-      killswitch = true;
+    if (!killswitch && mounted) {
+        getTables();
+        killswitch = true;
     }
-
-    Timer(Duration(seconds: 20), () async {
-      getTables();
-    });
+    if (mounted) {
+      Timer(Duration(seconds: 20), () async {
+        getTables();
+      });
+    }
 
     return GridView.builder(
         itemCount: tables.length,

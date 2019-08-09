@@ -63,6 +63,7 @@ class StatusBarState extends State<StatusBar> {
   }
 
   Future<void> getIcon() async {
+    if(mounted && !Utils.isWindows){
     try {
       batteryPercent = await battery.batteryLevel;
 
@@ -102,9 +103,11 @@ class StatusBarState extends State<StatusBar> {
       print(ex);
       throw ex;
     }
+    }
   }
 
   Padding getBatteryIcon() {
+    if(!Utils.isWindows){
     return Padding(
         padding: EdgeInsets.fromLTRB(width - 110, 0, 0, 0),
         child: Row(
@@ -114,5 +117,16 @@ class StatusBarState extends State<StatusBar> {
             icon,
           ],
         ));
+    }else{
+      return Padding(
+        padding: EdgeInsets.fromLTRB(width - 110, 0, 0, 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Text(" "),
+          ],
+        ));
+    }
   }
 }

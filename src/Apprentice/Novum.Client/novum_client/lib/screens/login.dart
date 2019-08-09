@@ -14,6 +14,7 @@ class LoginApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Initialize.isInit = true;
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Login(),
     );
   }

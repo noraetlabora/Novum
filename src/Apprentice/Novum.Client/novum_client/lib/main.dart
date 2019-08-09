@@ -35,6 +35,7 @@ class Client extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'novum_client',
       home: MyHomePage(title: 'initialize screen'),
     );
@@ -51,7 +52,7 @@ class MyHomePage extends StatefulWidget {
 
 class Initialize extends State<MyHomePage> {
   static bool isInit = false;
-  static String ip = "192.168.0.150";
+  static String ip = "192.168.0.160";
   static int port = 50051;
 
   bool init = false;
@@ -74,7 +75,7 @@ class Initialize extends State<MyHomePage> {
             if (initReply) {
               kill = -1;
               init = true;
-             // Utils.setColors(themeReply.primary, themeReply.secondary, themeReply.secondaryVariant, themeReply.background, themeReply.surface, themeReply.onPrimary, themeReply.onSecondary);
+             Utils.setColors(themeReply.primary, themeReply.secondary, themeReply.secondaryVariant, themeReply.background, themeReply.surface, themeReply.onPrimary, themeReply.onSecondary);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => LoginApp()),

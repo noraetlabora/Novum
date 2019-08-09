@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:novum_client/utils/utils.dart';
 import 'package:novum_client/widgets/bottombuttonbar.dart';
 import 'package:novum_client/widgets/pinpad.dart';
 import 'package:novum_client/widgets/sidebar.dart';
@@ -23,6 +24,7 @@ class TableScreen extends StatelessWidget {
           new Container(
             width: width,
             height: heigth * 0.3684,
+            color: Utils.colorScheme.background,
             child: tv.Table(),
           ),
           new PinPad(hide: false, hintText: "Tischnummer"),

@@ -14,7 +14,7 @@ class PinPadButton extends StatelessWidget {
       height: heigth * 0.1,
       child: RaisedButton(
         shape: new ContinuousRectangleBorder(
-            side: BorderSide(color: Utils.colorScheme.background, width: 0.5)),
+            side: BorderSide(color: Colors.white, width: 0.5)),
         textColor: Colors.white,
         onPressed: () {
           PinPad.onPressed(buttonValue);
@@ -53,8 +53,8 @@ class PinPadBackspace extends StatelessWidget {
             },
             color: Utils.colorScheme.secondaryVariant,
             shape: new ContinuousRectangleBorder(
-                side: BorderSide(color: Utils.colorScheme.background, width: 0.5)),
-            textColor: Utils.colorScheme.background,
+                side: BorderSide(color: Colors.white, width: 0.5)),
+            textColor: Colors.white,
             child: Column(
               children: <Widget>[Icon(Icons.backspace)],
             )),
