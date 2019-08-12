@@ -24,19 +24,17 @@ void main() {
     Utils.isWindows = false;
     debugDefaultTargetPlatformOverride = TargetPlatform.android;
   }
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(Client());
 }
 
 class Client extends StatelessWidget {
   // This widget is the root of your application.
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'novum_client',
       home: MyHomePage(title: 'initialize screen'),
     );
   }
@@ -52,7 +50,7 @@ class MyHomePage extends StatefulWidget {
 
 class Initialize extends State<MyHomePage> {
   static bool isInit = false;
-  static String ip = "192.168.0.160";
+  static String ip = "192.168.0.150";
   static int port = 50051;
 
   bool init = false;
@@ -61,10 +59,8 @@ class Initialize extends State<MyHomePage> {
     Grpc.set(ip, port);
 
     Timer.periodic(Duration(seconds: 3), (timer) async {
-      if (isInit) {
-        print("Timer 1 canceled");
-        timer.cancel();
-      }
+      Grpc.set(ip, port);
+
       if (kill != -1) {
         if (!init) {
           try {
@@ -75,7 +71,16 @@ class Initialize extends State<MyHomePage> {
             if (initReply) {
               kill = -1;
               init = true;
-             Utils.setColors(themeReply.primary, themeReply.secondary, themeReply.secondaryVariant, themeReply.background, themeReply.surface, themeReply.onPrimary, themeReply.onSecondary);
+              Utils.setColors(
+                  themeReply.primary,
+                  themeReply.secondary,
+                  themeReply.secondaryVariant,
+                  themeReply.background,
+                  themeReply.surface,
+                  themeReply.onPrimary,
+                  themeReply.onSecondary);
+              timer.cancel();
+              print("Timer canceled");
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => LoginApp()),
@@ -88,22 +93,18 @@ class Initialize extends State<MyHomePage> {
       }
     });
 
-    Timer.periodic(Duration(seconds: 3), (timer) {
-      if (isInit) {
-        print("Timer 2 canceled");
-        timer.cancel();
-      }
-      Grpc.set(ip, port);
-    });
-
     return Scaffold(
       body: Container(
-        color: Colors.white,
+        color: Utils.colorScheme.background,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SpinKitFadingCircle(color: Colors.black, size: 80.0),
+              SpinKitFadingCircle(
+                color: Colors.black,
+                size: 80.0,
+                duration: Duration(milliseconds: 1200),
+              ),
               Text(
                 '\n \n Verbindung wird hergestellt',
               ),
@@ -115,6 +116,7 @@ class Initialize extends State<MyHomePage> {
         onPressed: () => DialogSelection.inputDialog(context,
             "IP/Port Konfiguration", "IP Adresse:Port", "OK", "Abbruch"),
         tooltip: 'Increment',
+        backgroundColor: Utils.colorScheme.primary,
         child: Icon(Icons.settings),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

@@ -14,14 +14,14 @@ class PinPadButton extends StatelessWidget {
       height: heigth * 0.1,
       child: RaisedButton(
         shape: new ContinuousRectangleBorder(
-            side: BorderSide(color: Colors.white, width: 0.5)),
+            side:  BorderSide(color: Colors.white, width: 0.4)),
         textColor: Colors.white,
         onPressed: () {
           PinPad.onPressed(buttonValue);
         },
         child: Text(
           buttonValue,
-          style: TextStyle(fontSize: 17),
+          style: TextStyle(fontSize: 25),
         ),
         color: Utils.colorScheme.secondaryVariant,
       ),

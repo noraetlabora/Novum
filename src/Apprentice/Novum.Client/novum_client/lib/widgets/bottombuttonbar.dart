@@ -3,26 +3,18 @@ import 'package:flutter/material.dart';
 import 'buttons/bottombutton.dart';
 
 class BottomButtonBar extends StatelessWidget {
-  final String id;
-  final int amount;
-  final String text;
-  BottomButtonBar(
-      {@required this.amount, @required this.text, @required this.id});
-
-  String getId() {
-    return this.id;
-  }
+  final List<BottomButton> buttons;
+  BottomButtonBar({@required this.buttons});
 
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     final children = <Widget>[];
-    var split = text.split(" ");
-    for (var i = 0; i < amount; i++) {
-      children.add(new BottomButton(
-        amount: amount,
-        text: split[i],
-        bar: this,
-      ));
+    for (int i = 0; i < buttons.length; i++) {
+      BottomButton button = buttons[i];
+      button.width = width / (buttons.length);
+      children.add(button);
     }
+
     return Row(
       mainAxisSize: MainAxisSize
           .max, // this will take space as minimum as posible(to center)

@@ -65,8 +65,4 @@ class TableState extends State<Table> {
       });
     }
   }
-
-  static void add(TableButton bt) {
-    tables.add(bt);
-  }
 }

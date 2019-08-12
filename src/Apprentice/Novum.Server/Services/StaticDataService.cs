@@ -30,9 +30,9 @@ namespace Novum.Server.Services
         {
             var theme = new Theme();
 
-            theme.Primary = 0xFFFFEB3B;
-            theme.Secondary = 0xFFC8C8C8;
-            theme.SecondaryVariant = 0xFF646464;
+            theme.Primary = 0xFF25A146;
+            theme.SecondaryVariant = 0xFF262626;
+            theme.Secondary = 0xFFFFFFFF;
             theme.Background = 0xFFFFFFFF;
             theme.Surface = 0xFF000000;
             theme.OnPrimary = 0xFF000000;

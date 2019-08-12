@@ -63,7 +63,9 @@ class StatusBarState extends State<StatusBar> {
   }
 
   Future<void> getIcon() async {
-    if(mounted && !Utils.isWindows){
+    if(!mounted || Utils.isWindows)
+      return;
+
     try {
       batteryPercent = await battery.batteryLevel;
 
@@ -102,7 +104,6 @@ class StatusBarState extends State<StatusBar> {
     } catch (ex) {
       print(ex);
       throw ex;
-    }
     }
   }
 
