@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
+using System.Text;
 using CommandLine;
 using CommandLine.Text;
 using Microsoft.AspNetCore;
@@ -39,23 +40,9 @@ namespace Os.Server
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
-            Arguments = new OsArguments();
-            var parserResult = CommandLine.Parser.Default.ParseArguments<OsArguments>(args);
-            parserResult.WithParsed(parsedArguments =>
-            {
-                Nt.Logging.Log.Server.Error("---------- arguments ----------");
-                Nt.Logging.Log.Server.Error(parsedArguments.ToString());
-                Arguments = parsedArguments;
-            });
-            parserResult.WithNotParsed(errors =>
-            {
-                Nt.Logging.Log.Server.Error("---------- argument error ----------");
-                Nt.Logging.Log.Server.Error(HelpText.AutoBuild(parserResult).ToString());
-                return;
-            });
-
             //Database connection
-            Nt.Database.DB.Instance.ConnectionString = string.Format("Server={0}; Port={1}; Namespace={2}; User ID={3}; Password={4}", Arguments.DatabaseIp, Arguments.DatabasePort, Arguments.DatabaseNamespace, Arguments.DatabaseUser, Arguments.DatabasePassword);
+            //Nt.Database.DB.Instance.ConnectionString = string.Format("Server={0}; Port={1}; Namespace={2}; User ID={3}; Password={4}", Arguments.DatabaseIp, Arguments.DatabasePort, Arguments.DatabaseNamespace, Arguments.DatabaseUser, Arguments.DatabasePassword);
+            Nt.Database.DB.Instance.ConnectionString = string.Format("Server=192.168.0.4; Port=1972; Namespace=PROG-DEV; User ID=_SYSTEM; Password=SYS");
             Nt.Database.DB.Instance.Open();
             _clientApi = new ClientApi("http://localhost:12344");
 
@@ -78,6 +65,7 @@ namespace Os.Server
             if (Debugger.IsAttached || args.Contains("--console"))
             {
                 Nt.Logging.Log.Server.Error("---------- starting Os.Server in console ----------");
+                SetArguments(args);
                 webHost.Run();
             }
             else
@@ -110,5 +98,34 @@ namespace Os.Server
                         logging.ClearProviders();
                     })
                     .UseNLog();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static void SetArguments(string[] args)
+        {
+            Arguments = new OsArguments();
+            var parserResult = CommandLine.Parser.Default.ParseArguments<OsArguments>(args);
+            parserResult.WithParsed(parsedArguments =>
+            {
+                Nt.Logging.Log.Server.Error("---------- arguments ----------");
+                Nt.Logging.Log.Server.Error(parsedArguments.ToString());
+                Arguments = parsedArguments;
+            });
+            parserResult.WithNotParsed(errors =>
+            {
+                Nt.Logging.Log.Server.Error("---------- argument error ----------");
+                var builder = new StringBuilder();
+                foreach(var arg in args)
+                {
+                    builder.Append(arg).Append(" ");
+                }
+                Nt.Logging.Log.Server.Error("argumenlist: " + builder.ToString());
+                Nt.Logging.Log.Server.Error(HelpText.AutoBuild(parserResult).ToString());
+                throw new ArgumentException();
+            });
+        }
     }
 }

@@ -26,11 +26,8 @@ namespace Os.Server.Services
         /// <param name="args"></param>
         protected override void OnStarting(string[] args)
         {
-            foreach(var arg in args)
-            {
-                Nt.Logging.Log.Server.Warn("OsWebHostService OnStarting parameter: " + arg);
-            }
             Nt.Logging.Log.Server.Warn("OsWebHostService OnStarting");
+            Program.SetArguments(args);
             base.OnStarting(args);
         }
 
