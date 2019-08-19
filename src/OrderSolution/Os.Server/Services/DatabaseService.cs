@@ -22,7 +22,7 @@ namespace Os.Server.Services
 
             //cache static data
             Logic.Data.GetArticles();
-            Logic.Data.GetCategories("1");
+            Logic.Data.GetCategories();
             Logic.Data.GetModifierGroups();
             Logic.Data.GetPaymentMedia();
             Logic.Data.GetPrinters();

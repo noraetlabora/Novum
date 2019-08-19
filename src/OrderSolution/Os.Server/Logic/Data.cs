@@ -53,7 +53,7 @@ namespace Os.Server.Logic
             System.Diagnostics.Debug.WriteLine("static data are up not up to date");
 
             Logic.Data.GetArticles();
-            Logic.Data.GetCategories("1");
+            Logic.Data.GetCategories();
 
             var pubSubMessages = new List<Client.Model.PubSubMessage>();
             var pubSubMessage = new Client.Model.PubSubMessage();
@@ -202,6 +202,17 @@ namespace Os.Server.Logic
         public static List<Models.Category> GetCachedCategories(string menuId)
         {
                 return osCachedCategories;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static List<Models.Category> GetCategories()
+        {
+            var posId = Nt.Database.DB.Api.Pos.GetPosId();
+            var menuId = Nt.Database.DB.Api.Menu.GetMenuId(posId);
+            return GetCategories(menuId);
         }
 
         /// <summary>

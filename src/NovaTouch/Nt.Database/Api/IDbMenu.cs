@@ -16,6 +16,13 @@ namespace Nt.Database.Api
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="posId"></param>
+        /// <returns></returns>
+        string GetMenuId(string posId);
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="menuId"></param>
         /// <returns></returns>
         Dictionary<string, Nt.Data.Menu> GetMainMenus(string menuId);

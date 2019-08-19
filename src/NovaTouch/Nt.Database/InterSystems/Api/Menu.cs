@@ -48,6 +48,16 @@ namespace Nt.Database.InterSystems.Api
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="posId"></param>
+        /// <returns></returns>
+        public string GetMenuId(string posId)
+        {
+            return Interaction.CallClassMethod("cmNT.Kassa", "GetTouchMenu", InterSystemsApi.ClientId, posId, "0");
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="menuId"></param>
         /// <returns></returns>
         public Dictionary<string, Nt.Data.Menu> GetMainMenus(string menuId)
