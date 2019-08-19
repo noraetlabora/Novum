@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
+using System.ServiceProcess;
+using CommandLine;
+using CommandLine.Text;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Hosting.WindowsServices;
 using NLog.Web;
-using Os.Server.Services;
 
 namespace Os.Server
 {
+    
     /// <summary>
     /// 
     /// </summary>
@@ -18,55 +23,12 @@ namespace Os.Server
         /// <summary>
         /// 
         /// </summary>
-        /// <value></value>
-        public string DatabaseIp { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        public string DatabasePort  { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        public string DatabaseNamespace  { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        public string DatabaseUser  { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        public string DatabasePassword { get; private set; }
-        /// <summary>
-        /// port of this service
-        /// in default.json encoded in flag "posAdapterUrl"
-        /// </summary>
-        /// <value></value>
-        public string ServerPort  { get; private set; }
-        /// <summary>
-        /// ip address where the OsServer runs
-        /// </summary>
-        /// <value></value>
-        public string OsServerIp {get; private set;}
-        /// <summary>
-        /// server port of OrderSolutions we can call for eg. printing
-        /// in default.json flag "httpApiPort"
-        /// </summary>
-        public string OsServerPort   { get; private set; }
-        /// <summary>
-        /// client port of OrderSolutions who calls
-        /// in default.json in flag servicePort"
-        /// </summary>
-        /// <value></value>
-        public string OsClientPort  { get; private set; }
+        public static Nov.NT.POS.Fiscal.IFiscalProvider FiscalProvider;
 
         /// <summary>
         /// 
         /// </summary>
-        public Nov.NT.POS.Fiscal.IFiscalProvider FiscalProvider;
+        public static OsArguments Arguments { get; private set; }
 
         private static ClientApi _clientApi;
 
@@ -77,8 +39,23 @@ namespace Os.Server
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
+            Arguments = new OsArguments();
+            var parserResult = CommandLine.Parser.Default.ParseArguments<OsArguments>(args);
+            parserResult.WithParsed(parsedArguments =>
+            {
+                Nt.Logging.Log.Server.Error("---------- arguments ----------");
+                Nt.Logging.Log.Server.Error(parsedArguments.ToString());
+                Arguments = parsedArguments;
+            });
+            parserResult.WithNotParsed(errors =>
+            {
+                Nt.Logging.Log.Server.Error("---------- argument error ----------");
+                Nt.Logging.Log.Server.Error(HelpText.AutoBuild(parserResult).ToString());
+                return;
+            });
+
             //Database connection
-            Nt.Database.DB.Instance.ConnectionString = "Server=192.168.0.4; Port=1972; Namespace=PROG-DEV; User ID=_SYSTEM; Password=SYS";
+            Nt.Database.DB.Instance.ConnectionString = string.Format("Server={0}; Port={1}; Namespace={2}; User ID={3}; Password={4}", Arguments.DatabaseIp, Arguments.DatabasePort, Arguments.DatabaseNamespace, Arguments.DatabaseUser, Arguments.DatabasePassword);
             Nt.Database.DB.Instance.Open();
             _clientApi = new ClientApi("http://localhost:12344");
 
@@ -87,32 +64,27 @@ namespace Os.Server
             //log4net.Config.XmlConfigurator.Configure(logRepository, new System.IO.FileInfo("Nov.NT.log4net"));
 
             //cache static data
-            Logic.Data.GetArticles();
-            Logic.Data.GetCategories("1");
-            Logic.Data.GetModifierGroups();
-            Logic.Data.GetPaymentMedia();
-            Logic.Data.GetPrinters();
-            Logic.Data.GetUsers();
-
-            //service or console
-            var isService = !(System.Diagnostics.Debugger.IsAttached || args.Contains("--console"));
-            if (isService)
-                args = args.Where(arg => arg != "--console").ToArray();
+            //Logic.Data.GetArticles();
+            //Logic.Data.GetCategories("1");
+            //Logic.Data.GetModifierGroups();
+            //Logic.Data.GetPaymentMedia();
+            //Logic.Data.GetPrinters();
+            //Logic.Data.GetUsers();
 
             //build and run webHost
             var webHostBuilder = CreateWebHostBuilder(args);
             var webHost = webHostBuilder.Build();
 
-            if (isService)
+            if (Debugger.IsAttached || args.Contains("--console"))
             {
-                var pathToExe = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
-                var pathToContentRoot = System.IO.Directory.GetCurrentDirectory();
-                pathToContentRoot = System.IO.Path.GetDirectoryName(pathToExe);
-                webHost.RunAsCustomService();
+                Nt.Logging.Log.Server.Error("---------- starting Os.Server in console ----------");
+                webHost.Run();
             }
             else
             {
-                webHost.Run();
+                Nt.Logging.Log.Server.Error("---------- starting Os.Server as service ----------");
+                var webHostService = new Services.OsWebHostService(webHost);
+                ServiceBase.Run(webHostService);
             }
         }
 
@@ -124,24 +96,19 @@ namespace Os.Server
         /// <returns></returns>
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .ConfigureKestrel(options =>
-            {
-                options.ListenAnyIP(5000, listenOptions =>
-                {
-                    listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
-                });
-                options.ListenAnyIP(5001, listenOptions =>
-                {
-                    listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
-                    listenOptions.UseHttps();
-                    //listenOptions.UseHttps("certificate.pfx", "certificatePassword");
-                });
-            })
-            .UseStartup<Startup>()
-            .ConfigureLogging(logging =>
-            {
-                logging.ClearProviders();
-            })
-            .UseNLog();
+                    .UseKestrel()
+                    .ConfigureKestrel(options =>
+                    {
+                        options.ListenAnyIP(5000, listenOptions =>
+                        {
+                            listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+                        });
+                    })
+                    .UseStartup<Startup>()
+                    .ConfigureLogging(logging =>
+                    {
+                        logging.ClearProviders();
+                    })
+                    .UseNLog();
     }
 }

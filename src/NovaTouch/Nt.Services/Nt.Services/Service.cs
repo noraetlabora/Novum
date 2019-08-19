@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.ServiceProcess;
+using System.Diagnostics;
 
 namespace Nt.Services
 {
@@ -13,10 +14,10 @@ namespace Nt.Services
             Running = 0,
             Stopped = 1,
             Paused = 2,
-            StartPending =3,
+            StartPending = 3,
             StopPending = 4,
             Uninstalled = 5,
-            Unknown=6
+            Unknown = 6
         }
         public static Status GetStatus(string serviceName)
         {
@@ -46,28 +47,45 @@ namespace Nt.Services
             }
         }
 
-        public static bool Install(string serviceName)
+        public static void Install(string serviceName, string binPath)
         {
-            var args = new string[] { serviceName };
-            return InstallService(args);
+            var builder = new StringBuilder();
+            builder.Append(" create ").Append(serviceName);
+            builder.Append(" binPath=\"").Append(binPath).Append("\"");
+            RunServiceControl(builder.ToString());
         }
 
-        public static bool Uninstall(string serviceName)
+        public static void Uninstall(string serviceName)
         {
-            var args = new string[] { "/u", serviceName };
-            return InstallService(args);
+            var builder = new StringBuilder();
+            builder.Append(" delete ").Append(serviceName);
+            RunServiceControl(builder.ToString());
         }
 
-        private static bool InstallService(string[] args)
+        public static void Start(string serviceName, string[] args)
         {
-            try
+                var serviceController = new ServiceController(serviceName);
+                serviceController.Start(args);
+        }
+
+        public static void Stop(string serviceName)
+        {
+            var serviceController = new ServiceController(serviceName);
+            serviceController.Stop();
+        }
+
+        private static void RunServiceControl(string argument)
+        {
+            using (Process process = new Process())
             {
-                System.Configuration.Install.ManagedInstallerClass.InstallHelper(args);
-                return true;
-            }
-            catch
-            {
-                return false;
+                process.StartInfo.FileName = @"sc.exe";
+                process.StartInfo.Arguments = argument;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.Start();
+                process.WaitForExit();
+                var message = process.StandardOutput.ReadToEnd();
             }
         }
     }
