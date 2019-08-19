@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.WindowsServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Os.Server.Services
 {
@@ -26,7 +21,7 @@ namespace Os.Server.Services
         /// <param name="args"></param>
         protected override void OnStarting(string[] args)
         {
-            Nt.Logging.Log.Server.Warn("OsWebHostService OnStarting");
+            Nt.Logging.Log.Server.Info("OsWebHostService OnStarting");
             Program.SetArguments(args);
             base.OnStarting(args);
         }
@@ -36,7 +31,7 @@ namespace Os.Server.Services
         /// </summary>
         protected override void OnStarted()
         {
-            Nt.Logging.Log.Server.Warn("OsWebHostService OnStarted");
+            Nt.Logging.Log.Server.Info("OsWebHostService OnStarted");
             base.OnStarted();
         }
 
@@ -45,7 +40,7 @@ namespace Os.Server.Services
         /// </summary>
         protected override void OnStopping()
         {
-            Nt.Logging.Log.Server.Warn("OsWebHostService OnStopping");
+            Nt.Logging.Log.Server.Info("OsWebHostService OnStopping");
             base.OnStopping();
         }
 
@@ -54,7 +49,7 @@ namespace Os.Server.Services
         /// </summary>
         protected override void OnStopped()
         {
-            Nt.Logging.Log.Server.Warn("OsWebHostService OnStopped");
+            Nt.Logging.Log.Server.Info("OsWebHostService OnStopped");
             base.OnStopped();
         }
 
@@ -63,7 +58,7 @@ namespace Os.Server.Services
         /// </summary>
         protected override void OnShutdown()
         {
-            Nt.Logging.Log.Server.Warn("OsWebHostService OnShutdown");
+            Nt.Logging.Log.Server.Info("OsWebHostService OnShutdown");
             base.OnShutdown();
         }
     }

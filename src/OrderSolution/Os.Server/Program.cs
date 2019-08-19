@@ -40,23 +40,9 @@ namespace Os.Server
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
-            //Database connection
-            //Nt.Database.DB.Instance.ConnectionString = string.Format("Server={0}; Port={1}; Namespace={2}; User ID={3}; Password={4}", Arguments.DatabaseIp, Arguments.DatabasePort, Arguments.DatabaseNamespace, Arguments.DatabaseUser, Arguments.DatabasePassword);
-            Nt.Database.DB.Instance.ConnectionString = string.Format("Server=192.168.0.4; Port=1972; Namespace=PROG-DEV; User ID=_SYSTEM; Password=SYS");
-            Nt.Database.DB.Instance.Open();
-            _clientApi = new ClientApi("http://localhost:12344");
-
             //Logging for fiscalization
             //var logRepository = log4net.LogManager.GetRepository(System.Reflection.Assembly.GetEntryAssembly());
             //log4net.Config.XmlConfigurator.Configure(logRepository, new System.IO.FileInfo("Nov.NT.log4net"));
-
-            //cache static data
-            //Logic.Data.GetArticles();
-            //Logic.Data.GetCategories("1");
-            //Logic.Data.GetModifierGroups();
-            //Logic.Data.GetPaymentMedia();
-            //Logic.Data.GetPrinters();
-            //Logic.Data.GetUsers();
 
             //build and run webHost
             var webHostBuilder = CreateWebHostBuilder(args);
@@ -64,13 +50,13 @@ namespace Os.Server
 
             if (Debugger.IsAttached || args.Contains("--console"))
             {
-                Nt.Logging.Log.Server.Error("---------- starting Os.Server in console ----------");
+                Nt.Logging.Log.Server.Info("---------- starting Os.Server in console ----------");
                 SetArguments(args);
                 webHost.Run();
             }
             else
             {
-                Nt.Logging.Log.Server.Error("---------- starting Os.Server as service ----------");
+                Nt.Logging.Log.Server.Info("---------- starting Os.Server as service ----------");
                 var webHostService = new Services.OsWebHostService(webHost);
                 ServiceBase.Run(webHostService);
             }
@@ -110,8 +96,8 @@ namespace Os.Server
             var parserResult = CommandLine.Parser.Default.ParseArguments<OsArguments>(args);
             parserResult.WithParsed(parsedArguments =>
             {
-                Nt.Logging.Log.Server.Error("---------- arguments ----------");
-                Nt.Logging.Log.Server.Error(parsedArguments.ToString());
+                Nt.Logging.Log.Server.Info("---------- arguments ----------");
+                Nt.Logging.Log.Server.Info(parsedArguments.ToString());
                 Arguments = parsedArguments;
             });
             parserResult.WithNotParsed(errors =>

@@ -36,7 +36,7 @@ namespace Os.Server
                 options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
                 options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
-            services.AddHostedService<DatabaseService>();
+            services.AddHostedService<Services.DatabaseService>();
         }
 
         /// <summary>
