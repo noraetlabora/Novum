@@ -5,11 +5,18 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationManifest>App.manifest</ApplicationManifest>
+    <Company>novacom</Company>
+    <PackageId>NovaTouch Services</PackageId>
+    <Product>NovaTouch Services</Product>
+    <Authors>novacom</Authors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>3</WarningLevel>
   </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="Core.System.Configuration.Install" Version="1.0.1" />
-    <PackageReference Include="MaterialDesignThemes" Version="2.6.0" />
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.5.0" />
     <PackageReference Include="TopShelf.ServiceInstaller" Version="4.2.1" />
   </ItemGroup>

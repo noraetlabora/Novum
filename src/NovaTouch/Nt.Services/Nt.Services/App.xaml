@@ -5,18 +5,18 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
+            <!--<ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>-->
             
             <!-- primary / secondary -->
-            <SolidColorBrush x:Key="Primary" Color="#FF6200EE"/>
-            <SolidColorBrush x:Key="PrimaryVariant" Color="#FF3700B3"/>
-            <SolidColorBrush x:Key="Secondary" Color="#FF03DAC6"/>
-            <SolidColorBrush x:Key="SecondaryVariant" Color="#FF018786"/>
+            <SolidColorBrush x:Key="Primary" Color="#FFCFCFCF"/>
+            <SolidColorBrush x:Key="PrimaryVariant" Color="#FFA4A4A4"/>
+            <SolidColorBrush x:Key="Secondary" Color="#FF7E7E7E"/>
+            <SolidColorBrush x:Key="SecondaryVariant" Color="#FF5B5B5B"/>
             <!-- background -->
-            <SolidColorBrush x:Key="Background" Color="#FF292929"/>
+            <SolidColorBrush x:Key="Background" Color="#FFFFFFFF"/>
             <SolidColorBrush x:Key="Surface" Color="#FFFFFFFF"/>
             <SolidColorBrush x:Key="Error" Color="#FFB00020"/>
             <SolidColorBrush x:Key="Success" Color="#FF00B018"/>

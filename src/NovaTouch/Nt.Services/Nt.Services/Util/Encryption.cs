@@ -7,10 +7,13 @@ namespace Nt.Services.Util
 {
     public class Encryption
     {
-        private static string secretKey = "wpfnscLhcBAtgJm4MbR3KvqUFoWx1pskahPhCSL0UxGL2wHZ5K";
+        private static string secretKey = "PhC#L0Ux@L2wHZ5K";
 
         public static string EncryptString(string text)
         {
+            if (string.IsNullOrEmpty(text))
+                return "";
+
             var key = Encoding.UTF8.GetBytes(secretKey);
 
             using (var aesAlg = Aes.Create())
@@ -42,6 +45,9 @@ namespace Nt.Services.Util
 
         public static string DecryptString(string cipherText)
         {
+            if (string.IsNullOrEmpty(cipherText))
+                return "";
+
             var fullCipher = Convert.FromBase64String(cipherText);
 
             var iv = new byte[16];

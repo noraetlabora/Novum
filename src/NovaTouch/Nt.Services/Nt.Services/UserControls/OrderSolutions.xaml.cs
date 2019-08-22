@@ -42,7 +42,7 @@ namespace Nt.Services.UserControls
                     btnServiceInstall.Content = "Install Service";
                     btnServiceRun.Content = "Run Service";
                     btnServiceRun.IsEnabled = false;
-                    EnableSettings();
+                    EnableArguments();
                     break;
                 case Service.Status.Stopped:
                     lblServiceStatus.Content = "stopped";
@@ -50,7 +50,7 @@ namespace Nt.Services.UserControls
                     btnServiceInstall.Content = "Uninstall Service";
                     btnServiceRun.IsEnabled = true;
                     btnServiceRun.Content = "Run Service";
-                    EnableSettings();
+                    EnableArguments();
                     break;
                 case Service.Status.StopPending:
                     lblServiceStatus.Content = "stop pending";
@@ -58,7 +58,7 @@ namespace Nt.Services.UserControls
                     btnServiceInstall.Content = "Uninstall Service";
                     btnServiceRun.IsEnabled = false;
                     btnServiceRun.Content = "Stop Service";
-                    DisableSettings();
+                    DisableArguments();
                     break;
                 case Service.Status.StartPending:
                     lblServiceStatus.Content = "start pending";
@@ -66,7 +66,7 @@ namespace Nt.Services.UserControls
                     btnServiceInstall.Content = "Uninstall Service";
                     btnServiceRun.IsEnabled = false;
                     btnServiceRun.Content = "Run Service";
-                    DisableSettings();
+                    DisableArguments();
                     break;
                 case Service.Status.Paused:
                     lblServiceStatus.Content = "paused";
@@ -74,7 +74,7 @@ namespace Nt.Services.UserControls
                     btnServiceInstall.Content = "Uninstall Service";
                     btnServiceRun.IsEnabled = true;
                     btnServiceRun.Content = "Run Service";
-                    DisableSettings();
+                    DisableArguments();
                     break;
                 case Service.Status.Running:
                     lblServiceStatus.Content = "running";
@@ -82,7 +82,7 @@ namespace Nt.Services.UserControls
                     btnServiceInstall.Content = "Uninstall Service";
                     btnServiceRun.IsEnabled = true;
                     btnServiceRun.Content = "Stop Service";
-                    DisableSettings();
+                    DisableArguments();
                     break;
                 default:
                     lblServiceStatus.Content = "unknown";
@@ -90,7 +90,7 @@ namespace Nt.Services.UserControls
                     btnServiceInstall.Content = "Uninstall Service";
                     btnServiceRun.IsEnabled = false;
                     btnServiceRun.Content = "Run Service";
-                    EnableSettings();
+                    EnableArguments();
                     break;
             }
         }
@@ -100,8 +100,9 @@ namespace Nt.Services.UserControls
             var serviceStatus = Service.GetStatus(serviceName);
             if (serviceStatus.Equals(Service.Status.Stopped))
             {
-                DisableSettings();
-                var args = new string[] { "--dbIp", txtDbIp.Text, "--dbPrt", txtDbPort.Text, "--dbNs", txtDbNamespace.Text, "--dbUsr", txtDbUser.Text, "--dbPwd", txtDbPassword.Password, "--osIp", txtServerPort.Text, "--osSPrt", txtServerPort.Text, "--osCPrt", txtClientPort.Text };
+                DisableArguments();
+                SaveArguments();
+                var args = new string[] { "--dbIp", txtDbIp.Text, "--dbPrt", txtDbPort.Text, "--dbNs", txtDbNamespace.Text, "--dbUsr", txtDbUser.Text, "--dbPwd", txtDbPassword.Password, "--osSPrt", txtOsServerPort.Text, "--osCIp", txtOsClientIp.Text, "--osCPrt", txtOsClientPort.Text };
                 Service.Start(serviceName, args);
             }
             else
@@ -118,29 +119,79 @@ namespace Nt.Services.UserControls
                 Service.Install(serviceName, @"C:\Users\nrastl\Documents\Novum\src\OrderSolution\Os.Server\bin\Debug\netcoreapp3.0\Os.Server.exe");
             else
                 Service.Uninstall(serviceName);
-
         }
 
-        private void EnableSettings()
+        private void EnableArguments()
         {
             txtDbIp.IsEnabled = true;
             txtDbPort.IsEnabled = true;
             txtDbNamespace.IsEnabled = true;
             txtDbUser.IsEnabled = true;
             txtDbPassword.IsEnabled = true;
-            txtClientPort.IsEnabled = true;
-            txtServerPort.IsEnabled = true;
+            txtOsServerPort.IsEnabled = true;
+            txtOsClientIp.IsEnabled = true;
+            txtOsClientPort.IsEnabled = true;
         }
 
-        private void DisableSettings()
+        private void DisableArguments()
         {
             txtDbIp.IsEnabled = false;
             txtDbPort.IsEnabled = false;
             txtDbNamespace.IsEnabled = false;
             txtDbUser.IsEnabled = false;
             txtDbPassword.IsEnabled = false;
-            txtClientPort.IsEnabled = false;
-            txtServerPort.IsEnabled = false;
+            txtOsServerPort.IsEnabled = false;
+            txtOsClientIp.IsEnabled = false;
+            txtOsClientPort.IsEnabled = false;
+        }
+
+        private void SaveArguments()
+        {
+            var osArguments = new Arguments.OsArguments();
+            osArguments.DatabaseIp = txtDbIp.Text;
+            osArguments.DatabasePort = uint.Parse(txtDbPort.Text);
+            osArguments.DatabaseNamespace = txtDbNamespace.Text;
+            osArguments.DatabaseUser = txtDbUser.Text;
+            osArguments.DatabasePassword = Util.Encryption.EncryptString(txtDbPassword.Password);
+            osArguments.OsServerPort = uint.Parse(txtOsServerPort.Text);
+            osArguments.OsClientIp = txtOsClientIp.Text;
+            osArguments.OsClientPort = uint.Parse(txtOsClientPort.Text);
+
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(osArguments);
+            System.IO.File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + @"\Os.Server.json", json);
+        }
+
+        private void LoadArguments()
+        {
+            var osArguments = new Arguments.OsArguments();
+
+            try
+            {
+                var json = System.IO.File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\Os.Server.json");
+                osArguments = Newtonsoft.Json.JsonConvert.DeserializeObject<Arguments.OsArguments>(json);
+            }
+            catch
+            {
+            }
+
+            txtDbIp.Text = osArguments.DatabaseIp;
+            txtDbPort.Text = osArguments.DatabasePort.ToString();
+            txtDbNamespace.Text = osArguments.DatabaseNamespace;
+            txtDbUser.Text = osArguments.DatabaseUser;
+            txtDbPassword.Password = Util.Encryption.DecryptString(osArguments.DatabasePassword);
+            txtOsServerPort.Text = osArguments.OsServerPort.ToString();
+            txtOsClientIp.Text = osArguments.OsClientIp;
+            txtOsClientPort.Text = osArguments.OsClientPort.ToString(); 
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadArguments();
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            SaveArguments();
         }
     }
 }

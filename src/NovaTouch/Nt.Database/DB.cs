@@ -145,7 +145,7 @@ namespace Nt.Database
             get { return connectionString; }
             set
             {
-                Logging.Log.Database.Info("setting connection string to: " + value.Substring(0, 50) + "...");
+                Logging.Log.Database.Info("setting connection string to: " + value.Substring(0, 55) + "...");
                 connectionString = value;
             }
         }

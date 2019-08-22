@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nt.Logging", "..\Nt.Logging
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nt.Print", "..\Nt.Print\Nt.Print.csproj", "{EF2EA328-7B16-444B-BC98-D4085C71C471}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nt.Services", "Nt.Services\Nt.Services.csproj", "{75801906-BC9A-47DC-95CF-D153E8FD65CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nt.Services", "Nt.Services\Nt.Services.csproj", "{75801906-BC9A-47DC-95CF-D153E8FD65CC}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Nt.Services.Setup", "Nt.Services.Setup\Nt.Services.Setup.vdproj", "{140E89A3-F5F6-4215-BDE8-E855E46DBDA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,8 @@ Global
 		{75801906-BC9A-47DC-95CF-D153E8FD65CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75801906-BC9A-47DC-95CF-D153E8FD65CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75801906-BC9A-47DC-95CF-D153E8FD65CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{140E89A3-F5F6-4215-BDE8-E855E46DBDA3}.Debug|Any CPU.ActiveCfg = Debug
+		{140E89A3-F5F6-4215-BDE8-E855E46DBDA3}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

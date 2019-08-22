@@ -40,10 +40,6 @@ namespace Os.Server
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
-            //Logging for fiscalization
-            //var logRepository = log4net.LogManager.GetRepository(System.Reflection.Assembly.GetEntryAssembly());
-            //log4net.Config.XmlConfigurator.Configure(logRepository, new System.IO.FileInfo("Nov.NT.log4net"));
-
             //build and run webHost
             var webHostBuilder = CreateWebHostBuilder(args);
             var webHost = webHostBuilder.Build();
@@ -73,7 +69,7 @@ namespace Os.Server
                     .UseKestrel()
                     .ConfigureKestrel(options =>
                     {
-                        options.ListenAnyIP(5000, listenOptions =>
+                        options.ListenAnyIP((int)Arguments.OsServerPort, listenOptions =>
                         {
                             listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
                         });
@@ -99,6 +95,7 @@ namespace Os.Server
                 Nt.Logging.Log.Server.Info("---------- arguments ----------");
                 Nt.Logging.Log.Server.Info(parsedArguments.ToString());
                 Arguments = parsedArguments;
+                _clientApi = new ClientApi(string.Format("http://{0}:{1}", Arguments.OsClientIp, Arguments.OsClientPort));
             });
             parserResult.WithNotParsed(errors =>
             {

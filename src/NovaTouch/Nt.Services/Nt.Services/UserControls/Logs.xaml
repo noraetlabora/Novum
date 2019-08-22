@@ -6,8 +6,5 @@
              xmlns:local="clr-namespace:Nt.Services.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Button x:Name="myButton" Content="Logs" HorizontalAlignment="Left" Margin="244,135,0,0" VerticalAlignment="Top" Background="{DynamicResource Secondary}"/>
-
-    </Grid>
+    <Grid/>
 </UserControl>

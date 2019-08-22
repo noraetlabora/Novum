@@ -15,71 +15,63 @@ namespace Os.Server
         /// </summary>
         /// <value></value>
         [Option("dbIp", Required = true, Default = "127.0.0.1", HelpText = "database Ip Address")]
-        public string DatabaseIp { get; private set; }
+        public string DatabaseIp { get; set; }
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
         [Option("dbPrt", Required = true, Default = "56773", HelpText = "database Port")]
-        public uint DatabasePort { get; private set; }
+        public uint DatabasePort { get; set; }
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
         [Option("dbNs", Required = true, Default = "USER", HelpText = "database Namespace")]
-        public string DatabaseNamespace { get; private set; }
+        public string DatabaseNamespace { get; set; }
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
         [Option("dbUsr", Required = true, HelpText = "database User")]
-        public string DatabaseUser { get; private set; }
+        public string DatabaseUser { get; set; }
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
         [Option("dbPwd", Required = true, HelpText = "database Password")]
-        public string DatabasePassword { get; private set; }
+        public string DatabasePassword { get; set; }
         /// <summary>
-        /// ip address where the OsServer runs
+        /// port in default.json flag "posAdapterUrl"
+        /// </summary>
+        [Option("osSPrt", Default = "12346", HelpText = "server Port")]
+        public uint OsServerPort { get; set; }
+        /// <summary>
+        /// ip address of Orderman OrderSolutions Server
         /// </summary>
         /// <value></value>
-        [Option("osIp", Required = true, Default = "127.0.0.1", HelpText = "Ordersolutions Server Ip")]
-        public string OsServerIp { get; private set; }
+        [Option("osCIp", Required = true, Default = "localhost", HelpText = "OrderSolutions Client Ip")]
+        public string OsClientIp { get; set; }
         /// <summary>
-        /// server port of OrderSolutions we can call for eg. printing
-        /// in default.json flag "httpApiPort"
-        /// </summary>
-        [Option("osSPrt", Default = "1234", HelpText = "OrderSolutions Server Port")]
-        public uint OsServerPort { get; private set; }
-        /// <summary>
-        /// client port of OrderSolutions who calls
-        /// in default.json in flag servicePort"
+        /// port of Orderman OrderSolutions Server
+        /// in default.json in flag httpApiPort"
         /// </summary>
         /// <value></value>
-        [Option("osCPrt", Required = true, Default = "1234", HelpText = "OrderSolutions Client Port")]
-        public uint OsClientPort { get; private set; }
+        [Option("osCPrt", Required = true, Default = "12344", HelpText = "OrderSolutions Client Port")]
+        public uint OsClientPort { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
-        public override string ToString()
+        public OsArguments()
         {
-            var builder = new StringBuilder();
-            builder.Append("OsArguments: ").Append(System.Environment.NewLine);
-            builder.Append("dbIp:   ").Append(DatabaseIp).Append(System.Environment.NewLine);
-            builder.Append("dbPrt:  ").Append(DatabasePort).Append(System.Environment.NewLine);
-            builder.Append("dbNs:   ").Append(DatabaseNamespace).Append(System.Environment.NewLine);
-            builder.Append("dbUsr:  ").Append(DatabaseUser).Append(System.Environment.NewLine);
-            if (DatabasePassword.Length > 0)
-                builder.Append("dbPwd:  <set>").Append(System.Environment.NewLine);
-            else
-                builder.Append("dbPwd:  <not set>").Append(System.Environment.NewLine);
-            builder.Append("osIp:   ").Append(OsServerIp).Append(System.Environment.NewLine);
-            builder.Append("osSPrt: ").Append(OsServerPort).Append(System.Environment.NewLine);
-            builder.Append("osCPrt: ").Append(OsClientPort).Append(System.Environment.NewLine);
-            return builder.ToString();
+            DatabaseIp = "localhost";
+            DatabasePort = 0;
+            DatabaseNamespace = "";
+            DatabaseUser = "";
+            DatabasePassword = "";
+            OsServerPort = 0;
+            OsClientIp = "localhost";
+            OsClientPort = 0;
         }
     }
 }
