@@ -15,6 +15,7 @@ namespace Nt.Database.Api.InterSystems
         private static Printer printer;
         private static Image image;
         private static Payment payment;
+        private static Fiscal fiscal;
         private static Order order;
         private static Pos pos;
         
@@ -35,6 +36,7 @@ namespace Nt.Database.Api.InterSystems
             printer = new Printer();
             image = new Image();
             payment = new Payment();
+            fiscal = new Fiscal();
             order = new Order();
             pos = new Pos();
         }
@@ -80,6 +82,11 @@ namespace Nt.Database.Api.InterSystems
         public IDbPayment Payment
         {
             get { return payment; }
+        }
+
+        public IDbPayment Fiscal
+        {
+            get { return fiscal; }
         }
 
         public IDbOrder Order
