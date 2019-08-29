@@ -84,7 +84,7 @@ namespace Nt.Database.Api.InterSystems
             get { return payment; }
         }
 
-        public IDbPayment Fiscal
+        public IDbFiscal Fiscal
         {
             get { return fiscal; }
         }
