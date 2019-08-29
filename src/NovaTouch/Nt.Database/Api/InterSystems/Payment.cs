@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using Nt.Database.Api;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -37,7 +36,7 @@ namespace Nt.Database.Api.InterSystems
                 paymentType.Program = DataObject.GetString(dataRow, "prg");
                 paymentType.ReceiptCount = DataObject.GetUInt(dataRow, "druanz");
                 var signature = DataObject.GetString(dataRow, "unterschrift");
-                
+
                 if (signature.Equals("0"))
                     paymentType.Signature = true;
                 else
@@ -50,7 +49,8 @@ namespace Nt.Database.Api.InterSystems
             return paymentTypes;
         }
 
-        public Nt.Data.PaymentResult Pay(Nt.Data.Session session, string tableId, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation) {
+        public Nt.Data.PaymentResult Pay(Nt.Data.Session session, string tableId, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation)
+        {
             var ordersStringData = Order.GetOrderDataString(orders);
             var paymentMethodsStringData = Payment.GetPaymentMethodDataString(paymentMethods);
             var paymentBillStringData = Payment.GetPaymentBillDataString(paymentInformation);
@@ -91,7 +91,7 @@ namespace Nt.Database.Api.InterSystems
                 assignmentType.Id = DataObject.GetString(dataRow, "VA");
                 assignmentType.Name = DataObject.GetString(dataRow, "bez");
                 var signature = DataObject.GetString(dataRow, "unterschrift");
-                
+
                 if (signature.Equals("0"))
                     assignmentType.Signature = true;
                 else

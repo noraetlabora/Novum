@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using Nt.Database.Api;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -18,7 +16,7 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Nt.Data.Image GetImage(Nt.Data.Session session, string imageId) 
+        public Nt.Data.Image GetImage(Nt.Data.Session session, string imageId)
         {
             // var dbString = Interaction.CallClassMethod("cmNT.OmPrint", "GetFaxNachricht", session.ClientId, imageId);
             // var dataString = new DataString(dbString);
@@ -37,12 +35,12 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public string SetImage(Nt.Data.Session session, Nt.Data.Image image) 
+        public string SetImage(Nt.Data.Session session, Nt.Data.Image image)
         {
             throw new NotImplementedException();
         }
 
-        public static string GetDataString(Nt.Data.Image image) 
+        public static string GetDataString(Nt.Data.Image image)
         {
             var dataString = new System.Text.StringBuilder();
             dataString.Append("FAX").Append(DataString.Char96);
@@ -56,9 +54,9 @@ namespace Nt.Database.Api.InterSystems
             }
             bitmap.Save(@"C:\Temp\" + image.Id + ".bmp");
 
-            for (int y = 0; y < bitmap.Height-7; y=y+8)
+            for (int y = 0; y < bitmap.Height - 7; y = y + 8)
             {
-                for(int x = 0; x < bitmap.Width; x++)
+                for (int x = 0; x < bitmap.Width; x++)
                 {
                     var pixel0 = bitmap.GetPixel(x, y + 0);
                     var bit0 = (pixel0.Name.Equals("ff000000")) ? 1 : 0;

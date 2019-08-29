@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using Nt.Database.Api;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -79,7 +78,7 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public bool HasSnapshotTime(string guid) 
+        public bool HasSnapshotTime(string guid)
         {
             var lastSnapshotTime = Interaction.CallClassMethod("cmNT.Kasse", "GetOrdermanSnapshot", Api.ClientId, guid);
             if (string.IsNullOrEmpty(lastSnapshotTime))
@@ -92,7 +91,7 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public void SetSnapshotTime(string guid) 
+        public void SetSnapshotTime(string guid)
         {
             Interaction.CallClassMethod("cmNT.Kasse", "SetOrdermanSnapshot", Api.ClientId, guid);
         }

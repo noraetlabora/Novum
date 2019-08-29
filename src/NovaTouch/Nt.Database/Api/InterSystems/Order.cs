@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
-using Nt.Database.Api;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -51,7 +49,7 @@ namespace Nt.Database.Api.InterSystems
                 var type = dataList.GetString(6);
 
                 // orderline
-                if (string.IsNullOrEmpty(type) || type.Equals("I")) 
+                if (string.IsNullOrEmpty(type) || type.Equals("I"))
                 {
                     var order = new Nt.Data.Order();
                     orderLine++;
@@ -67,7 +65,7 @@ namespace Nt.Database.Api.InterSystems
                     order.CourseNumber = dataList.GetString(8);
                     order.CourseName = dataList.GetString(16);
                     order.MenuId = menuList.GetString(3);
-                    
+
                     if (orders.ContainsKey(order.Id))
                         orders[order.Id].Quantity += order.Quantity;
                     else
@@ -76,7 +74,7 @@ namespace Nt.Database.Api.InterSystems
                     lastOrderId = order.Id;
                 }
                 // modifier
-                else if (type.Equals("A")) 
+                else if (type.Equals("A"))
                 {
                     var modifier = new Nt.Data.Modifier();
                     var articleId = indexList.GetString(1);
@@ -86,7 +84,7 @@ namespace Nt.Database.Api.InterSystems
                         modifier.Name = dataList.GetString(4);
                     }
                     // choice
-                    else 
+                    else
                     {
                         modifier.ArticleId = indexList.GetString(1);
                         modifier.UnitPrice = indexList.GetDecimal(2);
@@ -196,7 +194,7 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="session"></param>
         /// <param name="orders"></param>
         /// <param name="tableId"></param>
-        public void FinalizeOrder(Nt.Data.Session session, List<Nt.Data.Order> orders, string tableId) 
+        public void FinalizeOrder(Nt.Data.Session session, List<Nt.Data.Order> orders, string tableId)
         {
             //
             if (orders == null || orders.Count == 0)
@@ -212,7 +210,7 @@ namespace Nt.Database.Api.InterSystems
             //
             Interaction.CallVoidClassMethod("cmNT.BonOman", "SetAllBonDatenMitAenderer", session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, newOrdersDataString);
         }
-        
+
         #endregion
 
         #region internal methods
@@ -230,7 +228,7 @@ namespace Nt.Database.Api.InterSystems
         }
 
         internal static string GetOrderDataString(Nt.Data.Order order)
-        { 
+        {
             var dataString = new StringBuilder();
             //
             dataString.Append(order.AssignmentTypeId).Append(DataString.DoublePipes);
@@ -271,13 +269,13 @@ namespace Nt.Database.Api.InterSystems
             dataString.Append("").Append(DataString.Char96); //UstProzent2
             dataString.Append("").Append(DataString.Char96); //Platzbonierung
 
-            if (order.Modifiers != null) 
+            if (order.Modifiers != null)
             {
-                foreach(var modifier in order.Modifiers)
+                foreach (var modifier in order.Modifiers)
                 {
                     dataString.Append(DataString.CRLF);
                     dataString.Append(order.AssignmentTypeId).Append(DataString.DoublePipes);
-                    
+
                     if (modifier.Image == null)
                     {
                         dataString.Append(modifier.ArticleId).Append(DataString.DoublePipes);
@@ -290,7 +288,7 @@ namespace Nt.Database.Api.InterSystems
                         dataString.Append(modifier.Name).Append("``A```0;0;0;");
                         dataString.Append(modifier.MenuId).Append("`0``0``0````;;;0;0;````````0`````0");
                     }
-                    else 
+                    else
                     {
                         dataString.Append(order.ArticleId).Append(DataString.DoublePipes);
                         dataString.Append(order.UnitPrice).Append(DataString.DoublePipes);

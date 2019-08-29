@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using Nt.Database.Api;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -35,7 +34,7 @@ namespace Nt.Database.Api.InterSystems
                 printer.Type = DataObject.GetString(dataRow, "devtype");
                 printer.Device = DataObject.GetString(dataRow, "device");
 
-                if(!printers.ContainsKey(printer.Id))
+                if (!printers.ContainsKey(printer.Id))
                     printers.Add(printer.Id, printer);
             }
 
@@ -47,12 +46,12 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        public string GetPrintJobId(Nt.Data.Session session) 
+        public string GetPrintJobId(Nt.Data.Session session)
         {
             return Interaction.CallClassMethod("cmNT.OmPrint", "GetNextAuftrag", session.ClientId, session.SerialNumber);
         }
 
-        
+
         /// <summary>
         /// 
         /// </summary>

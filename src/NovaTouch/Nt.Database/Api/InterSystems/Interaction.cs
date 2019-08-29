@@ -1,7 +1,6 @@
+using InterSystems.Data.IRISClient;
 using System;
 using System.Data;
-using System.Reflection;
-using InterSystems.Data.IRISClient;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -44,8 +43,8 @@ namespace Nt.Database.Api.InterSystems
             }
             catch (Exception ex)
             {
-                if (DB.Connection.State == ConnectionState.Closed || 
-                    DB.Connection.State == ConnectionState.Broken) 
+                if (DB.Connection.State == ConnectionState.Closed ||
+                    DB.Connection.State == ConnectionState.Broken)
                 {
                     Logging.Log.Database.Error(ex, caller + "|SQL|no connection to database");
                     throw new Exception("no connection to database");
@@ -122,14 +121,14 @@ namespace Nt.Database.Api.InterSystems
             return CallClassMethod(className, methodName, args);
         }
 
-        internal static string CallClassMethod(string className, string methodName, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11 )
+        internal static string CallClassMethod(string className, string methodName, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11)
         {
             var args = new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11 };
             return CallClassMethod(className, methodName, args);
         }
         internal static string CallClassMethod(string className, string methodName, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12)
         {
-            var args = new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12};
+            var args = new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12 };
             return CallClassMethod(className, methodName, args);
         }
 
@@ -172,7 +171,7 @@ namespace Nt.Database.Api.InterSystems
             var args = new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19 };
             return CallClassMethod(className, methodName, args);
         }
-        
+
         internal static string CallClassMethod(string className, string methodName, object arg1, object arg2, object arg3, object arg4, object arg5, object arg6, object arg7, object arg8, object arg9, object arg10, object arg11, object arg12, object arg13, object arg14, object arg15, object arg16, object arg17, object arg18, object arg19, object arg20)
         {
             var args = new object[] { arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, arg19, arg20 };
@@ -195,13 +194,13 @@ namespace Nt.Database.Api.InterSystems
             }
             catch (Exception ex)
             {
-                if (DB.Connection.State == ConnectionState.Closed || 
-                    DB.Connection.State == ConnectionState.Broken) 
+                if (DB.Connection.State == ConnectionState.Closed ||
+                    DB.Connection.State == ConnectionState.Broken)
                 {
                     Logging.Log.Database.Error(ex, caller + "|ClassMethod|no connection to database");
                     throw new Exception("no connection to database");
                 }
-                
+
                 Logging.Log.Database.Error(ex, caller + "|ClassMethod|" + classMethod);
                 throw ex;
             }
@@ -285,8 +284,8 @@ namespace Nt.Database.Api.InterSystems
             }
             catch (Exception ex)
             {
-                if (DB.Connection.State == ConnectionState.Closed || 
-                    DB.Connection.State == ConnectionState.Broken) 
+                if (DB.Connection.State == ConnectionState.Closed ||
+                    DB.Connection.State == ConnectionState.Broken)
                 {
                     Logging.Log.Database.Error(ex, caller + "|VoidClassMethod|no connection to database");
                     throw new Exception("no connection to database");

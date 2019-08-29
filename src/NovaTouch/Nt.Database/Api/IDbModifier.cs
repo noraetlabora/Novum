@@ -34,6 +34,6 @@ namespace Nt.Database.Api
         /// <param name="quantity"></param>
         /// <returns></returns>
         Nt.Data.Modifier GetModifier(Nt.Data.Session session, string articleId, decimal quantity);
-        
+
     }
 }

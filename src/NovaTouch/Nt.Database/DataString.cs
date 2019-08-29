@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Nt.Database
 {
@@ -46,7 +44,7 @@ namespace Nt.Database
         /// 
         /// </summary>
         /// <returns></returns>
-        public const char Percent  = (char)37;
+        public const char Percent = (char)37;
 
         #endregion
 

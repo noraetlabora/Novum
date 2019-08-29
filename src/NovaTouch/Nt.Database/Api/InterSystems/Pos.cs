@@ -1,4 +1,3 @@
-using Nt.Database.Api;
 using System.Data;
 using System.Text;
 
@@ -15,7 +14,8 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public string GetClientId() {
+        public string GetClientId()
+        {
             return Api.ClientId;
         }
 

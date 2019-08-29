@@ -1,5 +1,3 @@
-using System;
-
 namespace Nt.Database.Api
 {
     /// <summary>

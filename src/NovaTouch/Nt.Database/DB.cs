@@ -1,8 +1,7 @@
-using System;
-using System.Data;
-using System.Data.Common;
 using InterSystems.Data.IRISClient;
 using InterSystems.XEP;
+using System;
+using System.Data;
 
 namespace Nt.Database
 {

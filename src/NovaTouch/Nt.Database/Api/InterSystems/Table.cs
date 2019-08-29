@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Nt.Database.Api;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -108,14 +107,14 @@ namespace Nt.Database.Api.InterSystems
                 var errorMessage = dataList.GetString(2);
                 switch (errorCode)
                 {
-                case "2":
-                    throw new Exception("table not defined");
-                case "5":
-                    throw new Exception("no permission to opent a table");
-                case "6":
-                    throw new Exception("table already open");
-                default:
-                    throw new Exception("error while opening the table");
+                    case "2":
+                        throw new Exception("table not defined");
+                    case "5":
+                        throw new Exception("no permission to opent a table");
+                    case "6":
+                        throw new Exception("table already open");
+                    default:
+                        throw new Exception("error while opening the table");
                 }
             }
         }

@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Reflection;
 using System.Text;
-using InterSystems.Data.IRISClient;
-using Nt.Database.Api;
 
 namespace Nt.Database.Api.InterSystems
 {

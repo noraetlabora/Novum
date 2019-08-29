@@ -18,12 +18,12 @@ namespace Nt.Database.Api.InterSystems
         private static Fiscal fiscal;
         private static Order order;
         private static Pos pos;
-        
+
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-         public static string ClientId { get; set; }
+        public static string ClientId { get; set; }
 
         public Api()
         {

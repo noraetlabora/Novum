@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using Nt.Database.Api;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -93,7 +92,7 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="waiterId"></param>
         /// <returns></returns>
-        public Dictionary<Nt.Data.Permission.PermissionType, Nt.Data.Permission> GetPermissions(string waiterId) 
+        public Dictionary<Nt.Data.Permission.PermissionType, Nt.Data.Permission> GetPermissions(string waiterId)
         {
             var permissions = new Dictionary<Nt.Data.Permission.PermissionType, Nt.Data.Permission>();
             var sql = new StringBuilder();
@@ -114,7 +113,7 @@ namespace Nt.Database.Api.InterSystems
 
                 switch (program)
                 {
-                    case "SEC-4": 
+                    case "SEC-4":
                         permissionType = Nt.Data.Permission.PermissionType.VoidCommitedOrder;
                         break;
                     case "SOL-FAX":

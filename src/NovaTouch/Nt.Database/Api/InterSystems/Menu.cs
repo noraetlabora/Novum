@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Reflection;
 using System.Text;
-using InterSystems.Data.IRISClient;
-using Nt.Database.Api;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -30,10 +26,10 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" FROM NT.TouchUmenu ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
             var dataTable = Interaction.GetDataTable(sql.ToString());
- 
+
             foreach (DataRow dataRow in dataTable.Rows)
             {
-                var menu =  new Nt.Data.Menu();
+                var menu = new Nt.Data.Menu();
                 menu.Id = DataObject.GetString(dataRow, "UMENU");
                 menu.Name = DataObject.GetString(dataRow, "bez");
                 menu.Columns = DataObject.GetUInt(dataRow, "spalten");
@@ -84,13 +80,14 @@ namespace Nt.Database.Api.InterSystems
             }
 
             return menus;
-        }        
+        }
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<Nt.Data.MenuItem> GetMenuItems() {
+        public List<Nt.Data.MenuItem> GetMenuItems()
+        {
             var menuItems = new List<Nt.Data.MenuItem>();
             var sql = new StringBuilder();
             sql.Append("  SELECT DISTINCT A.Anr, A.UMENU  ");
@@ -113,11 +110,11 @@ namespace Nt.Database.Api.InterSystems
                 menuItem.ToRow = DataObject.GetUInt(dataRow, "ToRow");
                 menuItem.FromColumn = DataObject.GetUInt(dataRow, "FromCol");
                 menuItem.ToColumn = DataObject.GetUInt(dataRow, "ToCol");
-                
+
                 menuItems.Add(menuItem);
             }
 
             return menuItems;
-        }        
+        }
     }
 }

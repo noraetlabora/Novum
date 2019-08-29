@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using Nt.Database.Api;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -131,13 +129,15 @@ namespace Nt.Database.Api.InterSystems
             modifier.MenuId = dataList.GetString(29);
 
             var priceString = dataList.GetString(4);
-            if (priceString.Contains("%")) {
+            if (priceString.Contains("%"))
+            {
                 var priceDataString = new DataString(priceString);
                 var priceDataList = new DataList(priceDataString.SplitByPercent());
                 modifier.Percent = priceDataList.GetDecimal(0);
                 modifier.Rounding = priceDataList.GetDecimal(1);
             }
-            else {
+            else
+            {
                 modifier.UnitPrice = dataList.GetDecimal(4);
             }
 

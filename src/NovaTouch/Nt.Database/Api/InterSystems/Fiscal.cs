@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Nt.Database.Api;
 
 //[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config", Watch = true)]
 
