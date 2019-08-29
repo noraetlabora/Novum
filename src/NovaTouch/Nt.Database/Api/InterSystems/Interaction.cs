@@ -3,7 +3,7 @@ using System.Data;
 using System.Reflection;
 using InterSystems.Data.IRISClient;
 
-namespace Nt.Database.InterSystems
+namespace Nt.Database.Api.InterSystems
 {
 
     internal class Interaction

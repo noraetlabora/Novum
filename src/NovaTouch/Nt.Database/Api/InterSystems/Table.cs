@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Nt.Database.Api;
 
-namespace Nt.Database.InterSystems.Api
+namespace Nt.Database.Api.InterSystems
 {
     /// <summary>
     /// 

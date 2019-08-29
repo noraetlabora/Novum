@@ -3,7 +3,7 @@ using System.Data;
 using System.Text;
 using Nt.Database.Api;
 
-namespace Nt.Database.InterSystems.Api
+namespace Nt.Database.Api.InterSystems
 {
     /// <summary>
     /// 
@@ -26,7 +26,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT PNR, name ");
             sql.Append(" FROM NT.Pers ");
-            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
             var dataTable = Interaction.GetDataTable(sql.ToString());
 
@@ -55,7 +55,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT PNR, code, name");
             sql.Append(" FROM NT.Pers ");
-            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND PNR = ").Append(Interaction.SqlQuote(waiterId));
             sql.Append(" AND code = ").Append(Interaction.SqlQuote(code));
             sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
@@ -75,7 +75,7 @@ namespace Nt.Database.InterSystems.Api
         {
             var posId = DB.Api.Pos.GetPosId(session.SerialNumber);
             Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogin", session.ClientId, posId, session.WaiterId);
-            Interaction.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", InterSystemsApi.ClientId, posId, session.WaiterId, session.SerialNumber, "1");
+            Interaction.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", Api.ClientId, posId, session.WaiterId, session.SerialNumber, "1");
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Nt.Database.InterSystems.Api
             sql.Append(" FROM NT.PersMitglied M ");
             sql.Append(" JOIN NT.PersStufenBere B ON B.FA=M.FA AND B.STUFE = M.STUFE ");
             sql.Append(" JOIN NT.PersSecProg P ON P.PRG = B.PRG AND P.obsolet = 0 ");
-            sql.Append(" WHERE M.FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
             sql.Append(" AND M.PNR = ").Append(waiterId);
             var dataTable = Interaction.GetDataTable(sql.ToString());
 

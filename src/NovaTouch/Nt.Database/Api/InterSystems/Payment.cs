@@ -4,7 +4,7 @@ using System.Data;
 using System.Text;
 using Nt.Database.Api;
 
-namespace Nt.Database.InterSystems.Api
+namespace Nt.Database.Api.InterSystems
 {
     /// <summary>
     /// 
@@ -25,7 +25,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT IKA, bez, prg, druanz, unterschrift ");
             sql.Append(" FROM NT.Zahlart ");
-            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
             var dataTable = Interaction.GetDataTable(sql.ToString());
 
@@ -81,7 +81,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT VA, bez, unterschrift ");
             sql.Append(" FROM WW.VA ");
-            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
             var dataTable = Interaction.GetDataTable(sql.ToString());
 

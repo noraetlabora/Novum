@@ -6,7 +6,7 @@ using System.Text;
 using InterSystems.Data.IRISClient;
 using Nt.Database.Api;
 
-namespace Nt.Database.InterSystems.Api
+namespace Nt.Database.Api.InterSystems
 {
     /// <summary>
     /// 
@@ -28,7 +28,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT UMENU, bez, spalten ");
             sql.Append(" FROM NT.TouchUmenu ");
-            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
             var dataTable = Interaction.GetDataTable(sql.ToString());
  
             foreach (DataRow dataRow in dataTable.Rows)
@@ -52,7 +52,7 @@ namespace Nt.Database.InterSystems.Api
         /// <returns></returns>
         public string GetMenuId(string posId)
         {
-            return Interaction.CallClassMethod("cmNT.Kassa", "GetTouchMenu", InterSystemsApi.ClientId, posId, "0");
+            return Interaction.CallClassMethod("cmNT.Kassa", "GetTouchMenu", Api.ClientId, posId, "0");
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Nt.Database.InterSystems.Api
             sql.Append(" SELECT M.ZE, M.bez1, M.bgcolor, M.fgcolor, UM.UMENU, UM.spalten ");
             sql.Append(" FROM  NT.TouchMenuZeile M ");
             sql.Append(" INNER JOIN NT.TouchUmenu UM ON UM.FA = M.FA AND UM.UMENU = M.UMENU ");
-            sql.Append(" WHERE M.FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
             sql.Append(" AND M.MENU = ").Append(Interaction.SqlQuote(menuId));
             var dataTable = Interaction.GetDataTable(sql.ToString());
 
@@ -100,7 +100,7 @@ namespace Nt.Database.InterSystems.Api
             sql.Append(" , (SELECT MAX(E.COL) FROM NT.TouchUMenuZeilen E WHERE E.FA = A.FA AND E.UMENU = A.UMENU AND E.Anr = A.Anr) As ToCol ");
             sql.Append(" , cmNT.BonTouch_GetArtikelTouchBezeichnung(A.FA,'RK',A.UMENU,A.ROW, A.COL,0,1) As name");
             sql.Append(" FROM NT.TouchUMenuZeilen A ");
-            sql.Append(" WHERE A.FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" WHERE A.FA = ").Append(Api.ClientId);
             var dataTable = Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)

@@ -6,7 +6,7 @@ using System.Text;
 using InterSystems.Data.IRISClient;
 using Nt.Database.Api;
 
-namespace Nt.Database.InterSystems.Api
+namespace Nt.Database.Api.InterSystems
 {
     /// <summary>
     /// 

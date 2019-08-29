@@ -3,7 +3,7 @@ using System.Data;
 using System.Text;
 using Nt.Database.Api;
 
-namespace Nt.Database.InterSystems.Api
+namespace Nt.Database.Api.InterSystems
 {
     /// <summary>
     /// 
@@ -24,7 +24,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT GRUND, bez ");
             sql.Append(" FROM NT.StornoGrund ");
-            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
             var dataTable = Interaction.GetDataTable(sql.ToString());
 
@@ -55,7 +55,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT VKO, bez, vkebene ");
             sql.Append(" FROM WW.VKO ");
-            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND  passiv > ").Append(Interaction.SqlToday);
             var dataTable = Interaction.GetDataTable(sql.ToString());
 
@@ -81,7 +81,7 @@ namespace Nt.Database.InterSystems.Api
         /// <returns></returns>
         public bool HasSnapshotTime(string guid) 
         {
-            var lastSnapshotTime = Interaction.CallClassMethod("cmNT.Kasse", "GetOrdermanSnapshot", InterSystemsApi.ClientId, guid);
+            var lastSnapshotTime = Interaction.CallClassMethod("cmNT.Kasse", "GetOrdermanSnapshot", Api.ClientId, guid);
             if (string.IsNullOrEmpty(lastSnapshotTime))
                 return false;
             return true;
@@ -94,7 +94,7 @@ namespace Nt.Database.InterSystems.Api
         /// <returns></returns>
         public void SetSnapshotTime(string guid) 
         {
-            Interaction.CallClassMethod("cmNT.Kasse", "SetOrdermanSnapshot", InterSystemsApi.ClientId, guid);
+            Interaction.CallClassMethod("cmNT.Kasse", "SetOrdermanSnapshot", Api.ClientId, guid);
         }
 
         #endregion

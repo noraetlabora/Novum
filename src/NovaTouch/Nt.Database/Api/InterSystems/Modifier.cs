@@ -4,7 +4,7 @@ using System.Data;
 using System.Text;
 using Nt.Database.Api;
 
-namespace Nt.Database.InterSystems.Api
+namespace Nt.Database.Api.InterSystems
 {
     /// <summary>
     /// 
@@ -26,7 +26,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT UMENU, bez, aendmin, aendmax, aendauto, spalten, aendmaxaus, aendmehrfach ");
             sql.Append(" FROM NT.TouchUmenu ");
-            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND aend = 1");
             var dataTable = Interaction.GetDataTable(sql.ToString());
 
@@ -57,7 +57,7 @@ namespace Nt.Database.InterSystems.Api
             sql.Append(" SELECT M.ROW, M.COL, M.ANR, M.bgcolor, M.fgcolor, W.bez ");
             sql.Append(" FROM NT.TouchUmenuZeilen M ");
             sql.Append(" LEFT JOIN WW.ANR AS W ON (W.FA = M.FA AND W.ANR = M.ANR) ");
-            sql.Append(" WHERE M.FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
             sql.Append(" AND M.UMENU = ").Append(modifierMenuId);
             sql.Append(" AND M.ANR <> '' ");
             var dataTable = Interaction.GetDataTable(sql.ToString());
@@ -91,7 +91,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT UMENU, ROW, COL, LFD, AendUMenu ");
             sql.Append(" FROM NT.TouchUmenuZeilenA ");
-            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
             var dataTable = Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)

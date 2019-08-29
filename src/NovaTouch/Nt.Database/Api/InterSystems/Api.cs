@@ -1,0 +1,101 @@
+
+namespace Nt.Database.Api.InterSystems
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    internal class Api : IDbApi
+    {
+        private static Misc misc;
+        private static Table table;
+        private static Waiter waiter;
+        private static Menu menu;
+        private static Article article;
+        private static Modifier modifier;
+        private static Printer printer;
+        private static Image image;
+        private static Payment payment;
+        private static Order order;
+        private static Pos pos;
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+         public static string ClientId { get; set; }
+
+        public Api()
+        {
+            misc = new Misc();
+            table = new Table();
+            waiter = new Waiter();
+            menu = new Menu();
+            article = new Article();
+            modifier = new Modifier();
+            printer = new Printer();
+            image = new Image();
+            payment = new Payment();
+            order = new Order();
+            pos = new Pos();
+        }
+
+        public IDbMisc Misc
+        {
+            get { return misc; }
+        }
+        public IDbTable Table
+        {
+            get { return table; }
+        }
+        public IDbWaiter Waiter
+        {
+            get { return waiter; }
+        }
+
+        public IDbMenu Menu
+        {
+            get { return menu; }
+        }
+
+        public IDbArticle Article
+        {
+            get { return article; }
+        }
+
+        public IDbModifier Modifier
+        {
+            get { return modifier; }
+        }
+
+        public IDbPrinter Printer
+        {
+            get { return printer; }
+        }
+
+        public IDbImage Image
+        {
+            get { return image; }
+        }
+
+        public IDbPayment Payment
+        {
+            get { return payment; }
+        }
+
+        public IDbOrder Order
+        {
+            get { return order; }
+        }
+
+        public IDbPos Pos
+        {
+            get { return pos; }
+        }
+
+        public void Initialize()
+        {
+            Api.ClientId = Interaction.CallClassMethod("cmNT.Kassa", "GetOmanFirma");
+            Logging.Log.Database.Info("ClientId = " + Api.ClientId);
+        }
+    }
+}

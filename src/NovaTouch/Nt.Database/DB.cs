@@ -23,13 +23,13 @@ namespace Nt.Database
             Logging.Log.Database.Info("creating InterSystems connection");
             xep = PersisterFactory.CreatePersister();
             Logging.Log.Database.Info("creating InterSystems API");
-            api = new InterSystems.Api.InterSystemsApi();
+            api = new Api.InterSystems.Api();
         }
 
         private static string connectionString;
         private static IRISADOConnection dbConnection;
         private static EventPersister xep;
-        private static InterSystems.Api.InterSystemsApi api;
+        private static Api.InterSystems.Api api;
 
         /// <summary>
         /// 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Nt.Database.Api;
 
-namespace Nt.Database.InterSystems.Api
+namespace Nt.Database.Api.InterSystems
 {
     /// <summary>
     /// 
@@ -29,7 +29,7 @@ namespace Nt.Database.InterSystems.Api
         public Dictionary<string, Nt.Data.Order> GetOrders(string tableId)
         {
             var orders = new Dictionary<string, Nt.Data.Order>();
-            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetAllTischBonMitAenderer", InterSystemsApi.ClientId, "RK", tableId, "", "2");
+            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetAllTischBonMitAenderer", Api.ClientId, "RK", tableId, "", "2");
             var ordersString = new DataString(dbString);
             var ordersArray = ordersString.SplitByCRLF();
             var orderLine = 0;

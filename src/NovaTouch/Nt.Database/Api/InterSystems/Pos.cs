@@ -2,7 +2,7 @@ using Nt.Database.Api;
 using System.Data;
 using System.Text;
 
-namespace Nt.Database.InterSystems.Api
+namespace Nt.Database.Api.InterSystems
 {
     /// <summary>
     /// 
@@ -16,7 +16,7 @@ namespace Nt.Database.InterSystems.Api
         /// </summary>
         /// <returns></returns>
         public string GetClientId() {
-            return InterSystemsApi.ClientId;
+            return Api.ClientId;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Nt.Database.InterSystems.Api
             var sql = new StringBuilder();
             sql.Append(" SELECT Kassa ");
             sql.Append(" FROM NT.OMDevConfig ");
-            sql.Append(" WHERE FA = ").Append(InterSystemsApi.ClientId);
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
             var dataTable = Interaction.GetDataTable(sql.ToString());
 
             if (dataTable.Rows.Count == 0)
@@ -40,22 +40,22 @@ namespace Nt.Database.InterSystems.Api
 
         public string GetPosId(string deviceId)
         {
-            return Interaction.CallClassMethod("cmNT.Kassa", "GetOmanKassa", InterSystemsApi.ClientId, deviceId);
+            return Interaction.CallClassMethod("cmNT.Kassa", "GetOmanKassa", Api.ClientId, deviceId);
         }
 
         public string GetServiceAreaId(string posId)
         {
-            return Interaction.CallClassMethod("cmNT.Kassa", "GetVerkaufsort", InterSystemsApi.ClientId, posId);
+            return Interaction.CallClassMethod("cmNT.Kassa", "GetVerkaufsort", Api.ClientId, posId);
         }
 
         public string GetServiceAreaName(string sercieAreaId)
         {
-            return Interaction.CallClassMethod("cmWW.VKO", "GetVKOBez", InterSystemsApi.ClientId, sercieAreaId);
+            return Interaction.CallClassMethod("cmWW.VKO", "GetVKOBez", Api.ClientId, sercieAreaId);
         }
 
         public string GetPriceLevel(string sercieAreaId)
         {
-            return Interaction.CallClassMethod("cmWW.VKO", "GetVKPEbene", InterSystemsApi.ClientId, sercieAreaId);
+            return Interaction.CallClassMethod("cmWW.VKO", "GetVKPEbene", Api.ClientId, sercieAreaId);
         }
 
     }
