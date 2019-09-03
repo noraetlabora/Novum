@@ -24,11 +24,6 @@ namespace Os.Server
         /// <summary>
         /// 
         /// </summary>
-        public static Nov.NT.POS.Fiscal.IFiscalProvider FiscalProvider;
-
-        /// <summary>
-        /// 
-        /// </summary>
         public static OsArguments Arguments { get; private set; }
 
         private static ClientApi _clientApi;
@@ -40,6 +35,9 @@ namespace Os.Server
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
+            var logRepository = log4net.LogManager.GetRepository(System.Reflection.Assembly.GetEntryAssembly());
+            log4net.Config.XmlConfigurator.Configure(logRepository, new System.IO.FileInfo("log4net.config"));
+
             //build and run webHost
             var webHostBuilder = CreateWebHostBuilder(args);
             var webHost = webHostBuilder.Build();

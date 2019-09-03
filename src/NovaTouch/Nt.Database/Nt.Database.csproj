@@ -16,16 +16,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="InterSystems.Data.IRISClient">
-      <HintPath>lib\InterSystems.Data.IRISClient.dll</HintPath>
-    </Reference>
-    <Reference Include="InterSystems.Data.XEP">
-      <HintPath>lib\InterSystems.Data.XEP.dll</HintPath>
-    </Reference>
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+    <Reference Include="fiskaltrust.ifPOS.net40">
+      <HintPath>..\..\References\Fiskaltrust\fiskaltrust.ifPOS.net40.dll</HintPath>
+    </Reference>
+    <Reference Include="InterSystems.Data.IRISClient">
+      <HintPath>..\..\References\InterSystems\InterSystems.Data.IRISClient.dll</HintPath>
+    </Reference>
+    <Reference Include="InterSystems.Data.XEP">
+      <HintPath>..\..\References\InterSystems\InterSystems.Data.XEP.dll</HintPath>
+    </Reference>
+    <Reference Include="Nov.NT.Common">
+      <HintPath>..\..\References\NovaTouch\Nov.NT.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Nov.NT.POS.Data.DTO">
+      <HintPath>..\..\References\NovaTouch\Nov.NT.POS.Data.DTO.dll</HintPath>
+    </Reference>
+    <Reference Include="Nov.NT.POS.Fiscal">
+      <HintPath>..\..\References\NovaTouch\Nov.NT.POS.Fiscal.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -95,29 +95,29 @@ namespace Os.Server.Logic
         /// <param name="posId"></param>
         /// <param name="serialNumber"></param>
         /// <returns></returns>
-        public static Nov.NT.POS.Fiscal.IFiscalProvider GetFiscalProvider(string clientId, string posId, string serialNumber)
-        {
-            Nov.NT.POS.Fiscal.IFiscalProvider fiscalProvider = null;
+        //public static Nov.NT.POS.Fiscal.IFiscalProvider GetFiscalProvider(string clientId, string posId, string serialNumber)
+        //{
+        //    Nov.NT.POS.Fiscal.IFiscalProvider fiscalProvider = null;
 
-            var fiscalMode = Nt.Database.DB.Api.Payment.GetFiscalMode(clientId, posId);
-                if (!fiscalMode.Equals("0"))
-                    return null;
-            var fiscalConfiguration = Nt.Database.DB.Api.Payment.GetFiscalConfiguration(clientId, posId);
-            var fiscalServiceType = Nt.Database.DB.Api.Payment.GetFiscalServiceType(clientId);
+        //    var fiscalMode = Nt.Database.DB.Api.Payment.GetFiscalMode(clientId, posId);
+        //        if (!fiscalMode.Equals("0"))
+        //            return null;
+        //    var fiscalConfiguration = Nt.Database.DB.Api.Payment.GetFiscalConfiguration(clientId, posId);
+        //    var fiscalServiceType = Nt.Database.DB.Api.Payment.GetFiscalServiceType(clientId);
 
-            try 
-            {
-                //TODO:
-                // fiscalProvider = Nov.NT.POS.Fiscal.ProviderFactory.GetFiscalProvider(fiscalServiceType);
-                // fiscalProvider.ApplyConfiguration(fiscalConfiguration);
-                // fiscalProvider.Open(serialNumber);
-            }
-            catch (Exception ex)
-            {
-                Nt.Logging.Log.Server.Error(ex, "Error GetFiscalProvider");
-                throw ex;
-            }
-            return fiscalProvider;
-        }
+        //    try 
+        //    {
+        //        //TODO:
+        //        // fiscalProvider = Nov.NT.POS.Fiscal.ProviderFactory.GetFiscalProvider(fiscalServiceType);
+        //        // fiscalProvider.ApplyConfiguration(fiscalConfiguration);
+        //        // fiscalProvider.Open(serialNumber);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Nt.Logging.Log.Server.Error(ex, "Error GetFiscalProvider");
+        //        throw ex;
+        //    }
+        //    return fiscalProvider;
+        //}
     }
 }

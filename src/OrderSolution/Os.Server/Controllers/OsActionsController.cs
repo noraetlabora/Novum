@@ -85,7 +85,7 @@ namespace Os.Server.Controllers
                     session.ServiceAreaId = Logic.Data.GetServiceAreaId(session.PosId);
                     session.PriceLevel = Logic.Data.GetPriceLevel(session.ServiceAreaId);
                     session.Printer = clientInfo.PrinterPath;
-                    session.FiscalProvider = Logic.Payment.GetFiscalProvider(session.ClientId, session.PosId, session.SerialNumber);
+                    session.FiscalProvider = Logic.Fiscal.GetProvider(session.ClientId, session.PosId, session.SerialNumber);
                 }
                 session.WaiterId = "";
 

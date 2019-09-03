@@ -10,3 +10,4 @@ src/NovaTouch/Nt.Database/.vs/Nt.Database/v16/.suo
 src/NovaTouch/Nt.Services/.vs/Nt.Services/DesignTimeBuild/.dtbcache
 src/NovaTouch/Nt.Services/.vs/Nt.Services/v16/Server/sqlite3/storage.ide-shm
 src/NovaTouch/Nt.Services/.vs/Nt.Services/v16/Server/sqlite3/storage.ide-wal
+*.log

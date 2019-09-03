@@ -1,28 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-
-//[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config", Watch = true)]
+using System.IO;
+using System.Xml;
 
 namespace Nt.Database.Api.InterSystems
 {
     internal class Fiscal : IDbFiscal
     {
-
-        //private static readonly log4net.ILog fiscalLog = log4net.LogManager.GetLogger("FISCAL - API");
-
         /// <summary>
         /// 
         /// </summary>
         public Fiscal()
         {
-            //fiscalLog.Error("XX");
-            //var repository = log4net.LogManager.GetRepository();
-            //
-            //log.Error("hello");
-
-            //Nov.NT.POS.Fiscal.Logging.APILogger.Error("hallo");
-            //Nov.NT.POS.Fiscal.Logging.FiscalLogger.Warn("you");
-            //Nov.NT.POS.Fiscal.Logging.ProviderLogger.Fatal("there");
         }
 
         /// <summary>
@@ -142,7 +131,7 @@ namespace Nt.Database.Api.InterSystems
                 Logging.Log.Server.Error(ex, "Error GetFiscalProvider");
                 throw ex;
             }
-            return fiscalProvider;
+            return null; //fiscalProvider;
         }
     }
 }

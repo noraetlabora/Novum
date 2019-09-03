@@ -51,6 +51,12 @@ namespace Nt.Database.Api
         /// 
         /// </summary>
         /// <value></value>
+        Database.Api.IDbFiscal Fiscal { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         Database.Api.IDbModifier Modifier { get; }
 
         /// <summary>

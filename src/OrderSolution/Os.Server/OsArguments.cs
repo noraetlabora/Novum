@@ -73,5 +73,29 @@ namespace Os.Server
             OsClientIp = "localhost";
             OsClientPort = 0;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            var builder = new System.Text.StringBuilder();
+            builder.Append("OsArguments: dbIp=").Append(DatabaseIp);
+            builder.Append(", dbPrt=").Append(DatabasePort).Append(System.Environment.NewLine);
+            builder.Append(", dbNs=").Append(DatabaseNamespace).Append(System.Environment.NewLine);
+            builder.Append(", dbUsr=").Append(DatabaseUser).Append(System.Environment.NewLine);
+            builder.Append(", dbPwd=");
+            if (string.IsNullOrEmpty(DatabasePassword))
+                builder.Append("<not set>");
+            else
+                builder.Append("<set>");
+            builder.Append(System.Environment.NewLine);
+            builder.Append(", osSPrt=").Append(OsServerPort).Append(System.Environment.NewLine);
+            builder.Append(", osCIp=").Append(OsClientIp).Append(System.Environment.NewLine);
+            builder.Append(", osCPrt=").Append(OsClientPort).Append(System.Environment.NewLine);
+
+            return builder.ToString();
+        }
     }
 }
