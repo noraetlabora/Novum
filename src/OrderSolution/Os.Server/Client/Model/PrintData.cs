@@ -18,7 +18,7 @@ namespace Os.Server.Client.Model
         private enum OnOff
         {
             ON = 0x01,
-		    OFF = 0x00
+            OFF = 0x00
         }
 
         private enum Alignment
@@ -63,10 +63,10 @@ namespace Os.Server.Client.Model
             Initialize(CharacterSet.GERMANY, CharacterCodeTable.LATIN1);
 
             PaperFeed(1);
-            foreach(var printLine in printLines)
+            foreach (var printLine in printLines)
             {
                 _stringBuilder.Append(printLine).Append(System.Environment.NewLine);
-                
+
                 if (printLine.StartsWith("<FC>"))
                     continue;
                 if (printLine.StartsWith("<QR>"))
@@ -76,7 +76,7 @@ namespace Os.Server.Client.Model
                     SetAlignment(Alignment.LEFT);
                     continue;
                 }
-                
+
                 if (printLine.StartsWith("<FONT"))
                     GetStartFont(printLine);
 
@@ -117,16 +117,17 @@ namespace Os.Server.Client.Model
         #region private methods
 
         private void Initialize(CharacterSet characterSet, CharacterCodeTable characterCodeTable)
-		{
-			Send(0x1B, 0x40, 0x1B, 0x52, (byte)characterSet);
+        {
+            Send(0x1B, 0x40, 0x1B, 0x52, (byte)characterSet);
             Send(0x1B, 0x74, (byte)characterCodeTable);
-		}
+        }
 
-        private void Send(params byte[] values) {
-			_buffer.AddRange(values);
-		}
+        private void Send(params byte[] values)
+        {
+            _buffer.AddRange(values);
+        }
 
-        private void Text(string line) 
+        private void Text(string line)
         {
             line = line.Replace("<FONT1>", "");
             line = line.Replace("<FONT2>", "");
@@ -144,18 +145,18 @@ namespace Os.Server.Client.Model
         }
 
         private void SetBold(OnOff state)
-		{
-			Send(0x1B, 0x45, (byte)state);
-		}
+        {
+            Send(0x1B, 0x45, (byte)state);
+        }
 
         private void SetUnderline(OnOff state)
         {
             Send(0x1B, 0x2D, (byte)state);
         }
         private void SetInverse(OnOff state)
-		{
-			Send(0x1D, 0x42, (byte)state);
-		}
+        {
+            Send(0x1D, 0x42, (byte)state);
+        }
 
         private void SetAlignment(Alignment alignment)
         {
@@ -164,30 +165,30 @@ namespace Os.Server.Client.Model
 
         private void SetFont(Font font)
         {
-            Send (0x08, 0x4D, 0x00, (byte)font);
+            Send(0x08, 0x4D, 0x00, (byte)font);
         }
 
         private void SetMode(Font font, bool bold, bool underlined, bool doubleSize)
         {
             byte mode = 0x00;
-			if (font == Font.FONT_B)
-				mode += 0x01;
+            if (font == Font.FONT_B)
+                mode += 0x01;
 
-			if (bold)
-				mode += 0x08;
+            if (bold)
+                mode += 0x08;
 
             if (underlined)
-				mode += 0x80;
+                mode += 0x80;
 
-			if (doubleSize)
-				mode += 0x30;
+            if (doubleSize)
+                mode += 0x30;
 
-			this.Send (0x1B, 0x21, mode);
+            this.Send(0x1B, 0x21, mode);
         }
 
         private void GetStartFont(string printLine)
         {
-            if (printLine.StartsWith("<FONT1>")) 
+            if (printLine.StartsWith("<FONT1>"))
             {
                 SetFont(Font.FONT_C);
             }
@@ -200,9 +201,9 @@ namespace Os.Server.Client.Model
                 SetMode(Font.FONT_A, false, false, false);
             }
         }
-         private void GetEndFont(string printLine)
+        private void GetEndFont(string printLine)
         {
-            if (printLine.EndsWith("<FONT1>")) 
+            if (printLine.EndsWith("<FONT1>"))
             {
                 SetFont(Font.FONT_C);
             }

@@ -1,6 +1,7 @@
+using Nt.Database;
+using Os.Server.Models;
 using System;
 using System.Collections.Generic;
-using Nt.Database;
 
 namespace Os.Server.Logic
 {
@@ -59,6 +60,16 @@ namespace Os.Server.Logic
             }
 
             return new List<Models.TableResult>(osTables.Values);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static TableResult MoveSubTable(MoveSubtables data)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

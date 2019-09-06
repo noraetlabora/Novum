@@ -31,7 +31,7 @@ namespace Os.Server.Logic
             var ntPaymentInformation = new Nt.Data.PaymentInformation();
             var ntPaymentMethods = new List<Nt.Data.PaymentMethod>();
 
-            foreach(var osPayment in data.Payments) 
+            foreach (var osPayment in data.Payments)
             {
                 var ntPaymentMethod = new Nt.Data.PaymentMethod();
                 ntPaymentMethod.Amount = decimal.Divide((decimal)osPayment.AmountPaid, 100.0m);
@@ -60,7 +60,7 @@ namespace Os.Server.Logic
             //payment Information
             var ntPaymentInformation = new Nt.Data.PaymentInformation();
             var ntPaymentMethods = new List<Nt.Data.PaymentMethod>();
-            foreach(var osPayment in data.Payments) 
+            foreach (var osPayment in data.Payments)
             {
                 var ntPaymentMethod = new Nt.Data.PaymentMethod();
                 ntPaymentMethod.Amount = decimal.Divide((decimal)osPayment.AmountPaid, 100.0m);
@@ -72,7 +72,7 @@ namespace Os.Server.Logic
             //orderlines
             var ntAllOrders = Nt.Database.DB.Api.Order.GetOrders(session.CurrentTable.Id);
             var ntOrders = new List<Nt.Data.Order>();
-            foreach(var orderLineQuantity in data.PaidLines) 
+            foreach (var orderLineQuantity in data.PaidLines)
             {
                 if (!ntAllOrders.ContainsKey(orderLineQuantity.OrderLineId))
                     throw new Exception("couldn't find orderLineId " + orderLineQuantity.OrderLineId + " in current Table " + session.CurrentTable.Id);
@@ -87,37 +87,5 @@ namespace Os.Server.Logic
             //pay
             var ntPaymentResult = Nt.Database.DB.Api.Payment.Pay(session, session.CurrentTable.Id, ntOrders, ntPaymentMethods, ntPaymentInformation);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="clientId"></param>
-        /// <param name="posId"></param>
-        /// <param name="serialNumber"></param>
-        /// <returns></returns>
-        //public static Nov.NT.POS.Fiscal.IFiscalProvider GetFiscalProvider(string clientId, string posId, string serialNumber)
-        //{
-        //    Nov.NT.POS.Fiscal.IFiscalProvider fiscalProvider = null;
-
-        //    var fiscalMode = Nt.Database.DB.Api.Payment.GetFiscalMode(clientId, posId);
-        //        if (!fiscalMode.Equals("0"))
-        //            return null;
-        //    var fiscalConfiguration = Nt.Database.DB.Api.Payment.GetFiscalConfiguration(clientId, posId);
-        //    var fiscalServiceType = Nt.Database.DB.Api.Payment.GetFiscalServiceType(clientId);
-
-        //    try 
-        //    {
-        //        //TODO:
-        //        // fiscalProvider = Nov.NT.POS.Fiscal.ProviderFactory.GetFiscalProvider(fiscalServiceType);
-        //        // fiscalProvider.ApplyConfiguration(fiscalConfiguration);
-        //        // fiscalProvider.Open(serialNumber);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Nt.Logging.Log.Server.Error(ex, "Error GetFiscalProvider");
-        //        throw ex;
-        //    }
-        //    return fiscalProvider;
-        //}
     }
 }

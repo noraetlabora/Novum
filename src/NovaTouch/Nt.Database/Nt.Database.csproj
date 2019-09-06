@@ -11,12 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Nt.Logging\Nt.Logging.csproj" />
-    <ProjectReference Include="..\Nt.Data\Nt.Data.csproj" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+    <ProjectReference Include="..\Nt.Logging\Nt.Logging.csproj" />
+    <ProjectReference Include="..\Nt.Data\Nt.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

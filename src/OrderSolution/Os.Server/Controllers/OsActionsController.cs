@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Os.Server.Controllers
 {
@@ -47,14 +45,14 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/Auth/Logout")]
         public IActionResult AuthLogout()
         {
-            try 
+            try
             {
                 var session = Sessions.GetSession(Request);
                 session.WaiterId = "";
                 //200 - Ok
                 return new OkObjectResult(null);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error
@@ -73,7 +71,7 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/Init/RegisterClient")]
         public IActionResult InitRegisterClient([FromBody][Required] Models.ClientInfo clientInfo)
         {
-            try 
+            try
             {
                 var session = Sessions.GetSession(Request);
                 if (session == null)
@@ -94,7 +92,7 @@ namespace Os.Server.Controllers
                 //save session internal and return the sessionId in the response
                 Sessions.SetSession(session);
                 Response.Cookies.Append("sessionId", session.Id);
-                
+
                 //200 - Ok
                 return new OkObjectResult(registerClientResponse);
             }
@@ -117,7 +115,7 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/Init/RegisterGateway")]
         public IActionResult InitRegisterGateway([FromBody][Required] Models.GatewayInfo gatewayInfo)
         {
-            try 
+            try
             {
                 Logic.Data.InitialStaticDataSent = false;
                 //register gateway
@@ -128,7 +126,7 @@ namespace Os.Server.Controllers
                 //200 - Ok
                 return new OkObjectResult(registerGatewayResponse);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
                 //500 - Internal Server Error

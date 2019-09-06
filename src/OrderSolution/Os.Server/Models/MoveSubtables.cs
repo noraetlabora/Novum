@@ -10,6 +10,8 @@
 
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -19,21 +21,21 @@ namespace Os.Server.Models
     /// 
     /// </summary>
     [DataContract]
-    public partial class OrderLineModifierChoice2 : IEquatable<OrderLineModifierChoice2>
+    public partial class MoveSubtables : IEquatable<MoveSubtables>
     {
         /// <summary>
-        /// The ID of the choice that was selected.
+        /// The ids of the sub tables to be moved. CONSTRAINT: These sub tables must be part of a single table and it is not allowed to use sub tables from different tables in this request.
         /// </summary>
-        /// <value>The ID of the choice that was selected.</value>
-        [DataMember(Name = "modifierChoiceId")]
-        public string ModifierChoiceId { get; set; }
+        /// <value>The ids of the sub tables to be moved. CONSTRAINT: These sub tables must be part of a single table and it is not allowed to use sub tables from different tables in this request.</value>
+        [DataMember(Name = "subTableIds")]
+        public List<string> SubTableIds { get; set; }
 
         /// <summary>
-        /// The amount how often the choices was selected. Defaults to 1 if omitted.
+        /// Id of the target table to move the sub tables to. CONSTRAINT: This table will only be valid if it was opened before (&#x3D; actions/tables/openByName was called).
         /// </summary>
-        /// <value>The amount how often the choices was selected. Defaults to 1 if omitted.</value>
-        [DataMember(Name = "amount")]
-        public int? Amount { get; set; }
+        /// <value>Id of the target table to move the sub tables to. CONSTRAINT: This table will only be valid if it was opened before (&#x3D; actions/tables/openByName was called).</value>
+        [DataMember(Name = "targetTableId")]
+        public string TargetTableId { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -42,9 +44,9 @@ namespace Os.Server.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class OrderLineModifierChoice2 {\n");
-            sb.Append("  ModifierChoiceId: ").Append(ModifierChoiceId).Append("\n");
-            sb.Append("  Amount: ").Append(Amount).Append("\n");
+            sb.Append("class MoveSubtables {\n");
+            sb.Append("  SubTableIds: ").Append(SubTableIds).Append("\n");
+            sb.Append("  TargetTableId: ").Append(TargetTableId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -67,29 +69,29 @@ namespace Os.Server.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((OrderLineModifierChoice2)obj);
+            return obj.GetType() == GetType() && Equals((MoveSubtables)obj);
         }
 
         /// <summary>
-        /// Returns true if OrderLineModifierChoice2 instances are equal
+        /// Returns true if MoveSubtables instances are equal
         /// </summary>
-        /// <param name="other">Instance of OrderLineModifierChoice2 to be compared</param>
+        /// <param name="other">Instance of MoveSubtables to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(OrderLineModifierChoice2 other)
+        public bool Equals(MoveSubtables other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return
                 (
-                    ModifierChoiceId == other.ModifierChoiceId ||
-                    ModifierChoiceId != null &&
-                    ModifierChoiceId.Equals(other.ModifierChoiceId)
+                    SubTableIds == other.SubTableIds ||
+                    SubTableIds != null &&
+                    SubTableIds.SequenceEqual(other.SubTableIds)
                 ) &&
                 (
-                    Amount == other.Amount ||
-                    Amount != null &&
-                    Amount.Equals(other.Amount)
+                    TargetTableId == other.TargetTableId ||
+                    TargetTableId != null &&
+                    TargetTableId.Equals(other.TargetTableId)
                 );
         }
 
@@ -103,10 +105,10 @@ namespace Os.Server.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                if (ModifierChoiceId != null)
-                    hashCode = hashCode * 59 + ModifierChoiceId.GetHashCode();
-                if (Amount != null)
-                    hashCode = hashCode * 59 + Amount.GetHashCode();
+                if (SubTableIds != null)
+                    hashCode = hashCode * 59 + SubTableIds.GetHashCode();
+                if (TargetTableId != null)
+                    hashCode = hashCode * 59 + TargetTableId.GetHashCode();
                 return hashCode;
             }
         }
@@ -114,12 +116,12 @@ namespace Os.Server.Models
         #region Operators
 #pragma warning disable 1591
 
-        public static bool operator ==(OrderLineModifierChoice2 left, OrderLineModifierChoice2 right)
+        public static bool operator ==(MoveSubtables left, MoveSubtables right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(OrderLineModifierChoice2 left, OrderLineModifierChoice2 right)
+        public static bool operator !=(MoveSubtables left, MoveSubtables right)
         {
             return !Equals(left, right);
         }

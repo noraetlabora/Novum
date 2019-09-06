@@ -53,21 +53,21 @@ namespace Os.Server.Logic
         /// <param name="imageId"></param>
         /// <param name="stream"></param>
         /// <returns></returns>
-        public static void SaveImage(string imageId, Stream stream) 
+        public static void SaveImage(string imageId, Stream stream)
         {
             var ntImage = new Nt.Data.Image();
             using (MemoryStream memoryStream = new MemoryStream())
             {
-                    stream.CopyTo(memoryStream);
-                    ntImage.Data = memoryStream.ToArray();
+                stream.CopyTo(memoryStream);
+                ntImage.Data = memoryStream.ToArray();
             }
 
-            using(System.Drawing.Image _image = System.Drawing.Image.FromStream(stream))
+            using (System.Drawing.Image _image = System.Drawing.Image.FromStream(stream))
             {
                 ntImage.Width = _image.Width;
                 ntImage.Height = _image.Height;
             }
-            
+
             _images.Add(imageId, ntImage);
         }
 
@@ -77,9 +77,9 @@ namespace Os.Server.Logic
         /// <param name="session"></param>
         public static void RemoveImages(Nt.Data.Session session)
         {
-           var prefix = GetImagePrefix(session);
+            var prefix = GetImagePrefix(session);
 
-            foreach(var key in _images.Keys.ToList()) 
+            foreach (var key in _images.Keys.ToList())
             {
                 if (key.StartsWith(prefix))
                     _images.Remove(key);
@@ -88,7 +88,7 @@ namespace Os.Server.Logic
 
         private static string GetImagePrefix(Nt.Data.Session session)
         {
-             return session.Id + "_";
+            return session.Id + "_";
         }
     }
 }

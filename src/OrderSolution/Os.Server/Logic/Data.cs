@@ -1,6 +1,5 @@
-using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Os.Server.Logic
 {
@@ -11,12 +10,12 @@ namespace Os.Server.Logic
     {
 
         #region private fields;
-            private static List<Models.Article> osCachedArticles;
-            private static List<Models.Category> osCachedCategories;
-            internal static Dictionary<string, Nt.Data.PaymentType> ntCachedPaymentTypes;
-            internal static Dictionary<string, Nt.Data.AssignmentType> ntCachedAssignmentTypes;
-            private static string[] notSupportedArticleIds = { "PLU", "$KONTO:", "$GUTSCHEIN:", "$GUTSCHEINBET:", "$RABATT:", "GANG:", "$FILTER:" };
-            private static string[] notSupportedModifierIds = { "VORWAHL:" };
+        private static List<Models.Article> osCachedArticles;
+        private static List<Models.Category> osCachedCategories;
+        internal static Dictionary<string, Nt.Data.PaymentType> ntCachedPaymentTypes;
+        internal static Dictionary<string, Nt.Data.AssignmentType> ntCachedAssignmentTypes;
+        private static string[] notSupportedArticleIds = { "PLU", "$KONTO:", "$GUTSCHEIN:", "$GUTSCHEINBET:", "$RABATT:", "GANG:", "$FILTER:" };
+        private static string[] notSupportedModifierIds = { "VORWAHL:" };
 
         #endregion  //private fields
 
@@ -26,7 +25,7 @@ namespace Os.Server.Logic
         /// 
         /// </summary>
         /// <value></value>
-        public static bool InitialStaticDataSent {get; set;}
+        public static bool InitialStaticDataSent { get; set; }
 
         #endregion
 
@@ -37,7 +36,7 @@ namespace Os.Server.Logic
         /// </summary>
         public static void CheckStaticData()
         {
-            if (!InitialStaticDataSent) 
+            if (!InitialStaticDataSent)
             {
                 System.Diagnostics.Debug.WriteLine("initial static not yet sent");
                 return;
@@ -45,7 +44,7 @@ namespace Os.Server.Logic
 
             // snapshot time exists, data is up to date
             if (Nt.Database.DB.Api.Misc.HasSnapshotTime(Controllers.OsHostController.PosStatus.SessionId))
-            {   
+            {
                 System.Diagnostics.Debug.WriteLine("static data are up to date");
                 return;
             }
@@ -148,7 +147,7 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static List<Models.Article> GetCachedArticles()
         {
-                return osCachedArticles;
+            return osCachedArticles;
         }
 
         /// <summary>
@@ -172,14 +171,15 @@ namespace Os.Server.Logic
                 if (ntArticle.AskForPrice)
                     osArticle.MustEnterPrice = 1;
                 // force show modifiers
-                if (osArticleModifierGroups.ContainsKey(osArticle.Id)) {
+                if (osArticleModifierGroups.ContainsKey(osArticle.Id))
+                {
                     osArticle.ModifierGroups = osArticleModifierGroups[osArticle.Id].Values.ToList();
 
-                    foreach(var modifierGroup in osArticle.ModifierGroups) 
+                    foreach (var modifierGroup in osArticle.ModifierGroups)
                     {
                         if (ntModifierMenus.ContainsKey(modifierGroup.ModifierGroupId))
                         {
-                            if (ntModifierMenus[modifierGroup.ModifierGroupId].MinSelection > 0) 
+                            if (ntModifierMenus[modifierGroup.ModifierGroupId].MinSelection > 0)
                                 osArticle.ForceShowModifiers = true;
                         }
                     }
@@ -201,7 +201,7 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static List<Models.Category> GetCachedCategories(string menuId)
         {
-                return osCachedCategories;
+            return osCachedCategories;
         }
 
         /// <summary>
@@ -268,7 +268,7 @@ namespace Os.Server.Logic
                 // type of modifier selection
                 if (ntModifierMenu.MaxSelection.Equals(1))
                     osModifierGroup.Type = Models.ModifierGroup.ModifierType.PickOneEnum;
-                else 
+                else
                     osModifierGroup.Type = Models.ModifierGroup.ModifierType.PickMultipleEnum;
 
                 osModifierGroup.Choices = new List<Models.ModifierChoice>();
@@ -420,16 +420,16 @@ namespace Os.Server.Logic
         /// 
         /// </summary>
         /// <returns></returns>
-        private static Dictionary<string, Dictionary<string, Models.ArticleModifierGroup>> GetArticleModifierGroups() 
+        private static Dictionary<string, Dictionary<string, Models.ArticleModifierGroup>> GetArticleModifierGroups()
         {
             var osModifierDictionary = new Dictionary<string, Dictionary<string, Models.ArticleModifierGroup>>();
             var ntMenuItems = Nt.Database.DB.Api.Menu.GetMenuItems();
             var ntMenuItemsModifierMenus = Nt.Database.DB.Api.Modifier.GetMenuItemModifierMenus();
 
             // loop through all ntMenuItems again and tne modifierMenus
-            foreach(var ntMenuItem in ntMenuItems) 
+            foreach (var ntMenuItem in ntMenuItems)
             {
-                foreach(var ntMenuItemsModifierMenu in ntMenuItemsModifierMenus)
+                foreach (var ntMenuItemsModifierMenu in ntMenuItemsModifierMenus)
                 {
                     if (!ntMenuItemsModifierMenu.ContainsMenuItem(ntMenuItem))
                         continue;
@@ -442,9 +442,9 @@ namespace Os.Server.Logic
 
             // loop again through all ntMenuItems again and add text input and fax input
             // the second loop makes sure, that the text and fax modifiers are at the end of the list
-            foreach(var ntMenuItem in ntMenuItems) 
+            foreach (var ntMenuItem in ntMenuItems)
             {
-                foreach(var ntMenuItemsModifierMenu in ntMenuItemsModifierMenus)
+                foreach (var ntMenuItemsModifierMenu in ntMenuItemsModifierMenus)
                 {
                     if (!ntMenuItemsModifierMenu.ContainsMenuItem(ntMenuItem))
                         continue;
@@ -503,7 +503,7 @@ namespace Os.Server.Logic
         /// </summary>
         /// <param name="modifierId"></param>
         /// <returns></returns>
-        private static bool ModifierIdNotSupported(string modifierId) 
+        private static bool ModifierIdNotSupported(string modifierId)
         {
             foreach (string notSupportedModifierId in notSupportedModifierIds)
             {
@@ -521,11 +521,11 @@ namespace Os.Server.Logic
         /// <param name="ntMenuItems"></param>
         /// <param name="subMenu">number of submenu (mainMenu = 0, subMenu = 1, subsubMenu = 2, ...)</param>
         /// <returns></returns>
-        private static List<Models.CategoryContentEntry> GetCategoryContent(string menuId, Dictionary<string, Nt.Data.Menu> ntMenus, List<Nt.Data.MenuItem> ntMenuItems, uint subMenu) 
+        private static List<Models.CategoryContentEntry> GetCategoryContent(string menuId, Dictionary<string, Nt.Data.Menu> ntMenus, List<Nt.Data.MenuItem> ntMenuItems, uint subMenu)
         {
             var categoryContent = new List<Models.CategoryContentEntry>();
 
-            foreach(var ntMenuItem in ntMenuItems)
+            foreach (var ntMenuItem in ntMenuItems)
             {
                 //
                 if (!ntMenuItem.MenuId.Equals(menuId))
@@ -536,7 +536,7 @@ namespace Os.Server.Logic
 
                 var osCategoryContentEntry = new Models.CategoryContentEntry();
 
-                if (ntMenuItem.ArticleId.StartsWith("$")) 
+                if (ntMenuItem.ArticleId.StartsWith("$"))
                 {
                     // ignore sub/sub/.../menu 
                     if (subMenu > 3)
@@ -546,18 +546,19 @@ namespace Os.Server.Logic
                     if (subMenuId.Equals(menuId))
                         continue;
                     // subMenuId not known
-                    if (!ntMenus.ContainsKey(subMenuId)) 
+                    if (!ntMenus.ContainsKey(subMenuId))
                         continue;
                     //
                     osCategoryContentEntry.Category = new Models.Category();
                     osCategoryContentEntry.Category.Name = ntMenus[subMenuId].Name;
                     osCategoryContentEntry.Category.Content = GetCategoryContent(subMenuId, ntMenus, ntMenuItems, subMenu + 1);
                 }
-                else {
+                else
+                {
                     osCategoryContentEntry.ArticleId = ntMenuItem.ArticleId;
                 }
 
-                categoryContent.Add(osCategoryContentEntry);             
+                categoryContent.Add(osCategoryContentEntry);
             }
 
             return categoryContent;

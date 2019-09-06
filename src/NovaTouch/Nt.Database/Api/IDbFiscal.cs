@@ -72,5 +72,27 @@ namespace Nt.Database.Api
         /// </summary>
         /// <returns></returns>
         object GetProvider(string clientId, string posId, string serialNumber);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="ordersDataString"></param>
+        /// <param name="paymentMethodsDataString"></param>
+        /// <param name="paymentBillDataString"></param>
+        object SendTransaction(Data.Session session, string ordersDataString, string paymentMethodsDataString, string paymentBillDataString);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        void CommitTransaction(Data.Session session);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="reason"></param>
+        void RollbackTransaction(Data.Session session, string reason);
     }
 }

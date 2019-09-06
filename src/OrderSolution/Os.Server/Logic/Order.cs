@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Os.Server.Logic
 {
@@ -29,9 +28,9 @@ namespace Os.Server.Logic
                 osOrderLines.Add(osOrderLine);
             }
             //uncommited
-            foreach(var ntOrder in session.GetOrders())
+            foreach (var ntOrder in session.GetOrders())
             {
-                if (ntOrder.TableId.Equals(subTableId)) 
+                if (ntOrder.TableId.Equals(subTableId))
                 {
                     var osOrderLine = GetOsOrderLine(ntOrder);
                     osOrderLines.Add(osOrderLine);
@@ -80,7 +79,7 @@ namespace Os.Server.Logic
         {
             if (session.NotPermitted(Nt.Data.Permission.PermissionType.VoidCommitedOrder))
                 throw new Exception("not permitted");
-                
+
             if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
                 throw new Exception("no open table");
 
@@ -142,33 +141,32 @@ namespace Os.Server.Logic
             var osOrderLineResult = new Models.OrderLineResult();
             var singlePrice = ntOrder.UnitPrice;
             osOrderLineResult.Modifiers = new List<Models.OrderLineResultModifier>();
-            
+
             ntOrder.ClearModifiers();
 
-            foreach(var osOrderLineModifier2 in data.Modifiers)
+            foreach (var osOrderLineModifier2 in data.Modifiers)
             {
                 var osOrderLineResultModifier = new Models.OrderLineResultModifier();
                 ///////////////////////////////////
                 //choices
                 ///////////////////////////////////
-                if (osOrderLineModifier2.Choices != null && osOrderLineModifier2.Choices.Count > 0) 
+                if (osOrderLineModifier2.Choices != null && osOrderLineModifier2.Choices.Count > 0)
                 {
-                    osOrderLineResultModifier.Id = osOrderLineModifier2.ModifierGroupId;
                     osOrderLineResultModifier.Choices = new List<Models.OrderLineResultModifierChoice>();
 
-                    foreach(var osOrderLineModifierChoice2 in osOrderLineModifier2.Choices) 
+                    foreach (var osOrderLineModifierChoice2 in osOrderLineModifier2.Choices)
                     {
                         var ntModifier = Nt.Database.DB.Api.Modifier.GetModifier(session, osOrderLineModifierChoice2.ModifierChoiceId, 1.0m);
                         ntOrder.AddModifier(ntModifier);
-                        
+
                         var osOrderLineResultModifierChoice = new Models.OrderLineResultModifierChoice();
                         osOrderLineResultModifierChoice.ModifierChoiceId = ntModifier.ArticleId;
-                        if (ntModifier.Percent != 0.0m) 
+                        if (ntModifier.Percent != 0.0m)
                         {
                             singlePrice += ntOrder.UnitPrice * 0.01m * ntModifier.Percent;
                             singlePrice = Nt.Data.Utils.Math.Round(singlePrice, ntModifier.Rounding);
                         }
-                        else 
+                        else
                         {
                             singlePrice += ntModifier.UnitPrice;
                         }
@@ -185,11 +183,11 @@ namespace Os.Server.Logic
                     ntTextModifier.Name = osOrderLineModifier2.TextInput;
                     ntOrder.AddModifier(ntTextModifier);
                 }
-                
+
                 ///////////////////////////////////
                 //fax input
                 ///////////////////////////////////
-                if (!string.IsNullOrEmpty(osOrderLineModifier2.FaxInputID)) 
+                if (!string.IsNullOrEmpty(osOrderLineModifier2.FaxInputID))
                 {
                     var ntFaxModifier = new Nt.Data.Modifier();
                     ntFaxModifier.Image = Image.GetImage(osOrderLineModifier2.FaxInputID);
@@ -225,14 +223,14 @@ namespace Os.Server.Logic
             var subTableOrders = new List<Nt.Data.Order>();
             var lastSubTableId = "";
             //
-            foreach(var order in session.GetOrders())
+            foreach (var order in session.GetOrders())
             {
                 if (order.TableId != lastSubTableId)
                 {
                     Nt.Database.DB.Api.Order.FinalizeOrder(session, subTableOrders, lastSubTableId);
                     subTableOrders = new List<Nt.Data.Order>();
                 }
-                
+
                 subTableOrders.Add(order);
                 lastSubTableId = order.TableId;
             }
@@ -294,7 +292,7 @@ namespace Os.Server.Logic
             }
         }
 
-        private static Models.OrderLine GetOsOrderLine(Nt.Data.Order ntOrder) 
+        private static Models.OrderLine GetOsOrderLine(Nt.Data.Order ntOrder)
         {
             var osOrderLine = new Models.OrderLine();
             osOrderLine.Id = ntOrder.Id;
@@ -307,21 +305,20 @@ namespace Os.Server.Logic
             if (ntOrder.Modifiers != null && ntOrder.Modifiers.Count > 0)
             {
                 osOrderLine.Modifiers = new List<Models.OrderLineModifier>();
-                
+
                 var osOrderLineModifier = new Models.OrderLineModifier();
-                
-                foreach(var ntModifier in ntOrder.Modifiers)
+
+                foreach (var ntModifier in ntOrder.Modifiers)
                 {
                     osOrderLineModifier = new Models.OrderLineModifier();
                     osOrderLineModifier.Choices = new List<Models.OrderLineModifierChoice>();
 
                     //choice
-                    if (!string.IsNullOrEmpty(ntModifier.ArticleId)) 
+                    if (!string.IsNullOrEmpty(ntModifier.ArticleId))
                     {
                         var osOrderLineModifierChoice = new Models.OrderLineModifierChoice();
                         osOrderLineModifierChoice.ModifierChoiceId = ntModifier.ArticleId;
                         osOrderLineModifier.Choices.Add(osOrderLineModifierChoice);
-                        osOrderLineModifier.Id = ntModifier.MenuId + "|" + ntModifier.ArticleId;
                         osOrderLineModifier.ModifierGroupId = ntModifier.MenuId;
                     }
                     //textinput
@@ -329,11 +326,10 @@ namespace Os.Server.Logic
                     {
                         osOrderLineModifier.TextInput = ntModifier.Name;
                         ntModifier.MenuId = "text";
-                        osOrderLineModifier.Id = "text|" + ntModifier.Name;
                     }
 
                     osOrderLine.Modifiers.Add(osOrderLineModifier);
-                    
+
                 }
             }
 
@@ -341,5 +337,7 @@ namespace Os.Server.Logic
         }
 
         #endregion
+
+
     }
 }

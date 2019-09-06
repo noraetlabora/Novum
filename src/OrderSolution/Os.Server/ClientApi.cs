@@ -1,5 +1,3 @@
-using System;
-using Os.Server.Client;
 using Os.Server.Client.Api;
 
 namespace Os.Server
@@ -9,7 +7,7 @@ namespace Os.Server
     /// </summary>
     public class ClientApi
     {
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -27,7 +25,7 @@ namespace Os.Server
         /// </summary>
         /// <value></value>
         public static Os.Server.Client.Api.IDefaultApi Default { get; private set; }
-        
+
         /// <summary>
         /// 
         /// </summary>

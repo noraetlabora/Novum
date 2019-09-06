@@ -1,21 +1,20 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.ServiceProcess;
-using System.Text;
-using CommandLine;
+﻿using CommandLine;
 using CommandLine.Text;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
+using System;
+using System.Diagnostics;
+using System.Linq;
+using System.ServiceProcess;
+using System.Text;
 
 namespace Os.Server
 {
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -99,7 +98,7 @@ namespace Os.Server
             {
                 Nt.Logging.Log.Server.Error("---------- argument error ----------");
                 var builder = new StringBuilder();
-                foreach(var arg in args)
+                foreach (var arg in args)
                 {
                     builder.Append(arg).Append(" ");
                 }

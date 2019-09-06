@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Os.Server.Controllers
 {
@@ -74,7 +72,7 @@ namespace Os.Server.Controllers
         [HttpPost]
         [Route("/api/v2/actions/OrderLines/Split/{orderLineId}")]
         public virtual IActionResult OrderLinesSplit([FromRoute][Required]string orderLineId, [FromBody]Models.OrderLineSplit data)
-        { 
+        {
             try
             {
                 var session = Sessions.GetSession(Request);

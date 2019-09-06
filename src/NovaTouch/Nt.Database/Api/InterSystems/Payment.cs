@@ -51,15 +51,18 @@ namespace Nt.Database.Api.InterSystems
 
         public Nt.Data.PaymentResult Pay(Nt.Data.Session session, string tableId, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation)
         {
-            var ordersStringData = Order.GetOrderDataString(orders);
-            var paymentMethodsStringData = Payment.GetPaymentMethodDataString(paymentMethods);
-            var paymentBillStringData = Payment.GetPaymentBillDataString(paymentInformation);
-            var paymentOptionStringData = Payment.GetPaymentOptionDataString(paymentInformation);
-
-            var dbString = Interaction.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersStringData, paymentBillStringData, paymentMethodsStringData, paymentOptionStringData, "", "", "", "", "", "");
+            var ordersDataString = Order.GetOrderDataString(orders);
+            var paymentMethodsDataString = Payment.GetPaymentMethodDataString(paymentMethods);
+            var paymentBillDataString = Payment.GetPaymentBillDataString(paymentInformation);
+            var paymentOptionDataString = Payment.GetPaymentOptionDataString(paymentInformation);
+            var fiscalResult = (Nov.NT.POS.Fiscal.FiscalResult)DB.Api.Fiscal.SendTransaction(session, ordersDataString, paymentMethodsDataString, paymentBillDataString);
+            var dbString = Interaction.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersDataString, paymentBillDataString, paymentMethodsDataString, paymentOptionDataString, "", "", "", "", "", "");
 
             if (dbString.StartsWith("FM"))
+            {
+                DB.Api.Fiscal.RollbackTransaction(session, dbString);
                 throw new Exception(dbString);
+            }
 
             var result = new Nt.Data.PaymentResult();
             var paymentString = new DataString(dbString);

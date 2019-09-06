@@ -112,9 +112,7 @@ namespace Nt.Database.Api.InterSystems
         {
             var fiscalMode = this.GetMode(clientId, posId);
             if (!fiscalMode.Equals("0"))
-            {
                 return null;
-            }
 
             var fiscalConfiguration = this.GetConfiguration(clientId, posId);
             var fiscalServiceType = this.GetServiceType(clientId);
@@ -131,7 +129,71 @@ namespace Nt.Database.Api.InterSystems
                 Logging.Log.Server.Error(ex, "Error GetFiscalProvider");
                 throw ex;
             }
-            return null; //fiscalProvider;
+            return fiscalProvider;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="ordersDataString"></param>
+        /// <param name="paymentMethodsDataString"></param>
+        /// <param name="paymentBillDataString"></param>
+        public object SendTransaction(Data.Session session, string ordersDataString, string paymentMethodsDataString, string paymentBillDataString)
+        {
+            if (session.FiscalProvider == null)
+                return null;
+
+            Nov.NT.POS.Fiscal.FiscalResult fiscalResult = null;
+            var fiscalProvider = (Nov.NT.POS.Fiscal.IFiscalProvider)session.FiscalProvider;
+            var fiscalClientString = DB.Api.Fiscal.GetClient(session.ClientId);
+            var fiscalUserString = DB.Api.Fiscal.GetUser(session.ClientId, session.PosId, session.WaiterId);
+            var fiscalReceipt = new Nov.NT.POS.Data.DTO.FiscalBelegDTO(fiscalClientString, fiscalUserString, paymentBillDataString, ordersDataString, paymentMethodsDataString);
+
+            try
+            {
+                fiscalResult = fiscalProvider.SendFiscalBeleg(fiscalReceipt);
+            }
+            catch (Exception ex)
+            {
+                fiscalProvider.TransactionRollback("Fiscal Transaction Rollback because of Exception " + ex.Message);
+                throw new Exception(ex.Message);
+            }
+
+            if (!fiscalResult.IsOK)
+            {
+                fiscalProvider.TransactionRollback("Fiscal Transaction Rollback because of result is not OK " + fiscalResult.UserMessage);
+                throw new Exception(fiscalResult.UserMessage);
+            }
+
+            return fiscalResult;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="reason"></param>
+        public void RollbackTransaction(Data.Session session, string reason)
+        {
+            if (session.FiscalProvider == null)
+                return;
+
+            var fiscalProvider = (Nov.NT.POS.Fiscal.IFiscalProvider)session.FiscalProvider;
+            fiscalProvider.TransactionRollback(reason);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        public void CommitTransaction(Data.Session session)
+        {
+            if (session.FiscalProvider == null)
+                return;
+
+            var fiscalProvider = (Nov.NT.POS.Fiscal.IFiscalProvider)session.FiscalProvider;
+            fiscalProvider.TransactionCommit();
         }
     }
 }

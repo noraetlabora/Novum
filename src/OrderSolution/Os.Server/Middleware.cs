@@ -1,9 +1,9 @@
+using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace Os.Server
 {
@@ -56,7 +56,7 @@ namespace Os.Server
                 //read and log request body
                 var requestBodyContent = await ReadRequestBody(httpContext.Request);
                 var originalBodyStream = httpContext.Response.Body;
-                using(var responseBody = new MemoryStream())
+                using (var responseBody = new MemoryStream())
                 {
                     httpContext.Response.Body = responseBody;
                     await _next(httpContext);
@@ -114,9 +114,9 @@ namespace Os.Server
             sb.Append(response.HttpContext.TraceIdentifier).Append("|");
             sb.Append(response.StatusCode).Append("|");
             sb.Append(response.HttpContext.Request.Path.Value).Append("|");
-            if (bodyAsText.Length > 500) 
+            if (bodyAsText.Length > 500)
                 sb.Append(bodyAsText.Substring(0, 500)).Append("...");
-            else 
+            else
                 sb.Append(bodyAsText);
 
             if (!notLoggingRequests.Contains(response.HttpContext.Request.Path.Value.ToLower()))

@@ -1,8 +1,8 @@
+using Os.Server.Client.Model;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
-using Os.Server.Client.Model;
 
 namespace Os.Server.Client.Api
 {
@@ -17,33 +17,33 @@ namespace Os.Server.Client.Api
         /// <param name="printerId">printer id</param>
         /// <param name="jobId">print job id</param>
         /// <returns>PrintJob</returns>
-        PrintJob GetPrintJobInfo (string printerId, string jobId);
+        PrintJob GetPrintJobInfo(string printerId, string jobId);
         /// <summary>
         /// Get information for this printer 
         /// </summary>
         /// <param name="printerId">printer id</param>
         /// <returns>Printer</returns>
-        Printer GetPrinter (string printerId);
+        Printer GetPrinter(string printerId);
         /// <summary>
         /// Add a new print job to this printer queue 
         /// </summary>
         /// <param name="printerId">printer id</param>
         /// <param name="printLines"></param>
         /// <returns></returns>
-        void PostPrintJob (string printerId, List<string> printLines);
+        void PostPrintJob(string printerId, List<string> printLines);
         /// <summary>
         /// Get list of jobs for this printer; note: the list of jobs will be cleaned up after some time Get a list of print jobs for this printer with &#x60;id&#x60; on the local server (the one you are currently talking to) 
         /// </summary>
         /// <param name="printerId">printer id</param>
         /// <returns>List&lt;PrintJob&gt;</returns>
-        List<PrintJob> PrintersPrinterIdJobsGet (string printerId);
+        List<PrintJob> PrintersPrinterIdJobsGet(string printerId);
     }
-  
+
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
     public class PrintingApi : IPrintingApi
-    {    
+    {
         /// <summary>
         /// Initializes a new instance of the <see cref="PrintingApi"/> class.
         /// </summary>
@@ -52,50 +52,51 @@ namespace Os.Server.Client.Api
         {
             BaseUrl = baseUrl;
         }
-    
+
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
         public string BaseUrl { get; private set; }
-    
+
         /// <summary>
         /// Get Job information Get a list of print jobs for this printer with &#x60;id&#x60; on the local server (the one you are currently talking to) 
         /// </summary>
         /// <param name="printerId">printer id</param>
         /// <param name="jobId">print job id</param>
         /// <returns>PrintJob</returns>
-        public PrintJob GetPrintJobInfo (string printerId, string jobId)
+        public PrintJob GetPrintJobInfo(string printerId, string jobId)
         {
             return null;
         }
-    
+
         /// <summary>
         /// Get information for this printer 
         /// </summary>
         /// <param name="printerId">printer id</param>
         /// <returns>Printer</returns>
-        public Printer GetPrinter (string printerId)
+        public Printer GetPrinter(string printerId)
         {
             return null;
         }
-    
+
         /// <summary>
         /// Add a new print job to this printer queue 
         /// </summary>
         /// <param name="printerId">printer id</param>
         /// <param name="printLines"></param>
         /// <returns></returns>
-        public async void PostPrintJob (string printerId, List<string> printLines)
+        public async void PostPrintJob(string printerId, List<string> printLines)
         {
             var requestPath = printerId + "/jobs";
-            try {
+            try
+            {
                 using (var httpClient = new HttpClient())
                 {
                     var printData = new PrintData(printLines);
                     var printBytes = printData.ToBytes();
                     var requestIdentifier = new Microsoft.AspNetCore.Http.Features.HttpRequestIdentifierFeature();
-                    
+
                     var content = new ByteArrayContent(printBytes);
                     content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
 
@@ -117,24 +118,24 @@ namespace Os.Server.Client.Api
                     Nt.Logging.Log.Communication.Info(sb.ToString());
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, requestPath); 
+                Nt.Logging.Log.Server.Error(ex, requestPath);
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
-    
+
             return;
         }
-    
+
         /// <summary>
         /// Get list of jobs for this printer; note: the list of jobs will be cleaned up after some time Get a list of print jobs for this printer with &#x60;id&#x60; on the local server (the one you are currently talking to) 
         /// </summary>
         /// <param name="printerId">printer id</param>
         /// <returns>List&lt;PrintJob&gt;</returns>
-        public List<PrintJob> PrintersPrinterIdJobsGet (string printerId)
+        public List<PrintJob> PrintersPrinterIdJobsGet(string printerId)
         {
             return null;
         }
-    
+
     }
 }

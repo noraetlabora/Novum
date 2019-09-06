@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
-using System.IO;
+using System.Collections.Generic;
 
 namespace Os.Server
 {
@@ -38,6 +36,6 @@ namespace Os.Server
                 return false;
             _sessions[session.Id] = session;
             return true;
-        } 
+        }
     }
 }

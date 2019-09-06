@@ -1,10 +1,9 @@
+using Newtonsoft.Json;
+using Os.Server.Client.Model;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
-using Newtonsoft.Json;
-using Os.Server.Client.Model;
 
 namespace Os.Server.Client.Api
 {
@@ -17,28 +16,28 @@ namespace Os.Server.Client.Api
         /// Provides a list of known topics. 
         /// </summary>
         /// <returns>List&lt;PubSubTopics&gt;</returns>
-        List<PubSubTopics> GetTopics ();
+        List<PubSubTopics> GetTopics();
         /// <summary>
         /// Publish messages to a topic. The OsServer is providing the following topics + host_staticDataChanged - this topic without any payload (\&quot;\&quot;) will trigger a static data synchronization. 
         /// </summary>
         /// <param name="topic">the topic to publish the message to</param>
         /// <param name="body"></param>
         /// <returns>InlineResponse200</returns>
-        void PubsubTopicsPost (string topic, List<PubSubMessage> body);
+        void PubsubTopicsPost(string topic, List<PubSubMessage> body);
         /// <summary>
         /// Subscribe to an existing topic. 
         /// </summary>
         /// <param name="topic">The topic to subscribe to.</param>
         /// <param name="body"></param>
         /// <returns></returns>
-        void PubsubTopicsPut (string topic, PubSubSubscription body);
+        void PubsubTopicsPut(string topic, PubSubSubscription body);
     }
-  
+
     /// <summary>
     /// Represents a collection of functions to interact with the API endpoints
     /// </summary>
     public class PubsubApi : IPubsubApi
-    {    
+    {
         /// <summary>
         /// Initializes a new instance of the <see cref="PubsubApi"/> class.
         /// </summary>
@@ -47,33 +46,33 @@ namespace Os.Server.Client.Api
         {
             BaseUrl = baseUrl;
         }
-    
+
         /// <summary>
         /// Gets or sets the API client.
         /// </summary>
         /// <value>An instance of the ApiClient</value>
-        public string BaseUrl {get; set;}
-    
+        public string BaseUrl { get; set; }
+
         /// <summary>
         /// Provides a list of known topics. 
         /// </summary>
         /// <returns>List&lt;PubSubTopics&gt;</returns>
-        public List<PubSubTopics> GetTopics ()
+        public List<PubSubTopics> GetTopics()
         {
-            
+
             return null;
         }
-    
+
         /// <summary>
         /// Publish messages to a topic. The OsServer is providing the following topics + host_staticDataChanged - this topic without any payload (\&quot;\&quot;) will trigger a static data synchronization. 
         /// </summary>
         /// <param name="topic">the topic to publish the message to</param>
         /// <param name="body"></param>
         /// <returns></returns>
-        public async void PubsubTopicsPost (string topic, List<PubSubMessage> body)
+        public async void PubsubTopicsPost(string topic, List<PubSubMessage> body)
         {
             var requestPath = "/api/v1/pubsub/topics/" + topic;
-            try 
+            try
             {
                 using (var httpClient = new HttpClient())
                 {
@@ -88,7 +87,7 @@ namespace Os.Server.Client.Api
                     sb.Append(requestPath).Append("|");
                     sb.Append(jsonString);
                     Nt.Logging.Log.Communication.Info(sb.ToString());
-                    
+
                     var requestUri = BaseUrl + requestPath;
                     var response = await httpClient.PostAsync(requestUri, content);
 
@@ -99,25 +98,25 @@ namespace Os.Server.Client.Api
                     Nt.Logging.Log.Communication.Info(sb.ToString());
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, requestPath); 
+                Nt.Logging.Log.Server.Error(ex, requestPath);
                 System.Diagnostics.Debug.WriteLine(ex.Message);
             }
-    
+
             return;
         }
-    
+
         /// <summary>
         /// Subscribe to an existing topic. 
         /// </summary>
         /// <param name="topic">The topic to subscribe to.</param>
         /// <param name="body"></param>
         /// <returns></returns>
-        public void PubsubTopicsPut (string topic, PubSubSubscription body)
+        public void PubsubTopicsPut(string topic, PubSubSubscription body)
         {
             return;
         }
-    
+
     }
 }

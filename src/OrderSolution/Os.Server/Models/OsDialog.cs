@@ -16,24 +16,22 @@ using System.Text;
 namespace Os.Server.Models
 {
     /// <summary>
-    /// 
+    /// A dialog type used in some POS responses to force the OsApp to show a dialog to the user.              NOTE: At the moment only a dialog with an OK button is supported. So it&#39;s an option to show final information to the user         but there is no option to get some results back.
     /// </summary>
     [DataContract]
-    public partial class OrderLineModifierChoice2 : IEquatable<OrderLineModifierChoice2>
+    public partial class OsDialog : IEquatable<OsDialog>
     {
         /// <summary>
-        /// The ID of the choice that was selected.
+        /// Gets or Sets Message
         /// </summary>
-        /// <value>The ID of the choice that was selected.</value>
-        [DataMember(Name = "modifierChoiceId")]
-        public string ModifierChoiceId { get; set; }
+        [DataMember(Name = "message")]
+        public string Message { get; set; }
 
         /// <summary>
-        /// The amount how often the choices was selected. Defaults to 1 if omitted.
+        /// Gets or Sets Header
         /// </summary>
-        /// <value>The amount how often the choices was selected. Defaults to 1 if omitted.</value>
-        [DataMember(Name = "amount")]
-        public int? Amount { get; set; }
+        [DataMember(Name = "header")]
+        public string Header { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -42,9 +40,9 @@ namespace Os.Server.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class OrderLineModifierChoice2 {\n");
-            sb.Append("  ModifierChoiceId: ").Append(ModifierChoiceId).Append("\n");
-            sb.Append("  Amount: ").Append(Amount).Append("\n");
+            sb.Append("class OsDialog {\n");
+            sb.Append("  Message: ").Append(Message).Append("\n");
+            sb.Append("  Header: ").Append(Header).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -67,29 +65,29 @@ namespace Os.Server.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((OrderLineModifierChoice2)obj);
+            return obj.GetType() == GetType() && Equals((OsDialog)obj);
         }
 
         /// <summary>
-        /// Returns true if OrderLineModifierChoice2 instances are equal
+        /// Returns true if OsDialog instances are equal
         /// </summary>
-        /// <param name="other">Instance of OrderLineModifierChoice2 to be compared</param>
+        /// <param name="other">Instance of OsDialog to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(OrderLineModifierChoice2 other)
+        public bool Equals(OsDialog other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return
                 (
-                    ModifierChoiceId == other.ModifierChoiceId ||
-                    ModifierChoiceId != null &&
-                    ModifierChoiceId.Equals(other.ModifierChoiceId)
+                    Message == other.Message ||
+                    Message != null &&
+                    Message.Equals(other.Message)
                 ) &&
                 (
-                    Amount == other.Amount ||
-                    Amount != null &&
-                    Amount.Equals(other.Amount)
+                    Header == other.Header ||
+                    Header != null &&
+                    Header.Equals(other.Header)
                 );
         }
 
@@ -103,10 +101,10 @@ namespace Os.Server.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                if (ModifierChoiceId != null)
-                    hashCode = hashCode * 59 + ModifierChoiceId.GetHashCode();
-                if (Amount != null)
-                    hashCode = hashCode * 59 + Amount.GetHashCode();
+                if (Message != null)
+                    hashCode = hashCode * 59 + Message.GetHashCode();
+                if (Header != null)
+                    hashCode = hashCode * 59 + Header.GetHashCode();
                 return hashCode;
             }
         }
@@ -114,12 +112,12 @@ namespace Os.Server.Models
         #region Operators
 #pragma warning disable 1591
 
-        public static bool operator ==(OrderLineModifierChoice2 left, OrderLineModifierChoice2 right)
+        public static bool operator ==(OsDialog left, OsDialog right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(OrderLineModifierChoice2 left, OrderLineModifierChoice2 right)
+        public static bool operator !=(OsDialog left, OsDialog right)
         {
             return !Equals(left, right);
         }
