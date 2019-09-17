@@ -37,11 +37,13 @@ namespace Os.Server.Logic
             bool validWaiter = Nt.Database.DB.Api.Waiter.ValidWaiter(loginUser.Id, loginUser.Password);
             if (!validWaiter)
                 throw new Exception(string.Format("user {0} not valid", loginUser.Id));
+
             Nt.Database.DB.Api.Waiter.Login(session);
             session.WaiterId = loginUser.Id;
             var permissions = Nt.Database.DB.Api.Waiter.GetPermissions(loginUser.Id);
             session.SetPermissions(permissions);
             Image.RemoveImages(session);
+            Fiscal.CheckSystem(session);
         }
 
         /// <summary>

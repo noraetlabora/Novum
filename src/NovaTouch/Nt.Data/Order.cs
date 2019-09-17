@@ -73,6 +73,24 @@ namespace Nt.Data
         public string CourseName { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public string ArticleGroupId { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public string TaxGroupId { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public uint TaxRate { get; set; }
+
+        /// <summary>
         /// Id of the order
         /// </summary>
         /// <value></value>
@@ -151,6 +169,11 @@ namespace Nt.Data
         /// </summary>
         /// <value></value>
         public string MenuId { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public decimal VatRate { get; set; } 
 
         /// <summary>
         /// 

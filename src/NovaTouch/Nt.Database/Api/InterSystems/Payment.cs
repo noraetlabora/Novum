@@ -194,7 +194,7 @@ namespace Nt.Database.Api.InterSystems
             //
             dataString.Append(paymentMethod.PaymentTypeId).Append(DataString.DoublePipes);
             dataString.Append(paymentMethod.AssignmentTypeId).Append(DataString.DoublePipes);
-            dataString.Append("").Append(DataString.DoublePipes); //ZahlartText
+            dataString.Append(paymentMethod.Name).Append(DataString.DoublePipes);
             dataString.Append(paymentMethod.Program).Append(DataString.DoublePipes);
             dataString.Append(paymentMethod.Amount).Append(DataString.DoublePipes);
             dataString.Append(paymentMethod.Tip).Append(DataString.DoublePipes);

@@ -114,6 +114,20 @@ namespace Os.Server.Logic
 
             return osPaymentMedia;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static Nt.Data.PaymentType GetPaymentType(string paymentTypeId) {
+            if (string.IsNullOrEmpty(paymentTypeId))
+                return null;
+
+            if (!ntCachedPaymentTypes.ContainsKey(paymentTypeId))
+                return null;
+
+            return ntCachedPaymentTypes[paymentTypeId];
+        }
+
         #endregion
 
         #region Printers

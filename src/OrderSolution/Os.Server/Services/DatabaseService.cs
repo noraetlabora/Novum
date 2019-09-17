@@ -27,6 +27,8 @@ namespace Os.Server.Services
             Logic.Data.GetPaymentMedia();
             Logic.Data.GetPrinters();
             Logic.Data.GetUsers();
+            Nt.Database.DB.Api.Misc.GetArticleGroups();
+            Nt.Database.DB.Api.Misc.GetTaxGroups();
 
             _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(20));
             return Task.CompletedTask;

@@ -7,7 +7,7 @@
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
     <_HasReferenceToSystemRuntime>true</_HasReferenceToSystemRuntime>
     <OutputType>Exe</OutputType>
-    <UserSecretsId>5a516c09-50aa-441a-9e85-6496767b3b83</UserSecretsId>
+    <UserSecretsId>e170daad-a398-4d7b-965e-b4380222622c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

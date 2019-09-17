@@ -39,18 +39,7 @@ namespace Nt.Database.Api
         /// <param name="posId">The current pos id ("RK2").</param>
         /// <returns></returns>
         string GetConfiguration(string clientId, string posId);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="session">Session data.</param>
-        /// <param name="tableId"></param>
-        /// <param name="orders"></param>
-        /// <param name="paymentMethods"></param>
-        /// <param name="paymentInformation"></param>
-        /// <returns></returns>
-        string GetData(Nt.Data.Session session, string tableId, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation);
-
+       
         /// <summary>
         /// 
         /// </summary>
@@ -72,6 +61,12 @@ namespace Nt.Database.Api
         /// </summary>
         /// <returns></returns>
         object GetProvider(string clientId, string posId, string serialNumber);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        string CheckSystem(Data.Session session);
 
         /// <summary>
         /// 

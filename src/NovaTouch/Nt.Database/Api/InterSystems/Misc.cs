@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using Nt.Data;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -9,9 +10,40 @@ namespace Nt.Database.Api.InterSystems
     /// </summary>
     internal class Misc : IDbMisc
     {
+        internal static Dictionary<string, TaxGroup> cachedTaxGroups;
+        internal static Dictionary<string, ArticleGroup> cachedArticleGroups;
+
         public Misc() { }
 
-        #region CancellationResason
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, ArticleGroup> GetArticleGroups()
+        {
+            var articleGroups = new Dictionary<string, Nt.Data.ArticleGroup>();
+            var sql = new StringBuilder();
+            sql.Append(" SELECT AGR, bez, STGR  ");
+            sql.Append(" FROM WW.AGR ");
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
+            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
+            var dataTable = Interaction.GetDataTable(sql.ToString());
+
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                var articleGroup = new Nt.Data.ArticleGroup();
+                articleGroup.Id = DataObject.GetString(dataRow, "AGR");
+                articleGroup.Name = DataObject.GetString(dataRow, "bez");
+                articleGroup.TaxGroupId = DataObject.GetString(dataRow, "STGR");
+
+                if (!articleGroups.ContainsKey(articleGroup.Id))
+                    articleGroups.Add(articleGroup.Id, articleGroup);
+            }
+
+            cachedArticleGroups = articleGroups;
+            return articleGroups;
+        }
+        
 
         /// <summary>
         /// 
@@ -40,10 +72,6 @@ namespace Nt.Database.Api.InterSystems
             return cancellationReasons;
         }
 
-        #endregion
-
-        #region Service Area
-
         /// <summary>
         /// 
         /// </summary>
@@ -69,7 +97,37 @@ namespace Nt.Database.Api.InterSystems
 
             return serviceAreas;
         }
-        #endregion
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, TaxGroup> GetTaxGroups()
+        {
+            var taxGroups = new Dictionary<string, Nt.Data.TaxGroup>();
+            var sql = new StringBuilder();
+            sql.Append(" SELECT A.STGR, A.bez, B.uproz, B.uproz2  ");
+            sql.Append(" FROM WW.STGR A ");
+            sql.Append(" INNER JOIN WW.STGRSteuer B ON (B.FA = A.FA AND B.STGR = A.STGR AND B.GILT <= ").Append(Interaction.SqlToday).Append(")");
+            sql.Append(" WHERE A.FA = ").Append(Api.ClientId);
+            sql.Append(" AND A.passiv > ").Append(Interaction.SqlToday);
+            var dataTable = Interaction.GetDataTable(sql.ToString());
+
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                var taxGroup = new Nt.Data.TaxGroup();
+                taxGroup.Id = DataObject.GetString(dataRow, "STGR");
+                taxGroup.Name = DataObject.GetString(dataRow, "bez");
+                taxGroup.TaxRate = DataObject.GetUInt(dataRow, "uproz");
+                taxGroup.TaxRate2 = DataObject.GetUInt(dataRow, "uproz2");
+
+                if (!taxGroups.ContainsKey(taxGroup.Id))
+                    taxGroups.Add(taxGroup.Id, taxGroup);
+            }
+
+            cachedTaxGroups = taxGroups;
+            return taxGroups;
+        }
 
         #region Snapshot    
 

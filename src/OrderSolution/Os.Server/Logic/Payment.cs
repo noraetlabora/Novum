@@ -34,8 +34,11 @@ namespace Os.Server.Logic
             foreach (var osPayment in data.Payments)
             {
                 var ntPaymentMethod = new Nt.Data.PaymentMethod();
+                var ntPaymentType = Data.GetPaymentType(osPayment.PaymentMediumId);
                 ntPaymentMethod.Amount = decimal.Divide((decimal)osPayment.AmountPaid, 100.0m);
-                ntPaymentMethod.PaymentTypeId = osPayment.PaymentMediumId;
+                ntPaymentMethod.PaymentTypeId = ntPaymentType.Id;
+                ntPaymentMethod.Program = ntPaymentType.Program;
+                ntPaymentMethod.Name = ntPaymentType.Name;
                 ntPaymentMethod.AssignmentTypeId = "N";
                 ntPaymentMethods.Add(ntPaymentMethod);
             }

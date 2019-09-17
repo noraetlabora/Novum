@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using Nt.Data;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -62,26 +63,6 @@ namespace Nt.Database.Api.InterSystems
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="session">Session data.</param>
-        /// <param name="tableId"></param>
-        /// <param name="orders"></param>
-        /// <param name="paymentMethods"></param>
-        /// <param name="paymentInformation"></param>
-        /// <returns></returns>
-        public string GetData(Nt.Data.Session session, string tableId, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation)
-        {
-            var ordersStringData = Order.GetOrderDataString(orders);
-            var paymentMethodsStringData = Payment.GetPaymentMethodDataString(paymentMethods);
-            var paymentBillStringData = Payment.GetPaymentBillDataString(paymentInformation);
-            var paymentOptionStringData = Payment.GetPaymentOptionDataString(paymentInformation);
-
-            var dbString = Interaction.CallClassMethod("cmNT.AbrOman2", "GetFiskalDaten", session.ClientId, session.PosId, session.WaiterId, tableId, ordersStringData, session.PriceLevel, paymentBillStringData, paymentMethodsStringData, paymentOptionStringData, "1");
-            return dbString;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="clientId">The current client id ("1001").</param>
         /// <returns></returns>
         public string GetClient(string clientId)
@@ -136,6 +117,32 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <param name="session"></param>
+        public string CheckSystem(Data.Session session)
+        {
+            var fiscalProvider = (Nov.NT.POS.Fiscal.IFiscalProvider)session.FiscalProvider;
+            var fiscalClientString = DB.Api.Fiscal.GetClient(session.ClientId);
+            var fiscalClient = new Nov.NT.POS.Data.DTO.FiscalParameterMandantDTO(fiscalClientString);
+            var fiscalUserString = DB.Api.Fiscal.GetUser(session.ClientId, session.PosId, session.WaiterId);
+            var fiscalUser = new Nov.NT.POS.Data.DTO.FiscalParameterBedienerDTO(fiscalUserString);
+            
+            try
+            {
+                var fiscalResult = fiscalProvider.CheckFiscalSystem(fiscalClient, fiscalUser);
+                if (fiscalResult.IsOK)
+                    return string.Empty;
+                else
+                    return fiscalResult.StatusHeader + " " + fiscalResult.StatusText;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
         /// <param name="ordersDataString"></param>
         /// <param name="paymentMethodsDataString"></param>
         /// <param name="paymentBillDataString"></param>
@@ -148,6 +155,8 @@ namespace Nt.Database.Api.InterSystems
             var fiscalProvider = (Nov.NT.POS.Fiscal.IFiscalProvider)session.FiscalProvider;
             var fiscalClientString = DB.Api.Fiscal.GetClient(session.ClientId);
             var fiscalUserString = DB.Api.Fiscal.GetUser(session.ClientId, session.PosId, session.WaiterId);
+            var fiscalData = GetData(session, ordersDataString, paymentMethodsDataString, paymentBillDataString);
+            Nov.NT.POS.Data.DTO.AbrechnungDTOHelper.ApplyAbrechnungRabattDaten(ref paymentBillDataString, ref ordersDataString, ref paymentMethodsDataString, fiscalData);
             var fiscalReceipt = new Nov.NT.POS.Data.DTO.FiscalBelegDTO(fiscalClientString, fiscalUserString, paymentBillDataString, ordersDataString, paymentMethodsDataString);
 
             try
@@ -157,13 +166,15 @@ namespace Nt.Database.Api.InterSystems
             catch (Exception ex)
             {
                 fiscalProvider.TransactionRollback("Fiscal Transaction Rollback because of Exception " + ex.Message);
-                throw new Exception(ex.Message);
+                throw ex;
             }
 
             if (!fiscalResult.IsOK)
             {
-                fiscalProvider.TransactionRollback("Fiscal Transaction Rollback because of result is not OK " + fiscalResult.UserMessage);
-                throw new Exception(fiscalResult.UserMessage);
+                RollbackData(session, ordersDataString, paymentMethodsDataString, paymentMethodsDataString, paymentBillDataString, "");
+                var message = string.Format("{0} {1}", fiscalResult.StatusHeader, fiscalResult.StatusText);
+                fiscalProvider.TransactionRollback(message);
+                throw new Exception(message);
             }
 
             return fiscalResult;
@@ -195,5 +206,47 @@ namespace Nt.Database.Api.InterSystems
             var fiscalProvider = (Nov.NT.POS.Fiscal.IFiscalProvider)session.FiscalProvider;
             fiscalProvider.TransactionCommit();
         }
+
+        public string RollbackData(Session session, string ordersDataString, string paymentMethodsDataString, string paymentBillDataString)
+        {
+            throw new NotImplementedException();
+        }
+
+        #region private
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="ordersDataString"></param>
+        /// <param name="paymentMethodsDataString"></param>
+        /// <param name="paymentBillDataString"></param>
+        /// <returns></returns>
+        private string GetData(Session session, string ordersDataString, string paymentMethodsDataString, string paymentBillDataString)
+        {
+            return Interaction.CallClassMethod("cmNT.AbrOman2", "GetFiskalDaten", session.ClientId, session.PosId, session.WaiterId, session.CurrentTable.Id, ordersDataString, session.PriceLevel, paymentBillDataString, paymentMethodsDataString, "", "1");
+        }
+
+        private string GetReceiptNumber(string data)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="tableId"></param>
+        /// <param name="ordersStringData"></param>
+        /// <param name="paymentMethodsStringData"></param>
+        /// <param name="paymentBillStringData"></param>
+        /// <param name="paymentOptionStringData"></param>
+        /// <returns></returns>
+        private string RollbackData(Nt.Data.Session session, string tableId, string ordersStringData, string paymentMethodsStringData, string paymentBillStringData, string paymentOptionStringData)
+        {
+            return Interaction.CallClassMethod("cmNT.AbrOman2", "RollbackFiskalDaten", session.ClientId, session.PosId, session.WaiterId, tableId, ordersStringData, session.PriceLevel, paymentBillStringData, paymentMethodsStringData, paymentOptionStringData);
+        }
+
+        #endregion
     }
 }

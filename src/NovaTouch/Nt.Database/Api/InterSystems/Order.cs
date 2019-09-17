@@ -64,7 +64,15 @@ namespace Nt.Database.Api.InterSystems
                     order.CourseMenu = dataList.GetString(7);
                     order.CourseNumber = dataList.GetString(8);
                     order.CourseName = dataList.GetString(16);
-                    order.MenuId = menuList.GetString(3);
+                    order.ArticleGroupId = dataList.GetString(23);
+                    if (Misc.cachedArticleGroups.ContainsKey(order.ArticleGroupId))
+                    {
+                        order.TaxGroupId = Misc.cachedArticleGroups[order.ArticleGroupId].TaxGroupId;
+                    }
+                    if (Misc.cachedTaxGroups.ContainsKey(order.TaxGroupId))
+                    {
+                        order.TaxRate = Misc.cachedTaxGroups[order.TaxGroupId].TaxRate;
+                    }
 
                     if (orders.ContainsKey(order.Id))
                         orders[order.Id].Quantity += order.Quantity;
@@ -259,13 +267,13 @@ namespace Nt.Database.Api.InterSystems
             dataString.Append("").Append(DataString.Char96); //HappyHourBetrag
             dataString.Append("").Append(DataString.Char96); //ZuschussBetrag
             dataString.Append("").Append(DataString.Char96); //HappyBezeichnung
-            dataString.Append("").Append(DataString.Char96); //ArtikelGruppe
+            dataString.Append(order.ArticleGroupId).Append(DataString.Char96); //ArtikelGruppe
             dataString.Append("").Append(DataString.Char96); //ArtikelGruppeBezeichnung
             dataString.Append("").Append(DataString.Char96); //ArtikelSuchbegriffe
             dataString.Append("").Append(DataString.Char96); //ArtikelBehandlung
             dataString.Append("").Append(DataString.Char96); //HappyStufe
             dataString.Append("").Append(DataString.Char96); //RabattBetragVerrechnet
-            dataString.Append("").Append(DataString.Char96); //UstProzent
+            dataString.Append(order.TaxRate).Append(DataString.Char96); //UstProzent
             dataString.Append("").Append(DataString.Char96); //UstProzent2
             dataString.Append("").Append(DataString.Char96); //Platzbonierung
 

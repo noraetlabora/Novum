@@ -20,6 +20,12 @@ namespace Nt.Data
         /// 
         /// </summary>
         /// <value></value>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
         public string AssignmentTypeId { get; set; }
 
         /// <summary>

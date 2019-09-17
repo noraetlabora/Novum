@@ -12,9 +12,15 @@
 
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.5.3" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="4.5.3" />
+    <PackageReference Include="System.ServiceModel.Primitives" Version="4.5.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Nov.NT.Common\Nov.NT.Common.vbproj" />
+    <ProjectReference Include="..\Nov.NT.POS.Data.DTO\Nov.NT.POS.Data.DTO.vbproj" />
+    <ProjectReference Include="..\Nov.NT.POS.Fiscal\Nov.NT.POS.Fiscal.vbproj" />
     <ProjectReference Include="..\Nt.Logging\Nt.Logging.csproj" />
     <ProjectReference Include="..\Nt.Data\Nt.Data.csproj" />
   </ItemGroup>
@@ -38,6 +44,15 @@
     <Reference Include="Nov.NT.POS.Fiscal">
       <HintPath>..\..\References\NovaTouch\Nov.NT.POS.Fiscal.dll</HintPath>
     </Reference>
+    <!--<Reference Include="Nov.NT.Common">
+      <HintPath>..\..\References\NovaTouch\Nov.NT.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Nov.NT.POS.Data.DTO">
+      <HintPath>..\..\References\NovaTouch\Nov.NT.POS.Data.DTO.dll</HintPath>
+    </Reference>
+    <Reference Include="Nov.NT.POS.Fiscal">
+      <HintPath>..\..\References\NovaTouch\Nov.NT.POS.Fiscal.dll</HintPath>
+    </Reference>-->
   </ItemGroup>
 
 </Project>

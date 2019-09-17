@@ -23,6 +23,18 @@ namespace Nt.Database.Api
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        Dictionary<string, Nt.Data.ArticleGroup> GetArticleGroups();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        Dictionary<string, Nt.Data.TaxGroup> GetTaxGroups();
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
         bool HasSnapshotTime(string guid);
