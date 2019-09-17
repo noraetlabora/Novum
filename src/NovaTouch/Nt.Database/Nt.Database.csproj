@@ -18,9 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Nov.NT.Common\Nov.NT.Common.vbproj" />
-    <ProjectReference Include="..\Nov.NT.POS.Data.DTO\Nov.NT.POS.Data.DTO.vbproj" />
-    <ProjectReference Include="..\Nov.NT.POS.Fiscal\Nov.NT.POS.Fiscal.vbproj" />
     <ProjectReference Include="..\Nt.Logging\Nt.Logging.csproj" />
     <ProjectReference Include="..\Nt.Data\Nt.Data.csproj" />
   </ItemGroup>

@@ -56,7 +56,8 @@ namespace Nt.Database.Api.InterSystems
             var paymentBillDataString = Payment.GetPaymentBillDataString(paymentInformation);
             var paymentOptionDataString = Payment.GetPaymentOptionDataString(paymentInformation);
             var fiscalResult = (Nov.NT.POS.Fiscal.FiscalResult)DB.Api.Fiscal.SendTransaction(session, ordersDataString, paymentMethodsDataString, paymentBillDataString);
-            var dbString = Interaction.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersDataString, paymentBillDataString, paymentMethodsDataString, paymentOptionDataString, "", "", "", "", "", "");
+            var fiscalResultString = fiscalResult.ToDtoString();
+            var dbString = Interaction.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersDataString, paymentBillDataString, paymentMethodsDataString, paymentOptionDataString, "", "", "", "", "", fiscalResultString);
 
             if (dbString.StartsWith("FM"))
             {

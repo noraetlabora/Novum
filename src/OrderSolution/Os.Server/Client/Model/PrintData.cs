@@ -85,9 +85,6 @@ namespace Os.Server.Client.Model
                     GetEndFont(printLine);
             }
 
-            //SetAlignment(Alignment.CENTER);
-            //SetQr("_R1-AT1_fiskaltrust5_ft972#2197_2019-07-02T10:31:07_3,90_0,00_0,00_0,00_0,00_vD3mQZM=_3a22119b_kPeJtyNlSCo=_U2ljaGVyaGVpdHNlaW5yaWNodHVuZyBhdXNnZWZhbGxlbg==");
-            //SetAlignment(Alignment.LEFT);
             PaperFeed(1);
         }
         #endregion
