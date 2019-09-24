@@ -18,7 +18,9 @@ namespace Nt.Services.UserControls
     /// </summary>
     public partial class OrderSolutions : UserControl
     {
-        private const string serviceName = "Novacom.OrderSolutions";
+        private const string ntServiceName = "Novacom.OrderSolutions";
+        private const string osServiceName = "Orderman.OrderSolutions";
+        private const string logFileName = "Nt.Services.OrderSolutions.log";
 
         public OrderSolutions()
         {
@@ -32,7 +34,7 @@ namespace Nt.Services.UserControls
 
         private void serviceStatus_Tick(object sender, EventArgs e)
         {            
-            var serviceStatus = Service.GetStatus(serviceName);
+            var serviceStatus = Service.GetStatus(ntServiceName);
 
             switch (serviceStatus)
             {
@@ -97,28 +99,62 @@ namespace Nt.Services.UserControls
 
         private void BtnServiceRun_Click(object sender, RoutedEventArgs e)
         {
-            var serviceStatus = Service.GetStatus(serviceName);
-            if (serviceStatus.Equals(Service.Status.Stopped))
+            try
             {
-                DisableArguments();
-                SaveArguments();
-                var args = new string[] { "--dbIp", txtDbIp.Text, "--dbPrt", txtDbPort.Text, "--dbNs", txtDbNamespace.Text, "--dbUsr", txtDbUser.Text, "--dbPwd", txtDbPassword.Password, "--osSPrt", txtOsServerPort.Text, "--osCIp", txtOsClientIp.Text, "--osCPrt", txtOsClientPort.Text };
-                Service.Start(serviceName, args);
+                var serviceStatus = Service.GetStatus(ntServiceName);
+                if (serviceStatus.Equals(Service.Status.Stopped))
+                {
+                    DisableArguments();
+                    SaveArguments();
+                    var args = new string[] { "--dbIp", txtDbIp.Text, "--dbPrt", txtDbPort.Text, "--dbNs", txtDbNamespace.Text, "--dbUsr", txtDbUser.Text, "--dbPwd", txtDbPassword.Password, "--osSPrt", txtOsServerPort.Text, "--osCIp", txtOsClientIp.Text, "--osCPrt", txtOsClientPort.Text };
+                    Service.Start(ntServiceName, args);
+                    System.Threading.Thread.Sleep(10000);
+                    Service.Start(osServiceName, Array.Empty<string>());
+                }
+                else
+                {
+                    Service.Stop(ntServiceName);
+                    Service.Stop(osServiceName);
+                }
             }
-            else
+            catch(Exception ex)
             {
-                Service.Stop(serviceName);
+                using (System.IO.StreamWriter outputFile = new System.IO.StreamWriter(logFileName, true))
+                {
+                    outputFile.WriteLine(ex.Message);
+                    outputFile.WriteLine(ex.StackTrace);
+                }
             }
-            serviceStatus_Tick(null, null);
         }
 
         private void BtnServiceInstall_Click(object sender, RoutedEventArgs e)
         {
-            var serviceStatus = Service.GetStatus(serviceName);
-            if (serviceStatus.Equals(Service.Status.Uninstalled))
-                Service.Install(serviceName, @"C:\Users\nrastl\Documents\Novum\src\OrderSolution\Os.Server\bin\Debug\netcoreapp3.0\Os.Server.exe");
-            else
-                Service.Uninstall(serviceName);
+            var assemblyFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            var ntOsServer = assemblyFolder + "\\Os.Server.exe";
+            var osServer = assemblyFolder + "\\OsServer\\OsServerRun.exe";
+
+            try
+            {
+                var serviceStatus = Service.GetStatus(ntServiceName);
+                if (serviceStatus.Equals(Service.Status.Uninstalled))
+                {
+                    Service.Install(ntServiceName, ntOsServer);
+                    Service.Install(osServiceName, osServer);
+                }
+                else
+                {
+                    Service.Uninstall(osServiceName);
+                    Service.Uninstall(ntServiceName);
+                }
+            }
+            catch (Exception ex)
+            {
+                using (System.IO.StreamWriter outputFile = new System.IO.StreamWriter(logFileName, true))
+                {
+                    outputFile.WriteLine(ex.Message);
+                    outputFile.WriteLine(ex.StackTrace);
+                }
+            }
         }
 
         private void EnableArguments()

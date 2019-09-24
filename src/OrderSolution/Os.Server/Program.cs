@@ -34,24 +34,28 @@ namespace Os.Server
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
-            var logRepository = log4net.LogManager.GetRepository(System.Reflection.Assembly.GetEntryAssembly());
-            log4net.Config.XmlConfigurator.Configure(logRepository, new System.IO.FileInfo("log4net.config"));
-
-            //build and run webHost
-            var webHostBuilder = CreateWebHostBuilder(args);
-            var webHost = webHostBuilder.Build();
-
-            if (Debugger.IsAttached || args.Contains("--console"))
+            try
             {
-                Nt.Logging.Log.Server.Info("---------- starting Os.Server in console ----------");
-                SetArguments(args);
-                webHost.Run();
+                //build and run webHost
+                var webHostBuilder = CreateWebHostBuilder(args);
+                var webHost = webHostBuilder.Build();
+
+                if (Debugger.IsAttached || args.Contains("--console"))
+                {
+                    Nt.Logging.Log.Server.Info("================================================================== STARTING Os.Server IN CONSOLE ==================================================================");
+                    SetArguments(args);
+                    webHost.Run();
+                }
+                else
+                {
+                    Nt.Logging.Log.Server.Info("================================================================== STARTING Os.Server AS SERVICE ==================================================================");
+                    var webHostService = new Services.OsWebHostService(webHost);
+                    ServiceBase.Run(webHostService);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Info("---------- starting Os.Server as service ----------");
-                var webHostService = new Services.OsWebHostService(webHost);
-                ServiceBase.Run(webHostService);
+                Nt.Logging.Log.Server.Fatal(ex);
             }
         }
 
@@ -89,14 +93,14 @@ namespace Os.Server
             var parserResult = CommandLine.Parser.Default.ParseArguments<OsArguments>(args);
             parserResult.WithParsed(parsedArguments =>
             {
-                Nt.Logging.Log.Server.Info("---------- arguments ----------");
+                Nt.Logging.Log.Server.Info("================================================================== ARGUMENTS ==================================================================");
                 Nt.Logging.Log.Server.Info(parsedArguments.ToString());
                 Arguments = parsedArguments;
                 _clientApi = new ClientApi(string.Format("http://{0}:{1}", Arguments.OsClientIp, Arguments.OsClientPort));
             });
             parserResult.WithNotParsed(errors =>
             {
-                Nt.Logging.Log.Server.Error("---------- argument error ----------");
+                Nt.Logging.Log.Server.Error("================================================================== ARGUMENT ERROR ==================================================================");
                 var builder = new StringBuilder();
                 foreach (var arg in args)
                 {

@@ -55,8 +55,14 @@ namespace Nt.Database.Api.InterSystems
             var paymentMethodsDataString = Payment.GetPaymentMethodDataString(paymentMethods);
             var paymentBillDataString = Payment.GetPaymentBillDataString(paymentInformation);
             var paymentOptionDataString = Payment.GetPaymentOptionDataString(paymentInformation);
+
+            //send the Fiscal Transaction if there is a provider
             var fiscalResult = (Nov.NT.POS.Fiscal.FiscalResult)DB.Api.Fiscal.SendTransaction(session, ordersDataString, paymentMethodsDataString, paymentBillDataString);
-            var fiscalResultString = fiscalResult.ToDtoString();
+            var fiscalResultString = string.Empty;
+            if (fiscalResult != null)
+                fiscalResultString = fiscalResult.ToDtoString();
+            
+            //actual payment in database
             var dbString = Interaction.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersDataString, paymentBillDataString, paymentMethodsDataString, paymentOptionDataString, "", "", "", "", "", fiscalResultString);
 
             if (dbString.StartsWith("FM"))
@@ -106,71 +112,6 @@ namespace Nt.Database.Api.InterSystems
             }
 
             return assignmentTypes;
-        }
-
-        /// <summary>
-        /// 0 = fiscalization
-        /// 1 = no fiscalization - just payment methods where we don't need fiscalization
-        /// 2 = no fiscalization due to the law
-        /// </summary>
-        /// <param name="clientId"></param>
-        /// <param name="posId"></param>
-        /// <returns></returns>
-        public string GetFiscalMode(string clientId, string posId)
-        {
-            return Interaction.CallClassMethod("cmNT.Fiskal", "GetFiskalModus", clientId, posId);
-        }
-
-        /// <summary>
-        /// 1 = old modul version (VB6)
-        /// 2 = new modul version (.NET)
-        /// </summary>
-        /// <param name="clientId"></param>
-        /// <returns></returns>
-        public string GetFiscalModulVersion(string clientId)
-        {
-            return Interaction.CallClassMethod("cmNT.Fiskal", "GetFiskalModulV", clientId);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="clientId"></param>
-        /// <returns></returns>
-        public string GetFiscalServiceType(string clientId)
-        {
-            return Interaction.CallClassMethod("cmNT.Fiskal", "GetProvider", clientId);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="clientId"></param>
-        /// <param name="posId"></param>
-        /// <returns></returns>
-        public string GetFiscalConfiguration(string clientId, string posId)
-        {
-            return Interaction.CallClassMethod("cmNT.Fiskal", "GetConfig", clientId, posId, "");
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="session"></param>
-        /// <param name="tableId"></param>
-        /// <param name="orders"></param>
-        /// <param name="paymentMethods"></param>
-        /// <param name="paymentInformation"></param>
-        /// <returns></returns>
-        public string GetFiscalData(Nt.Data.Session session, string tableId, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation)
-        {
-            var ordersStringData = Order.GetOrderDataString(orders);
-            var paymentMethodsStringData = Payment.GetPaymentMethodDataString(paymentMethods);
-            var paymentBillStringData = Payment.GetPaymentBillDataString(paymentInformation);
-            var paymentOptionStringData = Payment.GetPaymentOptionDataString(paymentInformation);
-
-            var dbString = Interaction.CallClassMethod("cmNT.AbrOman2", "GetFiskalDaten", session.ClientId, session.PosId, session.WaiterId, tableId, ordersStringData, session.PriceLevel, paymentBillStringData, paymentMethodsStringData, paymentOptionStringData, "1");
-            return dbString;
         }
 
         #endregion 
