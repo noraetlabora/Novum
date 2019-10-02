@@ -5,10 +5,9 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationManifest>App.manifest</ApplicationManifest>
-    <Company>novacom</Company>
-    <PackageId>NovaTouch Services</PackageId>
-    <Product>NovaTouch Services</Product>
-    <Authors>novacom</Authors>
+    <!--<PublishTrimmed>true</PublishTrimmed>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <PublishSingleFile>true</PublishSingleFile>-->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -17,8 +16,12 @@
   
   <ItemGroup>
     <PackageReference Include="Core.System.Configuration.Install" Version="1.0.1" />
-    <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.5.0" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.6.0" />
     <PackageReference Include="TopShelf.ServiceInstaller" Version="4.2.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>

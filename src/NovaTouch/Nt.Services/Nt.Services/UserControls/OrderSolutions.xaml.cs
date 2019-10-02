@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,9 +19,8 @@ namespace Nt.Services.UserControls
     /// </summary>
     public partial class OrderSolutions : UserControl
     {
-        private const string ntServiceName = "Novacom.OrderSolutions";
-        private const string osServiceName = "Orderman.OrderSolutions";
-        private const string logFileName = "Nt.Services.OrderSolutions.log";
+        private const string novOsServiceName = "Novacom OrderSolution Server";
+        private const string ncrOsServiceName = "NCR OrderSolution Server";
 
         public OrderSolutions()
         {
@@ -34,7 +34,7 @@ namespace Nt.Services.UserControls
 
         private void serviceStatus_Tick(object sender, EventArgs e)
         {            
-            var serviceStatus = Service.GetStatus(ntServiceName);
+            var serviceStatus = Service.GetStatus(novOsServiceName);
 
             switch (serviceStatus)
             {
@@ -101,59 +101,69 @@ namespace Nt.Services.UserControls
         {
             try
             {
-                var serviceStatus = Service.GetStatus(ntServiceName);
+                var serviceStatus = Service.GetStatus(novOsServiceName);
                 if (serviceStatus.Equals(Service.Status.Stopped))
                 {
                     DisableArguments();
                     SaveArguments();
                     var args = new string[] { "--dbIp", txtDbIp.Text, "--dbPrt", txtDbPort.Text, "--dbNs", txtDbNamespace.Text, "--dbUsr", txtDbUser.Text, "--dbPwd", txtDbPassword.Password, "--osSPrt", txtOsServerPort.Text, "--osCIp", txtOsClientIp.Text, "--osCPrt", txtOsClientPort.Text };
-                    Service.Start(ntServiceName, args);
-                    System.Threading.Thread.Sleep(10000);
-                    Service.Start(osServiceName, Array.Empty<string>());
+                    Service.Start(novOsServiceName, args);
+                    //System.Threading.Thread.Sleep(10000);
+                    //Service.Start(ncrOsServiceName, Array.Empty<string>());
                 }
                 else
                 {
-                    Service.Stop(ntServiceName);
-                    Service.Stop(osServiceName);
+                    Service.Stop(novOsServiceName);
+                    //Service.Stop(ncrOsServiceName);
                 }
             }
             catch(Exception ex)
             {
-                using (System.IO.StreamWriter outputFile = new System.IO.StreamWriter(logFileName, true))
-                {
-                    outputFile.WriteLine(ex.Message);
-                    outputFile.WriteLine(ex.StackTrace);
-                }
+                LogEvent(ex);
             }
+        }
+
+        private static void LogEvent(Exception ex)
+        {
+            var eventLog = new EventLog();
+            eventLog.Source = novOsServiceName;
+
+            var builder = new StringBuilder();
+            builder.Append(ex.Message);
+            if (ex.InnerException != null)
+            {
+                builder.Append(System.Environment.NewLine);
+                builder.Append(ex.InnerException.Message);
+            }
+
+            eventLog.WriteEntry(builder.ToString());
         }
 
         private void BtnServiceInstall_Click(object sender, RoutedEventArgs e)
         {
             var assemblyFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var ntOsServer = assemblyFolder + "\\Os.Server.exe";
-            var osServer = assemblyFolder + "\\OsServer\\OsServerRun.exe";
+            //var novOsServer = assemblyFolder + "\\Os.Server.exe";
+            //var ncrOsServer = assemblyFolder + "\\OsServer\\OsServerRun.exe";
+            var novOsServer = @"C:\Users\nrastl\Documents\Novum\src\OrderSolution\Os.Server\bin\Debug\netcoreapp3.0\Os.Server.exe";
+            //var ncrOsServer = @"C:\Users\nrastl\Documents\Orderman\OrderSolutions\OrderSolution-SDK_V0.9.9.21\OsServer_V0.9.9.14\OsServerRun.exe";
 
             try
             {
-                var serviceStatus = Service.GetStatus(ntServiceName);
+                var serviceStatus = Service.GetStatus(novOsServiceName);
                 if (serviceStatus.Equals(Service.Status.Uninstalled))
                 {
-                    Service.Install(ntServiceName, ntOsServer);
-                    Service.Install(osServiceName, osServer);
+                    Service.Install(novOsServiceName, novOsServer);
+                    //Service.Install(ncrOsServiceName, ncrOsServer);
                 }
                 else
                 {
-                    Service.Uninstall(osServiceName);
-                    Service.Uninstall(ntServiceName);
+                    Service.Uninstall(novOsServiceName);
+                    //Service.Uninstall(ncrOsServiceName);
                 }
             }
             catch (Exception ex)
             {
-                using (System.IO.StreamWriter outputFile = new System.IO.StreamWriter(logFileName, true))
-                {
-                    outputFile.WriteLine(ex.Message);
-                    outputFile.WriteLine(ex.StackTrace);
-                }
+                LogEvent(ex);
             }
         }
 

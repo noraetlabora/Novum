@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Nt.Services.UserControls.OrderSolutions"
+﻿<UserControl x:Name="tab" x:Class="Nt.Services.UserControls.OrderSolutions"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -15,20 +15,20 @@
         <Button x:Name="btnServiceRun" Content="Uninstall Service" HorizontalAlignment="Left" Margin="636,690,0,0" VerticalAlignment="Top" Background="{DynamicResource Primary}" Width="164" Height="30" Click="BtnServiceRun_Click"/>
         <Label  x:Name="lblDbIp" Content="Ip" HorizontalAlignment="Left" Margin="286,55,0,0" VerticalAlignment="Top" Width="100"/>
         <Label  x:Name="lblDbPort" Content="Port" HorizontalAlignment="Left" Margin="286,82,0,0" VerticalAlignment="Top" Width="100"/>
-        <TextBox  x:Name="txtDbPort" HorizontalAlignment="Left" Height="23" Margin="360,83,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox  x:Name="txtDbPort" HorizontalAlignment="Left" Height="23" Margin="360,83,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="11"/>
         <Label  x:Name="lblDbNamespace" Content="Namespace" HorizontalAlignment="Left" Margin="286,110,0,0" VerticalAlignment="Top" Width="100"/>
-        <TextBox  x:Name="txtDbNamespace" HorizontalAlignment="Left" Height="23" Margin="360,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox  x:Name="txtDbNamespace" HorizontalAlignment="Left" Height="23" Margin="360,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="12"/>
         <Label  x:Name="lblDbUser" Content="User" HorizontalAlignment="Left" Margin="286,138,0,0" VerticalAlignment="Top" Width="100"/>
-        <TextBox  x:Name="txtDbUser" HorizontalAlignment="Left" Height="23" Margin="360,139,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox  x:Name="txtDbUser" HorizontalAlignment="Left" Height="23" Margin="360,139,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="13"/>
         <Label  x:Name="lblDbPassword" Content="Password" HorizontalAlignment="Left" Margin="286,166,0,0" VerticalAlignment="Top" Width="100"/>
-        <PasswordBox x:Name="txtDbPassword" HorizontalAlignment="Left" Margin="360,167,0,0" VerticalAlignment="Top" Width="120" Height="23"/>
-        <TextBox  x:Name="txtDbIp" HorizontalAlignment="Left" Height="23" Margin="360,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <PasswordBox x:Name="txtDbPassword" HorizontalAlignment="Left" Margin="360,167,0,0" VerticalAlignment="Top" Width="120" Height="23" TabIndex="14"/>
+        <TextBox  x:Name="txtDbIp" HorizontalAlignment="Left" Height="23" Margin="360,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="10"/>
         <Label  x:Name="lblOsServerPort" Content="Server Port" HorizontalAlignment="Left" Margin="15,55,0,0" VerticalAlignment="Top" Width="100"/>
-        <TextBox  x:Name="txtOsServerPort" HorizontalAlignment="Left" Height="23" Margin="120,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox  x:Name="txtOsServerPort" HorizontalAlignment="Left" Height="23" Margin="120,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="1"/>
         <Label  x:Name="lblOsClientIp" Content="Client Ip" HorizontalAlignment="Left" Margin="15,82,0,0" VerticalAlignment="Top" Width="100"/>
         <Label  x:Name="lblOsClientPort" Content="Client Port" HorizontalAlignment="Left" Margin="15,109,0,0" VerticalAlignment="Top" Width="100"/>
-        <TextBox  x:Name="txtOsClientPort" HorizontalAlignment="Left" Height="23" Margin="120,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox  x:Name="txtOsClientIp" HorizontalAlignment="Left" Height="23" Margin="120,82,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox  x:Name="txtOsClientPort" HorizontalAlignment="Left" Height="23" Margin="120,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="3"/>
+        <TextBox  x:Name="txtOsClientIp" HorizontalAlignment="Left" Height="23" Margin="120,82,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="2"/>
         <Label Content="OrderSolutions" Margin="10,6,570,680" FontSize="24" />
         <Border x:Name="brdServiceStatus" BorderThickness="1" HorizontalAlignment="Left" Height="90" Margin="10,342,0,0" VerticalAlignment="Top" Width="790" Background="{DynamicResource Success}" CornerRadius="5,5,5,5" >
             <Label Content="Service Status" Margin="9,0,0,0" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Left" />

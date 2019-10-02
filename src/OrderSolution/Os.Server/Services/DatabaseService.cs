@@ -20,6 +20,9 @@ namespace Os.Server.Services
             Nt.Database.DB.Instance.ConnectionString = string.Format("Server={0}; Port={1}; Namespace={2}; User ID={3}; Password={4}", Program.Arguments.DatabaseIp, Program.Arguments.DatabasePort, Program.Arguments.DatabaseNamespace, Program.Arguments.DatabaseUser, Program.Arguments.DatabasePassword);
             Nt.Database.DB.Instance.Open();
 
+            if (Nt.Database.DB.Instance.State != System.Data.ConnectionState.Open)
+                throw new Exception("database connection is not open");
+
             //cache static data
             Logic.Data.GetArticles();
             Logic.Data.GetCategories();

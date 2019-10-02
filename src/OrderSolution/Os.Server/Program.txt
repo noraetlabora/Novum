@@ -1,2 +1,0 @@
-log4net.Configured = True
-NLog C:\Users\nrastl\Documents\Novum\src\OrderSolution\Os.Server\bin\Debug\netcoreapp3.0\NLog.config

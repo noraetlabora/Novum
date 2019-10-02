@@ -78,6 +78,7 @@ namespace Nt.Database
             catch (Exception ex)
             {
                 Logging.Log.Database.Fatal(ex, "could not open database connection");
+                throw ex;
             }
         }
 

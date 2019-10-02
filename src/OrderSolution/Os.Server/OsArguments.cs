@@ -87,7 +87,6 @@ namespace Os.Server
                 builder.Append("<not set>");
             else
                 builder.Append("<set>");
-            builder.Append(System.Environment.NewLine);
             builder.Append(", osSPrt=").Append(OsServerPort);
             builder.Append(", osCIp=").Append(OsClientIp);
             builder.Append(", osCPrt=").Append(OsClientPort);

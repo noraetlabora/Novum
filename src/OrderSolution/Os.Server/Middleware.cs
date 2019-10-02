@@ -41,20 +41,23 @@ namespace Os.Server
         {
             try
             {
-                //check if request is authorized
-                if (RequestNeedsAuthorization(httpContext.Request))
-                {
-                    var session = Sessions.GetSession(httpContext.Request);
-                    if (session == null)
-                    {
+                var serialNumber = "125-00000000";
+                var session = Sessions.GetSession(httpContext.Request);
+                if (session == null) { 
+                    //check if request is authorized
+                    if (RequestNeedsAuthorization(httpContext.Request)) { 
                         LogUnauthorizedRequest(httpContext.Request);
                         httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                         return;
                     }
                 }
+                else
+                {
+                    serialNumber = session.SerialNumber;
+                }
 
                 //read and log request body
-                var requestBodyContent = await ReadRequestBody(httpContext.Request);
+                var requestBodyContent = await ReadRequestBody(httpContext.Request, serialNumber);
                 var originalBodyStream = httpContext.Response.Body;
                 using (var responseBody = new MemoryStream())
                 {
@@ -63,7 +66,7 @@ namespace Os.Server
 
                     //read and log response body
                     string responseBodyContent = null;
-                    responseBodyContent = await ReadResponseBody(httpContext.Response);
+                    responseBodyContent = await ReadResponseBody(httpContext.Response, serialNumber);
                     await responseBody.CopyToAsync(originalBodyStream);
                 }
             }
@@ -82,7 +85,7 @@ namespace Os.Server
             return true;
         }
 
-        private async Task<string> ReadRequestBody(HttpRequest request)
+        private async Task<string> ReadRequestBody(HttpRequest request, string serialNumber)
         {
             request.EnableBuffering();
             var buffer = new byte[Convert.ToInt32(request.ContentLength)];
@@ -92,7 +95,8 @@ namespace Os.Server
 
             var sb = new StringBuilder();
             sb.Append("Client Request ").Append("|");
-            sb.Append(request.HttpContext.TraceIdentifier).Append("|");
+            sb.Append(serialNumber).Append("|");
+            sb.Append(request.HttpContext.Connection.Id).Append("|");
             sb.Append(request.Method.Substring(0, 3)).Append("|");
             sb.Append(request.Path.Value).Append("|");
             sb.Append(bodyAsText);
@@ -103,7 +107,7 @@ namespace Os.Server
             return bodyAsText;
         }
 
-        private async Task<string> ReadResponseBody(HttpResponse response)
+        private async Task<string> ReadResponseBody(HttpResponse response, string serialNumber)
         {
             response.Body.Seek(0, SeekOrigin.Begin);
             var bodyAsText = await new StreamReader(response.Body).ReadToEndAsync();
@@ -111,7 +115,8 @@ namespace Os.Server
 
             var sb = new StringBuilder();
             sb.Append("Server Response").Append("|");
-            sb.Append(response.HttpContext.TraceIdentifier).Append("|");
+            sb.Append(serialNumber).Append("|");
+            sb.Append(response.HttpContext.Connection.Id).Append("|");
             sb.Append(response.StatusCode).Append("|");
             sb.Append(response.HttpContext.Request.Path.Value).Append("|");
             if (bodyAsText.Length > 500)
