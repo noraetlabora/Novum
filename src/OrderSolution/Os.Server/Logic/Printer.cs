@@ -21,7 +21,7 @@ namespace Os.Server.Logic
 
                 DB.Api.Printer.DeletePrintJobId(session, printJobId);
                 printJobId = DB.Api.Printer.GetPrintJobId(session);
-                ClientApi.Print.PostPrintJob(session.Printer, printData);
+                ClientApi.Print.PostPrintJob(session, printData);
             }
         }
 

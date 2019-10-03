@@ -82,7 +82,8 @@ namespace Os.Server.Client.Api
 
                     var sb = new StringBuilder();
                     sb.Append("Server Request ").Append("|");
-                    sb.Append(requestIdentifier.TraceIdentifier).Append(":00000000").Append("|");
+                    sb.Append("125-00000000").Append("|");
+                    sb.Append(requestIdentifier.TraceIdentifier).Append("|");
                     sb.Append("POS").Append("|");
                     sb.Append(requestPath).Append("|");
                     sb.Append(jsonString);
@@ -93,7 +94,8 @@ namespace Os.Server.Client.Api
 
                     sb = new StringBuilder();
                     sb.Append("Client Response").Append("|");
-                    sb.Append(requestIdentifier.TraceIdentifier).Append(":00000000").Append("|");
+                    sb.Append("125-00000000").Append("|");
+                    sb.Append(requestIdentifier.TraceIdentifier).Append("|");
                     sb.Append((int)response.StatusCode).Append("|");
                     Nt.Logging.Log.Communication.Info(sb.ToString());
                 }

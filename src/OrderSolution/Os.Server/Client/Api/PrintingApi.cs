@@ -30,7 +30,7 @@ namespace Os.Server.Client.Api
         /// <param name="printerId">printer id</param>
         /// <param name="printLines"></param>
         /// <returns></returns>
-        void PostPrintJob(string printerId, List<string> printLines);
+        void PostPrintJob(Nt.Data.Session session, List<string> printLines);
         /// <summary>
         /// Get list of jobs for this printer; note: the list of jobs will be cleaned up after some time Get a list of print jobs for this printer with &#x60;id&#x60; on the local server (the one you are currently talking to) 
         /// </summary>
@@ -86,9 +86,9 @@ namespace Os.Server.Client.Api
         /// <param name="printerId">printer id</param>
         /// <param name="printLines"></param>
         /// <returns></returns>
-        public async void PostPrintJob(string printerId, List<string> printLines)
+        public async void PostPrintJob(Nt.Data.Session session, List<string> printLines)
         {
-            var requestPath = printerId + "/jobs";
+            var requestPath = session.Printer + "/jobs";
             try
             {
                 using (var httpClient = new HttpClient())
@@ -102,18 +102,33 @@ namespace Os.Server.Client.Api
 
                     var sb = new StringBuilder();
                     sb.Append("Server Request ").Append("|");
-                    sb.Append(requestIdentifier.TraceIdentifier).Append(":00000000").Append("|");
+                    sb.Append(session.SerialNumber).Append("|");
+                    sb.Append(requestIdentifier.TraceIdentifier).Append("|");
                     sb.Append("POS").Append("|");
                     sb.Append(requestPath).Append("|");
-                    sb.Append(printData.ToString());
+                    var printDataString = printData.ToString();
+                    //delete carriage return line feed (new lines) for logs
+                    printDataString = printDataString.Replace(System.Environment.NewLine, "CRLF");
+
+                    //shorten printDataString to max 500 characters in info log
+                    if (printDataString.Length > 500) 
+                        sb.Append(printDataString.Substring(0, 500)).Append("...");
+                    else
+                        sb.Append(printDataString);
+
                     Nt.Logging.Log.Communication.Info(sb.ToString());
+
+                    //write debug log if printDataStrinis over 500 characters long
+                    if (printDataString.Length > 500)
+                        Nt.Logging.Log.Communication.Debug(printDataString);
 
                     var requestUri = BaseUrl + requestPath;
                     var response = await httpClient.PostAsync(requestUri, content);
 
                     sb = new StringBuilder();
                     sb.Append("Client Response").Append("|");
-                    sb.Append(requestIdentifier.TraceIdentifier).Append(":00000000").Append("|");
+                    sb.Append(session.SerialNumber).Append("|");
+                    sb.Append(requestIdentifier.TraceIdentifier).Append("|");
                     sb.Append((int)response.StatusCode).Append("|");
                     Nt.Logging.Log.Communication.Info(sb.ToString());
                 }

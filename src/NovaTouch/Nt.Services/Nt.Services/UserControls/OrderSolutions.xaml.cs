@@ -20,7 +20,6 @@ namespace Nt.Services.UserControls
     public partial class OrderSolutions : UserControl
     {
         private const string novOsServiceName = "Novacom OrderSolution Server";
-        private const string ncrOsServiceName = "NCR OrderSolution Server";
 
         public OrderSolutions()
         {
@@ -105,16 +104,18 @@ namespace Nt.Services.UserControls
                 if (serviceStatus.Equals(Service.Status.Stopped))
                 {
                     DisableArguments();
+                    btnServiceInstall.IsEnabled = false;
+                    btnServiceRun.IsEnabled = false;
                     SaveArguments();
                     var args = new string[] { "--dbIp", txtDbIp.Text, "--dbPrt", txtDbPort.Text, "--dbNs", txtDbNamespace.Text, "--dbUsr", txtDbUser.Text, "--dbPwd", txtDbPassword.Password, "--osSPrt", txtOsServerPort.Text, "--osCIp", txtOsClientIp.Text, "--osCPrt", txtOsClientPort.Text };
                     Service.Start(novOsServiceName, args);
-                    //System.Threading.Thread.Sleep(10000);
-                    //Service.Start(ncrOsServiceName, Array.Empty<string>());
+                    System.Threading.Thread.Sleep(10000);
+                    NcrOsServer("start");
                 }
                 else
                 {
                     Service.Stop(novOsServiceName);
-                    //Service.Stop(ncrOsServiceName);
+                    NcrOsServer("stop");
                 }
             }
             catch(Exception ex)
@@ -142,10 +143,7 @@ namespace Nt.Services.UserControls
         private void BtnServiceInstall_Click(object sender, RoutedEventArgs e)
         {
             var assemblyFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            //var novOsServer = assemblyFolder + "\\Os.Server.exe";
-            //var ncrOsServer = assemblyFolder + "\\OsServer\\OsServerRun.exe";
-            var novOsServer = @"C:\Users\nrastl\Documents\Novum\src\OrderSolution\Os.Server\bin\Debug\netcoreapp3.0\Os.Server.exe";
-            //var ncrOsServer = @"C:\Users\nrastl\Documents\Orderman\OrderSolutions\OrderSolution-SDK_V0.9.9.21\OsServer_V0.9.9.14\OsServerRun.exe";
+            var novOsServer = assemblyFolder + "\\OrderSolution\\Os.Server.exe";
 
             try
             {
@@ -153,12 +151,12 @@ namespace Nt.Services.UserControls
                 if (serviceStatus.Equals(Service.Status.Uninstalled))
                 {
                     Service.Install(novOsServiceName, novOsServer);
-                    //Service.Install(ncrOsServiceName, ncrOsServer);
+                    NcrOsServer("install");
                 }
                 else
                 {
                     Service.Uninstall(novOsServiceName);
-                    //Service.Uninstall(ncrOsServiceName);
+                    NcrOsServer("uninstall");
                 }
             }
             catch (Exception ex)
@@ -238,6 +236,35 @@ namespace Nt.Services.UserControls
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             SaveArguments();
+        }
+
+        private void NcrOsServer(string argument)
+        {
+            var assemblyFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            var ncrOsServer = assemblyFolder + "\\OrderSolution\\OsServer\\OsServerRun.exe ";
+
+            EventLog eventLog = new EventLog();
+            eventLog.Source = "Novacom Service";
+            eventLog.WriteEntry(argument + " service NCR OrderSolution Server" + System.Environment.NewLine + ncrOsServer);
+
+            using (Process process = new Process())
+            {
+                process.StartInfo.FileName = ncrOsServer;
+                process.StartInfo.Arguments = argument;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.Start();
+                process.WaitForExit();
+
+                var message = process.StandardOutput.ReadToEnd();
+                if (!string.IsNullOrEmpty(message))
+                {
+                    eventLog = new EventLog();
+                    eventLog.Source = "Novacom Service";
+                    eventLog.WriteEntry(ncrOsServer + argument + System.Environment.NewLine + message);
+                }
+            }
         }
     }
 }
