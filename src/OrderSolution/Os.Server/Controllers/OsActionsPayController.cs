@@ -28,7 +28,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -70,7 +70,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest

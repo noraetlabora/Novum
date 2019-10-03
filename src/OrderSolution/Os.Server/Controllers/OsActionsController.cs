@@ -16,7 +16,7 @@ namespace Os.Server.Controllers
         /// <response code="204"></response>
         /// <response code="401"></response>
         [HttpPost]
-        [Route("/api/v2/actions/Auth/Login")]
+        [Route("/api/v2/actions/auth/login")]
         public IActionResult AuthLogin([FromBody][Required] Models.LoginUser loginUser)
         {
             var session = Sessions.GetSession(Request);
@@ -28,7 +28,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 session.WaiterId = "";
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
@@ -42,7 +42,7 @@ namespace Os.Server.Controllers
         /// </summary>
         /// <response code="204"></response>
         [HttpPost]
-        [Route("/api/v2/actions/Auth/Logout")]
+        [Route("/api/v2/actions/auth/logout")]
         public IActionResult AuthLogout()
         {
             try
@@ -54,7 +54,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -68,7 +68,7 @@ namespace Os.Server.Controllers
         /// <response code="400"></response>
         /// <response code="412"></response>
         [HttpPost]
-        [Route("/api/v2/actions/Init/RegisterClient")]
+        [Route("/api/v2/actions/init/registerClient")]
         public IActionResult InitRegisterClient([FromBody][Required] Models.ClientInfo clientInfo)
         {
             try
@@ -98,7 +98,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -112,7 +112,7 @@ namespace Os.Server.Controllers
         /// <param name="gatewayInfo">Information about the gateway.</param>
         /// <response code="200"></response>
         [HttpPost]
-        [Route("/api/v2/actions/Init/RegisterGateway")]
+        [Route("/api/v2/actions/init/registerGateway")]
         public IActionResult InitRegisterGateway([FromBody][Required] Models.GatewayInfo gatewayInfo)
         {
             try
@@ -128,7 +128,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }

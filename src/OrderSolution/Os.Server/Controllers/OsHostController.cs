@@ -20,7 +20,7 @@ namespace Os.Server.Controllers
         /// </summary>
         /// <response code="200"></response>
         [HttpGet]
-        [Route("/api/v2/HostStatus")]
+        [Route("/api/v2/hostStatus")]
         public IActionResult GetHostStatus()
         {
             try
@@ -29,7 +29,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }

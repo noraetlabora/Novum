@@ -16,7 +16,7 @@ namespace Os.Server.Controllers
         /// <param name="data">The orderline to add.</param>
         /// <response code="201"></response>
         [HttpPost]
-        [Route("/api/v2/actions/OrderLines/Add/{subTableId}")]
+        [Route("/api/v2/actions/orderLines/add/{subTableId}")]
         public IActionResult AddOrderLines([FromRoute][Required] string subTableId, [FromBody][Required] Models.OrderLineAdd data)
         {
             try
@@ -24,11 +24,11 @@ namespace Os.Server.Controllers
                 var session = Sessions.GetSession(Request);
                 var orderLineResult = Logic.Order.Add(session, subTableId, data);
                 //201 - Created
-                return new CreatedResult("/api/v2/actions/OrderLines/Add/", orderLineResult);
+                return new CreatedResult("/api/v2/actions/orderLines/add/", orderLineResult);
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -43,7 +43,7 @@ namespace Os.Server.Controllers
         /// <param name="data">The new data to be used for this order line (same as for the add request)</param>
         /// <response code="201">OrderLineResult informing about the new ids / prices of the modified orderline.</response>
         [HttpPost]
-        [Route("/api/v2/actions/OrderLines/ModifyUncommitted/{orderLineId}")]
+        [Route("/api/v2/actions/orderLines/modifyUncommitted/{orderLineId}")]
         public IActionResult ModifyOrderLinesUncommitted([FromRoute][Required] string orderLineId, [FromBody][Required] Models.OrderLineModify data)
         {
             try
@@ -51,11 +51,11 @@ namespace Os.Server.Controllers
                 var session = Sessions.GetSession(Request);
                 var orderLineResult = Logic.Order.Modify(session, orderLineId, data);
                 //201 - Created
-                return new CreatedResult("/api/v2/actions/OrderLines/ModifyUncommitted/" + orderLineResult.Id, orderLineResult);
+                return new CreatedResult("/api/v2/actions/orderLines/modifyUncommitted/" + orderLineResult.Id, orderLineResult);
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -70,7 +70,7 @@ namespace Os.Server.Controllers
         /// <param name="data">Details about how to split this orderlin.</param>
         /// <response code="201"></response>
         [HttpPost]
-        [Route("/api/v2/actions/OrderLines/Split/{orderLineId}")]
+        [Route("/api/v2/actions/orderLines/split/{orderLineId}")]
         public virtual IActionResult OrderLinesSplit([FromRoute][Required]string orderLineId, [FromBody]Models.OrderLineSplit data)
         {
             try
@@ -78,11 +78,11 @@ namespace Os.Server.Controllers
                 var session = Sessions.GetSession(Request);
                 var orderLineSplitResult = Logic.Order.Split(session, orderLineId, data);
                 //201 - Created
-                return new CreatedResult("/api/v2/actions/OrderLines/Split/" + orderLineId, orderLineSplitResult);
+                return new CreatedResult("/api/v2/actions/orderLines/split/" + orderLineId, orderLineSplitResult);
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -97,7 +97,7 @@ namespace Os.Server.Controllers
         /// <param name="data">The new data to be used for this order line (same as for the add request)</param>
         /// <response code="201">OrderLineResult informing about the new ids / prices of the modified orderline.</response>
         [HttpPost]
-        [Route("/api/v2/actions/OrderLines/Void/{orderLineId}")]
+        [Route("/api/v2/actions/orderLines/void/{orderLineId}")]
         public virtual IActionResult VoidOrderLines([FromRoute][Required] string orderLineId, [FromBody][Required] Models.OrderLineVoid data)
         {
             try
@@ -112,7 +112,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest

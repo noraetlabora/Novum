@@ -8,6 +8,7 @@ namespace Os.Server.Test
 
         public OsServer()
         {
+
         }
 
 

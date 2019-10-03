@@ -11,10 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nt.Database.Test", "NovaTou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Os.Server.Test", "OrderSolution\Os.Server.Test\Os.Server.Test.csproj", "{3239D1EC-D774-475D-B949-A7D2D28B10D7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nt.Database", "..\src\NovaTouch\Nt.Database\Nt.Database.csproj", "{6B649412-D83C-4033-9400-93734E96060B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Os.Server", "..\src\OrderSolution\Os.Server\Os.Server.csproj", "{8BF4B70B-793D-4EB1-AA32-9D2F852F0522}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

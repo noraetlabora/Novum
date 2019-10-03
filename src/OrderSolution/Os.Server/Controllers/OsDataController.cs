@@ -15,7 +15,7 @@ namespace Os.Server.Controllers
         /// <returns></returns>
         /// <response code="200"></response>
         [HttpGet]
-        [Route("/api/v2/data/Articles")]
+        [Route("/api/v2/data/articles")]
         public IActionResult GetArticles()
         {
             try
@@ -25,7 +25,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -37,7 +37,7 @@ namespace Os.Server.Controllers
         /// <returns></returns>
         /// <response code="200"></response>
         [HttpGet]
-        [Route("/api/v2/data/CancellationReasons")]
+        [Route("/api/v2/data/cancellationReasons")]
         public IActionResult GetCancellationReasons()
         {
             try
@@ -47,7 +47,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -58,7 +58,7 @@ namespace Os.Server.Controllers
         /// </summary>
         /// <response code="200"></response>
         [HttpGet]
-        [Route("/api/v2/data/Categories")]
+        [Route("/api/v2/data/categories")]
         public IActionResult GetCategories()
         {
             try
@@ -68,7 +68,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -79,7 +79,7 @@ namespace Os.Server.Controllers
         /// </summary>
         /// <response code="200"></response>
         [HttpGet]
-        [Route("/api/v2/data/ModifierGroups")]
+        [Route("/api/v2/data/modifierGroups")]
         public IActionResult GetModifierGroups()
         {
             try
@@ -89,7 +89,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -100,7 +100,7 @@ namespace Os.Server.Controllers
         /// </summary>
         /// <response code="200"></response>
         [HttpGet]
-        [Route("/api/v2/data/OsConfiguration")]
+        [Route("/api/v2/data/osConfiguration")]
         public IActionResult GetOsConfiguration()
         {
             try
@@ -113,7 +113,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -124,7 +124,7 @@ namespace Os.Server.Controllers
         /// </summary>
         /// <response code="200"></response>
         [HttpGet]
-        [Route("/api/v2/data/PaymentMedia")]
+        [Route("/api/v2/data/paymentMedia")]
         public IActionResult GetPaymentMedia()
         {
             try
@@ -136,7 +136,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -147,7 +147,7 @@ namespace Os.Server.Controllers
         /// </summary>
         /// <response code="200"></response>
         [HttpGet]
-        [Route("/api/v2/data/Printers")]
+        [Route("/api/v2/data/printers")]
         public IActionResult GetPrinters()
         {
             try
@@ -157,7 +157,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -168,7 +168,7 @@ namespace Os.Server.Controllers
         /// </summary>
         /// <response code="200"></response>
         [HttpGet]
-        [Route("/api/v2/data/ServiceAreas")]
+        [Route("/api/v2/data/serviceAreas")]
         public IActionResult GetServiceAreas()
         {
             try
@@ -178,7 +178,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -189,7 +189,7 @@ namespace Os.Server.Controllers
         /// </summary>
         /// <response code="200"></response>
         [HttpGet]
-        [Route("/api/v2/data/Users")]
+        [Route("/api/v2/data/users")]
         public IActionResult GetUsers()
         {
             try
@@ -199,7 +199,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -212,7 +212,7 @@ namespace Os.Server.Controllers
         /// <param name="status">[ "unknown", "ordered", "committed", "paid" ] If specified the status of the orderlines that are required. If not provided all orderlines with status Ordered and Committed are returned</param>
         /// <response code="200">Orderlines with their unpaid quantity/price</response>
         [HttpGet]
-        [Route("/api/v2/data/OrderLines")]
+        [Route("/api/v2/data/orderLines")]
         public IActionResult GetOrderLines([FromQuery] string subTableId, [FromQuery] string status)
         {
             try
@@ -226,7 +226,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }
@@ -238,7 +238,7 @@ namespace Os.Server.Controllers
         /// <param name="serviceAreaId">The service area id of the service area.</param>
         /// <response code="200">open tables array</response>
         [HttpGet]
-        [Route("/api/v2/data/Tables")]
+        [Route("/api/v2/data/tables")]
         public IActionResult GetTables([FromQuery] string serviceAreaId)
         {
             try
@@ -252,7 +252,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 //500 - Internal Server Error
                 return new StatusCodeResult(500);
             }

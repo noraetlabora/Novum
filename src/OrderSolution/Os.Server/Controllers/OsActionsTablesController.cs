@@ -15,7 +15,7 @@ namespace Os.Server.Controllers
         /// <param name="tableId">The table this sub table is created for.</param>
         /// <response code="201"></response>
         [HttpPost]
-        [Route("/api/v2/actions/SubTables/Create")]
+        [Route("/api/v2/actions/subTables/create")]
         public virtual IActionResult CreateSubTable([FromQuery] string tableId)
         {
             try
@@ -24,11 +24,11 @@ namespace Os.Server.Controllers
                 //register client
                 var subTable = Logic.Table.CreateSubTable(session, tableId);
                 //201 - Created
-                return new CreatedResult("SubTables/Create", subTable);
+                return new CreatedResult("/api/v2/actions/subTables/create", subTable);
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -54,7 +54,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -71,7 +71,7 @@ namespace Os.Server.Controllers
         /// <response code="200">Existing table opened.</response>
         /// <response code="201">New table opened.</response>
         [HttpPost]
-        [Route("/api/v2/actions/Tables/OpenByName/{name}")]
+        [Route("/api/v2/actions/tables/openByName/{name}")]
         public IActionResult OpenTableByName([FromRoute][Required] string name, [FromQuery] string serviceAreaId, [FromQuery] bool? prePayment)
         {
             try
@@ -88,7 +88,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -105,7 +105,7 @@ namespace Os.Server.Controllers
         /// <response code="403">Forbidden</response>
         /// <response code="409">Conflict</response>
         [HttpPost]
-        [Route("/api/v2/actions/Tables/FinalizeOrder/{tableId}")]
+        [Route("/api/v2/actions/tables/finalizeOrder/{tableId}")]
         public virtual IActionResult FinalizeTableOrder([FromRoute][Required] string tableId)
         {
             try
@@ -121,7 +121,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
@@ -138,7 +138,7 @@ namespace Os.Server.Controllers
         /// <response code="403">Forbidden</response>
         /// <response code="409">Conflict</response>
         [HttpPost]
-        [Route("/api/v2/actions/Tables/CancelOrder/{tableId}")]
+        [Route("/api/v2/actions/tables/cancelOrder/{tableId}")]
         public virtual IActionResult CancelOrder([FromRoute][Required] string tableId)
         {
             try
@@ -154,7 +154,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Method);
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
                 //400 - BadRequest
