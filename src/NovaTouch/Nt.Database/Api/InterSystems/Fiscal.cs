@@ -156,6 +156,11 @@ namespace Nt.Database.Api.InterSystems
             var fiscalClientString = DB.Api.Fiscal.GetClient(session.ClientId);
             var fiscalUserString = DB.Api.Fiscal.GetUser(session.ClientId, session.PosId, session.WaiterId);
             var fiscalData = GetData(session, ordersDataString, paymentMethodsDataString, paymentBillDataString);
+            if (fiscalData.StartsWith("FM")) {
+                var fiscalDataString = new DataString(fiscalData);
+                var fiscalDataList = fiscalDataString.SplitByChar96();
+                throw new Exception(fiscalDataList[1]);
+            }
             Nov.NT.POS.Data.DTO.AbrechnungDTOHelper.ApplyAbrechnungRabattDaten(ref paymentBillDataString, ref ordersDataString, ref paymentMethodsDataString, fiscalData);
             var fiscalReceipt = new Nov.NT.POS.Data.DTO.FiscalBelegDTO(fiscalClientString, fiscalUserString, paymentBillDataString, ordersDataString, paymentMethodsDataString);
 

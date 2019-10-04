@@ -55,6 +55,7 @@ namespace Nt.Database.Api.InterSystems
                     orderLine++;
                     order.TableId = tableId;
                     order.Line = orderLine;
+                    order.AssignmentTypeId = indexList.GetString(0);
                     order.ArticleId = indexList.GetString(1);
                     order.UnitPrice = indexList.GetDecimal(2);
                     order.ReferenceId = indexList.GetString(3);
