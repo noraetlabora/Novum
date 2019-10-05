@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nt.Print", "..\Nt.Print\Nt.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nt.Services", "Nt.Services\Nt.Services.csproj", "{75801906-BC9A-47DC-95CF-D153E8FD65CC}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nt.Pos.Server", "..\Nt.Pos.Server\Nt.Pos.Server.csproj", "{B18B0F24-C2E6-4772-B36C-6670FD1B366D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,18 @@ Global
 		{75801906-BC9A-47DC-95CF-D153E8FD65CC}.Touch UI Forms|Any CPU.Build.0 = Release|Any CPU
 		{75801906-BC9A-47DC-95CF-D153E8FD65CC}.Touch UI Forms|x86.ActiveCfg = Release|Any CPU
 		{75801906-BC9A-47DC-95CF-D153E8FD65CC}.Touch UI Forms|x86.Build.0 = Release|Any CPU
+		{B18B0F24-C2E6-4772-B36C-6670FD1B366D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B18B0F24-C2E6-4772-B36C-6670FD1B366D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B18B0F24-C2E6-4772-B36C-6670FD1B366D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B18B0F24-C2E6-4772-B36C-6670FD1B366D}.Debug|x86.Build.0 = Debug|Any CPU
+		{B18B0F24-C2E6-4772-B36C-6670FD1B366D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B18B0F24-C2E6-4772-B36C-6670FD1B366D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B18B0F24-C2E6-4772-B36C-6670FD1B366D}.Release|x86.ActiveCfg = Release|Any CPU
+		{B18B0F24-C2E6-4772-B36C-6670FD1B366D}.Release|x86.Build.0 = Release|Any CPU
+		{B18B0F24-C2E6-4772-B36C-6670FD1B366D}.Touch UI Forms|Any CPU.ActiveCfg = Debug|Any CPU
+		{B18B0F24-C2E6-4772-B36C-6670FD1B366D}.Touch UI Forms|Any CPU.Build.0 = Debug|Any CPU
+		{B18B0F24-C2E6-4772-B36C-6670FD1B366D}.Touch UI Forms|x86.ActiveCfg = Debug|Any CPU
+		{B18B0F24-C2E6-4772-B36C-6670FD1B366D}.Touch UI Forms|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

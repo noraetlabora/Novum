@@ -16,11 +16,31 @@ namespace Nt.Data
             /// <summary>
             /// 
             /// </summary>
-            VoidCommitedOrder,
+            OpenTable,
             /// <summary>
             /// 
             /// </summary>
-            ModifierFaxInput
+            CancelConfirmedOrder,
+            /// <summary>
+            /// 
+            /// </summary>
+            CancelUnconfirmedOrder,
+            /// <summary>
+            /// 
+            /// </summary>
+            CancelBill,
+            /// <summary>
+            /// 
+            /// </summary>
+            ConfirmOrder,
+            /// <summary>
+            /// 
+            /// </summary>
+            ModifyWithFax,
+            /// <summary>
+            /// 
+            /// </summary>
+            SplitTable,
         }
 
         #region Properties

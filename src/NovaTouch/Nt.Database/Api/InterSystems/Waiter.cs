@@ -113,11 +113,20 @@ namespace Nt.Database.Api.InterSystems
 
                 switch (program)
                 {
+                    case "SEC-1":
+                        permissionType = Nt.Data.Permission.PermissionType.ConfirmOrder;
+                        break;
+                    case "SEC-2":
+                        permissionType = Nt.Data.Permission.PermissionType.OpenTable;
+                        break;
                     case "SEC-4":
-                        permissionType = Nt.Data.Permission.PermissionType.VoidCommitedOrder;
+                        permissionType = Nt.Data.Permission.PermissionType.CancelConfirmedOrder;
+                        break;
+                    case "SPLITT":
+                        permissionType = Nt.Data.Permission.PermissionType.SplitTable;
                         break;
                     case "SOL-FAX":
-                        permissionType = Nt.Data.Permission.PermissionType.ModifierFaxInput;
+                        permissionType = Nt.Data.Permission.PermissionType.ModifyWithFax;
                         break;
                     default:
                         continue;

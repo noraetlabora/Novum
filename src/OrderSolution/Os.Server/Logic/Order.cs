@@ -77,7 +77,7 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static Models.OrderLineVoidResult Void(Nt.Data.Session session, string orderLineId, Models.OrderLineVoid data)
         {
-            if (session.NotPermitted(Nt.Data.Permission.PermissionType.VoidCommitedOrder))
+            if (session.NotPermitted(Nt.Data.Permission.PermissionType.CancelConfirmedOrder))
                 throw new Exception("not permitted");
 
             if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
