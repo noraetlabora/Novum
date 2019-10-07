@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using Os.Server.Client.Model;
 using System;
 using System.Collections.Generic;
@@ -76,7 +75,7 @@ namespace Os.Server.Client.Api
             {
                 using (var httpClient = new HttpClient())
                 {
-                    var jsonString = JsonConvert.SerializeObject(body);
+                    var jsonString = System.Text.Json.JsonSerializer.Serialize(body);
                     var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
                     var requestIdentifier = new Microsoft.AspNetCore.Http.Features.HttpRequestIdentifierFeature();
 

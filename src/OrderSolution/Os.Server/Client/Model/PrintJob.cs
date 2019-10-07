@@ -1,3 +1,4 @@
+
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
 using System.Text;
@@ -67,15 +68,5 @@ namespace Os.Server.Client.Model
             sb.Append("}\n");
             return sb.ToString();
         }
-
-        /// <summary>
-        /// Get the JSON string presentation of the object
-        /// </summary>
-        /// <returns>JSON string presentation of the object</returns>
-        public string ToJson()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
-
     }
 }

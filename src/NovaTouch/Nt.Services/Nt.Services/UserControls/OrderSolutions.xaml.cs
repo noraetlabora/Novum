@@ -201,7 +201,7 @@ namespace Nt.Services.UserControls
             osArguments.OsClientIp = txtOsClientIp.Text;
             osArguments.OsClientPort = uint.Parse(txtOsClientPort.Text);
 
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(osArguments);
+            string json = System.Text.Json.JsonSerializer.Serialize(osArguments);
             System.IO.File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + @"\Os.Server.json", json);
         }
 
@@ -212,7 +212,7 @@ namespace Nt.Services.UserControls
             try
             {
                 var json = System.IO.File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\Os.Server.json");
-                osArguments = Newtonsoft.Json.JsonConvert.DeserializeObject<Arguments.OsArguments>(json);
+                osArguments = System.Text.Json.JsonSerializer.Deserialize<Arguments.OsArguments>(json);
             }
             catch
             {

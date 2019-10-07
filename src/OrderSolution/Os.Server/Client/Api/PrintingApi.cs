@@ -111,7 +111,7 @@ namespace Os.Server.Client.Api
                     printDataString = printDataString.Replace(System.Environment.NewLine, "CRLF");
 
                     //shorten printDataString to max 500 characters in info log
-                    if (printDataString.Length > 500) 
+                    if (printDataString.Length > 500)
                         sb.Append(printDataString.Substring(0, 500)).Append("...");
                     else
                         sb.Append(printDataString);

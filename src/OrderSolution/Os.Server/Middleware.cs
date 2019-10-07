@@ -43,9 +43,11 @@ namespace Os.Server
             {
                 var serialNumber = "125-00000000";
                 var session = Sessions.GetSession(httpContext.Request);
-                if (session == null) { 
+                if (session == null)
+                {
                     //check if request is authorized
-                    if (RequestNeedsAuthorization(httpContext.Request)) { 
+                    if (RequestNeedsAuthorization(httpContext.Request))
+                    {
                         LogUnauthorizedRequest(httpContext.Request);
                         httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                         return;

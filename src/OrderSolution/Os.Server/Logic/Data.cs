@@ -118,7 +118,8 @@ namespace Os.Server.Logic
         /// <summary>
         /// 
         /// </summary>
-        public static Nt.Data.PaymentType GetPaymentType(string paymentTypeId) {
+        public static Nt.Data.PaymentType GetPaymentType(string paymentTypeId)
+        {
             if (string.IsNullOrEmpty(paymentTypeId))
                 return null;
 
