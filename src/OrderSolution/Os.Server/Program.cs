@@ -74,6 +74,7 @@ namespace Os.Server
                         {
                             listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
                         });
+                        options.AllowSynchronousIO = true;
                     })
                     .UseStartup<Startup>()
                     .ConfigureLogging(logging =>

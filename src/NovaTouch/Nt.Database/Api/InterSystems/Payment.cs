@@ -124,7 +124,7 @@ namespace Nt.Database.Api.InterSystems
             foreach (var paymentMethod in paymentMethods)
             {
                 if (dataString.Length > 0)
-                    dataString.Append(DataString.CRLF);
+                    dataString.Append(DataString.Char96);
                 dataString.Append(GetPaymentMethodDataString(paymentMethod));
             }
             return dataString.ToString();
