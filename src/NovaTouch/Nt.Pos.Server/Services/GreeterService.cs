@@ -15,9 +15,9 @@ namespace Nt.Pos.Server
             _logger = logger;
         }
 
-        public override Task<HelloReply> SayHello(HelloRequest request, ServerCallContext context)
+        public override Task<ByeResponse> SayBye(ByeRequest request, ServerCallContext context)
         {
-            return Task.FromResult(new HelloReply
+            return Task.FromResult(new ByeResponse
             {
                 Message = "Hello " + request.Name
             });
