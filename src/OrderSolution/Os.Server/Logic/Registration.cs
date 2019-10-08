@@ -34,7 +34,6 @@ namespace Os.Server.Logic
         /// <param name="loginUser"></param>
         public static void Login(Nt.Data.Session session, Models.LoginUser loginUser)
         {
-            throw new Exception(string.Format(Resources.Dictionary.GetString("Waiter_NotValid"), loginUser.Id));
             bool validWaiter = Nt.Database.DB.Api.Waiter.ValidWaiter(loginUser.Id, loginUser.Password);
             if (!validWaiter)
                 throw new Exception(string.Format(Resources.Dictionary.GetString("Waiter_NotValid"), loginUser.Id));
