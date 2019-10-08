@@ -64,7 +64,7 @@
 
 		// Directory with the om7app file (and nothing else!) used for OsClient updates
 		// Relative to OsServer working directory which is typically where the OsServerRun executable is.
-		"om7app": "../OsClient",
+		"om7app": "../OsClient"
 	},
 	"POS": {
 		// The URL at which the POS is listening for connections

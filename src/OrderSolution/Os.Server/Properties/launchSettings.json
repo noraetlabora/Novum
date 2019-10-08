@@ -15,7 +15,7 @@
   "profiles": {
     "Server": {
       "commandName": "Project",
-      "commandLineArgs": "--dbIp 192.168.0.4 --dbPrt 1972 --dbNs PROG-DEV --dbUsr _SYSTEM --dbPwd SYS --osSPrt 20190 --osCIp localhost --osCPrt 20191",
+      "commandLineArgs": "--dbIp 192.168.0.4 --dbPrt 1972 --dbNs PROG-DEV --dbUsr _SYSTEM --dbPwd SYS --osSPrt 25000 --osCIp localhost --osCPrt 25001",
       "launchUrl": "api/values",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

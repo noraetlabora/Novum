@@ -1,0 +1,4391 @@
+{
+	"info": {
+		"_postman_id": "28505c65-dd5d-4ccc-810d-75bf39bf28f6",
+		"name": "OsPosDemo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CriticalUsageScenarios",
+			"item": [
+				{
+					"name": "orderlines/split with fax image",
+					"item": [
+						{
+							"name": "init/registerClient Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6f7ce270-7e7c-4d92-bca5-b8031bc0b15b",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Set-Cookie is present\", function () {",
+											"    pm.response.to.have.header(\"Set-Cookie\");",
+											"});",
+											"pm.test(\"restaurant name is moved to registerGateway\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.restaurantName).to.eql(undefined);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"version\": \"0.1.0.0\",\n\t\"id\": \"OS.125-12345678\"\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/actions/init/registerClient",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"actions",
+										"init",
+										"registerClient"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "auth/login Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e67f9f2d-26d0-45c6-affc-de429fb2e14e",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"id\": \"100\",\n\t\"password\": \"100\"\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/actions/auth/login",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"actions",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "tables/openByName/1 Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "3b89af20-2cbe-4693-a0d7-6ff0de47b0a3",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200 or 201\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+											"    ",
+											"    var jsonData = pm.response.json();",
+											"    pm.environment.set(\"tableId\", jsonData.id);",
+											"    pm.environment.set(\"subTableId\", jsonData.subTables[0].id);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/actions/tables/openByName/1?",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"actions",
+										"tables",
+										"openByName",
+										"1"
+									],
+									"query": [
+										{
+											"key": "serviceAreaId",
+											"value": "2",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "order 3x articleId_2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9e8f5dce-4e42-4156-aae6-9f395a84620f",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"    ",
+											"    var jsonData = pm.response.json();",
+											"    pm.environment.set(\"orderLineId\", jsonData.id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"articleId\": 2,\n\t\"quantity\": 3\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/actions/orderLines/add/{{subTableId}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"actions",
+										"orderLines",
+										"add",
+										"{{subTableId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create a new fax",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "0eccd3b2-2bd0-454f-ac06-33db6236dbf6",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"    ",
+											"    ",
+											"    var faxImgLocation = postman.getResponseHeader(\"Location\");",
+											"    // expected location format: /api/v2/images/fax/10_1907121148076139",
+											"    pm.expect(faxImgLocation.startsWith(\"/api/v2/images/fax/\")).to.be.true;",
+											"    ",
+											"    pm.environment.set(\"faxImgId\", faxImgLocation.substring(\"/api/v2/images/fax/\".length));",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "image/png"
+									}
+								],
+								"body": {
+									"mode": "file",
+									"file": {
+										"src": "{{pwd}}/testFax.png"
+									}
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/images/fax?subTableId={{subTableId}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"images",
+										"fax"
+									],
+									"query": [
+										{
+											"key": "subTableId",
+											"value": "{{subTableId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "modify the  3xarticle_2 orderline with this fax",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "693322c5-0992-4bbb-b775-fb709e849932",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"quantity\": 3,\n\t\"modifiers\":[\n\t\t{\n\t\t\t\"faxInputID\": \"{{faxImgId}}\",\n\t\t\t\"modifierGroupId\":\"14\"\n\t\t}\n\t]\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/actions/orderLines/ModifyUncommitted/{{orderLineId}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"actions",
+										"orderLines",
+										"ModifyUncommitted",
+										"{{orderLineId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "split the orderline into 2xarticleId_2 and 1xarticleId2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9ceb0a1f-d4c4-4fec-a555-01078e6a31c0",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+											"    ",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.originalOl.id).to.eql(pm.environment.get(\"orderLineId\"));",
+											"    pm.expect(jsonData.originalOl.quantity).to.eql(2);",
+											"    pm.expect(jsonData.splittedOl.quantity).to.eql(1);",
+											"    pm.expect(jsonData.splittedOl.id).not.to.eql(\"{{orderLineId}}\");",
+											"    ",
+											"    // test that the splitted OL has a different fax image id",
+											"    pm.expect(jsonData.originalOl.modifiers[0].faxInputID).to.eql(pm.environment.get(\"faxImgId\"));",
+											"    pm.expect(jsonData.originalOl.modifiers[0].faxInputID).not.to.eql(jsonData.splittedOl.modifiers[0].faxInputID);",
+											"    pm.environment.set(\"splittedOlId\", jsonData.splittedOl.id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"quantity\": 1\r\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/actions/orderLines/split/{{orderLineId}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"actions",
+										"orderLines",
+										"split",
+										"{{orderLineId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "tables/finalizeOrder",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/actions/tables/finalizeOrder/{{tableId}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"actions",
+										"tables",
+										"finalizeOrder",
+										"{{tableId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "pay/subTables Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "1d0192f2-44d5-45b9-bc04-f4b0269d6d89",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"subTableIds\": [ {{subTableId}} ],\n\t\"payments\": [ { \"amountPaid\": 10000, \"paymentMediumId\": \"1\" } ]\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/actions/pay/subTables",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"actions",
+										"pay",
+										"subTables"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "when an orderline that has a fax modifier is splitted the POS must take care to return a new fax image id (a copy of the prevous fax image).\n\nDetails see BYOA-1163",
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "OS V0.9.8.x",
+			"item": [
+				{
+					"name": "compatibility check",
+					"item": [
+						{
+							"name": "modifierGroups - type enum has string value",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "140aa010-0fcc-4f37-a59b-4a5b64fec295",
+										"exec": [
+											"pm.test(\"static data - modifierGroups type is forced to be type of string\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    if (Array.isArray(jsonData)) {",
+											"        if (jsonData.length > 0) {",
+											"            pm.expect(typeof jsonData[0].type).to.be.eql(\"string\");",
+											"        }",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{host}}/api/v2/data/modifierGroups",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"data",
+										"modifierGroups"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "init/registerGateway",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9797e361-da43-4ad7-843b-f81420e5ab4b",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+											"});",
+											"pm.test(\"registerGateway must return partnerId, restaurantName, utcTime since V0.9.8.x\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.partnerId).to.not.eql(undefined);",
+											"    pm.expect(jsonData.restaurantName).to.not.eql(undefined);",
+											"    pm.expect(jsonData.utcTime).to.not.eql(undefined);",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"id\": \"gsfjadsHLKADHF\",\n\t\"name\": \"dummy name\",\n\t\"statusPort\": \"12344\"\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/actions/init/registerGateway",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"actions",
+										"init",
+										"registerGateway"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "init/registerClient",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6f7ce270-7e7c-4d92-bca5-b8031bc0b15b",
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Set-Cookie is present\", function () {",
+											"    pm.response.to.have.header(\"Set-Cookie\");",
+											"});",
+											"pm.test(\"restaurant name is moved to registerGateway\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.restaurantName).to.eql(undefined);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"version\": \"0.1.0.0\",\n\t\"id\": \"OS.125-12345678\"\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/actions/init/registerClient",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"actions",
+										"init",
+										"registerClient"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "auth/login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e67f9f2d-26d0-45c6-affc-de429fb2e14e",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"id\": \"100\",\n\t\"password\": \"100\"\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/actions/auth/login",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"actions",
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "tables/openByName/1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "3b89af20-2cbe-4693-a0d7-6ff0de47b0a3",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 200 or 201\", function () {",
+											"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+											"    ",
+											"    var jsonData = pm.response.json();",
+											"    pm.environment.set(\"tableId\", jsonData.id);",
+											"    pm.environment.set(\"subTableId\", jsonData.subTables[0].id);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/actions/tables/openByName/1?",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"actions",
+										"tables",
+										"openByName",
+										"1"
+									],
+									"query": [
+										{
+											"key": "serviceAreaId",
+											"value": "2",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "orderLines/add/1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9e8f5dce-4e42-4156-aae6-9f395a84620f",
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {",
+											"    pm.response.to.have.status(201);",
+											"    ",
+											"    var jsonData = pm.response.json();",
+											"    pm.environment.set(\"orderLineId\", jsonData.id);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"articleId\": 2,\n\t\"quantity\": 1\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/actions/orderLines/add/{{subTableId}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"actions",
+										"orderLines",
+										"add",
+										"{{subTableId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "orderLines - check status is of type string",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9e6ffbff-5530-4dd9-83ed-e3692b4a1b26",
+										"exec": [
+											"pm.test(\"static data - modifierGroups type is forced to be type of string\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    if (Array.isArray(jsonData)) {",
+											"        if (jsonData.length > 0) {",
+											"            pm.expect(typeof jsonData[0].status).to.be.eql(\"string\");",
+											"        }",
+											"    }",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{host}}/api/v2/data/orderLines?subTableId={{subTableId}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"data",
+										"orderLines"
+									],
+									"query": [
+										{
+											"key": "subTableId",
+											"value": "{{subTableId}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "tables/finalizeOrder/1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "34378a41-aae7-4918-ac9a-1647adb1773f",
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/actions/tables/finalizeOrder/{{tableId}}",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"actions",
+										"tables",
+										"finalizeOrder",
+										"{{tableId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "pay/orderLines",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "2cf21760-3b33-4f1a-bc76-3c55efcf393f",
+										"exec": [
+											"pm.test(\"Status code is 400 as paymentMediaId changed to paymentMediumId\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"paidLines\": [ {\n\t\t\"orderLineId\": {{orderLineId}},\n\t\t\"quantity\": 1\n\t} ],\n\t\"payments\": [\n\t\t{\n\t\t\t\"amountPaid\": 10000,\n\t\t\t\"paymentMediaId\": 1\n\t\t}\n\t]\n}"
+								},
+								"url": {
+									"raw": "http://{{host}}/api/v2/actions/pay/orderLines",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v2",
+										"actions",
+										"pay",
+										"orderLines"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f3949eea-3f33-4a41-b3c9-22cade85b411",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "206b6af5-b3eb-44a0-9bb3-d66eca5260a5",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "OS V19.1.1",
+			"item": [
+				{
+					"name": "compatibility check",
+					"item": [
+						{
+							"name": "actions/subTable/move support",
+							"item": [
+								{
+									"name": "init/registerGateway",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "9797e361-da43-4ad7-843b-f81420e5ab4b",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+													"});",
+													"pm.test(\"registerGateway must return partnerId, restaurantName, utcTime since V0.9.8.x\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData.partnerId).to.not.eql(undefined);",
+													"    pm.expect(jsonData.restaurantName).to.not.eql(undefined);",
+													"    pm.expect(jsonData.utcTime).to.not.eql(undefined);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"id\": \"gsfjadsHLKADHF\",\n\t\"name\": \"dummy name\",\n\t\"statusPort\": \"12344\"\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/init/registerGateway",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"init",
+												"registerGateway"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "init/registerClient",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "6f7ce270-7e7c-4d92-bca5-b8031bc0b15b",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"pm.test(\"Set-Cookie is present\", function () {",
+													"    pm.response.to.have.header(\"Set-Cookie\");",
+													"});",
+													"pm.test(\"restaurant name is moved to registerGateway\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData.restaurantName).to.eql(undefined);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"version\": \"0.1.0.0\",\n\t\"id\": \"OS.125-12345678\"\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/init/registerClient",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"init",
+												"registerClient"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "auth/login",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "e67f9f2d-26d0-45c6-affc-de429fb2e14e",
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"id\": \"100\",\n\t\"password\": \"100\"\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/auth/login",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"auth",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "tables/openByName/10",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "3b89af20-2cbe-4693-a0d7-6ff0de47b0a3",
+												"exec": [
+													"pm.test(\"Status code is 200 or 201\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+													"    ",
+													"    var jsonData = pm.response.json();",
+													"    pm.environment.set(\"tableId\", jsonData.id);",
+													"    ",
+													"    pm.environment.set(\"subTableId\", jsonData.subTables[0].id);",
+													"        ",
+													"    var allSubTableIds = [];",
+													"    jsonData.subTables.forEach((elem) => {",
+													"        allSubTableIds.push(\"\\\"\" + elem.id + \"\\\"\");",
+													"    });",
+													"    pm.environment.set(\"allSubTableIds\", allSubTableIds);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/tables/openByName/10?",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"tables",
+												"openByName",
+												"10"
+											],
+											"query": [
+												{
+													"key": "serviceAreaId",
+													"value": "2",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "orderLines/add/{{subTableId}}",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "9e8f5dce-4e42-4156-aae6-9f395a84620f",
+												"exec": [
+													"pm.test(\"Status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"    ",
+													"    var jsonData = pm.response.json();",
+													"    pm.environment.set(\"orderLineId\", jsonData.id);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"articleId\": 2,\n\t\"quantity\": 1\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/orderLines/add/{{subTableId}}",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"orderLines",
+												"add",
+												"{{subTableId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "move_tables/openByName/11",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "495d5af5-de56-4f42-b0a1-9a91515431dd",
+												"exec": [
+													"pm.test(\"Status code is 200 or 201\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+													"    ",
+													"    var jsonData = pm.response.json();",
+													"    pm.environment.set(\"tableIdMoveTarget\", jsonData.id);",
+													"    // subTableId is not relevant as we will move the other sub tables onto it",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/tables/openByName/11?",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"tables",
+												"openByName",
+												"11"
+											],
+											"query": [
+												{
+													"key": "serviceAreaId",
+													"value": "2",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "move_subtables/move ({{subTableId}} to {{tableIdMoveTarget}})",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "3ab27f4d-e38c-458b-99bd-2995d9c49c8c",
+												"exec": [
+													"pm.test(\"Status code is 200 or 201\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+													"    ",
+													"    var jsonData = pm.response.json();",
+													"    ",
+													"    pm.expect(pm.environment.get(\"tableIdMoveTarget\")).to.be.eql(jsonData.id);",
+													"    // the first sub table should now be the original move one (from it's contents; but it is allowed that",
+													"    // it has a new id)",
+													"    pm.environment.set(\"subTableIdMoveTarget\", jsonData.subTables[0].id);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"subTableIds\": [{{allSubTableIds}}],\r\n  \"targetTableId\": \"{{tableIdMoveTarget}}\"\r\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/subTables/move",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"subTables",
+												"move"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "move_tables/finalizeOrder/10",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/tables/finalizeOrder/{{tableId}}",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"tables",
+												"finalizeOrder",
+												"{{tableId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "test_tables/finalizeOrder/11",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/tables/finalizeOrder/{{tableIdMoveTarget}}",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"tables",
+												"finalizeOrder",
+												"{{tableIdMoveTarget}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "test_tables/openByName/10 - must again report min 1 sub table",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "3b89af20-2cbe-4693-a0d7-6ff0de47b0a3",
+												"exec": [
+													"pm.test(\"Status code is 200 or 201\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+													"    ",
+													"    var jsonData = pm.response.json();",
+													"    pm.environment.set(\"tableId\", jsonData.id);",
+													"    ",
+													"    pm.expect(jsonData.subTables.length).to.be.eql(1);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/tables/openByName/10?",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"tables",
+												"openByName",
+												"10"
+											],
+											"query": [
+												{
+													"key": "serviceAreaId",
+													"value": "2",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "test_tables/finalizeOrder/10",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/tables/cancelOrder/{{tableId}}",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"tables",
+												"cancelOrder",
+												"{{tableId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "new optional features",
+					"item": [
+						{
+							"name": "actions/pay/... with tip",
+							"item": [
+								{
+									"name": "init/registerGateway",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "9797e361-da43-4ad7-843b-f81420e5ab4b",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+													"});",
+													"pm.test(\"registerGateway must return partnerId, restaurantName, utcTime since V0.9.8.x\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData.partnerId).to.not.eql(undefined);",
+													"    pm.expect(jsonData.restaurantName).to.not.eql(undefined);",
+													"    pm.expect(jsonData.utcTime).to.not.eql(undefined);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"id\": \"gsfjadsHLKADHF\",\n\t\"name\": \"dummy name\",\n\t\"statusPort\": \"12344\"\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/init/registerGateway",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"init",
+												"registerGateway"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "init/registerClient",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "6f7ce270-7e7c-4d92-bca5-b8031bc0b15b",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"pm.test(\"Set-Cookie is present\", function () {",
+													"    pm.response.to.have.header(\"Set-Cookie\");",
+													"});",
+													"pm.test(\"restaurant name is moved to registerGateway\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData.restaurantName).to.eql(undefined);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"version\": \"0.1.0.0\",\n\t\"id\": \"OS.125-12345678\"\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/init/registerClient",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"init",
+												"registerClient"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "auth/login",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "e67f9f2d-26d0-45c6-affc-de429fb2e14e",
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"id\": \"100\",\n\t\"password\": \"100\"\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/auth/login",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"auth",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "tables/openByName/12",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "3b89af20-2cbe-4693-a0d7-6ff0de47b0a3",
+												"exec": [
+													"pm.test(\"Status code is 200 or 201\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+													"    ",
+													"    var jsonData = pm.response.json();",
+													"    pm.environment.set(\"tableId\", jsonData.id);",
+													"    ",
+													"    pm.environment.set(\"subTableId\", jsonData.subTables[0].id);",
+													"        ",
+													"    var allSubTableIds = [];",
+													"    jsonData.subTables.forEach((elem) => {",
+													"        allSubTableIds.push(\"\\\"\" + elem.id + \"\\\"\");",
+													"    });",
+													"    pm.environment.set(\"allSubTableIds\", allSubTableIds);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/tables/openByName/12?",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"tables",
+												"openByName",
+												"12"
+											],
+											"query": [
+												{
+													"key": "serviceAreaId",
+													"value": "2",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "orderLines/add/{{subTableId}}",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "9e8f5dce-4e42-4156-aae6-9f395a84620f",
+												"exec": [
+													"pm.test(\"Status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"    ",
+													"    var jsonData = pm.response.json();",
+													"    pm.environment.set(\"orderLineId\", jsonData.id);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"articleId\": 2,\n\t\"quantity\": 1\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/orderLines/add/{{subTableId}}",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"orderLines",
+												"add",
+												"{{subTableId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "tables/finalizeOrder/{{tableId}} Copy",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/tables/finalizeOrder/{{tableId}}",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"tables",
+												"finalizeOrder",
+												"{{tableId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "tables/openByName/12",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "3b89af20-2cbe-4693-a0d7-6ff0de47b0a3",
+												"exec": [
+													"pm.test(\"Status code is 200 or 201\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+													"    ",
+													"    var jsonData = pm.response.json();",
+													"    pm.environment.set(\"tableId\", jsonData.id);",
+													"    pm.environment.set(\"subTableId\", jsonData.subTables[0].id);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/tables/openByName/12?prePayment=true",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"tables",
+												"openByName",
+												"12"
+											],
+											"query": [
+												{
+													"key": "serviceAreaId",
+													"value": "2",
+													"disabled": true
+												},
+												{
+													"key": "prePayment",
+													"value": "true"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "pay/subTables with 5.00 tip",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "1d0192f2-44d5-45b9-bc04-f4b0269d6d89",
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"subTableIds\": [ {{subTableId}} ],\n\t\"payments\": [ { \"amountPaid\": 10000, \"paymentMediumId\": \"1\" } ],\n\t\"tip\": \"500\"\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/pay/subTables",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"pay",
+												"subTables"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "actions/pay/... with result text (for change calculation)",
+							"item": [
+								{
+									"name": "init/registerGateway",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "9797e361-da43-4ad7-843b-f81420e5ab4b",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+													"});",
+													"pm.test(\"registerGateway must return partnerId, restaurantName, utcTime since V0.9.8.x\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData.partnerId).to.not.eql(undefined);",
+													"    pm.expect(jsonData.restaurantName).to.not.eql(undefined);",
+													"    pm.expect(jsonData.utcTime).to.not.eql(undefined);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"id\": \"gsfjadsHLKADHF\",\n\t\"name\": \"dummy name\",\n\t\"statusPort\": \"12344\"\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/init/registerGateway",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"init",
+												"registerGateway"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "init/registerClient",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "6f7ce270-7e7c-4d92-bca5-b8031bc0b15b",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"pm.test(\"Set-Cookie is present\", function () {",
+													"    pm.response.to.have.header(\"Set-Cookie\");",
+													"});",
+													"pm.test(\"restaurant name is moved to registerGateway\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData.restaurantName).to.eql(undefined);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"version\": \"0.1.0.0\",\n\t\"id\": \"OS.125-12345678\"\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/init/registerClient",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"init",
+												"registerClient"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "auth/login",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "e67f9f2d-26d0-45c6-affc-de429fb2e14e",
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"id\": \"100\",\n\t\"password\": \"100\"\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/auth/login",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"auth",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "tables/openByName/12",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "3b89af20-2cbe-4693-a0d7-6ff0de47b0a3",
+												"exec": [
+													"pm.test(\"Status code is 200 or 201\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+													"    ",
+													"    var jsonData = pm.response.json();",
+													"    pm.environment.set(\"tableId\", jsonData.id);",
+													"    ",
+													"    pm.environment.set(\"subTableId\", jsonData.subTables[0].id);",
+													"        ",
+													"    var allSubTableIds = [];",
+													"    jsonData.subTables.forEach((elem) => {",
+													"        allSubTableIds.push(\"\\\"\" + elem.id + \"\\\"\");",
+													"    });",
+													"    pm.environment.set(\"allSubTableIds\", allSubTableIds);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/tables/openByName/12?",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"tables",
+												"openByName",
+												"12"
+											],
+											"query": [
+												{
+													"key": "serviceAreaId",
+													"value": "2",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "orderLines/add/{{subTableId}}",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "9e8f5dce-4e42-4156-aae6-9f395a84620f",
+												"exec": [
+													"pm.test(\"Status code is 201\", function () {",
+													"    pm.response.to.have.status(201);",
+													"    ",
+													"    var jsonData = pm.response.json();",
+													"    pm.environment.set(\"orderLineId\", jsonData.id);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"articleId\": 2,\n\t\"quantity\": 1\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/orderLines/add/{{subTableId}}",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"orderLines",
+												"add",
+												"{{subTableId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "tables/finalizeOrder/{{tableId}} Copy",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/tables/finalizeOrder/{{tableId}}",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"tables",
+												"finalizeOrder",
+												"{{tableId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "tables/openByName/12",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "3b89af20-2cbe-4693-a0d7-6ff0de47b0a3",
+												"exec": [
+													"pm.test(\"Status code is 200 or 201\", function () {",
+													"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+													"    ",
+													"    var jsonData = pm.response.json();",
+													"    pm.environment.set(\"tableId\", jsonData.id);",
+													"    pm.environment.set(\"subTableId\", jsonData.subTables[0].id);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/tables/openByName/12?prePayment=false",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"tables",
+												"openByName",
+												"12"
+											],
+											"query": [
+												{
+													"key": "serviceAreaId",
+													"value": "2",
+													"disabled": true
+												},
+												{
+													"key": "prePayment",
+													"value": "false"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "pay/subTables test result message (for change calc)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "1d0192f2-44d5-45b9-bc04-f4b0269d6d89",
+												"exec": [
+													"pm.test(\"Status code is 200 and result dialog is defined\", function () {",
+													"    pm.response.to.have.status(200);",
+													"    ",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData.dialog).not.to.be.undefined;",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"subTableIds\": [ {{subTableId}} ],\n\t\"payments\": [ { \"amountPaid\": 10000, \"paymentMediumId\": \"1\" } ]\n}"
+										},
+										"url": {
+											"raw": "http://{{host}}/api/v2/actions/pay/subTables",
+											"protocol": "http",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"api",
+												"v2",
+												"actions",
+												"pay",
+												"subTables"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "actions",
+			"item": [
+				{
+					"name": "init/registerGateway",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9797e361-da43-4ad7-843b-f81420e5ab4b",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200]);",
+									"});",
+									"pm.test(\"registerGateway must return partnerId, restaurantName, utcTime since V0.9.8.x\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.partnerId).to.not.eql(undefined);",
+									"    pm.expect(jsonData.restaurantName).to.not.eql(undefined);",
+									"    pm.expect(jsonData.utcTime).to.not.eql(undefined);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"gsfjadsHLKADHF\",\n\t\"name\": \"dummy name\",\n\t\"statusPort\": \"12344\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/init/registerGateway",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"init",
+								"registerGateway"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "init/registerClient",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6a154523-79a2-4e3f-8bbd-44a6c6817f8d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Set-Cookie is present\", function () {",
+									"    pm.response.to.have.header(\"Set-Cookie\");",
+									"});",
+									"pm.test(\"restaurant name is moved to registerGateway\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.restaurantName).to.eql(undefined);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"version\": \"0.1.0.0\",\n\t\"id\": \"OS.125-12345678\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/init/registerClient",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"init",
+								"registerClient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "24ffb870-a432-4bd7-ace2-d2ae2a7b2b59",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([204]);",
+									"    ",
+									"    pm.environment.set(\"userId\", \"100\");",
+									"    pm.environment.set(\"tableId\", 0);",
+									"    pm.environment.set(\"subTableId\", 0);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"100\",\n\t\"password\": 100\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/auth/login",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tables/openByName/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3b89af20-2cbe-4693-a0d7-6ff0de47b0a3",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"tableId\", jsonData.id);",
+									"    pm.environment.set(\"subTableId\", jsonData.subTables[0].id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/tables/openByName/1?",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"tables",
+								"openByName",
+								"1"
+							],
+							"query": [
+								{
+									"key": "serviceAreaId",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "subTables/createByName",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/subTables/create?tableId=1",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"subTables",
+								"create"
+							],
+							"query": [
+								{
+									"key": "tableId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "orderLines/add/{{subTableId}}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9fa59ef2-d907-4699-b8d1-340d547e186c",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"orderLineId\", jsonData.id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"articleId\": 2,\n\t\"quantity\": 3\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/orderLines/add/{{subTableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"orderLines",
+								"add",
+								"{{subTableId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "orderLines/add/{{subTableId}} with manual price OK",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a5ca5528-9f0f-429e-bfc8-c78f9d40f476",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"orderLineId\", jsonData.id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"articleId\": 234,\n\t\"quantity\": 2,\n\t\"enteredPrice\": 400 \n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/orderLines/add/{{subTableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"orderLines",
+								"add",
+								"{{subTableId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "orderLines/modifyUncommited/{{orderLineId}}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "693322c5-0992-4bbb-b775-fb709e849932",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"quantity\": 1\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/orderLines/ModifyUncommitted/{{orderLineId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"orderLines",
+								"ModifyUncommitted",
+								"{{orderLineId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "orderLines/add/1 with manual price forgot",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4b2c5cc8-d20d-49bc-adf2-0a349a1b6364",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"articleId\": 234,\n\t\"quantity\": 2\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/orderLines/add/{{subTableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"orderLines",
+								"add",
+								"{{subTableId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tables/finalizeOrder/{{tableId}}",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/tables/finalizeOrder/{{tableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"tables",
+								"finalizeOrder",
+								"{{tableId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tables/openByName/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "495d5af5-de56-4f42-b0a1-9a91515431dd",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"tableId\", jsonData.id);",
+									"    pm.environment.set(\"subTableId\", jsonData.subTables[0].id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/tables/openByName/1?",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"tables",
+								"openByName",
+								"1"
+							],
+							"query": [
+								{
+									"key": "serviceAreaId",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "orderLines/add/{{subTableId}}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9fa59ef2-d907-4699-b8d1-340d547e186c",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"orderLineId\", jsonData.id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"articleId\": 2,\n\t\"quantity\": 3\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/orderLines/add/{{subTableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"orderLines",
+								"add",
+								"{{subTableId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tables/cancleOrder/1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/tables/cancelOrder/{{tableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"tables",
+								"cancelOrder",
+								"{{tableId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth/logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/auth/logout",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pay/subTables",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1d0192f2-44d5-45b9-bc04-f4b0269d6d89",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"subTableIds\": [ {{subTableId}} ],\n\t\"payments\": [ { \"amountPaid\": 10000, \"paymentMediumId\": \"1\" } ]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/pay/subTables",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"pay",
+								"subTables"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "data",
+			"item": [
+				{
+					"name": "articles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "If-None-Match",
+								"value": "dummyArticlesTag17",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/api/v2/data/articles",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"data",
+								"articles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "serviceAreaDefinitions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}/api/v2/data/serviceAreas",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"data",
+								"serviceAreas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tables",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}/api/v2/data/tables?",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"data",
+								"tables"
+							],
+							"query": [
+								{
+									"key": "serviceAreaId",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tables?serviceAreaId=2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}/api/v2/data/tables?serviceAreaId=1",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"data",
+								"tables"
+							],
+							"query": [
+								{
+									"key": "serviceAreaId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "orderLines",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}/api/v2/data/orderLines?subTableId={{subTableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"data",
+								"orderLines"
+							],
+							"query": [
+								{
+									"key": "subTableId",
+									"value": "{{subTableId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OrderArticles",
+			"item": [
+				{
+					"name": "init/registerClient",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6f7ce270-7e7c-4d92-bca5-b8031bc0b15b",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Set-Cookie is present\", function () {",
+									"    pm.response.to.have.header(\"Set-Cookie\");",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"version\": \"0.1.0.0\",\n\t\"id\": \"OS.125-12345678\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/init/registerClient",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"init",
+								"registerClient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "982fa6d2-1114-489a-b469-6a5ca1a0406c",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"100\",\n\t\"password\": \"100\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/auth/login",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tables/openByName/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e3f0ef50-8fb4-43e2-bc20-72d86d6d607b",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"tableId\", jsonData.id);",
+									"    pm.environment.set(\"subTableId\", jsonData.subTables[0].id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/tables/openByName/1?",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"tables",
+								"openByName",
+								"1"
+							],
+							"query": [
+								{
+									"key": "serviceAreaId",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "orderLines/add/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6cabeac5-c33d-40d3-8612-0d0ee5cfa5e9",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"orderLineId\", jsonData.id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"articleId\": 2,\n\t\"quantity\": 1\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/orderLines/add/{{subTableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"orderLines",
+								"add",
+								"{{subTableId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "orderLines/add/1_with_cheese_no_mustard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "44acaf17-82f1-454b-a588-2de1fae5a2cc",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"orderLineId\", jsonData.id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"articleId\": 2,\n\t\"quantity\": 1,\n\t\"modifiers\": [\n    {\n      \"modifierGroupId\": 3,\n      \"choices\": [\n        {\n          \"modifierChoiceId\": 10,\n          \"adjectiveId\": 2\n        }\n      ]\n    },\n    {\n      \"modifierGroupId\": 4,\n      \"choices\": [\n        {\n          \"modifierChoiceId\": 23,\n          \"adjectiveId\": 1\n        }\n      ]\n    }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/orderLines/add/{{subTableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"orderLines",
+								"add",
+								"{{subTableId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tables/finalizeOrder/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "34378a41-aae7-4918-ac9a-1647adb1773f",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/tables/finalizeOrder/{{tableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"tables",
+								"finalizeOrder",
+								"{{tableId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pay/subTables",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fd84fa09-3c17-487c-8f86-e71495182f6f",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"subTableIds\": [{{subTableId}} ],\n\t\"payments\": [\n\t\t{\n\t\t\t\"amountPaid\": 1000000,\n\t\t\t\"paymentMediumId\": 1\n\t\t}\n\t]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/pay/subTables",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"pay",
+								"subTables"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth/logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "7bc4e491-3d66-4c9c-b1a8-71a15d203169",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/auth/logout",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OrderArticles - numieric modifier (ice cup)",
+			"item": [
+				{
+					"name": "init/registerClient",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6f7ce270-7e7c-4d92-bca5-b8031bc0b15b",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Set-Cookie is present\", function () {",
+									"    pm.response.to.have.header(\"Set-Cookie\");",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"version\": \"0.1.0.0\",\n\t\"id\": \"OS.125-12345678\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/init/registerClient",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"init",
+								"registerClient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "982fa6d2-1114-489a-b469-6a5ca1a0406c",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"100\",\n\t\"password\": \"100\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/auth/login",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tables/openByName/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e3f0ef50-8fb4-43e2-bc20-72d86d6d607b",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"tableId\", jsonData.id);",
+									"    pm.environment.set(\"subTableId\", jsonData.subTables[0].id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/tables/openByName/1?",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"tables",
+								"openByName",
+								"1"
+							],
+							"query": [
+								{
+									"key": "serviceAreaId",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "orderLines/add/1_ice_cup_with_2_Strawberry_and_1_Chocolate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "44acaf17-82f1-454b-a588-2de1fae5a2cc",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"orderLineId\", jsonData.id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"articleId\": 700,\n\t\"quantity\": 1,\n\t\"modifiers\": [\n    {\n      \"modifierGroupId\": 700,\n      \"choices\": [\n        {\n          \"modifierChoiceId\": 701,\n          \"amount\": 2\n        },\n        {\n          \"modifierChoiceId\": 700,\n          \"amount\": 1\n        }\n      ]\n    }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/orderLines/add/{{subTableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"orderLines",
+								"add",
+								"{{subTableId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "435ca429-2194-41bb-b087-81d3599a18ba",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "13779e7a-5d2e-489d-b26c-7cf1f5473d92",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "OrderArticlesAndGetOrderLines",
+			"item": [
+				{
+					"name": "init/registerClient",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6f7ce270-7e7c-4d92-bca5-b8031bc0b15b",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Set-Cookie is present\", function () {",
+									"    pm.response.to.have.header(\"Set-Cookie\");",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"version\": \"0.1.0.0\",\n\t\"id\": \"OS.125-12345678\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/init/registerClient",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"init",
+								"registerClient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d77091c7-15f8-4cae-9719-b1026af947d1",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"100\",\n\t\"password\": \"100\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/auth/login",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tables/openByName/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fae6fa8e-5e38-44e4-8673-938e5363a256",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 200 or 201\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201]);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"tableId\", jsonData.id);",
+									"    pm.environment.set(\"subTableId\", jsonData.subTables[0].id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/tables/openByName/1?",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"tables",
+								"openByName",
+								"1"
+							],
+							"query": [
+								{
+									"key": "serviceAreaId",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "orderLinesSubTableId1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}/api/v2/data/orderLines?subTableId={{subTableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"data",
+								"orderLines"
+							],
+							"query": [
+								{
+									"key": "subTableId",
+									"value": "{{subTableId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "orderLines/add/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bc21a390-b82a-401e-b861-1c626155236a",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"orderLineId\", jsonData.id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"articleId\": 2,\n\t\"quantity\": 1\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/orderLines/add/{{subTableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"orderLines",
+								"add",
+								"{{subTableId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "orderLines/add/1 Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a28e0d79-40e2-4323-95bb-2bfc761fee3c",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"orderLineId\", jsonData.id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"articleId\": 2,\n\t\"quantity\": 1\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/orderLines/add/{{subTableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"orderLines",
+								"add",
+								"{{subTableId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "subTables/createByName Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1cda62ac-d28f-4fc0-bbe2-52dcd8602599",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201]);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"subTableId2\", jsonData.id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/subTables/create?tableId={{tableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"subTables",
+								"create"
+							],
+							"query": [
+								{
+									"key": "tableId",
+									"value": "{{tableId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "orderLines/add/2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6788c9a7-6f92-4e4c-8a5d-8f08fbd7ebd7",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"    ",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set(\"orderLineId\", jsonData.id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"articleId\": 2,\n\t\"quantity\": 1\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/orderLines/add/{{subTableId2}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"orderLines",
+								"add",
+								"{{subTableId2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "orderLinesSubTableId2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}/api/v2/data/orderLines?subTableId={{subTableId2}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"data",
+								"orderLines"
+							],
+							"query": [
+								{
+									"key": "subTableId",
+									"value": "{{subTableId2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "orderLinesTableId1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}/api/v2/data/orderLines?tableId={{tableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"data",
+								"orderLines"
+							],
+							"query": [
+								{
+									"key": "subTableId",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "tableId",
+									"value": "{{tableId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tables/finalizeOrder/1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "aa36e065-2ccb-4949-ae00-c623dd2cf704",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/tables/finalizeOrder/{{tableId}}",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"tables",
+								"finalizeOrder",
+								"{{tableId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth/logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "397de3b4-528a-40ee-98cb-9f3bec3521c2",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Status code is 204\", function () {",
+									"    pm.response.to.have.status(204);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/actions/auth/logout",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"actions",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "55133348-08d0-4722-bd8e-8e934b073096",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "866d91e4-7b63-4cb6-8200-35a86dd3ab12",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "images/fax",
+			"item": [
+				{
+					"name": "images/fax",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "image/png"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "{{pwd}}/testFax.png"
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/images/fax?ctxSubTableId=4",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"images",
+								"fax"
+							],
+							"query": [
+								{
+									"key": "ctxSubTableId",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "images/fax/id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "image/png"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/api/v2/images/fax/1811190941143094",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"images",
+								"fax",
+								"1811190941143094"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "images/fax/id Copy",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "image/png"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "{{pwd}}/testFax.png"
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/images/fax/1809251725184714",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"images",
+								"fax",
+								"1809251725184714"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "images/fax/id Copy Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "image/png"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {}
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/images/fax/1809251709225854",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"images",
+								"fax",
+								"1809251709225854"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "images/fax",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "image/png"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}/api/v2/images/fax",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"images",
+								"fax"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "test",
+			"item": [
+				{
+					"name": "GET /api/v2/getAuthUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}/api/v2/test/getAuthUser",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"test",
+								"getAuthUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET /api/v2/getAuthUser Copy",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"neuew3rName\",\n\t\"receiptName\" : \"ein sbg schnitzel\"\n}"
+						},
+						"url": {
+							"raw": "http://{{host}}/api/v2/test/updateArticle/101",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v2",
+								"test",
+								"updateArticle",
+								"101"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "5afd163a-b24f-465d-b784-54fac17c4dd2",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "5000523e-18c3-4f17-ad1c-ab03c56feca8",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -1,6 +1,6 @@
 using Os.Server.Client.Api;
 
-namespace Os.Server
+namespace Os.Server.Client
 {
     /// <summary>
     /// 

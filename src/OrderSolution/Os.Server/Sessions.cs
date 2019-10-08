@@ -11,7 +11,7 @@ namespace Os.Server
         private static Dictionary<string, Nt.Data.Session> _sessions = new Dictionary<string, Nt.Data.Session>();
 
         /// <summary>
-        /// 
+        /// gets session from dictionary of sessions
         /// </summary>
         /// <value></value>
         public static Nt.Data.Session GetSession(HttpRequest request)
@@ -25,7 +25,7 @@ namespace Os.Server
         }
 
         /// <summary>
-        /// 
+        /// sets session into dictionary of sessions
         /// </summary>
         /// <value></value>
         public static bool SetSession(Nt.Data.Session session)

@@ -9,6 +9,7 @@ using NLog.Web;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Resources;
 using System.ServiceProcess;
 using System.Text;
 
@@ -18,14 +19,15 @@ namespace Os.Server
     /// <summary>
     /// 
     /// </summary>
-    public class Program
+    public class OsServer
     {
         /// <summary>
         /// 
         /// </summary>
         public static OsArguments Arguments { get; private set; }
+        public static ResourceManager Dictionary { get; private set; }
 
-        private static ClientApi _clientApi;
+        private static Client.ClientApi _clientApi;
 
 
         /// <summary>
@@ -36,6 +38,7 @@ namespace Os.Server
         {
             try
             {
+                Resources.Dictionary.Initialize("de-AT");
                 //build and run webHost
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();
@@ -97,7 +100,7 @@ namespace Os.Server
                 Nt.Logging.Log.Server.Info("================================================================== ARGUMENTS ==================================================================");
                 Nt.Logging.Log.Server.Info(parsedArguments.ToString());
                 Arguments = parsedArguments;
-                _clientApi = new ClientApi(string.Format("http://{0}:{1}", Arguments.OsClientIp, Arguments.OsClientPort));
+                _clientApi = new Client.ClientApi(string.Format("http://{0}:{1}", Arguments.OsClientIp, Arguments.OsClientPort));
             });
             parserResult.WithNotParsed(errors =>
             {

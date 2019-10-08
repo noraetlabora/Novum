@@ -7,4 +7,9 @@
     <ActiveDebugProfile>Server</ActiveDebugProfile>
     <NameOfLastUsedPublishProfile>FolderProfile</NameOfLastUsedPublishProfile>
   </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Dictionary.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

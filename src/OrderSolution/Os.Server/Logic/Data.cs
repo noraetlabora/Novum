@@ -37,19 +37,11 @@ namespace Os.Server.Logic
         public static void CheckStaticData()
         {
             if (!InitialStaticDataSent)
-            {
-                System.Diagnostics.Debug.WriteLine("initial static not yet sent");
                 return;
-            }
 
             // snapshot time exists, data is up to date
             if (Nt.Database.DB.Api.Misc.HasSnapshotTime(Controllers.OsHostController.PosStatus.SessionId))
-            {
-                System.Diagnostics.Debug.WriteLine("static data are up to date");
                 return;
-            }
-
-            System.Diagnostics.Debug.WriteLine("static data are up not up to date");
 
             Logic.Data.GetArticles();
             Logic.Data.GetCategories();
@@ -58,7 +50,7 @@ namespace Os.Server.Logic
             var pubSubMessage = new Client.Model.PubSubMessage();
             pubSubMessage.Payload = "";
             pubSubMessages.Add(pubSubMessage);
-            ClientApi.Subscribe.PubsubTopicsPost("host_staticDataChanged", pubSubMessages);
+            Client.ClientApi.Subscribe.PubsubTopicsPost("host_staticDataChanged", pubSubMessages);
 
             // set snapshot time
             Nt.Database.DB.Api.Misc.SetSnapshotTime(Controllers.OsHostController.PosStatus.SessionId);

@@ -17,7 +17,7 @@ namespace Os.Server.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            Nt.Database.DB.Instance.ConnectionString = string.Format("Server={0}; Port={1}; Namespace={2}; User ID={3}; Password={4}", Program.Arguments.DatabaseIp, Program.Arguments.DatabasePort, Program.Arguments.DatabaseNamespace, Program.Arguments.DatabaseUser, Program.Arguments.DatabasePassword);
+            Nt.Database.DB.Instance.ConnectionString = string.Format("Server={0}; Port={1}; Namespace={2}; User ID={3}; Password={4}", OsServer.Arguments.DatabaseIp, OsServer.Arguments.DatabasePort, OsServer.Arguments.DatabaseNamespace, OsServer.Arguments.DatabaseUser, OsServer.Arguments.DatabasePassword);
             Nt.Database.DB.Instance.Open();
 
             if (Nt.Database.DB.Instance.State != System.Data.ConnectionState.Open)

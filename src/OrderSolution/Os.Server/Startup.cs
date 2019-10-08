@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace Os.Server
 {
@@ -31,11 +34,14 @@ namespace Os.Server
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            // configure Newtonsoft to ignore null values to decrease message size
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
                 options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
             });
+
+            // add database service for automated (re)connection to the database 
             services.AddHostedService<Services.DatabaseService>();
         }
 

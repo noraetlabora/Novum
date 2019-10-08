@@ -53,4 +53,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Dictionary.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

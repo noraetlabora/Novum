@@ -52,7 +52,7 @@ namespace Os.Server.Logic
         public static Models.OrderLineResult Add(Nt.Data.Session session, string subTableId, Models.OrderLineAdd data)
         {
             if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
-                throw new Exception("no open table");
+                throw new Exception(Resources.Dictionary.GetString("Table_NotFound"));
 
             var orderLineResult = new Models.OrderLineResult();
 
@@ -78,10 +78,10 @@ namespace Os.Server.Logic
         public static Models.OrderLineVoidResult Void(Nt.Data.Session session, string orderLineId, Models.OrderLineVoid data)
         {
             if (session.NotPermitted(Nt.Data.Permission.PermissionType.CancelConfirmedOrder))
-                throw new Exception("not permitted");
+                throw new Exception(Resources.Dictionary.GetString("Order_VoidNotAllowed"));
 
             if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
-                throw new Exception("no open table");
+                throw new Exception(Resources.Dictionary.GetString("Table_NotOpen"));
 
             //search in new/uncommited orders, when not found search in ordered/prebooked orders of current table
             var ntOrder = session.GetOrder(orderLineId);
@@ -89,7 +89,7 @@ namespace Os.Server.Logic
             {
                 var ntOrders = Nt.Database.DB.Api.Order.GetOrders(session.CurrentTable.Id);
                 if (!ntOrders.ContainsKey(orderLineId))
-                    throw new Exception("no orderline found");
+                    throw new Exception(Resources.Dictionary.GetString("Order_NotFound"));
                 ntOrder = ntOrders[orderLineId];
             }
 
@@ -130,10 +130,10 @@ namespace Os.Server.Logic
         public static Models.OrderLineResult Modify(Nt.Data.Session session, string orderLineId, Models.OrderLineModify data)
         {
             if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
-                throw new Exception("no open table");
+                throw new Exception(Resources.Dictionary.GetString("Table_NotOpen"));
 
             if (!session.ContainsOrder(orderLineId))
-                throw new Exception("no orderline found");
+                throw new Exception(Resources.Dictionary.GetString("Order_NotFound"));
 
             //search in new/uncommited orders
             var ntOrder = session.GetOrder(orderLineId);
@@ -207,7 +207,7 @@ namespace Os.Server.Logic
         public static void CancelOrder(Nt.Data.Session session, string tableId)
         {
             if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
-                throw new Exception("no open table");
+                throw new Exception(Resources.Dictionary.GetString("Table_NotOpen"));
 
             Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);
             session.ClearOrders();
@@ -252,7 +252,7 @@ namespace Os.Server.Logic
             var osOrderLineSplitResult = new Models.OrderLineSplitResult();
 
             if (!session.ContainsOrder(orderLineId))
-                throw new Exception("ordered/prebooked orders can not yet be split");
+                throw new Exception(Resources.Dictionary.GetString("Order_NotFound"));
 
             var ntSplitOrderId = session.SplitOrder(orderLineId, (decimal)data.Quantity);
             //
