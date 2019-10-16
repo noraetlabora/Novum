@@ -43,6 +43,7 @@ namespace Nt.Database.Api.InterSystems
             }
             catch (Exception ex)
             {
+                System.Threading.Monitor.Exit(DB.Connection);
                 if (DB.Connection.State == ConnectionState.Closed ||
                     DB.Connection.State == ConnectionState.Broken)
                 {
@@ -187,6 +188,7 @@ namespace Nt.Database.Api.InterSystems
 
             try
             {
+                System.Threading.Monitor.Enter(DB.Xep);
                 Object returnValue = DB.Xep.CallClassMethod(className, methodName, args);
                 Logging.Log.Database.Debug(caller + "|ClassMethodReturnValueLength|" + returnValue.ToString().Length);
                 Logging.Log.Database.Trace(caller + "|ClassMethodReturnValue|" + returnValue.ToString());
@@ -203,6 +205,10 @@ namespace Nt.Database.Api.InterSystems
 
                 Logging.Log.Database.Error(ex, caller + "|ClassMethod|" + classMethod);
                 throw ex;
+            }
+            finally
+            {
+                System.Threading.Monitor.Exit(DB.Xep);
             }
         }
 
@@ -279,6 +285,7 @@ namespace Nt.Database.Api.InterSystems
 
             try
             {
+                System.Threading.Monitor.Enter(DB.Xep);
                 DB.Xep.CallVoidClassMethod(className, methodName, args);
                 Logging.Log.Database.Debug(caller + "|VoidClassMethod|success");
             }
@@ -292,6 +299,10 @@ namespace Nt.Database.Api.InterSystems
                 }
                 Logging.Log.Database.Error(ex, caller + "|VoidClassMethod|" + classMethod);
                 throw ex;
+            }
+            finally
+            {
+                System.Threading.Monitor.Exit(DB.Xep);
             }
         }
 

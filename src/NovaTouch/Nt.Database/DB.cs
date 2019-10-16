@@ -26,7 +26,7 @@ namespace Nt.Database
         }
 
         private static string connectionString;
-        private static IRISADOConnection dbConnection;
+        private static IRISConnection dbConnection;
         private static EventPersister xep;
         private static Api.InterSystems.Api api;
 
@@ -34,7 +34,7 @@ namespace Nt.Database
         /// 
         /// </summary>
         /// <value></value>
-        internal static IRISADOConnection Connection
+        internal static IRISConnection Connection
         {
             get { return dbConnection; }
         }
@@ -71,7 +71,8 @@ namespace Nt.Database
             {
                 Logging.Log.Database.Info("opening database connection");
                 xep.Connect(connectionString);
-                dbConnection = (IRISADOConnection)xep.GetAdoNetConnection();
+                dbConnection = new IRISConnection(connectionString);
+                dbConnection.Open();
                 Logging.Log.Database.Info("database connection is open");
                 api.Initialize();
             }
@@ -85,12 +86,20 @@ namespace Nt.Database
         /// <summary>
         /// 
         /// </summary>
+        public ConnectionState State
+        {
+            get { return dbConnection.State; }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         public void Close()
         {
             try
             {
                 Logging.Log.Database.Info("closing database connection");
                 xep.Close();
+                dbConnection.Close();
                 Logging.Log.Database.Info("database connection is closed");
             }
             catch (Exception ex)
@@ -171,18 +180,9 @@ namespace Nt.Database
         /// <summary>
         /// 
         /// </summary>
-        /// <value></value>
-        public ConnectionState State
-        {
-            get { return dbConnection.State; }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public void Dispose()
         {
-            if (State != ConnectionState.Closed)
+            if (dbConnection.State != ConnectionState.Closed)
                 Close();
             Logging.Log.Database.Info("disposing database connection");
         }
