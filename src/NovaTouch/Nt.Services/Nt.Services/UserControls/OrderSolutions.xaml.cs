@@ -241,7 +241,7 @@ namespace Nt.Services.UserControls
         private void NcrOsServer(string argument)
         {
             var assemblyFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var ncrOsServer = assemblyFolder + "\\OrderSolution\\OsServer\\OsServerRun.exe ";
+            var ncrOsServer = assemblyFolder + "\\OrderSolution\\NRC\\OsServer\\OsServerRun.exe";
 
             EventLog eventLog = new EventLog();
             eventLog.Source = "Novacom Service";

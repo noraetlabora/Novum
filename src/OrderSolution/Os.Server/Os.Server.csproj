@@ -14,19 +14,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="OsServer\LICENSES" />
-    <None Remove="OsServer\OsServerRun.exe" />
-    <None Remove="OsServer\THIRD_PARTY_LICENSES_server.txt" />
+    <Compile Remove="OsServer\**" />
+    <Content Remove="OsServer\**" />
+    <EmbeddedResource Remove="OsServer\**" />
+    <None Remove="OsServer\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="OsServer\LICENSES">
+    <Content Include="NCR\OsClient\OsClient.19.1.2.2.om7app">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="OsServer\OsServerRun.exe">
+    <Content Include="NCR\OsServer\LICENSES">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="OsServer\THIRD_PARTY_LICENSES_server.txt">
+    <Content Include="NCR\OsServer\OsServerRun.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NCR\OsServer\THIRD_PARTY_LICENSES_server.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -48,7 +52,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="OsServer\config\default.json">
+    <Content Update="NCR\OsServer\config\default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="NCR\OsServer\config\production.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

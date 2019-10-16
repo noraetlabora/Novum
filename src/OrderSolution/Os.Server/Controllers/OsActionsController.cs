@@ -84,13 +84,13 @@ namespace Os.Server.Controllers
                     session.PriceLevel = Logic.Data.GetPriceLevel(session.ServiceAreaId);
                     session.Printer = clientInfo.PrinterPath;
                     session.FiscalProvider = Logic.Fiscal.GetProvider(session.ClientId, session.PosId, session.SerialNumber);
+                    Sessions.SetSession(session);
                 }
                 session.WaiterId = "";
 
                 //register client
                 var registerClientResponse = Logic.Registration.RegisterClient(session, clientInfo);
-                //save session internal and return the sessionId in the response
-                Sessions.SetSession(session);
+                // set cooky in response
                 Response.Cookies.Append("sessionId", session.Id);
 
                 //200 - Ok
@@ -122,6 +122,8 @@ namespace Os.Server.Controllers
                 var registerGatewayResponse = new Models.RegisterGatewayResponse();
                 //var serviceAreaId = Nt.Database.DB.Api.Pos.GetServiceAreaId(posId);
                 //registerGatewayResponse.RestaurantName = Nt.Database.DB.Api.Pos.GetServiceAreaName(serviceAreaId);
+                registerGatewayResponse.RestaurantName = "NovacomTest";
+                registerGatewayResponse.UtcTime = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 registerGatewayResponse.PartnerId = "1OSZATNOVACOMSOF1HdRnQ3bZ0t2BED3003";
                 //200 - Ok
                 return new OkObjectResult(registerGatewayResponse);
