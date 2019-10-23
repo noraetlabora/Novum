@@ -190,8 +190,7 @@ namespace Nt.Database.Api.InterSystems
             {
                 System.Threading.Monitor.Enter(DB.Xep);
                 Object returnValue = DB.Xep.CallClassMethod(className, methodName, args);
-                Logging.Log.Database.Debug(caller + "|ClassMethodReturnValueLength|" + returnValue.ToString().Length);
-                Logging.Log.Database.Trace(caller + "|ClassMethodReturnValue|" + returnValue.ToString());
+                Logging.Log.Database.Debug(caller + "|ClassMethodReturnValue|" + returnValue.ToString());
                 return returnValue.ToString();
             }
             catch (Exception ex)
