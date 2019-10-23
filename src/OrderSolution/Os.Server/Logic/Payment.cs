@@ -53,12 +53,24 @@ namespace Os.Server.Logic
         /// <param name="data"></param>
         public static void PayOrderLines(Nt.Data.Session session, Models.PayOrderLines data)
         {
-
             if (data.Payments == null || data.Payments.Count < 1)
                 throw new Exception("no payments");
 
-            if (session.CurrentTable == null)
-                throw new Exception("no open table");
+            if (data.PaidLines == null || data.PaidLines.Count < 1)
+                throw new Exception("no orderLines");
+
+            var tableId = "";
+            //check if orderlines are from one table
+            foreach (var orderLine in data.PaidLines)
+            {
+                var orderLineId = orderLine.OrderLineId.Split('|');
+
+                if (string.IsNullOrEmpty(tableId))
+                    tableId = orderLineId[0];
+
+                if (tableId != orderLineId[0])
+                    throw new Exception("orderLines of different tables are not allowed");
+            }
 
             //payment Information
             var ntPaymentInformation = new Nt.Data.PaymentInformation();
@@ -73,12 +85,12 @@ namespace Os.Server.Logic
             }
 
             //orderlines
-            var ntAllOrders = Nt.Database.DB.Api.Order.GetOrders(session.CurrentTable.Id);
+            var ntAllOrders = Nt.Database.DB.Api.Order.GetOrders(tableId);
             var ntOrders = new List<Nt.Data.Order>();
             foreach (var orderLineQuantity in data.PaidLines)
             {
                 if (!ntAllOrders.ContainsKey(orderLineQuantity.OrderLineId))
-                    throw new Exception("couldn't find orderLineId " + orderLineQuantity.OrderLineId + " in current Table " + session.CurrentTable.Id);
+                    throw new Exception("couldn't find orderLineId " + orderLineQuantity.OrderLineId + " in current Table " + tableId);
 
                 if (ntAllOrders[orderLineQuantity.OrderLineId].Quantity < orderLineQuantity.Quantity)
                     throw new Exception("orderLineId " + orderLineQuantity.OrderLineId + " has just quantity " + ntAllOrders[orderLineQuantity.OrderLineId].Quantity + ", not" + orderLineQuantity.Quantity);
@@ -88,7 +100,7 @@ namespace Os.Server.Logic
                 ntOrders.Add(ntOrder);
             }
             //pay
-            var ntPaymentResult = Nt.Database.DB.Api.Payment.Pay(session, session.CurrentTable.Id, ntOrders, ntPaymentMethods, ntPaymentInformation);
+            var ntPaymentResult = Nt.Database.DB.Api.Payment.Pay(session, tableId, ntOrders, ntPaymentMethods, ntPaymentInformation);
         }
     }
 }
