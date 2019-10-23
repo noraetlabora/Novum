@@ -60,6 +60,7 @@ namespace Os.Server
 
                 //read and log request body
                 var requestBodyContent = await ReadRequestBody(httpContext.Request, serialNumber);
+                
                 var originalBodyStream = httpContext.Response.Body;
                 using (var responseBody = new MemoryStream())
                 {
@@ -81,9 +82,15 @@ namespace Os.Server
         private bool RequestNeedsAuthorization(HttpRequest request)
         {
             if (request.Method.Equals("GET"))
+            {
                 return false;
+            }
+
             if (initRequests.Contains(request.Path.Value.ToLower()))
+            {
                 return false;
+            }
+
             return true;
         }
 
@@ -104,8 +111,10 @@ namespace Os.Server
             sb.Append(bodyAsText);
 
             if (!notLoggingRequests.Contains(request.Path.Value.ToLower()))
+            {
                 Nt.Logging.Log.Communication.Info(sb.ToString());
-
+            }
+            
             return bodyAsText;
         }
 
@@ -122,15 +131,22 @@ namespace Os.Server
             sb.Append(response.StatusCode).Append("|");
             sb.Append(response.HttpContext.Request.Path.Value).Append("|");
             if (bodyAsText.Length > 500)
+            {
                 sb.Append(bodyAsText.Substring(0, 500)).Append("...");
+            }
             else
+            {
                 sb.Append(bodyAsText);
+            }
 
             if (!notLoggingRequests.Contains(response.HttpContext.Request.Path.Value.ToLower()))
+            {
                 Nt.Logging.Log.Communication.Info(sb.ToString());
-
-            if (bodyAsText.Length > 500)
-                Nt.Logging.Log.Communication.Debug(bodyAsText);
+                if (bodyAsText.Length > 500)
+                {
+                    Nt.Logging.Log.Communication.Debug(bodyAsText);
+                }
+            }
 
             return bodyAsText;
         }

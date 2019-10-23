@@ -13,7 +13,7 @@ namespace Os.Server.Controllers
         /// 
         /// </summary>
         /// <value></value>
-        public static Models.PosStatus PosStatus = new Models.PosStatus { SessionId = DateTime.Now.ToString("dd.MM.yyyy_HH:mm:ss.ffff") };
+        public static Models.PosStatus PosStatus = new Models.PosStatus { SessionId = DateTime.Now.ToString("dd.MM.yyyy_HH:mm:ss.fffff") };
 
         /// <summary>
         /// Get the status of the host / POS. This will be regularly called by clients to detect status changes (like host / POS restarts)

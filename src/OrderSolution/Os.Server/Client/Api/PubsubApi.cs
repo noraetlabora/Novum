@@ -102,7 +102,6 @@ namespace Os.Server.Client.Api
             catch (Exception ex)
             {
                 Nt.Logging.Log.Server.Error(ex, requestPath);
-                System.Diagnostics.Debug.WriteLine(ex.Message);
             }
 
             return;

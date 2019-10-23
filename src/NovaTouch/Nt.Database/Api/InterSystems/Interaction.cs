@@ -48,7 +48,7 @@ namespace Nt.Database.Api.InterSystems
                     DB.Connection.State == ConnectionState.Broken)
                 {
                     Logging.Log.Database.Error(ex, caller + "|SQL|no connection to database");
-                    throw new Exception("no connection to database");
+                    throw new Exception(Resources.Dictionary.GetString("DB_NoConnection"));
                 }
                 Logging.Log.Database.Error(ex, caller + "|SQL|" + sql);
                 throw ex;
@@ -200,7 +200,7 @@ namespace Nt.Database.Api.InterSystems
                     DB.Connection.State == ConnectionState.Broken)
                 {
                     Logging.Log.Database.Error(ex, caller + "|ClassMethod|no connection to database");
-                    throw new Exception("no connection to database");
+                    throw new Exception(Resources.Dictionary.GetString("DB_NoConnection"));
                 }
 
                 Logging.Log.Database.Error(ex, caller + "|ClassMethod|" + classMethod);
@@ -295,7 +295,7 @@ namespace Nt.Database.Api.InterSystems
                     DB.Connection.State == ConnectionState.Broken)
                 {
                     Logging.Log.Database.Error(ex, caller + "|VoidClassMethod|no connection to database");
-                    throw new Exception("no connection to database");
+                    throw new Exception(Resources.Dictionary.GetString("DB_NoConnection"));
                 }
                 Logging.Log.Database.Error(ex, caller + "|VoidClassMethod|" + classMethod);
                 throw ex;

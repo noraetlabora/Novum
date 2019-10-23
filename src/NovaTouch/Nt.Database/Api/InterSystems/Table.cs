@@ -108,13 +108,13 @@ namespace Nt.Database.Api.InterSystems
                 switch (errorCode)
                 {
                     case "2":
-                        throw new Exception("table not defined");
+                        throw new Exception(string.Format(Resources.Dictionary.GetString("Table_NotDefined"), tableId));
                     case "5":
-                        throw new Exception("no permission to opent a table");
+                        throw new Exception(Resources.Dictionary.GetString("Table_NoOpenPermission"));
                     case "6":
-                        throw new Exception("table already open");
+                        throw new Exception(string.Format(Resources.Dictionary.GetString("Tabe_AlreadyOpen"), tableId));
                     default:
-                        throw new Exception("error while opening the table");
+                        throw new Exception(Resources.Dictionary.GetString("Table_OpenError"));
                 }
             }
         }

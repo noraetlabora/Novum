@@ -19,6 +19,7 @@ namespace Nt.Database
         public static DB Instance { get { return lazy.Value; } }
         private DB()
         {
+            Resources.Dictionary.Initialize("de-AT");
             Logging.Log.Database.Info("creating InterSystems connection");
             xep = PersisterFactory.CreatePersister();
             Logging.Log.Database.Info("creating InterSystems API");
