@@ -57,7 +57,7 @@ namespace Os.Server.Logic
             if (data.Payments == null || data.Payments.Count < 1)
                 throw new Exception("no payments");
 
-            if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
+            if (session.CurrentTable == null)
                 throw new Exception("no open table");
 
             //payment Information

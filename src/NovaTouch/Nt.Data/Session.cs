@@ -233,6 +233,14 @@ namespace Nt.Data
         /// <summary>
         /// 
         /// </summary>
+        public void ClearCurrentTable()
+        {
+            CurrentTable = null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="tableId"></param>
         /// <returns></returns>
         public bool TableIdIsOpen(string tableId) 

@@ -36,9 +36,7 @@ namespace Os.Server.Logic
                     osOrderLines.Add(osOrderLine);
                 }
             }
-            //
-            Table.SetCurrentTable(session, subTableId);
-            //
+
             return osOrderLines;
         }
 
@@ -51,7 +49,7 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static Models.OrderLineResult Add(Nt.Data.Session session, string subTableId, Models.OrderLineAdd data)
         {
-            if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
+            if (session.CurrentTable == null)
                 throw new Exception(Resources.Dictionary.GetString("Table_NotFound"));
 
             var orderLineResult = new Models.OrderLineResult();
@@ -89,7 +87,7 @@ namespace Os.Server.Logic
             if (session.NotPermitted(Nt.Data.Permission.PermissionType.CancelConfirmedOrder))
                 throw new Exception(Resources.Dictionary.GetString("Order_VoidNotAllowed"));
 
-            if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
+            if (session.CurrentTable == null)
                 throw new Exception(Resources.Dictionary.GetString("Table_NotOpen"));
 
             //search in new/uncommited orders, when not found search in ordered/prebooked orders of current table
@@ -138,7 +136,7 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static Models.OrderLineResult Modify(Nt.Data.Session session, string orderLineId, Models.OrderLineModify data)
         {
-            if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
+            if (session.CurrentTable == null)
                 throw new Exception(Resources.Dictionary.GetString("Table_NotOpen"));
 
             if (!session.ContainsOrder(orderLineId))
@@ -215,7 +213,7 @@ namespace Os.Server.Logic
         /// <param name="tableId"></param>
         public static void CancelOrder(Nt.Data.Session session, string tableId)
         {
-            if (session.CurrentTable == null || string.IsNullOrEmpty(session.CurrentTable.Id))
+            if (session.CurrentTable == null)
                 throw new Exception(Resources.Dictionary.GetString("Table_NotOpen"));
 
             Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);

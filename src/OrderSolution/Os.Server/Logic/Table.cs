@@ -59,6 +59,13 @@ namespace Os.Server.Logic
                     osTables[mainTableId].LastActivityTime = lastUpdated;
             }
 
+            // getting tables means that we can unlock the current (main) table
+            if (session.CurrentTable != null)
+            {
+                DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);
+                session.ClearCurrentTable();
+            }
+
             return new List<Models.TableResult>(osTables.Values);
         }
 
