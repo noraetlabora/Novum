@@ -16,15 +16,20 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static Models.RegisterClientResponse RegisterClient(Nt.Data.Session session, Models.ClientInfo clientData)
         {
-            var posId = Nt.Database.DB.Api.Pos.GetPosId(clientData.Id);
-            if (string.IsNullOrEmpty(posId))
-                throw new Exception(string.Format("client {0} not valid", clientData.Id));
+            CheckDevice(clientData.Id);
 
             var registerClientResponse = new Models.RegisterClientResponse();
             registerClientResponse.ClientName = "Orderman";
             registerClientResponse.UtcTime = Nt.Data.Utils.Unix.TimestampNow();
 
             return registerClientResponse;
+        }
+
+        public static void CheckDevice(string serialNumber)
+        {
+            var posId = Nt.Database.DB.Api.Pos.GetPosId(serialNumber);
+            if (string.IsNullOrEmpty(posId))
+                throw new Exception(string.Format(Resources.Dictionary.GetString("Device_NotValid"), serialNumber));
         }
 
         /// <summary>

@@ -76,6 +76,7 @@ namespace Os.Server.Controllers
                 var session = Sessions.GetSession(Request);
                 if (session == null)
                 {
+                    Logic.Registration.CheckDevice(clientInfo.Id);
                     session = new Nt.Data.Session();
                     session.SerialNumber = clientInfo.Id;
                     session.ClientId = Logic.Data.GetClientId();
