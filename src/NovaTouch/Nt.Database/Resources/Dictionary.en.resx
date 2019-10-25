@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Article_NotAvailable" xml:space="preserve">
-    <value>article is not available</value>
+    <value>article '{0}' is not available</value>
   </data>
   <data name="DB_NoConnection" xml:space="preserve">
     <value>no connection to database is </value>
@@ -127,12 +127,12 @@
     <value>table {0} currently in use</value>
   </data>
   <data name="Table_NoOpenPermission" xml:space="preserve">
-    <value>no permission to open a table</value>
+    <value>no permission to open table {0}</value>
   </data>
   <data name="Table_NotDefined" xml:space="preserve">
     <value>table {0} is not defined</value>
   </data>
   <data name="Table_OpenError" xml:space="preserve">
-    <value>error while opening the table</value>
+    <value>error while opening the table {0}</value>
   </data>
 </root>

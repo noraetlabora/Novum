@@ -314,7 +314,7 @@ namespace Os.Server.Logic
             //////////////////////////////////////
             osModifierGroup = new Models.ModifierGroup();
             osModifierGroup.Id = "text";
-            osModifierGroup.Name = "Text";
+            osModifierGroup.Name = Resources.Dictionary.GetString("Modifier_Text");
             osModifierGroup.Type = Models.ModifierGroup.ModifierType.TextInputEnum;
             osModifierGroups.Add(osModifierGroup);
 
@@ -323,7 +323,7 @@ namespace Os.Server.Logic
             //////////////////////////////////////
             osModifierGroup = new Models.ModifierGroup();
             osModifierGroup.Id = "fax";
-            osModifierGroup.Name = "Fax";
+            osModifierGroup.Name = Resources.Dictionary.GetString("Modifier_Fax");
             osModifierGroup.Type = Models.ModifierGroup.ModifierType.FaxInputEnum;
             osModifierGroups.Add(osModifierGroup);
 

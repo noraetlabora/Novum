@@ -79,7 +79,7 @@ namespace Nt.Database.Api.InterSystems
             return true;
         }
 
-        internal static void CheckAvailibility(string availability)
+        internal static void CheckAvailibility(string availability, string articleName)
         {
             switch (availability)
             {
@@ -92,7 +92,7 @@ namespace Nt.Database.Api.InterSystems
                 //2 = not available, error
                 //3 = not available, ?
                 default:
-                    throw new Exception(Resources.Dictionary.GetString("Article_NotAvailable"));
+                    throw new Exception(string.Format(Resources.Dictionary.GetString("Article_NotAvailable"), articleName));
             }
         }
     }

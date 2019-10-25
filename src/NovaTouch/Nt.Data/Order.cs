@@ -102,6 +102,7 @@ namespace Nt.Data
                 id.Append(TableId).Append(_pipe);
                 id.Append((int)Status).Append(_pipe);
                 id.Append(ArticleId).Append(_pipe);
+                id.Append(UnitPrice).Append(_pipe);
                 id.Append(Line);
                 return id.ToString();
             }

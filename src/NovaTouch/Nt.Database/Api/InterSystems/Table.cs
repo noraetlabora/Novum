@@ -105,16 +105,17 @@ namespace Nt.Database.Api.InterSystems
             {
                 var errorCode = dataList.GetString(1);
                 var errorMessage = dataList.GetString(2);
+                var tableName = GetTableName(session, tableId);
                 switch (errorCode)
                 {
                     case "2":
-                        throw new Exception(string.Format(Resources.Dictionary.GetString("Table_NotDefined"), tableId));
+                        throw new Exception(string.Format(Resources.Dictionary.GetString("Table_NotDefined"), tableName));
                     case "5":
-                        throw new Exception(Resources.Dictionary.GetString("Table_NoOpenPermission"));
+                        throw new Exception(string.Format(Resources.Dictionary.GetString("Table_NoOpenPermission"),tableName));
                     case "6":
-                        throw new Exception(string.Format(Resources.Dictionary.GetString("Tabe_AlreadyOpen"), tableId));
+                        throw new Exception(string.Format(Resources.Dictionary.GetString("Tabe_AlreadyOpen"), tableName));
                     default:
-                        throw new Exception(Resources.Dictionary.GetString("Table_OpenError"));
+                        throw new Exception(string.Format(Resources.Dictionary.GetString("Table_OpenError"), tableName));
                 }
             }
         }

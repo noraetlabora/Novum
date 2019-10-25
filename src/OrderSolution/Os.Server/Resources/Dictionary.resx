@@ -120,6 +120,12 @@
   <data name="Device_NotValid" xml:space="preserve">
     <value>Gerät {0} ist nicht definiert</value>
   </data>
+  <data name="Modifier_Fax" xml:space="preserve">
+    <value>Handnotiz</value>
+  </data>
+  <data name="Modifier_Text" xml:space="preserve">
+    <value>Notiz</value>
+  </data>
   <data name="Order_NoneFound" xml:space="preserve">
     <value>keine Bons gefunden</value>
   </data>
@@ -130,7 +136,7 @@
     <value>Bonstorno ist nicht erlaubt</value>
   </data>
   <data name="Table_NotOpen" xml:space="preserve">
-    <value>Tisch ist nicht offen</value>
+    <value>Tisch {0} ist nicht offen</value>
   </data>
   <data name="Waiter_NotValid" xml:space="preserve">
     <value>Kellner {0} ist nicht gültig</value>

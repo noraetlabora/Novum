@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Article_NotAvailable" xml:space="preserve">
-    <value>Der Artikel ist nicht verfügbar</value>
+    <value>Der Artikel '{0}' ist nicht verfügbar</value>
   </data>
   <data name="DB_NoConnection" xml:space="preserve">
     <value>Datenbankverbindung ist unterbrochen</value>
@@ -127,12 +127,12 @@
     <value>Tisch {0} wird gerade bearbeitet</value>
   </data>
   <data name="Table_NoOpenPermission" xml:space="preserve">
-    <value>Keine Berechtigung zum Öffnen eines Tisches</value>
+    <value>Tisch {0} kann nicht geöffnet werden. Sie haben keine Berechtigung.</value>
   </data>
   <data name="Table_NotDefined" xml:space="preserve">
     <value>Tisch {0} ist nicht vorhanden</value>
   </data>
   <data name="Table_OpenError" xml:space="preserve">
-    <value>Fehler während des Öffnens des Tisches</value>
+    <value>Fehler beim Öffnen des Tisches {0}</value>
   </data>
 </root>

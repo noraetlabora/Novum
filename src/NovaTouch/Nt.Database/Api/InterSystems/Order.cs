@@ -61,24 +61,26 @@ namespace Nt.Database.Api.InterSystems
                     order.ReferenceId = indexList.GetString(3);
                     order.Quantity = dataList.GetDecimal(1);
                     order.Status = (Nt.Data.Order.OrderStatus)dataList.GetUInt(2);
+
+                    //
                     if (order.Status == Data.Order.OrderStatus.Ordered)
                         order.Line = 0;
                     else
                         order.Line = orderLine;
+
                     order.Name = dataList.GetString(4);
                     order.CourseMenu = dataList.GetString(7);
                     order.CourseNumber = dataList.GetString(8);
                     order.CourseName = dataList.GetString(16);
                     order.ArticleGroupId = dataList.GetString(23);
-                    if (Misc.cachedArticleGroups.ContainsKey(order.ArticleGroupId))
-                    {
-                        order.TaxGroupId = Misc.cachedArticleGroups[order.ArticleGroupId].TaxGroupId;
-                    }
-                    if (Misc.cachedTaxGroups.ContainsKey(order.TaxGroupId))
-                    {
-                        order.TaxRate = Misc.cachedTaxGroups[order.TaxGroupId].TaxRate;
-                    }
 
+                    //
+                    if (Misc.cachedArticleGroups.ContainsKey(order.ArticleGroupId))
+                        order.TaxGroupId = Misc.cachedArticleGroups[order.ArticleGroupId].TaxGroupId;
+                    if (Misc.cachedTaxGroups.ContainsKey(order.TaxGroupId))
+                        order.TaxRate = Misc.cachedTaxGroups[order.TaxGroupId].TaxRate;
+
+                    //
                     if (orders.ContainsKey(order.Id))
                         orders[order.Id].Quantity += order.Quantity;
                     else
@@ -128,9 +130,6 @@ namespace Nt.Database.Api.InterSystems
             var dataArray = dataString.SplitByChar96();
             var dataList = new DataList(dataArray);
 
-            var availability = dataList.GetString(21);
-            Article.CheckAvailibility(availability);
-
             order.TableId = session.CurrentTable.Id;
             order.Line = session.GetOrders().Count + 1;
             order.ArticleId = dataList.GetString(0);
@@ -141,6 +140,9 @@ namespace Nt.Database.Api.InterSystems
             order.CourseNumber = dataList.GetString(20);
             order.CourseName = dataList.GetString(22);
             order.Status = Nt.Data.Order.OrderStatus.NewOrder;
+
+            var availability = dataList.GetString(21);
+            Article.CheckAvailibility(availability, order.Name);
 
             return order;
         }
