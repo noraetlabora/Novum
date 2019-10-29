@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -27,8 +28,9 @@ namespace Os.Server.Controllers
             catch (Exception ex)
             {
                 Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
-                //500 - Internal Server Error
-                return new StatusCodeResult(500);
+                var osError = new Models.OsError();
+                osError.ErrorMsg = ex.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, osError);
             }
         }
 
@@ -69,8 +71,9 @@ namespace Os.Server.Controllers
             catch (Exception ex)
             {
                 Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
-                //500 - Internal Server Error
-                return new StatusCodeResult(500);
+                var osError = new Models.OsError();
+                osError.ErrorMsg = ex.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, osError);
             }
         }
     }
