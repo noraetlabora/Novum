@@ -10,8 +10,6 @@
 
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -21,14 +19,25 @@ namespace Os.Server.Models
     /// 
     /// </summary>
     [DataContract]
-    public partial class PayOrderLines : PayBase, IEquatable<PayOrderLines>
+    public partial class ActionButtonRequestData : IEquatable<ActionButtonRequestData>
     {
         /// <summary>
-        /// List of order line payments that represent the order lines (-parts) that will be paid with this set.
+        /// Gets or Sets Language
         /// </summary>
-        /// <value>List of order line payments that represent the order lines (-parts) that will be paid with this set.</value>
-        [DataMember(Name = "paidLines")]
-        public List<OrderLineQuantity> PaidLines { get; set; }
+        [DataMember(Name = "language")]
+        public string Language { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Printer
+        /// </summary>
+        [DataMember(Name = "printer")]
+        public string Printer { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Screen
+        /// </summary>
+        [DataMember(Name = "screen")]
+        public ScreenContextData Screen { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -37,8 +46,10 @@ namespace Os.Server.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class PayOrderLines {\n");
-            sb.Append("  PaidLines: ").Append(PaidLines).Append("\n");
+            sb.Append("class ActionButtonRequestData {\n");
+            sb.Append("  Language: ").Append(Language).Append("\n");
+            sb.Append("  Printer: ").Append(Printer).Append("\n");
+            sb.Append("  Screen: ").Append(Screen).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -47,7 +58,7 @@ namespace Os.Server.Models
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
-        public new string ToJson()
+        public string ToJson()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
@@ -61,24 +72,34 @@ namespace Os.Server.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((PayOrderLines)obj);
+            return obj.GetType() == GetType() && Equals((ActionButtonRequestData)obj);
         }
 
         /// <summary>
-        /// Returns true if PayOrderLines instances are equal
+        /// Returns true if ActionButtonRequestData instances are equal
         /// </summary>
-        /// <param name="other">Instance of PayOrderLines to be compared</param>
+        /// <param name="other">Instance of ActionButtonRequestData to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(PayOrderLines other)
+        public bool Equals(ActionButtonRequestData other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return
                 (
-                    PaidLines == other.PaidLines ||
-                    PaidLines != null &&
-                    PaidLines.SequenceEqual(other.PaidLines)
+                    Language == other.Language ||
+                    Language != null &&
+                    Language.Equals(other.Language)
+                ) &&
+                (
+                    Printer == other.Printer ||
+                    Printer != null &&
+                    Printer.Equals(other.Printer)
+                ) &&
+                (
+                    Screen == other.Screen ||
+                    Screen != null &&
+                    Screen.Equals(other.Screen)
                 );
         }
 
@@ -92,8 +113,12 @@ namespace Os.Server.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                if (PaidLines != null)
-                    hashCode = hashCode * 59 + PaidLines.GetHashCode();
+                if (Language != null)
+                    hashCode = hashCode * 59 + Language.GetHashCode();
+                if (Printer != null)
+                    hashCode = hashCode * 59 + Printer.GetHashCode();
+                if (Screen != null)
+                    hashCode = hashCode * 59 + Screen.GetHashCode();
                 return hashCode;
             }
         }
@@ -101,12 +126,12 @@ namespace Os.Server.Models
         #region Operators
 #pragma warning disable 1591
 
-        public static bool operator ==(PayOrderLines left, PayOrderLines right)
+        public static bool operator ==(ActionButtonRequestData left, ActionButtonRequestData right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(PayOrderLines left, PayOrderLines right)
+        public static bool operator !=(ActionButtonRequestData left, ActionButtonRequestData right)
         {
             return !Equals(left, right);
         }

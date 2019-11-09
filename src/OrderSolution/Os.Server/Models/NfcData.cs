@@ -31,9 +31,9 @@ namespace Os.Server.Models
         public Object Type { get; set; }
 
         /// <summary>
-        /// The UID of the tag encoded as a base64 byte array.
+        /// The UID bytes of the tag encoded as a hexadecimal string.
         /// </summary>
-        /// <value>The UID of the tag encoded as a base64 byte array.</value>
+        /// <value>The UID bytes of the tag encoded as a hexadecimal string.</value>
         [DataMember(Name = "uid")]
         public string Uid { get; set; }
 

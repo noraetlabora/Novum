@@ -21,14 +21,14 @@ namespace Os.Server.Models
     /// 
     /// </summary>
     [DataContract]
-    public partial class PayOrderLines : PayBase, IEquatable<PayOrderLines>
+    public partial class ToolbarPaymentMediaConfig : IEquatable<ToolbarPaymentMediaConfig>
     {
         /// <summary>
-        /// List of order line payments that represent the order lines (-parts) that will be paid with this set.
+        /// Configuration of the single buttons in the toolbar. The buttons will be shown in order of this list in the toolbar. If a screen has a back button this button is not configurable and is always shown at the beginning of the toolbar.             
         /// </summary>
-        /// <value>List of order line payments that represent the order lines (-parts) that will be paid with this set.</value>
-        [DataMember(Name = "paidLines")]
-        public List<OrderLineQuantity> PaidLines { get; set; }
+        /// <value>Configuration of the single buttons in the toolbar. The buttons will be shown in order of this list in the toolbar. If a screen has a back button this button is not configurable and is always shown at the beginning of the toolbar.             </value>
+        [DataMember(Name = "buttons")]
+        public List<TBPaymentMediaConfig> Buttons { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -37,8 +37,8 @@ namespace Os.Server.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class PayOrderLines {\n");
-            sb.Append("  PaidLines: ").Append(PaidLines).Append("\n");
+            sb.Append("class ToolbarPaymentMediaConfig {\n");
+            sb.Append("  Buttons: ").Append(Buttons).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -47,7 +47,7 @@ namespace Os.Server.Models
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
-        public new string ToJson()
+        public string ToJson()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
@@ -61,24 +61,24 @@ namespace Os.Server.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((PayOrderLines)obj);
+            return obj.GetType() == GetType() && Equals((ToolbarPaymentMediaConfig)obj);
         }
 
         /// <summary>
-        /// Returns true if PayOrderLines instances are equal
+        /// Returns true if ToolbarPaymentMediaConfig instances are equal
         /// </summary>
-        /// <param name="other">Instance of PayOrderLines to be compared</param>
+        /// <param name="other">Instance of ToolbarPaymentMediaConfig to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(PayOrderLines other)
+        public bool Equals(ToolbarPaymentMediaConfig other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return
                 (
-                    PaidLines == other.PaidLines ||
-                    PaidLines != null &&
-                    PaidLines.SequenceEqual(other.PaidLines)
+                    Buttons == other.Buttons ||
+                    Buttons != null &&
+                    Buttons.SequenceEqual(other.Buttons)
                 );
         }
 
@@ -92,8 +92,8 @@ namespace Os.Server.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                if (PaidLines != null)
-                    hashCode = hashCode * 59 + PaidLines.GetHashCode();
+                if (Buttons != null)
+                    hashCode = hashCode * 59 + Buttons.GetHashCode();
                 return hashCode;
             }
         }
@@ -101,12 +101,12 @@ namespace Os.Server.Models
         #region Operators
 #pragma warning disable 1591
 
-        public static bool operator ==(PayOrderLines left, PayOrderLines right)
+        public static bool operator ==(ToolbarPaymentMediaConfig left, ToolbarPaymentMediaConfig right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(PayOrderLines left, PayOrderLines right)
+        public static bool operator !=(ToolbarPaymentMediaConfig left, ToolbarPaymentMediaConfig right)
         {
             return !Equals(left, right);
         }

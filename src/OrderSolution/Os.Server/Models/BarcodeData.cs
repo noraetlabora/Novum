@@ -10,25 +10,30 @@
 
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
 namespace Os.Server.Models
 {
     /// <summary>
-    /// 
+    /// Holds the data of a read bar code
     /// </summary>
     [DataContract]
-    public partial class PayOrderLines : PayBase, IEquatable<PayOrderLines>
+    public partial class BarcodeData : IEquatable<BarcodeData>
     {
         /// <summary>
-        /// List of order line payments that represent the order lines (-parts) that will be paid with this set.
+        /// The symbology of the read bar code. See Symbologies for to be expected options.
         /// </summary>
-        /// <value>List of order line payments that represent the order lines (-parts) that will be paid with this set.</value>
-        [DataMember(Name = "paidLines")]
-        public List<OrderLineQuantity> PaidLines { get; set; }
+        /// <value>The symbology of the read bar code. See Symbologies for to be expected options.</value>
+        [DataMember(Name = "symbology")]
+        public string Symbology { get; set; }
+
+        /// <summary>
+        /// The bar code data encoded in the format as defined. See Format.
+        /// </summary>
+        /// <value>The bar code data encoded in the format as defined. See Format.</value>
+        [DataMember(Name = "data")]
+        public string Data { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -37,8 +42,9 @@ namespace Os.Server.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class PayOrderLines {\n");
-            sb.Append("  PaidLines: ").Append(PaidLines).Append("\n");
+            sb.Append("class BarcodeData {\n");
+            sb.Append("  Symbology: ").Append(Symbology).Append("\n");
+            sb.Append("  Data: ").Append(Data).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -47,7 +53,7 @@ namespace Os.Server.Models
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
-        public new string ToJson()
+        public string ToJson()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
@@ -61,24 +67,29 @@ namespace Os.Server.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((PayOrderLines)obj);
+            return obj.GetType() == GetType() && Equals((BarcodeData)obj);
         }
 
         /// <summary>
-        /// Returns true if PayOrderLines instances are equal
+        /// Returns true if BarcodeData instances are equal
         /// </summary>
-        /// <param name="other">Instance of PayOrderLines to be compared</param>
+        /// <param name="other">Instance of BarcodeData to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(PayOrderLines other)
+        public bool Equals(BarcodeData other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return
                 (
-                    PaidLines == other.PaidLines ||
-                    PaidLines != null &&
-                    PaidLines.SequenceEqual(other.PaidLines)
+                    Symbology == other.Symbology ||
+                    Symbology != null &&
+                    Symbology.Equals(other.Symbology)
+                ) &&
+                (
+                    Data == other.Data ||
+                    Data != null &&
+                    Data.Equals(other.Data)
                 );
         }
 
@@ -92,8 +103,10 @@ namespace Os.Server.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                if (PaidLines != null)
-                    hashCode = hashCode * 59 + PaidLines.GetHashCode();
+                if (Symbology != null)
+                    hashCode = hashCode * 59 + Symbology.GetHashCode();
+                if (Data != null)
+                    hashCode = hashCode * 59 + Data.GetHashCode();
                 return hashCode;
             }
         }
@@ -101,12 +114,12 @@ namespace Os.Server.Models
         #region Operators
 #pragma warning disable 1591
 
-        public static bool operator ==(PayOrderLines left, PayOrderLines right)
+        public static bool operator ==(BarcodeData left, BarcodeData right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(PayOrderLines left, PayOrderLines right)
+        public static bool operator !=(BarcodeData left, BarcodeData right)
         {
             return !Equals(left, right);
         }

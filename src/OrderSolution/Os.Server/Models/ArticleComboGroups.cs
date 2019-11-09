@@ -10,16 +10,18 @@
 
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
 namespace Os.Server.Models
 {
     /// <summary>
-    /// 
+    /// Used when an article is not a normal article but instead a combo.
     /// </summary>
     [DataContract]
-    public partial class ServiceArea : IEquatable<ServiceArea>
+    public partial class ArticleComboGroups : IEquatable<ArticleComboGroups>
     {
         /// <summary>
         /// Gets or Sets Id
@@ -34,11 +36,17 @@ namespace Os.Server.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Disabled (default) or enables the querying for number of covers in tables. If true the user is asked to enter the number of covers (which usually is the same as number of guests) when opening a table in the table selection screen and also a configured tool bar button will be enabled. If false or not defined the user is not asked and in case a tool bar button is configured for modifying number of covers this button is disabled.
+        /// If set this defines the limit how many choices (&#x3D; sum of all the quantities of the choices from the content) If not defined the quantity allowed is unlimited. Typically only done for choices that have a price and sold as supplements.
         /// </summary>
-        /// <value>Disabled (default) or enables the querying for number of covers in tables. If true the user is asked to enter the number of covers (which usually is the same as number of guests) when opening a table in the table selection screen and also a configured tool bar button will be enabled. If false or not defined the user is not asked and in case a tool bar button is configured for modifying number of covers this button is disabled.</value>
-        [DataMember(Name = "numberOfCovers")]
-        public bool? NumberOfCovers { get; set; }
+        /// <value>If set this defines the limit how many choices (&#x3D; sum of all the quantities of the choices from the content) If not defined the quantity allowed is unlimited. Typically only done for choices that have a price and sold as supplements.</value>
+        [DataMember(Name = "maxQuantity")]
+        public int? MaxQuantity { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Content
+        /// </summary>
+        [DataMember(Name = "content")]
+        public List<ComboContentEntry> Content { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -47,10 +55,11 @@ namespace Os.Server.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class ServiceArea {\n");
+            sb.Append("class ArticleComboGroups {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
-            sb.Append("  NumberOfCovers: ").Append(NumberOfCovers).Append("\n");
+            sb.Append("  MaxQuantity: ").Append(MaxQuantity).Append("\n");
+            sb.Append("  Content: ").Append(Content).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -73,15 +82,15 @@ namespace Os.Server.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((ServiceArea)obj);
+            return obj.GetType() == GetType() && Equals((ArticleComboGroups)obj);
         }
 
         /// <summary>
-        /// Returns true if ServiceArea instances are equal
+        /// Returns true if ArticleComboGroups instances are equal
         /// </summary>
-        /// <param name="other">Instance of ServiceArea to be compared</param>
+        /// <param name="other">Instance of ArticleComboGroups to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(ServiceArea other)
+        public bool Equals(ArticleComboGroups other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -98,9 +107,14 @@ namespace Os.Server.Models
                     Name.Equals(other.Name)
                 ) &&
                 (
-                    NumberOfCovers == other.NumberOfCovers ||
-                    NumberOfCovers != null &&
-                    NumberOfCovers.Equals(other.NumberOfCovers)
+                    MaxQuantity == other.MaxQuantity ||
+                    MaxQuantity != null &&
+                    MaxQuantity.Equals(other.MaxQuantity)
+                ) &&
+                (
+                    Content == other.Content ||
+                    Content != null &&
+                    Content.SequenceEqual(other.Content)
                 );
         }
 
@@ -118,8 +132,10 @@ namespace Os.Server.Models
                     hashCode = hashCode * 59 + Id.GetHashCode();
                 if (Name != null)
                     hashCode = hashCode * 59 + Name.GetHashCode();
-                if (NumberOfCovers != null)
-                    hashCode = hashCode * 59 + NumberOfCovers.GetHashCode();
+                if (MaxQuantity != null)
+                    hashCode = hashCode * 59 + MaxQuantity.GetHashCode();
+                if (Content != null)
+                    hashCode = hashCode * 59 + Content.GetHashCode();
                 return hashCode;
             }
         }
@@ -127,12 +143,12 @@ namespace Os.Server.Models
         #region Operators
 #pragma warning disable 1591
 
-        public static bool operator ==(ServiceArea left, ServiceArea right)
+        public static bool operator ==(ArticleComboGroups left, ArticleComboGroups right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(ServiceArea left, ServiceArea right)
+        public static bool operator !=(ArticleComboGroups left, ArticleComboGroups right)
         {
             return !Equals(left, right);
         }

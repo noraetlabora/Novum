@@ -23,16 +23,16 @@ namespace Os.Server.Models
     public partial class OrderLineQuantity : IEquatable<OrderLineQuantity>
     {
         /// <summary>
-        /// The ID of the orderline to be paid.
+        /// The ID of the order line to be paid.
         /// </summary>
-        /// <value>The ID of the orderline to be paid.</value>
+        /// <value>The ID of the order line to be paid.</value>
         [DataMember(Name = "orderLineId")]
         public string OrderLineId { get; set; }
 
         /// <summary>
-        /// The quantity of the orderline in question that should be paid. IMPORTANT: This can be the full orderline or just a part of it.
+        /// The quantity of the order line in question that should be paid. IMPORTANT: This can be the full order line or just a part of it.
         /// </summary>
-        /// <value>The quantity of the orderline in question that should be paid. IMPORTANT: This can be the full orderline or just a part of it.</value>
+        /// <value>The quantity of the order line in question that should be paid. IMPORTANT: This can be the full order line or just a part of it.</value>
         [Required]
         [DataMember(Name = "quantity")]
         public int? Quantity { get; set; }

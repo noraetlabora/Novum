@@ -11,6 +11,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -21,14 +22,27 @@ namespace Os.Server.Models
     /// 
     /// </summary>
     [DataContract]
-    public partial class PayOrderLines : PayBase, IEquatable<PayOrderLines>
+    public partial class TBOrderActionConfig : IEquatable<TBOrderActionConfig>
     {
         /// <summary>
-        /// List of order line payments that represent the order lines (-parts) that will be paid with this set.
+        /// So far only supported for action buttons
         /// </summary>
-        /// <value>List of order line payments that represent the order lines (-parts) that will be paid with this set.</value>
-        [DataMember(Name = "paidLines")]
-        public List<OrderLineQuantity> PaidLines { get; set; }
+        /// <value>So far only supported for action buttons</value>
+        [DataMember(Name = "text")]
+        public Dictionary<string, string> Text { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Url
+        /// </summary>
+        [Required]
+        [DataMember(Name = "url")]
+        public string Url { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Icon
+        /// </summary>
+        [DataMember(Name = "icon")]
+        public string Icon { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -37,8 +51,10 @@ namespace Os.Server.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class PayOrderLines {\n");
-            sb.Append("  PaidLines: ").Append(PaidLines).Append("\n");
+            sb.Append("class TBOrderActionConfig {\n");
+            sb.Append("  Text: ").Append(Text).Append("\n");
+            sb.Append("  Url: ").Append(Url).Append("\n");
+            sb.Append("  Icon: ").Append(Icon).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -47,7 +63,7 @@ namespace Os.Server.Models
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
-        public new string ToJson()
+        public string ToJson()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
@@ -61,24 +77,34 @@ namespace Os.Server.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((PayOrderLines)obj);
+            return obj.GetType() == GetType() && Equals((TBOrderActionConfig)obj);
         }
 
         /// <summary>
-        /// Returns true if PayOrderLines instances are equal
+        /// Returns true if TBOrderActionConfig instances are equal
         /// </summary>
-        /// <param name="other">Instance of PayOrderLines to be compared</param>
+        /// <param name="other">Instance of TBOrderActionConfig to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(PayOrderLines other)
+        public bool Equals(TBOrderActionConfig other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return
                 (
-                    PaidLines == other.PaidLines ||
-                    PaidLines != null &&
-                    PaidLines.SequenceEqual(other.PaidLines)
+                    Text == other.Text ||
+                    Text != null &&
+                    Text.SequenceEqual(other.Text)
+                ) &&
+                (
+                    Url == other.Url ||
+                    Url != null &&
+                    Url.Equals(other.Url)
+                ) &&
+                (
+                    Icon == other.Icon ||
+                    Icon != null &&
+                    Icon.Equals(other.Icon)
                 );
         }
 
@@ -92,8 +118,12 @@ namespace Os.Server.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                if (PaidLines != null)
-                    hashCode = hashCode * 59 + PaidLines.GetHashCode();
+                if (Text != null)
+                    hashCode = hashCode * 59 + Text.GetHashCode();
+                if (Url != null)
+                    hashCode = hashCode * 59 + Url.GetHashCode();
+                if (Icon != null)
+                    hashCode = hashCode * 59 + Icon.GetHashCode();
                 return hashCode;
             }
         }
@@ -101,12 +131,12 @@ namespace Os.Server.Models
         #region Operators
 #pragma warning disable 1591
 
-        public static bool operator ==(PayOrderLines left, PayOrderLines right)
+        public static bool operator ==(TBOrderActionConfig left, TBOrderActionConfig right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(PayOrderLines left, PayOrderLines right)
+        public static bool operator !=(TBOrderActionConfig left, TBOrderActionConfig right)
         {
             return !Equals(left, right);
         }

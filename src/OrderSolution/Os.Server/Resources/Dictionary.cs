@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using System.Globalization;
 using System.Reflection;
 using System.Resources;
-using System.Threading.Tasks;
 
 namespace Os.Server.Resources
 {
-    
+
     public static class Dictionary
     {
         private static CultureInfo _culturInfo;

@@ -16,7 +16,7 @@ using System.Text;
 namespace Os.Server.Models
 {
     /// <summary>
-    /// The result of a successful orderline split operation.
+    /// The result of a successful order line split operation.
     /// </summary>
     [DataContract]
     public partial class OrderLineSplitResult : IEquatable<OrderLineSplitResult>

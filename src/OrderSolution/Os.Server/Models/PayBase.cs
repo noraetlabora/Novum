@@ -24,9 +24,9 @@ namespace Os.Server.Models
     public partial class PayBase : IEquatable<PayBase>
     {
         /// <summary>
-        /// The payments to be executed on the amount sum we get from all the sub tables or order lines to be paied + the tip. Special Case: Empty payments / Payments omitted is used to close empty tables.
+        /// The payments to be executed on the amount sum we get from all the sub tables or order lines to be paid + the tip. Special Case: Empty payments / Payments omitted is used to close empty tables.
         /// </summary>
-        /// <value>The payments to be executed on the amount sum we get from all the sub tables or order lines to be paied + the tip. Special Case: Empty payments / Payments omitted is used to close empty tables.</value>
+        /// <value>The payments to be executed on the amount sum we get from all the sub tables or order lines to be paid + the tip. Special Case: Empty payments / Payments omitted is used to close empty tables.</value>
         [DataMember(Name = "payments")]
         public List<Payment> Payments { get; set; }
 

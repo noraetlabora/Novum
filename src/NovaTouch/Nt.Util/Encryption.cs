@@ -7,7 +7,7 @@ namespace Nt.Util
 {
     public class Encryption
     {
-        private static string secretKey = "J8DIA%V5od#dszG4pC#TIj@Yn83BtHKF";
+        private const string secretKey = "J8DIA%V5od#dszG4pC#TIj@Yn83BtHKF";
 
         public static string EncryptString(string text)
         {

@@ -14,8 +14,8 @@ namespace Os.Server.Logic
         private static List<Models.Category> osCachedCategories;
         internal static Dictionary<string, Nt.Data.PaymentType> ntCachedPaymentTypes;
         internal static Dictionary<string, Nt.Data.AssignmentType> ntCachedAssignmentTypes;
-        private static string[] notSupportedArticleIds = { "PLU", "$KONTO:", "$GUTSCHEIN:", "$GUTSCHEINBET:", "$RABATT:", "GANG:", "$FILTER:" };
-        private static string[] notSupportedModifierIds = { "VORWAHL:" };
+        private static readonly string[] notSupportedArticleIds = { "PLU", "$KONTO:", "$GUTSCHEIN:", "$GUTSCHEINBET:", "$RABATT:", "GANG:", "$FILTER:" };
+        private static readonly string[] notSupportedModifierIds = { "VORWAHL:" };
 
         #endregion  //private fields
 

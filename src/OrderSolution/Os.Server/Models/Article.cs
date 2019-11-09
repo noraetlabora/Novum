@@ -57,17 +57,24 @@ namespace Os.Server.Models
         public int? MustEnterPrice { get; set; }
 
         /// <summary>
-        /// If set to true AND modifier groups are assigned it forces the modifier screen to be shown right after the article was selected for ordering. (replaces the .IsMandatory from previous versions)
+        /// If set to true AND modifier groups are assigned it forces the modifier screen to be shown right after the article was selected for ordering. (replaces the .IsMandatory from previous versions) IMPORTANT: If this article does not have ModifierGroups this setting is not allowed.
         /// </summary>
-        /// <value>If set to true AND modifier groups are assigned it forces the modifier screen to be shown right after the article was selected for ordering. (replaces the .IsMandatory from previous versions)</value>
+        /// <value>If set to true AND modifier groups are assigned it forces the modifier screen to be shown right after the article was selected for ordering. (replaces the .IsMandatory from previous versions) IMPORTANT: If this article does not have ModifierGroups this setting is not allowed.</value>
         [DataMember(Name = "forceShowModifiers")]
         public bool? ForceShowModifiers { get; set; }
 
         /// <summary>
-        /// Gets or Sets ModifierGroups
+        /// This defines the possible modifiers of this article. IMPORTANT: If the article has comboGroups assigning ModifierGroups is not allowed!
         /// </summary>
+        /// <value>This defines the possible modifiers of this article. IMPORTANT: If the article has comboGroups assigning ModifierGroups is not allowed!</value>
         [DataMember(Name = "modifierGroups")]
         public List<ArticleModifierGroup> ModifierGroups { get; set; }
+
+        /// <summary>
+        /// Gets or Sets ComboGroups
+        /// </summary>
+        [DataMember(Name = "comboGroups")]
+        public List<ArticleComboGroups> ComboGroups { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -84,6 +91,7 @@ namespace Os.Server.Models
             sb.Append("  MustEnterPrice: ").Append(MustEnterPrice).Append("\n");
             sb.Append("  ForceShowModifiers: ").Append(ForceShowModifiers).Append("\n");
             sb.Append("  ModifierGroups: ").Append(ModifierGroups).Append("\n");
+            sb.Append("  ComboGroups: ").Append(ComboGroups).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -154,6 +162,11 @@ namespace Os.Server.Models
                     ModifierGroups == other.ModifierGroups ||
                     ModifierGroups != null &&
                     ModifierGroups.SequenceEqual(other.ModifierGroups)
+                ) &&
+                (
+                    ComboGroups == other.ComboGroups ||
+                    ComboGroups != null &&
+                    ComboGroups.SequenceEqual(other.ComboGroups)
                 );
         }
 
@@ -181,6 +194,8 @@ namespace Os.Server.Models
                     hashCode = hashCode * 59 + ForceShowModifiers.GetHashCode();
                 if (ModifierGroups != null)
                     hashCode = hashCode * 59 + ModifierGroups.GetHashCode();
+                if (ComboGroups != null)
+                    hashCode = hashCode * 59 + ComboGroups.GetHashCode();
                 return hashCode;
             }
         }

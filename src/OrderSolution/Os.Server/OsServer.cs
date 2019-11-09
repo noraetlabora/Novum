@@ -6,10 +6,8 @@ using Microsoft.Extensions.Logging;
 using NLog.Web;
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Resources;
 using System.ServiceProcess;
-using System.Text;
 
 namespace Os.Server
 {
@@ -24,8 +22,6 @@ namespace Os.Server
         /// </summary>
         public static OsArguments Arguments { get; private set; }
         public static ResourceManager Dictionary { get; private set; }
-
-        private static Client.ClientApi _clientApi;
 
 
         /// <summary>

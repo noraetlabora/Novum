@@ -139,5 +139,18 @@ namespace Os.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, osError);
             }
         }
+
+        /// <summary>
+        /// This is a custom controller to demonstrate how to handle requests triggered by an ActionButton.
+        /// </summary>
+
+        /// <param name="data">The data received from an action button request. This specifies the context in which the button was pressed.</param>
+        /// <response code="200"></response>
+        [HttpPost]
+        [Route("/api/v2/actionButtonHandler/refresh")]
+        public virtual IActionResult ActionButtonHandlerRefresh([FromBody]Models.ActionButtonRequestData data)
+        {
+            throw new NotImplementedException("/api/v2/actionButtonHandler/refresh is not yet implemented");
+        }
     }
 }

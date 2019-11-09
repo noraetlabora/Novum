@@ -10,7 +10,8 @@
 
 using Newtonsoft.Json;
 using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -23,27 +24,10 @@ namespace Os.Server.Models
     public partial class PreAuthResult : IEquatable<PreAuthResult>
     {
         /// <summary>
-        /// This is the code to be used in the later pay action to identify this authorized payment medium and it&#39;s amount.
+        /// Gets or Sets AuthMedia
         /// </summary>
-        /// <value>This is the code to be used in the later pay action to identify this authorized payment medium and it&#39;s amount.</value>
-        [DataMember(Name = "authCode")]
-        public string AuthCode { get; set; }
-
-        /// <summary>
-        /// The amount that was authorized. This can be the same as the requested amount but can also be lower. Examples when this might be lower then the requested amount:     - if the lines include articles that are not allowed for this payment medium     - and others
-        /// </summary>
-        /// <value>The amount that was authorized. This can be the same as the requested amount but can also be lower. Examples when this might be lower then the requested amount:     - if the lines include articles that are not allowed for this payment medium     - and others</value>
-        [Required]
-        [DataMember(Name = "authAmount")]
-        public int? AuthAmount { get; set; }
-
-        /// <summary>
-        /// The tip amount that was authorized. Examples when this might be lower then the requested amount:     - if the medium does not allow to pay the tip with it     - and others
-        /// </summary>
-        /// <value>The tip amount that was authorized. Examples when this might be lower then the requested amount:     - if the medium does not allow to pay the tip with it     - and others</value>
-        [Required]
-        [DataMember(Name = "authTip")]
-        public int? AuthTip { get; set; }
+        [DataMember(Name = "authMedia")]
+        public List<PreAuthMedium> AuthMedia { get; set; }
 
         /// <summary>
         /// If set a popup dialog is presented to the user before the user can continue. Supported types: \&quot;ok\&quot; and \&quot;accept\&quot;.
@@ -60,9 +44,7 @@ namespace Os.Server.Models
         {
             var sb = new StringBuilder();
             sb.Append("class PreAuthResult {\n");
-            sb.Append("  AuthCode: ").Append(AuthCode).Append("\n");
-            sb.Append("  AuthAmount: ").Append(AuthAmount).Append("\n");
-            sb.Append("  AuthTip: ").Append(AuthTip).Append("\n");
+            sb.Append("  AuthMedia: ").Append(AuthMedia).Append("\n");
             sb.Append("  Dialog: ").Append(Dialog).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -101,19 +83,9 @@ namespace Os.Server.Models
 
             return
                 (
-                    AuthCode == other.AuthCode ||
-                    AuthCode != null &&
-                    AuthCode.Equals(other.AuthCode)
-                ) &&
-                (
-                    AuthAmount == other.AuthAmount ||
-                    AuthAmount != null &&
-                    AuthAmount.Equals(other.AuthAmount)
-                ) &&
-                (
-                    AuthTip == other.AuthTip ||
-                    AuthTip != null &&
-                    AuthTip.Equals(other.AuthTip)
+                    AuthMedia == other.AuthMedia ||
+                    AuthMedia != null &&
+                    AuthMedia.SequenceEqual(other.AuthMedia)
                 ) &&
                 (
                     Dialog == other.Dialog ||
@@ -132,12 +104,8 @@ namespace Os.Server.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                if (AuthCode != null)
-                    hashCode = hashCode * 59 + AuthCode.GetHashCode();
-                if (AuthAmount != null)
-                    hashCode = hashCode * 59 + AuthAmount.GetHashCode();
-                if (AuthTip != null)
-                    hashCode = hashCode * 59 + AuthTip.GetHashCode();
+                if (AuthMedia != null)
+                    hashCode = hashCode * 59 + AuthMedia.GetHashCode();
                 if (Dialog != null)
                     hashCode = hashCode * 59 + Dialog.GetHashCode();
                 return hashCode;

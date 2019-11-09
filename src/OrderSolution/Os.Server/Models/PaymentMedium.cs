@@ -43,9 +43,9 @@ namespace Os.Server.Models
         public bool? AllowOverPayment { get; set; }
 
         /// <summary>
-        /// (optional) Whether or not to ask the user for an amount (default &#x3D;&#x3D; true &#x3D;&#x3D; ask for amount) If false, the normal “ask for amount” popup will not be shown when selecting the payment medium. If preAuthorizeRequired is true the entered amount will be set in actions/pay/preAuthorize request and the final used amount will come from the response to actions/pay/preAuthorize. If preAuthorizeRequired is false the entered amount will be set in the actions/pay/orderlines or actions/pay/subtables request. IMPORTANT: Setting askForAmount to false when preAuthorizeRequired is also false is invalid and will trigger an ERROR!
+        /// Optional. Whether or not to ask the user for an amount (default &#x3D;&#x3D; true &#x3D;&#x3D; ask for amount) If false, the normal “ask for amount” popup will not be shown when selecting the payment medium. If a requestInput method is defined the entered amount will be set in actions/pay/preAuthorize request and the final used amount will come from the response to actions/pay/preAuthorize. Otherwise the entered amount will be set in the actions/pay/orderlines or actions/pay/subtables request.
         /// </summary>
-        /// <value>(optional) Whether or not to ask the user for an amount (default &#x3D;&#x3D; true &#x3D;&#x3D; ask for amount) If false, the normal “ask for amount” popup will not be shown when selecting the payment medium. If preAuthorizeRequired is true the entered amount will be set in actions/pay/preAuthorize request and the final used amount will come from the response to actions/pay/preAuthorize. If preAuthorizeRequired is false the entered amount will be set in the actions/pay/orderlines or actions/pay/subtables request. IMPORTANT: Setting askForAmount to false when preAuthorizeRequired is also false is invalid and will trigger an ERROR!</value>
+        /// <value>Optional. Whether or not to ask the user for an amount (default &#x3D;&#x3D; true &#x3D;&#x3D; ask for amount) If false, the normal “ask for amount” popup will not be shown when selecting the payment medium. If a requestInput method is defined the entered amount will be set in actions/pay/preAuthorize request and the final used amount will come from the response to actions/pay/preAuthorize. Otherwise the entered amount will be set in the actions/pay/orderlines or actions/pay/subtables request.</value>
         [DataMember(Name = "askForAmount")]
         public bool? AskForAmount { get; set; }
 
@@ -57,11 +57,10 @@ namespace Os.Server.Models
         public Object RequestInput { get; set; }
 
         /// <summary>
-        /// !!! EXPERIMENTAL - API MAY CHANGE !!! Optional. Can be set to \&quot;table\&quot; (&#x3D; all order lines in all sub tables) or \&quot;subTable\&quot; (&#x3D; all order lines in a single sub table). If set this payment medium can only be selected (&#x3D; is enabled) if the condition is met. Otherwise the medium will be shown disabled.
+        /// Gets or Sets FullPaymentOnly
         /// </summary>
-        /// <value>!!! EXPERIMENTAL - API MAY CHANGE !!! Optional. Can be set to \&quot;table\&quot; (&#x3D; all order lines in all sub tables) or \&quot;subTable\&quot; (&#x3D; all order lines in a single sub table). If set this payment medium can only be selected (&#x3D; is enabled) if the condition is met. Otherwise the medium will be shown disabled.</value>
         [DataMember(Name = "fullPaymentOnly")]
-        public Object FullPaymentOnly { get; set; }
+        public bool? FullPaymentOnly { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

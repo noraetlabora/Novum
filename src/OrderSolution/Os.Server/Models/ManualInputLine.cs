@@ -43,13 +43,6 @@ namespace Os.Server.Models
         public string RegExpValidator { get; set; }
 
         /// <summary>
-        /// If set defines the input mask to used to validate input. Details about how to define the input mask please check https://doc.qt.io/qt-5/qlineedit.html#inputMask-prop.
-        /// </summary>
-        /// <value>If set defines the input mask to used to validate input. Details about how to define the input mask please check https://doc.qt.io/qt-5/qlineedit.html#inputMask-prop.</value>
-        [DataMember(Name = "inputMask")]
-        public string InputMask { get; set; }
-
-        /// <summary>
         /// The label for the input line that describes what the user is up to enter in that line. Usually shown above or left to the input field.
         /// </summary>
         /// <value>The label for the input line that describes what the user is up to enter in that line. Usually shown above or left to the input field.</value>
@@ -67,7 +60,6 @@ namespace Os.Server.Models
             sb.Append("  Key: ").Append(Key).Append("\n");
             sb.Append("  DefaultValue: ").Append(DefaultValue).Append("\n");
             sb.Append("  RegExpValidator: ").Append(RegExpValidator).Append("\n");
-            sb.Append("  InputMask: ").Append(InputMask).Append("\n");
             sb.Append("  Label: ").Append(Label).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -121,11 +113,6 @@ namespace Os.Server.Models
                     RegExpValidator.Equals(other.RegExpValidator)
                 ) &&
                 (
-                    InputMask == other.InputMask ||
-                    InputMask != null &&
-                    InputMask.Equals(other.InputMask)
-                ) &&
-                (
                     Label == other.Label ||
                     Label != null &&
                     Label.Equals(other.Label)
@@ -148,8 +135,6 @@ namespace Os.Server.Models
                     hashCode = hashCode * 59 + DefaultValue.GetHashCode();
                 if (RegExpValidator != null)
                     hashCode = hashCode * 59 + RegExpValidator.GetHashCode();
-                if (InputMask != null)
-                    hashCode = hashCode * 59 + InputMask.GetHashCode();
                 if (Label != null)
                     hashCode = hashCode * 59 + Label.GetHashCode();
                 return hashCode;

@@ -10,8 +10,7 @@
 
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -21,14 +20,22 @@ namespace Os.Server.Models
     /// 
     /// </summary>
     [DataContract]
-    public partial class PayOrderLines : PayBase, IEquatable<PayOrderLines>
+    public partial class TBTableSelectConfig : IEquatable<TBTableSelectConfig>
     {
         /// <summary>
-        /// List of order line payments that represent the order lines (-parts) that will be paid with this set.
+        /// Get / set the type of this toolbar.
         /// </summary>
-        /// <value>List of order line payments that represent the order lines (-parts) that will be paid with this set.</value>
-        [DataMember(Name = "paidLines")]
-        public List<OrderLineQuantity> PaidLines { get; set; }
+        /// <value>Get / set the type of this toolbar.</value>
+        [Required]
+        [DataMember(Name = "type")]
+        public Object Type { get; set; }
+
+        /// <summary>
+        /// The detailed configuration of action buttons (&#x3D; when type &#x3D;&#x3D; \&quot;action\&quot;)
+        /// </summary>
+        /// <value>The detailed configuration of action buttons (&#x3D; when type &#x3D;&#x3D; \&quot;action\&quot;)</value>
+        [DataMember(Name = "action")]
+        public Object Action { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -37,8 +44,9 @@ namespace Os.Server.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class PayOrderLines {\n");
-            sb.Append("  PaidLines: ").Append(PaidLines).Append("\n");
+            sb.Append("class TBTableSelectConfig {\n");
+            sb.Append("  Type: ").Append(Type).Append("\n");
+            sb.Append("  Action: ").Append(Action).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -47,7 +55,7 @@ namespace Os.Server.Models
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
-        public new string ToJson()
+        public string ToJson()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
@@ -61,24 +69,29 @@ namespace Os.Server.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((PayOrderLines)obj);
+            return obj.GetType() == GetType() && Equals((TBTableSelectConfig)obj);
         }
 
         /// <summary>
-        /// Returns true if PayOrderLines instances are equal
+        /// Returns true if TBTableSelectConfig instances are equal
         /// </summary>
-        /// <param name="other">Instance of PayOrderLines to be compared</param>
+        /// <param name="other">Instance of TBTableSelectConfig to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(PayOrderLines other)
+        public bool Equals(TBTableSelectConfig other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return
                 (
-                    PaidLines == other.PaidLines ||
-                    PaidLines != null &&
-                    PaidLines.SequenceEqual(other.PaidLines)
+                    Type == other.Type ||
+                    Type != null &&
+                    Type.Equals(other.Type)
+                ) &&
+                (
+                    Action == other.Action ||
+                    Action != null &&
+                    Action.Equals(other.Action)
                 );
         }
 
@@ -92,8 +105,10 @@ namespace Os.Server.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                if (PaidLines != null)
-                    hashCode = hashCode * 59 + PaidLines.GetHashCode();
+                if (Type != null)
+                    hashCode = hashCode * 59 + Type.GetHashCode();
+                if (Action != null)
+                    hashCode = hashCode * 59 + Action.GetHashCode();
                 return hashCode;
             }
         }
@@ -101,12 +116,12 @@ namespace Os.Server.Models
         #region Operators
 #pragma warning disable 1591
 
-        public static bool operator ==(PayOrderLines left, PayOrderLines right)
+        public static bool operator ==(TBTableSelectConfig left, TBTableSelectConfig right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(PayOrderLines left, PayOrderLines right)
+        public static bool operator !=(TBTableSelectConfig left, TBTableSelectConfig right)
         {
             return !Equals(left, right);
         }

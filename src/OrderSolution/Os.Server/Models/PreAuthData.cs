@@ -25,9 +25,16 @@ namespace Os.Server.Models
     public partial class PreAuthData : IEquatable<PreAuthData>
     {
         /// <summary>
-        /// List of order lines that (or their parts) that are planned to be paid with this medium. NOTE: Depending on configuration also other payment media types are used in addition to pay for these      lines so it&#39;s acceptable if the requested amount is smaller than the sum of this list.
+        /// Array of sub table id that are planned to be paid by this medium. NOTE: The sub table IDs can only be from the same table. An error will be returned if they are from more then one table. Either SubTableIds OR Lines are defined.
         /// </summary>
-        /// <value>List of order lines that (or their parts) that are planned to be paid with this medium. NOTE: Depending on configuration also other payment media types are used in addition to pay for these      lines so it&#39;s acceptable if the requested amount is smaller than the sum of this list.</value>
+        /// <value>Array of sub table id that are planned to be paid by this medium. NOTE: The sub table IDs can only be from the same table. An error will be returned if they are from more then one table. Either SubTableIds OR Lines are defined.</value>
+        [DataMember(Name = "subTableIds")]
+        public List<string> SubTableIds { get; set; }
+
+        /// <summary>
+        /// List of order lines that (or their parts) that are planned to be paid with this medium. NOTE: Depending on configuration also other payment media types are used in addition to pay for these      lines so it&#39;s acceptable if the requested amount is smaller than the sum of this list. Either SubTableIds OR Lines are defined.
+        /// </summary>
+        /// <value>List of order lines that (or their parts) that are planned to be paid with this medium. NOTE: Depending on configuration also other payment media types are used in addition to pay for these      lines so it&#39;s acceptable if the requested amount is smaller than the sum of this list. Either SubTableIds OR Lines are defined.</value>
         [DataMember(Name = "lines")]
         public List<OrderLineQuantity> Lines { get; set; }
 
@@ -75,6 +82,13 @@ namespace Os.Server.Models
         public Object NfcData { get; set; }
 
         /// <summary>
+        /// In case the payment medium is a bar code the data read from it.
+        /// </summary>
+        /// <value>In case the payment medium is a bar code the data read from it.</value>
+        [DataMember(Name = "barcodeData")]
+        public Object BarcodeData { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -82,6 +96,7 @@ namespace Os.Server.Models
         {
             var sb = new StringBuilder();
             sb.Append("class PreAuthData {\n");
+            sb.Append("  SubTableIds: ").Append(SubTableIds).Append("\n");
             sb.Append("  Lines: ").Append(Lines).Append("\n");
             sb.Append("  ReqTip: ").Append(ReqTip).Append("\n");
             sb.Append("  ReqAmount: ").Append(ReqAmount).Append("\n");
@@ -89,6 +104,7 @@ namespace Os.Server.Models
             sb.Append("  MsrData: ").Append(MsrData).Append("\n");
             sb.Append("  ManualData: ").Append(ManualData).Append("\n");
             sb.Append("  NfcData: ").Append(NfcData).Append("\n");
+            sb.Append("  BarcodeData: ").Append(BarcodeData).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -126,6 +142,11 @@ namespace Os.Server.Models
 
             return
                 (
+                    SubTableIds == other.SubTableIds ||
+                    SubTableIds != null &&
+                    SubTableIds.SequenceEqual(other.SubTableIds)
+                ) &&
+                (
                     Lines == other.Lines ||
                     Lines != null &&
                     Lines.SequenceEqual(other.Lines)
@@ -159,6 +180,11 @@ namespace Os.Server.Models
                     NfcData == other.NfcData ||
                     NfcData != null &&
                     NfcData.Equals(other.NfcData)
+                ) &&
+                (
+                    BarcodeData == other.BarcodeData ||
+                    BarcodeData != null &&
+                    BarcodeData.Equals(other.BarcodeData)
                 );
         }
 
@@ -172,6 +198,8 @@ namespace Os.Server.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
+                if (SubTableIds != null)
+                    hashCode = hashCode * 59 + SubTableIds.GetHashCode();
                 if (Lines != null)
                     hashCode = hashCode * 59 + Lines.GetHashCode();
                 if (ReqTip != null)
@@ -186,6 +214,8 @@ namespace Os.Server.Models
                     hashCode = hashCode * 59 + ManualData.GetHashCode();
                 if (NfcData != null)
                     hashCode = hashCode * 59 + NfcData.GetHashCode();
+                if (BarcodeData != null)
+                    hashCode = hashCode * 59 + BarcodeData.GetHashCode();
                 return hashCode;
             }
         }

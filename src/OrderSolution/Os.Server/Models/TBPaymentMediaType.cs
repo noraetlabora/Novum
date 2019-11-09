@@ -14,22 +14,22 @@ using System.Runtime.Serialization;
 namespace Os.Server.Models
 {
     /// <summary>
-    /// Gets or Sets FullPaymentOnlyMode
+    /// Gets or Sets TBPaymentMediaType
     /// </summary>
     [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
-    public enum FullPaymentOnlyMode
+    public enum TBPaymentMediaType
     {
 
         /// <summary>
-        /// Enum TableEnum for table
+        /// Enum CalculatorEnum for calculator
         /// </summary>
-        [EnumMember(Value = "table")]
-        TableEnum = 1,
+        [EnumMember(Value = "calculator")]
+        CalculatorEnum = 1,
 
         /// <summary>
-        /// Enum SubTableEnum for subTable
+        /// Enum PrinterSelectionEnum for printerSelection
         /// </summary>
-        [EnumMember(Value = "subTable")]
-        SubTableEnum = 2
+        [EnumMember(Value = "printerSelection")]
+        PrinterSelectionEnum = 2
     }
 }

@@ -60,7 +60,7 @@ namespace Os.Server
 
                 //read and log request body
                 var requestBodyContent = await ReadRequestBody(httpContext.Request, serialNumber);
-                
+
                 var originalBodyStream = httpContext.Response.Body;
                 using (var responseBody = new MemoryStream())
                 {
@@ -114,7 +114,7 @@ namespace Os.Server
             {
                 Nt.Logging.Log.Communication.Info(sb.ToString());
             }
-            
+
             return bodyAsText;
         }
 

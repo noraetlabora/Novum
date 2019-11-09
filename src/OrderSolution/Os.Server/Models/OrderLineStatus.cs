@@ -14,9 +14,9 @@ using System.Runtime.Serialization;
 namespace Os.Server.Models
 {
     /// <summary>
-    /// Represents the status of a given Orderline. Unknown = 0, Ordered = 1, // This orderline was not yet commited/confirmed Committed = 2, Paid = 3
+    /// Represents the status of a given order line. Unknown = 0, Ordered = 1, // This order line was not yet committed/confirmed Committed = 2, Paid = 3
     /// </summary>
-    /// <value>Represents the status of a given Orderline. Unknown = 0, Ordered = 1, // This orderline was not yet commited/confirmed Committed = 2, Paid = 3</value>
+    /// <value>Represents the status of a given order line. Unknown = 0, Ordered = 1, // This order line was not yet committed/confirmed Committed = 2, Paid = 3</value>
     [JsonConverter(typeof(Newtonsoft.Json.Converters.StringEnumConverter))]
     public enum OrderLineStatus
     {

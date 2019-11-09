@@ -24,9 +24,9 @@ namespace Os.Server.Models
     public partial class InputQueryPrompt : IEquatable<InputQueryPrompt>
     {
         /// <summary>
-        /// A prompt message presented to the user while the input is read. Example for MSR: \&quot;Please swipe your ACME InHouse Credit Card or enter data manually!\&quot; Key is the language tag (like \&quot;en\&quot; or \&quot;de\&quot;). Value is the text in that language. If the current language is not provided in the Prompt the first entry will be used.
+        /// A prompt message presented to the user while the input is read. Example for MSR: \&quot;Please swipe your ACME InHouse Credit Card!\&quot; Key is the language tag (like \&quot;en\&quot; or \&quot;de\&quot;). Value is the text in that language.
         /// </summary>
-        /// <value>A prompt message presented to the user while the input is read. Example for MSR: \&quot;Please swipe your ACME InHouse Credit Card or enter data manually!\&quot; Key is the language tag (like \&quot;en\&quot; or \&quot;de\&quot;). Value is the text in that language. If the current language is not provided in the Prompt the first entry will be used.</value>
+        /// <value>A prompt message presented to the user while the input is read. Example for MSR: \&quot;Please swipe your ACME InHouse Credit Card!\&quot; Key is the language tag (like \&quot;en\&quot; or \&quot;de\&quot;). Value is the text in that language.</value>
         [DataMember(Name = "prompt")]
         public Dictionary<string, string> Prompt { get; set; }
 
@@ -52,6 +52,12 @@ namespace Os.Server.Models
         public Object MethodNFC { get; set; }
 
         /// <summary>
+        /// Gets or Sets MethodBarcode
+        /// </summary>
+        [DataMember(Name = "methodBarcode")]
+        public BarcodeInput MethodBarcode { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -63,6 +69,7 @@ namespace Os.Server.Models
             sb.Append("  MethodManual: ").Append(MethodManual).Append("\n");
             sb.Append("  MethodMSR: ").Append(MethodMSR).Append("\n");
             sb.Append("  MethodNFC: ").Append(MethodNFC).Append("\n");
+            sb.Append("  MethodBarcode: ").Append(MethodBarcode).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -118,6 +125,11 @@ namespace Os.Server.Models
                     MethodNFC == other.MethodNFC ||
                     MethodNFC != null &&
                     MethodNFC.Equals(other.MethodNFC)
+                ) &&
+                (
+                    MethodBarcode == other.MethodBarcode ||
+                    MethodBarcode != null &&
+                    MethodBarcode.Equals(other.MethodBarcode)
                 );
         }
 
@@ -139,6 +151,8 @@ namespace Os.Server.Models
                     hashCode = hashCode * 59 + MethodMSR.GetHashCode();
                 if (MethodNFC != null)
                     hashCode = hashCode * 59 + MethodNFC.GetHashCode();
+                if (MethodBarcode != null)
+                    hashCode = hashCode * 59 + MethodBarcode.GetHashCode();
                 return hashCode;
             }
         }

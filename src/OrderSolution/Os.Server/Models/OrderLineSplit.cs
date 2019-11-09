@@ -16,7 +16,7 @@ using System.Text;
 namespace Os.Server.Models
 {
     /// <summary>
-    /// Details about how an orderline should be split.
+    /// Details about how an order line should be split.
     /// </summary>
     [DataContract]
     public partial class OrderLineSplit : IEquatable<OrderLineSplit>

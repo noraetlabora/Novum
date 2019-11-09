@@ -18,24 +18,31 @@ using System.Text;
 namespace Os.Server.Models
 {
     /// <summary>
-    /// 
+    /// Configuration parameters from the POS for the OrderSolution system. IMPORTANT: On further details about possible configuration please check the OrderSolution SDK documentation chapter  \&quot;Configuration\&quot; / \&quot;OsApp Configuration\&quot;.
     /// </summary>
     [DataContract]
     public partial class OsConfiguration : IEquatable<OsConfiguration>
     {
         /// <summary>
-        /// Key &#x3D; key of configuration Value &#x3D; value of the configuration
+        /// Key &#x3D; key of configuration Value &#x3D; value of the configuration  Some possible settings (further details see sdk documentation); if not set the default value is used:   language &#x3D; en / de / ...                  (en is default)   locale &#x3D; en / de_DE / ...                 (en is default)   priceEntryMode &#x3D; 0 / 1                    (0 is default; decimal price entry with comma key)   disableSubTables &#x3D; 0 / 1                  (0 is default; subtables are enabled)   authenticationMode &#x3D; selection / number   (selection is default)
         /// </summary>
-        /// <value>Key &#x3D; key of configuration Value &#x3D; value of the configuration</value>
+        /// <value>Key &#x3D; key of configuration Value &#x3D; value of the configuration  Some possible settings (further details see sdk documentation); if not set the default value is used:   language &#x3D; en / de / ...                  (en is default)   locale &#x3D; en / de_DE / ...                 (en is default)   priceEntryMode &#x3D; 0 / 1                    (0 is default; decimal price entry with comma key)   disableSubTables &#x3D; 0 / 1                  (0 is default; subtables are enabled)   authenticationMode &#x3D; selection / number   (selection is default)</value>
         [DataMember(Name = "global")]
         public Dictionary<string, string> Global { get; set; }
 
         /// <summary>
-        /// Defines a list of fetures the POS system supports. Details about possible options check OrderSolution SDK documentation.
+        /// Defines a list of features the POS system supports. Details about possible options check OrderSolution SDK documentation.  Some possible entries:     tip, moveAllSubTables, moveSingleSubTable
         /// </summary>
-        /// <value>Defines a list of fetures the POS system supports. Details about possible options check OrderSolution SDK documentation.</value>
+        /// <value>Defines a list of features the POS system supports. Details about possible options check OrderSolution SDK documentation.  Some possible entries:     tip, moveAllSubTables, moveSingleSubTable</value>
         [DataMember(Name = "features")]
         public List<string> Features { get; set; }
+
+        /// <summary>
+        /// Defines the configuration of screens used. If no configuration is provided the default configuration is used.
+        /// </summary>
+        /// <value>Defines the configuration of screens used. If no configuration is provided the default configuration is used.</value>
+        [DataMember(Name = "screens")]
+        public Object Screens { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -47,6 +54,7 @@ namespace Os.Server.Models
             sb.Append("class OsConfiguration {\n");
             sb.Append("  Global: ").Append(Global).Append("\n");
             sb.Append("  Features: ").Append(Features).Append("\n");
+            sb.Append("  Screens: ").Append(Screens).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -92,6 +100,11 @@ namespace Os.Server.Models
                     Features == other.Features ||
                     Features != null &&
                     Features.SequenceEqual(other.Features)
+                ) &&
+                (
+                    Screens == other.Screens ||
+                    Screens != null &&
+                    Screens.Equals(other.Screens)
                 );
         }
 
@@ -109,6 +122,8 @@ namespace Os.Server.Models
                     hashCode = hashCode * 59 + Global.GetHashCode();
                 if (Features != null)
                     hashCode = hashCode * 59 + Features.GetHashCode();
+                if (Screens != null)
+                    hashCode = hashCode * 59 + Screens.GetHashCode();
                 return hashCode;
             }
         }
