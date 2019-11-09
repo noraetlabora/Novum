@@ -43,8 +43,12 @@ namespace Os.Server.Logic
             if (Nt.Database.DB.Api.Misc.HasSnapshotTime(Controllers.OsHostController.PosStatus.SessionId))
                 return;
 
+            Nt.Logging.Log.Server.Info("new static data available");
+
             Logic.Data.GetArticles();
             Logic.Data.GetCategories();
+
+            Nt.Logging.Log.Server.Info("new static data cached");
 
             var pubSubMessages = new List<Client.Model.PubSubMessage>();
             var pubSubMessage = new Client.Model.PubSubMessage();

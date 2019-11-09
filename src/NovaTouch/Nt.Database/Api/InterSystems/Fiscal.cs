@@ -119,6 +119,9 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="session"></param>
         public string CheckSystem(Data.Session session)
         {
+            if (session.FiscalProvider == null)
+                return string.Empty;
+
             var fiscalProvider = (Nov.NT.POS.Fiscal.IFiscalProvider)session.FiscalProvider;
             var fiscalClientString = DB.Api.Fiscal.GetClient(session.ClientId);
             var fiscalClient = new Nov.NT.POS.Data.DTO.FiscalParameterMandantDTO(fiscalClientString);

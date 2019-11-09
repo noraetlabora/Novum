@@ -107,8 +107,7 @@ namespace Nt.Services.UserControls
                     btnServiceInstall.IsEnabled = false;
                     btnServiceRun.IsEnabled = false;
                     SaveArguments();
-                    var args = new string[] { "--dbIp", txtDbIp.Text, "--dbPrt", txtDbPort.Text, "--dbNs", txtDbNamespace.Text, "--dbUsr", txtDbUser.Text, "--dbPwd", txtDbPassword.Password, "--osSPrt", txtOsServerPort.Text, "--osCIp", txtOsClientIp.Text, "--osCPrt", txtOsClientPort.Text };
-                    Service.Start(novOsServiceName, args);
+                    Service.Start(novOsServiceName);
                     System.Threading.Thread.Sleep(10000);
                     NcrOsServer("start");
                 }
@@ -143,7 +142,7 @@ namespace Nt.Services.UserControls
         private void BtnServiceInstall_Click(object sender, RoutedEventArgs e)
         {
             var assemblyFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var novOsServer = assemblyFolder + "\\OrderSolution\\Os.Server.exe";
+            var novOsServer = assemblyFolder + @"\OrderSolution\Os.Server.exe";
 
             try
             {
@@ -191,28 +190,30 @@ namespace Nt.Services.UserControls
 
         private void SaveArguments()
         {
-            var osArguments = new Arguments.OsArguments();
+            var osArguments = new Os.Server.OsArguments();
             osArguments.DatabaseIp = txtDbIp.Text;
             osArguments.DatabasePort = uint.Parse(txtDbPort.Text);
             osArguments.DatabaseNamespace = txtDbNamespace.Text;
             osArguments.DatabaseUser = txtDbUser.Text;
-            osArguments.DatabasePassword = Util.Encryption.EncryptString(txtDbPassword.Password);
+            osArguments.DatabasePassword = Nt.Util.Encryption.EncryptString(txtDbPassword.Password);
             osArguments.OsServerPort = uint.Parse(txtOsServerPort.Text);
             osArguments.OsClientIp = txtOsClientIp.Text;
             osArguments.OsClientPort = uint.Parse(txtOsClientPort.Text);
 
-            string json = System.Text.Json.JsonSerializer.Serialize(osArguments);
-            System.IO.File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + @"\Os.Server.json", json);
+            var jsonOption = new System.Text.Json.JsonSerializerOptions();
+            jsonOption.WriteIndented = true;
+            string json = System.Text.Json.JsonSerializer.Serialize(osArguments, jsonOption);
+            System.IO.File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + @"\OrderSolution\Os.Server.config.json", json);
         }
 
         private void LoadArguments()
         {
-            var osArguments = new Arguments.OsArguments();
+            var osArguments = new Os.Server.OsArguments();
 
             try
             {
-                var json = System.IO.File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\Os.Server.json");
-                osArguments = System.Text.Json.JsonSerializer.Deserialize<Arguments.OsArguments>(json);
+                var json = System.IO.File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\OrderSolution\Os.Server.config.json");
+                osArguments = System.Text.Json.JsonSerializer.Deserialize<Os.Server.OsArguments>(json);
             }
             catch
             {
@@ -222,7 +223,7 @@ namespace Nt.Services.UserControls
             txtDbPort.Text = osArguments.DatabasePort.ToString();
             txtDbNamespace.Text = osArguments.DatabaseNamespace;
             txtDbUser.Text = osArguments.DatabaseUser;
-            txtDbPassword.Password = Util.Encryption.DecryptString(osArguments.DatabasePassword);
+            txtDbPassword.Password = Nt.Util.Encryption.DecryptString(osArguments.DatabasePassword);
             txtOsServerPort.Text = osArguments.OsServerPort.ToString();
             txtOsClientIp.Text = osArguments.OsClientIp;
             txtOsClientPort.Text = osArguments.OsClientPort.ToString(); 
@@ -258,6 +259,7 @@ namespace Nt.Services.UserControls
                 process.WaitForExit();
 
                 var message = process.StandardOutput.ReadToEnd();
+
                 if (!string.IsNullOrEmpty(message))
                 {
                     eventLog = new EventLog();

@@ -3,11 +3,11 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Nt.Services.Util
+namespace Nt.Util
 {
     public class Encryption
     {
-        private static string secretKey = "PhC#L0Ux@L2wHZ5K";
+        private static string secretKey = "J8DIA%V5od#dszG4pC#TIj@Yn83BtHKF";
 
         public static string EncryptString(string text)
         {

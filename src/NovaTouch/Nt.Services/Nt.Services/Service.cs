@@ -71,6 +71,14 @@ namespace Nt.Services
             RunServiceControl(builder.ToString());
         }
 
+        public static void Start(string serviceName)
+        {
+            LogEvent("start service " + serviceName);
+
+            var serviceController = new ServiceController(serviceName);
+            serviceController.Start();
+        }
+
         public static void Start(string serviceName, string[] args)
         {
             LogEvent("start service " + serviceName + " " + string.Join(" ", args));

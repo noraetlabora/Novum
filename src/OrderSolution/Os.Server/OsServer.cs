@@ -1,6 +1,4 @@
-﻿using CommandLine;
-using CommandLine.Text;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
@@ -38,20 +36,19 @@ namespace Os.Server
         {
             try
             {
+                Nt.Logging.Log.Server.Info("================================================================== Os.Server  ==================================================================");
                 Resources.Dictionary.Initialize("de-AT");
-                //build and run webHost
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();
 
-                if (Debugger.IsAttached || args.Contains("--console"))
+                if (Debugger.IsAttached)
                 {
-                    Nt.Logging.Log.Server.Info("================================================================== STARTING Os.Server IN CONSOLE ==================================================================");
-                    SetArguments(args);
+                    Nt.Logging.Log.Server.Info("starting in console");
                     webHost.Run();
                 }
                 else
                 {
-                    Nt.Logging.Log.Server.Info("================================================================== STARTING Os.Server AS SERVICE ==================================================================");
+                    Nt.Logging.Log.Server.Info("starting as service");
                     var webHostService = new Services.OsWebHostService(webHost);
                     ServiceBase.Run(webHostService);
                 }
@@ -91,29 +88,21 @@ namespace Os.Server
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static void SetArguments(string[] args)
+        public static void SetArguments()
         {
-            Arguments = new OsArguments();
-            var parserResult = CommandLine.Parser.Default.ParseArguments<OsArguments>(args);
-            parserResult.WithParsed(parsedArguments =>
+            try
             {
-                Nt.Logging.Log.Server.Info("================================================================== ARGUMENTS ==================================================================");
-                Nt.Logging.Log.Server.Info(parsedArguments.ToString());
-                Arguments = parsedArguments;
-                _clientApi = new Client.ClientApi(string.Format("http://{0}:{1}", Arguments.OsClientIp, Arguments.OsClientPort));
-            });
-            parserResult.WithNotParsed(errors =>
+                Arguments = new Os.Server.OsArguments();
+                var json = System.IO.File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\Os.Server.config.json");
+                Arguments = System.Text.Json.JsonSerializer.Deserialize<Os.Server.OsArguments>(json);
+                Arguments.DatabasePassword = Nt.Util.Encryption.DecryptString(Arguments.DatabasePassword);
+                Nt.Logging.Log.Server.Info("Arguments : " + Arguments.ToString());
+            }
+            catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error("================================================================== ARGUMENT ERROR ==================================================================");
-                var builder = new StringBuilder();
-                foreach (var arg in args)
-                {
-                    builder.Append(arg).Append(" ");
-                }
-                Nt.Logging.Log.Server.Error("argumenlist: " + builder.ToString());
-                Nt.Logging.Log.Server.Error(HelpText.AutoBuild(parserResult).ToString());
-                throw new ArgumentException();
-            });
+                Nt.Logging.Log.Server.Fatal(ex, "Error while parsing arguments");
+
+            }
         }
     }
 }

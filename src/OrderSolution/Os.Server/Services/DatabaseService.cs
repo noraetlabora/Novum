@@ -26,6 +26,8 @@ namespace Os.Server.Services
             Nt.Database.DB.Instance.ConnectionString = connectionString.ToString();
             Nt.Database.DB.Instance.Open();
 
+            Nt.Logging.Log.Server.Info("database connection is open");
+
             if (Nt.Database.DB.Instance.State != System.Data.ConnectionState.Open)
                 throw new Exception("database connection is not open");
 
@@ -38,6 +40,8 @@ namespace Os.Server.Services
             Logic.Data.GetUsers();
             Nt.Database.DB.Api.Misc.GetArticleGroups();
             Nt.Database.DB.Api.Misc.GetTaxGroups();
+
+            Nt.Logging.Log.Server.Info("static data initial cached");
 
             _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(20));
             return Task.CompletedTask;
