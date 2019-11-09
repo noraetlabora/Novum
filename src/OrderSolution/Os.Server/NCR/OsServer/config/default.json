@@ -64,7 +64,7 @@
 
 		// Directory with the om7app file (and nothing else!) used for OsClient updates
 		// Relative to OsServer working directory which is typically where the OsServerRun executable is.
-		"om7app": "../OsClient"
+		"om7app": "../OsClient",
 	},
 	"POS": {
 		// The URL at which the POS is listening for connections
@@ -73,9 +73,9 @@
 		// 		NOTE: The full used URL for connetions is posAdapterUrl + posUrlPathApiPrefix
 		"posUrlPathApiPrefix": "/api/v2",
 		// timout in seconds to wait for responses from the POS system
-		"httpRequestTimeoutSeconds": 15,
+		"httpRequestTimeoutSeconds": 300,
 		// interval in seconds to poll for latest POS static data
-		"staticDataPollTimeSeconds": 3600
+		"staticDataPollTimeSeconds": 3600,
 		// interval in seconds to poll /hostStatus	(default = 10s)
 		// "statusPollTimeSeconds": 10
 	}
