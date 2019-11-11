@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\OrderSolution\Os.Server\OsArguments.cs" Link="Arguments\OsArguments.cs" />
+    <Compile Include="..\..\..\OrderSolution\Os.Server\OsServerConfiguration.cs" Link="Configuration\OsServerConfiguration.cs" />
   </ItemGroup>
   
   <ItemGroup>
@@ -22,7 +22,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="Arguments\" />
+    <Folder Include="Configuration\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   

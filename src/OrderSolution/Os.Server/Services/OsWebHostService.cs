@@ -22,7 +22,6 @@ namespace Os.Server.Services
         protected override void OnStarting(string[] args)
         {
             Nt.Logging.Log.Server.Info("OsWebHostService OnStarting");
-            OsServer.SetArguments();
             base.OnStarting(args);
         }
 

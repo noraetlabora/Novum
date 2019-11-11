@@ -20,6 +20,7 @@ namespace Nt.Services.UserControls
     public partial class OrderSolutions : UserControl
     {
         private const string novOsServiceName = "Novacom OrderSolution Server";
+        private string configurationFile = AppDomain.CurrentDomain.BaseDirectory + @"\OrderSolution\Os.Server.config.json";
 
         public OrderSolutions()
         {
@@ -190,43 +191,43 @@ namespace Nt.Services.UserControls
 
         private void SaveArguments()
         {
-            var osArguments = new Os.Server.OsArguments();
-            osArguments.DatabaseIp = txtDbIp.Text;
-            osArguments.DatabasePort = uint.Parse(txtDbPort.Text);
-            osArguments.DatabaseNamespace = txtDbNamespace.Text;
-            osArguments.DatabaseUser = txtDbUser.Text;
-            osArguments.DatabasePassword = Nt.Util.Encryption.EncryptString(txtDbPassword.Password);
-            osArguments.OsServerPort = uint.Parse(txtOsServerPort.Text);
-            osArguments.OsClientIp = txtOsClientIp.Text;
-            osArguments.OsClientPort = uint.Parse(txtOsClientPort.Text);
+            var osServerConfiguration = new Os.Server.OsServerConfiguration();
+            osServerConfiguration.DatabaseIp = txtDbIp.Text;
+            osServerConfiguration.DatabasePort = uint.Parse(txtDbPort.Text);
+            osServerConfiguration.DatabaseNamespace = txtDbNamespace.Text;
+            osServerConfiguration.DatabaseUser = txtDbUser.Text;
+            osServerConfiguration.DatabasePassword = Nt.Util.Encryption.EncryptString(txtDbPassword.Password);
+            osServerConfiguration.OsServerPort = uint.Parse(txtOsServerPort.Text);
+            osServerConfiguration.OsClientIp = txtOsClientIp.Text;
+            osServerConfiguration.OsClientPort = uint.Parse(txtOsClientPort.Text);
 
             var jsonOption = new System.Text.Json.JsonSerializerOptions();
             jsonOption.WriteIndented = true;
-            string json = System.Text.Json.JsonSerializer.Serialize(osArguments, jsonOption);
-            System.IO.File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + @"\OrderSolution\Os.Server.config.json", json);
+            string json = System.Text.Json.JsonSerializer.Serialize(osServerConfiguration, jsonOption);
+            System.IO.File.WriteAllText(configurationFile, json);
         }
 
         private void LoadArguments()
         {
-            var osArguments = new Os.Server.OsArguments();
+            var osServerConfiguration = new Os.Server.OsServerConfiguration();
 
             try
             {
-                var json = System.IO.File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\OrderSolution\Os.Server.config.json");
-                osArguments = System.Text.Json.JsonSerializer.Deserialize<Os.Server.OsArguments>(json);
+                var json = System.IO.File.ReadAllText(configurationFile);
+                osServerConfiguration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.OsServerConfiguration>(json);
             }
             catch
             {
             }
 
-            txtDbIp.Text = osArguments.DatabaseIp;
-            txtDbPort.Text = osArguments.DatabasePort.ToString();
-            txtDbNamespace.Text = osArguments.DatabaseNamespace;
-            txtDbUser.Text = osArguments.DatabaseUser;
-            txtDbPassword.Password = Nt.Util.Encryption.DecryptString(osArguments.DatabasePassword);
-            txtOsServerPort.Text = osArguments.OsServerPort.ToString();
-            txtOsClientIp.Text = osArguments.OsClientIp;
-            txtOsClientPort.Text = osArguments.OsClientPort.ToString(); 
+            txtDbIp.Text = osServerConfiguration.DatabaseIp;
+            txtDbPort.Text = osServerConfiguration.DatabasePort.ToString();
+            txtDbNamespace.Text = osServerConfiguration.DatabaseNamespace;
+            txtDbUser.Text = osServerConfiguration.DatabaseUser;
+            txtDbPassword.Password = Nt.Util.Encryption.DecryptString(osServerConfiguration.DatabasePassword);
+            txtOsServerPort.Text = osServerConfiguration.OsServerPort.ToString();
+            txtOsClientIp.Text = osServerConfiguration.OsClientIp;
+            txtOsClientPort.Text = osServerConfiguration.OsClientPort.ToString(); 
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

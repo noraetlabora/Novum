@@ -18,11 +18,11 @@ namespace Os.Server.Services
         public Task StartAsync(CancellationToken cancellationToken)
         {
             var connectionString = new System.Text.StringBuilder();
-            connectionString.Append("Server=").Append(OsServer.Arguments.DatabaseIp);
-            connectionString.Append("; Port=").Append(OsServer.Arguments.DatabasePort);
-            connectionString.Append("; Namespace=").Append(OsServer.Arguments.DatabaseNamespace);
-            connectionString.Append("; User ID=").Append(OsServer.Arguments.DatabaseUser);
-            connectionString.Append("; Password=").Append(OsServer.Arguments.DatabasePassword);
+            connectionString.Append("Server=").Append(OsServer.Configuration.DatabaseIp);
+            connectionString.Append("; Port=").Append(OsServer.Configuration.DatabasePort);
+            connectionString.Append("; Namespace=").Append(OsServer.Configuration.DatabaseNamespace);
+            connectionString.Append("; User ID=").Append(OsServer.Configuration.DatabaseUser);
+            connectionString.Append("; Password=").Append(OsServer.Configuration.DatabasePassword);
             Nt.Database.DB.Instance.ConnectionString = connectionString.ToString();
             Nt.Database.DB.Instance.Open();
 

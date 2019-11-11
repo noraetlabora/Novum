@@ -20,9 +20,11 @@ namespace Os.Server
         /// <summary>
         /// 
         /// </summary>
-        public static OsArguments Arguments { get; private set; }
+        public static OsServerConfiguration Configuration { get; private set; }
         public static ResourceManager Dictionary { get; private set; }
+        private static Client.ClientApi _clientApi;
 
+        private static string configFile = AppDomain.CurrentDomain.BaseDirectory + @"\Os.Server.config.json";
 
         /// <summary>
         /// 
@@ -33,6 +35,8 @@ namespace Os.Server
             try
             {
                 Nt.Logging.Log.Server.Info("================================================================== Os.Server  ==================================================================");
+                GetConfig();
+                SetClientApi();
                 Resources.Dictionary.Initialize("de-AT");
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();
@@ -66,7 +70,7 @@ namespace Os.Server
                     .UseKestrel()
                     .ConfigureKestrel(options =>
                     {
-                        options.ListenAnyIP((int)Arguments.OsServerPort, listenOptions =>
+                        options.ListenAnyIP((int)Configuration.OsServerPort, listenOptions =>
                         {
                             listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
                         });
@@ -79,26 +83,23 @@ namespace Os.Server
                     })
                     .UseNLog();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        public static void SetArguments()
+        private static void GetConfig()
         {
-            try
+            if (!System.IO.File.Exists(configFile))
             {
-                Arguments = new Os.Server.OsArguments();
-                var json = System.IO.File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\Os.Server.config.json");
-                Arguments = System.Text.Json.JsonSerializer.Deserialize<Os.Server.OsArguments>(json);
-                Arguments.DatabasePassword = Nt.Util.Encryption.DecryptString(Arguments.DatabasePassword);
-                Nt.Logging.Log.Server.Info("Arguments : " + Arguments.ToString());
+                throw new Exception("couldn't find configuration file " + configFile);
             }
-            catch (Exception ex)
-            {
-                Nt.Logging.Log.Server.Fatal(ex, "Error while parsing arguments");
 
-            }
+            Configuration = new Os.Server.OsServerConfiguration();
+            var json = System.IO.File.ReadAllText(configFile);
+            Configuration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.OsServerConfiguration>(json);
+            Configuration.DatabasePassword = Nt.Util.Encryption.DecryptString(Configuration.DatabasePassword);
+            Nt.Logging.Log.Server.Info("Configuration : " + Configuration.ToString());
+        }
+
+        private static void SetClientApi()
+        {
+            _clientApi = new Client.ClientApi(string.Format("http://{0}:{1}", Configuration.OsClientIp, Configuration.OsClientPort));
         }
     }
 }
