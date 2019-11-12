@@ -40,7 +40,15 @@ namespace Os.Server.Logic
             foreach (var osPayment in data.Payments)
             {
                 var ntPaymentMethod = GetPaymentMethod(osPayment.PaymentMediumId);
-                ntPaymentMethod.Amount = decimal.Divide((decimal)osPayment.AmountPaid, 100.0m);
+
+                //tip
+                if (data.Tip > 0)
+                {
+                    ntPaymentMethod.Tip = decimal.Divide((decimal)data.Tip, 100.0m);
+                    data.Tip = 0;
+                }
+
+                ntPaymentMethod.Amount = decimal.Divide((decimal)osPayment.AmountPaid, 100.0m) - ntPaymentMethod.Tip;
                 ntPaymentMethods.Add(ntPaymentMethod);
             }
 
@@ -83,7 +91,15 @@ namespace Os.Server.Logic
             foreach (var osPayment in data.Payments)
             {
                 var ntPaymentMethod = GetPaymentMethod(osPayment.PaymentMediumId);
-                ntPaymentMethod.Amount = decimal.Divide((decimal)osPayment.AmountPaid, 100.0m);
+
+                //tip
+                if (data.Tip > 0)
+                {
+                    ntPaymentMethod.Tip = decimal.Divide((decimal)data.Tip, 100.0m);
+                    data.Tip = 0;
+                }
+
+                ntPaymentMethod.Amount = decimal.Divide((decimal)osPayment.AmountPaid, 100.0m) - ntPaymentMethod.Tip;
                 ntPaymentMethods.Add(ntPaymentMethod);
             }
 

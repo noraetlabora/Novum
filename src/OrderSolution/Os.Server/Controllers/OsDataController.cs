@@ -114,7 +114,7 @@ namespace Os.Server.Controllers
                 osConfiguration.Global = new Dictionary<string, string>();
                 osConfiguration.Global.Add("language", "de");
                 osConfiguration.Global.Add("locale", "de_DE");
-                osConfiguration.Global.Add("priceEntryMode", "1");
+                osConfiguration.Global.Add("priceEntryMode", "0");
                 osConfiguration.Global.Add("disableSubtables", "0");
                 osConfiguration.Global.Add("authenticationMode", "number");
                 osConfiguration.Features = new List<string>();
