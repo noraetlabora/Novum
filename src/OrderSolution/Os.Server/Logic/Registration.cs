@@ -39,12 +39,26 @@ namespace Os.Server.Logic
         /// <param name="loginUser"></param>
         public static void Login(Nt.Data.Session session, Models.LoginUser loginUser)
         {
-            bool validWaiter = Nt.Database.DB.Api.Waiter.ValidWaiter(loginUser.Id, loginUser.Password);
-            if (!validWaiter)
-                throw new Exception(string.Format(Resources.Dictionary.GetString("Waiter_NotValid"), loginUser.Id));
+            // login over pin
+            if (string.IsNullOrEmpty(loginUser.Password))
+            {
+                var waiterId = Nt.Database.DB.Api.Waiter.GetWaiterId(loginUser.Id);
+                if (string.IsNullOrEmpty(waiterId))
+                    throw new Exception(Resources.Dictionary.GetString("Waiter_PinNotValid"));
+
+                session.WaiterId = waiterId;
+            }
+            // login over waiter selection
+            else 
+            {
+                var validWaiter = Nt.Database.DB.Api.Waiter.ValidWaiter(loginUser.Id, loginUser.Password);
+                if (!validWaiter)
+                    throw new Exception(Resources.Dictionary.GetString("Waiter_IdPasswordNotValid"));
+
+                session.WaiterId = loginUser.Id;
+            }
 
             Nt.Database.DB.Api.Waiter.Login(session);
-            session.WaiterId = loginUser.Id;
             var permissions = Nt.Database.DB.Api.Waiter.GetPermissions(loginUser.Id);
             session.SetPermissions(permissions);
             Image.RemoveImages(session);

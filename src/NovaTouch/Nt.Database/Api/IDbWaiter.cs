@@ -16,6 +16,13 @@ namespace Nt.Database.Api
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        string GetWaiterId(string code);
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="waiterId"></param>
         /// <param name="code"></param>
         /// <returns></returns>

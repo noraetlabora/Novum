@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -117,12 +118,26 @@ namespace Os.Server.Logic
         public static Nt.Data.PaymentType GetPaymentType(string paymentTypeId)
         {
             if (string.IsNullOrEmpty(paymentTypeId))
-                return null;
+                throw new Exception("payment type must not be null or empty");
 
             if (!ntCachedPaymentTypes.ContainsKey(paymentTypeId))
                 return null;
 
             return ntCachedPaymentTypes[paymentTypeId];
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static Nt.Data.AssignmentType GetAssignmentType(string assignmentTypeId)
+        {
+            if (string.IsNullOrEmpty(assignmentTypeId))
+                throw new Exception("assignment type must not be null or empty");
+
+            if (!ntCachedAssignmentTypes.ContainsKey(assignmentTypeId))
+                return null;
+
+            return ntCachedAssignmentTypes[assignmentTypeId];
         }
 
         #endregion

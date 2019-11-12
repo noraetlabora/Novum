@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -31,8 +32,7 @@ namespace Os.Server.Controllers
                 Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
-                //400 - BadRequest
-                return new BadRequestObjectResult(osError);
+                return StatusCode(StatusCodes.Status500InternalServerError, osError);
             }
         }
 
@@ -57,8 +57,7 @@ namespace Os.Server.Controllers
                 Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
-                //400 - BadRequest
-                return new BadRequestObjectResult(osError);
+                return StatusCode(StatusCodes.Status500InternalServerError, osError);
             }
         }
 
@@ -91,8 +90,7 @@ namespace Os.Server.Controllers
                 Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
-                //400 - BadRequest
-                return new BadRequestObjectResult(osError);
+                return StatusCode(StatusCodes.Status500InternalServerError, osError);
             }
         }
 
@@ -124,8 +122,7 @@ namespace Os.Server.Controllers
                 Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
-                //400 - BadRequest
-                return new BadRequestObjectResult(osError);
+                return StatusCode(StatusCodes.Status500InternalServerError, osError);
             }
         }
 
@@ -157,8 +154,7 @@ namespace Os.Server.Controllers
                 Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
                 var osError = new Models.OsError();
                 osError.ErrorMsg = ex.Message;
-                //400 - BadRequest
-                return new BadRequestObjectResult(osError);
+                return StatusCode(StatusCodes.Status500InternalServerError, osError);
             }
         }
     }

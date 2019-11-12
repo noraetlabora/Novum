@@ -46,6 +46,12 @@ namespace Nt.Data
         /// <value></value>
         public string PriceLevel { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public string PrinterId { get; set; }
+
 
 
         #endregion

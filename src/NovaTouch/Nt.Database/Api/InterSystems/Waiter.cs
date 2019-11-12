@@ -45,6 +45,27 @@ namespace Nt.Database.Api.InterSystems
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public string GetWaiterId(string code)
+        {
+            var sql = new StringBuilder();
+            sql.Append(" SELECT PNR, code, name");
+            sql.Append(" FROM NT.Pers ");
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
+            sql.Append(" AND code = ").Append(Interaction.SqlQuote(code));
+            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
+            var dataTable = Interaction.GetDataTable(sql.ToString());
+
+            if (dataTable.Rows.Count == 1)
+                return DataObject.GetString(dataTable.Rows[0], "PNR");
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="waiterId"></param>
         /// <param name="code"></param>
         /// <returns></returns>

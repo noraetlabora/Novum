@@ -138,7 +138,10 @@
   <data name="Table_NotOpen" xml:space="preserve">
     <value>Tisch {0} ist nicht offen</value>
   </data>
-  <data name="Waiter_NotValid" xml:space="preserve">
-    <value>Kellner {0} ist nicht gültig</value>
+  <data name="Waiter_IdPasswordNotValid" xml:space="preserve">
+    <value>Kellner und Passwort stimmen nicht überein</value>
+  </data>
+  <data name="Waiter_PinNotValid" xml:space="preserve">
+    <value>Kellnerpin ist unbekannt</value>
   </data>
 </root>

@@ -26,23 +26,25 @@ namespace Os.Server.Logic
             if (data.SubTableIds.Count > 1)
                 throw new Exception("can't handle more than one subtable");
 
+            //order lines
             var tableId = data.SubTableIds[0];
             var ntOrders = Nt.Database.DB.Api.Order.GetOrders(tableId);
+
+            //payment information
             var ntPaymentInformation = new Nt.Data.PaymentInformation();
+            ntPaymentInformation.PrinterId = data.Printer;
+
+            //payment methods
             var ntPaymentMethods = new List<Nt.Data.PaymentMethod>();
 
             foreach (var osPayment in data.Payments)
             {
-                var ntPaymentMethod = new Nt.Data.PaymentMethod();
-                var ntPaymentType = Data.GetPaymentType(osPayment.PaymentMediumId);
+                var ntPaymentMethod = GetPaymentMethod(osPayment.PaymentMediumId);
                 ntPaymentMethod.Amount = decimal.Divide((decimal)osPayment.AmountPaid, 100.0m);
-                ntPaymentMethod.PaymentTypeId = ntPaymentType.Id;
-                ntPaymentMethod.Program = ntPaymentType.Program;
-                ntPaymentMethod.Name = ntPaymentType.Name;
-                ntPaymentMethod.AssignmentTypeId = "N";
                 ntPaymentMethods.Add(ntPaymentMethod);
             }
 
+            //pay
             var ntPaymentResult = Nt.Database.DB.Api.Payment.Pay(session, tableId, ntOrders.Values.ToList(), ntPaymentMethods, ntPaymentInformation);
         }
 
@@ -72,15 +74,16 @@ namespace Os.Server.Logic
                     throw new Exception("orderLines of different tables are not allowed");
             }
 
-            //payment Information
+            //payment information
             var ntPaymentInformation = new Nt.Data.PaymentInformation();
+            ntPaymentInformation.PrinterId = data.Printer;
+
+            //payment methods
             var ntPaymentMethods = new List<Nt.Data.PaymentMethod>();
             foreach (var osPayment in data.Payments)
             {
-                var ntPaymentMethod = new Nt.Data.PaymentMethod();
+                var ntPaymentMethod = GetPaymentMethod(osPayment.PaymentMediumId);
                 ntPaymentMethod.Amount = decimal.Divide((decimal)osPayment.AmountPaid, 100.0m);
-                ntPaymentMethod.PaymentTypeId = osPayment.PaymentMediumId;
-                ntPaymentMethod.AssignmentTypeId = "N";
                 ntPaymentMethods.Add(ntPaymentMethod);
             }
 
@@ -99,8 +102,39 @@ namespace Os.Server.Logic
                 ntOrder.Quantity = (decimal)orderLineQuantity.Quantity;
                 ntOrders.Add(ntOrder);
             }
+
             //pay
             var ntPaymentResult = Nt.Database.DB.Api.Payment.Pay(session, tableId, ntOrders, ntPaymentMethods, ntPaymentInformation);
+        }
+
+        private static Nt.Data.PaymentMethod GetPaymentMethod(string paymentMediumId)
+        {
+            var ntPaymentMethod = new Nt.Data.PaymentMethod();
+            var ntPaymentType = Data.GetPaymentType(paymentMediumId);
+
+            //payment type
+            if (ntPaymentType != null)
+            {
+                ntPaymentMethod.PaymentTypeId = ntPaymentType.Id;
+                ntPaymentMethod.AssignmentTypeId = "N";
+                ntPaymentMethod.Program = ntPaymentType.Program;
+                ntPaymentMethod.Name = ntPaymentType.Name;
+                return ntPaymentMethod;
+            }
+
+            //assignment type
+            var ntAssignmentType = Data.GetAssignmentType(paymentMediumId);
+            if (ntAssignmentType != null)
+            {
+                ntPaymentMethod.PaymentTypeId = ntAssignmentType.Id;
+                ntPaymentMethod.AssignmentTypeId = ntAssignmentType.Id;
+                ntPaymentMethod.Program = "";
+                ntPaymentMethod.Name = ntAssignmentType.Name;
+                return ntPaymentMethod;
+            }
+
+            //no valid payment or assignment type
+            throw new Exception("payment method must be a payment type or an assignment type: " + paymentMediumId.ToString());
         }
     }
 }

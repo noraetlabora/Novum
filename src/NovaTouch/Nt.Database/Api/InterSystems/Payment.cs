@@ -133,7 +133,7 @@ namespace Nt.Database.Api.InterSystems
         internal static string GetPaymentMethodDataString(Nt.Data.PaymentMethod paymentMethod)
         {
             var dataString = new StringBuilder();
-            //
+
             dataString.Append(paymentMethod.PaymentTypeId).Append(DataString.DoublePipes);
             dataString.Append(paymentMethod.AssignmentTypeId).Append(DataString.DoublePipes);
             dataString.Append(paymentMethod.Name).Append(DataString.DoublePipes);
@@ -153,14 +153,14 @@ namespace Nt.Database.Api.InterSystems
             dataString.Append("").Append(DataString.DoublePipes); //KreditkartenTransaktion
             dataString.Append("").Append(DataString.DoublePipes); //RfidTID
             dataString.Append("").Append(DataString.DoublePipes); //RfidDaten
-            //
+
             return dataString.ToString();
         }
 
         internal static string GetPaymentBillDataString(Nt.Data.PaymentInformation paymentInformation)
         {
             var dataString = new StringBuilder();
-            //
+
             dataString.Append("").Append(DataString.DoublePipes);//VKO
             dataString.Append("").Append(DataString.DoublePipes);//GesamtBetragBrutto
             dataString.Append(paymentInformation.DiscountAmount).Append(DataString.DoublePipes);
@@ -187,20 +187,20 @@ namespace Nt.Database.Api.InterSystems
             dataString.Append("").Append(DataString.DoublePipes);//OptPrinterDev
             dataString.Append("").Append(DataString.DoublePipes);//OptPrinterName
             dataString.Append("").Append(DataString.DoublePipes);//FiskalBelegType
-            //
+
             return dataString.ToString();
         }
 
         internal static string GetPaymentOptionDataString(Nt.Data.PaymentInformation paymentInformation)
         {
             var dataString = new StringBuilder();
-            //
-            dataString.Append("").Append(DataString.DoublePipes);//Bewritungsbeleg
+
+            dataString.Append("").Append(DataString.DoublePipes);//Bewirtungsbeleg
             dataString.Append("").Append(DataString.DoublePipes);//ZweiteUstGruppe
             dataString.Append("").Append(DataString.DoublePipes);//ReserveDrucker
             dataString.Append("").Append(DataString.DoublePipes);//obsoletKeinBelegDruck
-            dataString.Append("").Append(DataString.DoublePipes);//BelegDrucker
-            //
+            dataString.Append(paymentInformation.PrinterId).Append(DataString.DoublePipes);//BelegDrucker
+
             return dataString.ToString();
         }
 

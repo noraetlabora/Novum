@@ -135,7 +135,10 @@
   <data name="Table_NotOpen" xml:space="preserve">
     <value>table {0} is not open</value>
   </data>
-  <data name="Waiter_NotValid" xml:space="preserve">
-    <value>waiter {0} is not valid</value>
+  <data name="Waiter_IdPasswordNotValid" xml:space="preserve">
+    <value>waiter and password do not match</value>
+  </data>
+  <data name="Waiter_PinNotValid" xml:space="preserve">
+    <value>pin of waiter is unknown</value>
   </data>
 </root>
