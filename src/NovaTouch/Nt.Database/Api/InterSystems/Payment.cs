@@ -57,7 +57,7 @@ namespace Nt.Database.Api.InterSystems
             var paymentOptionDataString = Payment.GetPaymentOptionDataString(paymentInformation);
 
             //send the Fiscal Transaction if there is a provider
-            var fiscalResult = (Nov.NT.POS.Fiscal.FiscalResult)DB.Api.Fiscal.SendTransaction(session, ordersDataString, paymentMethodsDataString, paymentBillDataString);
+            var fiscalResult = (Nov.NT.POS.Fiscal.FiscalResult)DB.Api.Fiscal.SendTransaction(session, orders, paymentMethods, paymentInformation);
             var fiscalResultString = string.Empty;
             if (fiscalResult != null)
                 fiscalResultString = fiscalResult.ToDtoString();

@@ -41,7 +41,7 @@ namespace Os.Server
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();
 
-                if (Debugger.IsAttached)
+                if (Environment.UserInteractive)
                 {
                     Nt.Logging.Log.Server.Info("starting in console");
                     webHost.Run();

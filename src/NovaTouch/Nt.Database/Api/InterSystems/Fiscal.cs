@@ -20,90 +20,86 @@ namespace Nt.Database.Api.InterSystems
         /// 1 = no fiscalization - just payment methods where we don't need fiscalization
         /// 2 = no fiscalization due to the law
         /// </summary>
-        /// <param name="clientId">The current client id ("1001").</param>
-        /// <param name="posId">The current pos id ("RK2").</param>
+        /// <param name="session"></param>
         /// <returns>Returns the mode (fiscalization = 0, no fiscalization = 1,2) as string.</returns>
-        public string GetMode(string clientId, string posId)
+        public string GetMode(Data.Session session)
         {
-            return Interaction.CallClassMethod("cmNT.Fiskal", "GetFiskalModus", clientId, posId);
+            return Interaction.CallClassMethod("cmNT.Fiskal", "GetFiskalModus", session.ClientId, session.PosId);
         }
 
         /// <summary>
         /// 1 = old modul version (VB6)
         /// 2 = new modul version (.NET)
         /// </summary>
-        /// <param name="clientId">The current client id ("1001").</param>
+        /// <param name="session"></param>
         /// <returns>Returns the modul version (VB6 = 1, .NET = 2).</returns>
-        public string GetModulVersion(string clientId)
+        public string GetModulVersion(Data.Session session)
         {
-            return Interaction.CallClassMethod("cmNT.Fiskal", "GetFiskalModulV", clientId);
+            return Interaction.CallClassMethod("cmNT.Fiskal", "GetFiskalModulV", session.ClientId);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="clientId">The current client id ("1001").</param>
-        /// <returns>Returns the service type </returns>
-        public string GetServiceType(string clientId)
-        {
-            return Interaction.CallClassMethod("cmNT.Fiskal", "GetProvider", clientId);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="clientId">The current client id ("1001").</param>
-        /// <param name="posId">The current pos id ("RK2").</param>
+        /// <param name="session"></param>
         /// <returns></returns>
-        public string GetConfiguration(string clientId, string posId)
+        public string GetServiceType(Data.Session session)
         {
-            return Interaction.CallClassMethod("cmNT.Fiskal", "GetConfig", clientId, posId, string.Empty);
+            return Interaction.CallClassMethod("cmNT.Fiskal", "GetProvider", session.ClientId);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="clientId">The current client id ("1001").</param>
+        /// <param name="session"></param>
         /// <returns></returns>
-        public string GetClient(string clientId)
+        public string GetConfiguration(Data.Session session)
         {
-            return Interaction.CallClassMethod("cmNT.Fiskal", "GetMandant", clientId);
+            return Interaction.CallClassMethod("cmNT.Fiskal", "GetConfig", session.ClientId, session.PosId, string.Empty);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="clientId">The current client id ("1001").</param>
-        /// <param name="posId">The current pos id ("RK2").</param>
-        /// <param name="waiterId"></param>
+        /// <param name="session"></param>
         /// <returns></returns>
-        public string GetUser(string clientId, string posId, string waiterId)
+        public string GetClient(Data.Session session)
         {
-            return Interaction.CallClassMethod("cmNT.Fiskal", "GetBediener", clientId, posId, waiterId);
+            return Interaction.CallClassMethod("cmNT.Fiskal", "GetMandant", session.ClientId);
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
+        public string GetUser(Data.Session session)
+        {
+            return Interaction.CallClassMethod("cmNT.Fiskal", "GetBediener", session.ClientId, session.PosId, session.WaiterId);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="clientId">The current client id ("1001").</param>
-        /// <param name="posId">The current pos id ("RK2").</param>
-        /// <param name="serialNumber"></param>
+        /// <param name="session"></param>
         /// <returns></returns>
-        public object GetProvider(string clientId, string posId, string serialNumber)
+        public object GetProvider(Data.Session session)
         {
-            var fiscalMode = this.GetMode(clientId, posId);
+            var fiscalMode = this.GetMode(session);
             if (!fiscalMode.Equals("0"))
                 return null;
 
-            var fiscalConfiguration = this.GetConfiguration(clientId, posId);
-            var fiscalServiceType = this.GetServiceType(clientId);
+            var fiscalConfiguration = this.GetConfiguration(session);
+            var fiscalServiceType = this.GetServiceType(session);
 
             Nov.NT.POS.Fiscal.IFiscalProvider fiscalProvider;
             try
             {
                 fiscalProvider = Nov.NT.POS.Fiscal.ProviderFactory.GetFiscalProvider(fiscalServiceType);
                 fiscalProvider.ApplyConfiguration(fiscalConfiguration);
-                fiscalProvider.Open(serialNumber);
+                fiscalProvider.Open(session.SerialNumber);
             }
             catch (Exception ex)
             {
@@ -123,9 +119,9 @@ namespace Nt.Database.Api.InterSystems
                 return string.Empty;
 
             var fiscalProvider = (Nov.NT.POS.Fiscal.IFiscalProvider)session.FiscalProvider;
-            var fiscalClientString = DB.Api.Fiscal.GetClient(session.ClientId);
+            var fiscalClientString = DB.Api.Fiscal.GetClient(session);
             var fiscalClient = new Nov.NT.POS.Data.DTO.FiscalParameterMandantDTO(fiscalClientString);
-            var fiscalUserString = DB.Api.Fiscal.GetUser(session.ClientId, session.PosId, session.WaiterId);
+            var fiscalUserString = DB.Api.Fiscal.GetUser(session);
             var fiscalUser = new Nov.NT.POS.Data.DTO.FiscalParameterBedienerDTO(fiscalUserString);
             
             try
@@ -146,18 +142,23 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <param name="session"></param>
-        /// <param name="ordersDataString"></param>
-        /// <param name="paymentMethodsDataString"></param>
-        /// <param name="paymentBillDataString"></param>
-        public object SendTransaction(Data.Session session, string ordersDataString, string paymentMethodsDataString, string paymentBillDataString)
+        /// <param name="orders"></param>
+        /// <param name="paymentMethods"></param>
+        /// <param name="paymentInformation"></param>
+        public object SendTransaction(Data.Session session, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation)
         {
             if (session.FiscalProvider == null)
                 return null;
 
+            var ordersDataString = Order.GetOrderDataString(orders);
+            var paymentMethodsDataString = Payment.GetPaymentMethodDataString(paymentMethods);
+            var paymentBillDataString = Payment.GetPaymentBillDataString(paymentInformation);
+            var paymentOptionDataString = Payment.GetPaymentOptionDataString(paymentInformation);
+
             Nov.NT.POS.Fiscal.FiscalResult fiscalResult = null;
             var fiscalProvider = (Nov.NT.POS.Fiscal.IFiscalProvider)session.FiscalProvider;
-            var fiscalClientString = DB.Api.Fiscal.GetClient(session.ClientId);
-            var fiscalUserString = DB.Api.Fiscal.GetUser(session.ClientId, session.PosId, session.WaiterId);
+            var fiscalClientString = DB.Api.Fiscal.GetClient(session);
+            var fiscalUserString = DB.Api.Fiscal.GetUser(session);
             var fiscalData = GetData(session, ordersDataString, paymentMethodsDataString, paymentBillDataString);
             if (fiscalData.StartsWith("FM")) {
                 var fiscalDataString = new DataString(fiscalData);

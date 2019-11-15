@@ -74,9 +74,28 @@ namespace Os.Server.Logic
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static TableResult MoveSubTable(MoveSubtables data)
+        public static TableResult MoveSubTable(Nt.Data.Session session, MoveSubtables data)
         {
-            throw new NotImplementedException();
+            //iterate over all subTables and split to the target table
+            foreach(var sourceTableId in data.SubTableIds)
+            {
+                var sourceTableMainId = GetMainTable(sourceTableId);
+                var tablePostfix = sourceTableId.Replace(sourceTableMainId, "");
+                var targetTableId = data.TargetTableId + tablePostfix;
+                DB.Api.Table.SplitStart(session, sourceTableId, targetTableId);
+                //
+                var ntOrders = DB.Api.Order.GetOrders(sourceTableId);
+                foreach(var ntOrder in ntOrders)
+                {
+                    DB.Api.Table.SplitOrder(session, sourceTableId, targetTableId, ntOrder.Value, ntOrder.Value.Quantity);
+                }
+                //
+                DB.Api.Table.SplitDone(session);
+            }
+            // get data from target table
+            var targetTableName = DB.Api.Table.GetTableName(session, data.TargetTableId);
+            var tableResult = GetTableResult(session, targetTableName);
+            return tableResult;
         }
 
         /// <summary>
@@ -89,61 +108,7 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static Models.TableResult OpenByName(Nt.Data.Session session, string tableName, string serviceAreaId, bool prePayment)
         {
-            var osTableResult = new Models.TableResult();
-            var ntTables = DB.Api.Table.GetTables(session);
-            var ntMainTableName = "";
-            //search maintable
-            foreach (var novTable in ntTables.Values)
-            {
-                ntMainTableName = GetMainTable(novTable.Name);
-                if (!tableName.Equals(ntMainTableName))
-                    continue;
-
-                osTableResult.Id = GetMainTable(novTable.Id);
-                osTableResult.Name = GetMainTable(novTable.Name);
-                osTableResult.SubTables = new List<Models.SubTable>();
-                osTableResult.BookedAmount = 0;
-                osTableResult.LastActivityTime = (int)Nt.Data.Utils.Unix.Timestamp(novTable.Updated);
-                osTableResult.ServiceAreaId = serviceAreaId;
-            }
-
-            // add subtables to maintable
-            foreach (var ntTable in ntTables.Values)
-            {
-                ntMainTableName = GetMainTable(ntTable.Name);
-                if (!tableName.Equals(ntMainTableName))
-                    continue;
-
-                var osSubTable = new Models.SubTable();
-                osSubTable.Id = ntTable.Id;
-                osSubTable.Name = ntTable.Name;
-                osSubTable.IsSelected = false;
-
-                var mainTableId = GetMainTable(ntTable.Id);
-                osTableResult.SubTables.Add(osSubTable);
-                osTableResult.BookedAmount += (int)decimal.Multiply(ntTable.Amount, 100.0m);
-
-                //take time of the table last updated further in the past
-                var lastUpdated = (int)Nt.Data.Utils.Unix.Timestamp(ntTable.Updated);
-                if (osTableResult.LastActivityTime > lastUpdated)
-                    osTableResult.LastActivityTime = lastUpdated;
-            }
-
-            //table is not in list, create new maintable with one subtable
-            if (string.IsNullOrEmpty(osTableResult.Name))
-            {
-                osTableResult.Id = DB.Api.Table.GetTableId(session, tableName);
-                osTableResult.Name = tableName;
-                osTableResult.BookedAmount = 0;
-                osTableResult.LastActivityTime = (int)Nt.Data.Utils.Unix.Timestamp(DateTime.Now);
-
-                osTableResult.SubTables = new List<Models.SubTable>();
-                var osSubTable = new Models.SubTable();
-                osSubTable.Id = osTableResult.Id;
-                osSubTable.Name = osTableResult.Name;
-                osSubTable.IsSelected = false;
-                osTableResult.SubTables.Add(osSubTable);
-            }
+            var osTableResult = GetTableResult(session, tableName);
 
             DB.Api.Table.OpenTable(session, osTableResult.Id);
             Table.SetCurrentTable(session, osTableResult.SubTables[0].Id);
@@ -215,6 +180,68 @@ namespace Os.Server.Logic
                 return table.Substring(0, index);
             }
             return table;
+        }
+
+        private static TableResult GetTableResult(Nt.Data.Session session, string tableName)
+        {
+            var osTableResult = new Models.TableResult();
+            var ntTables = DB.Api.Table.GetTables(session);
+            var ntMainTableName = "";
+
+            //search maintable
+            foreach (var novTable in ntTables.Values)
+            {
+                ntMainTableName = GetMainTable(novTable.Name);
+                if (!tableName.Equals(ntMainTableName))
+                    continue;
+
+                osTableResult.Id = GetMainTable(novTable.Id);
+                osTableResult.Name = GetMainTable(novTable.Name);
+                osTableResult.SubTables = new List<Models.SubTable>();
+                osTableResult.BookedAmount = 0;
+                osTableResult.LastActivityTime = (int)Nt.Data.Utils.Unix.Timestamp(novTable.Updated);
+                osTableResult.ServiceAreaId = "";
+            }
+
+            // add subtables to maintable
+            foreach (var ntTable in ntTables.Values)
+            {
+                ntMainTableName = GetMainTable(ntTable.Name);
+                if (!tableName.Equals(ntMainTableName))
+                    continue;
+
+                var osSubTable = new Models.SubTable();
+                osSubTable.Id = ntTable.Id;
+                osSubTable.Name = ntTable.Name;
+                osSubTable.IsSelected = false;
+
+                var mainTableId = GetMainTable(ntTable.Id);
+                osTableResult.SubTables.Add(osSubTable);
+                osTableResult.BookedAmount += (int)decimal.Multiply(ntTable.Amount, 100.0m);
+
+                //take time of the table last updated further in the past
+                var lastUpdated = (int)Nt.Data.Utils.Unix.Timestamp(ntTable.Updated);
+                if (osTableResult.LastActivityTime > lastUpdated)
+                    osTableResult.LastActivityTime = lastUpdated;
+            }
+
+            //table is not in list, create new maintable with one subtable
+            if (string.IsNullOrEmpty(osTableResult.Name))
+            {
+                osTableResult.Id = DB.Api.Table.GetTableId(session, tableName);
+                osTableResult.Name = tableName;
+                osTableResult.BookedAmount = 0;
+                osTableResult.LastActivityTime = (int)Nt.Data.Utils.Unix.Timestamp(DateTime.Now);
+
+                osTableResult.SubTables = new List<Models.SubTable>();
+                var osSubTable = new Models.SubTable();
+                osSubTable.Id = osTableResult.Id;
+                osSubTable.Name = osTableResult.Name;
+                osSubTable.IsSelected = false;
+                osTableResult.SubTables.Add(osSubTable);
+            }
+
+            return osTableResult;
         }
 
         #endregion

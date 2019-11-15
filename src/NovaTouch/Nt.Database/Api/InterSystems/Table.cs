@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Nt.Data;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -128,6 +129,42 @@ namespace Nt.Database.Api.InterSystems
         public void UnlockTable(Nt.Data.Session session, string tableId)
         {
             Interaction.CallClassMethod("cmNT.Tisch", "TischUnlock", session.ClientId, session.PosId, session.WaiterId, tableId);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="sourceTableId"></param>
+        /// <param name="targetTableId"></param>
+        public void SplitStart(Session session, string sourceTableId, string targetTableId)
+        {
+            Interaction.CallVoidClassMethod("cmNT.SplittOman", "SetSplittStart", session.ClientId, session.PosId, session.SerialNumber, session.WaiterId);
+            Interaction.CallVoidClassMethod("cmNT.SplittOman", "SetSplittDaten", session.ClientId, session.PosId, session.SerialNumber, session.WaiterId, sourceTableId, targetTableId);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="sourceTableId"></param>
+        /// <param name="targetTableId"></param>
+        /// <param name="order"></param>
+        /// <param name="quantity"></param>
+        public void SplitOrder(Session session, string sourceTableId, string targetTableId, Data.Order order, decimal quantity)
+        {
+            var orderDataString = Order.GetOrderDataString(order);
+            var returnValue = Interaction.CallClassMethod("cmNT.SplittOman", "SetSplittZeile", session.ClientId, session.PosId, session.SerialNumber, session.WaiterId, sourceTableId, targetTableId, orderDataString, orderDataString, quantity);
+            System.Diagnostics.Debug.WriteLine("returnValue of cmNT.SplittOman.SetSplittZeile is: " + returnValue);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        public void SplitDone(Session session)
+        {
+            Interaction.CallVoidClassMethod("cmNT.SplittOman", "SetSplittOK", session.ClientId, session.PosId, session.SerialNumber, session.WaiterId);
         }
     }
 }

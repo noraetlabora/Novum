@@ -50,5 +50,29 @@ namespace Nt.Database.Api
         /// <param name="session"></param>
         /// <param name="tableId"></param>
         void UnlockTable(Nt.Data.Session session, string tableId);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="sourceTableId"></param>
+        /// <param name="targetTableId"></param>
+        void SplitStart(Nt.Data.Session session, string sourceTableId, string targetTableId);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="sourceTableId"></param>
+        /// <param name="targetTableId"></param>
+        /// <param name="order"></param>
+        /// <param name="quantity"></param>
+        void SplitOrder(Nt.Data.Session session, string sourceTableId, string targetTableId, Nt.Data.Order order, decimal quantity);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        void SplitDone(Nt.Data.Session session);
     }
 }

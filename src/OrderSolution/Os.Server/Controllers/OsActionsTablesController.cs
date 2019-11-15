@@ -48,7 +48,7 @@ namespace Os.Server.Controllers
             try
             {
                 var session = Sessions.GetSession(Request);
-                var moveResult = Logic.Table.MoveSubTable(data);
+                var moveResult = Logic.Table.MoveSubTable(session, data);
                 //200 - Ok
                 return new OkObjectResult(moveResult);
             }
