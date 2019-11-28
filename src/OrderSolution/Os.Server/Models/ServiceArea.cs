@@ -10,6 +10,7 @@
 
 using Newtonsoft.Json;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -34,11 +35,20 @@ namespace Os.Server.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Disabled (default) or enables the querying for number of covers in tables. If true the user is asked to enter the number of covers (which usually is the same as number of guests) when opening a table in the table selection screen and also a configured tool bar button will be enabled. If false or not defined the user is not asked and in case a tool bar button is configured for modifying number of covers this button is disabled.
+        /// Disables (default) or enables the option to querying for number of covers in tables. If not disabled the user is asked to enter the number of covers (which usually is the same as number of guests) when opening a table in the table selection screen and also a configured tool bar button will be enabled. If false or not defined the user is not asked and in case a tool bar button is configured for modifying number of covers this button is disabled.
         /// </summary>
-        /// <value>Disabled (default) or enables the querying for number of covers in tables. If true the user is asked to enter the number of covers (which usually is the same as number of guests) when opening a table in the table selection screen and also a configured tool bar button will be enabled. If false or not defined the user is not asked and in case a tool bar button is configured for modifying number of covers this button is disabled.</value>
+        /// <value>Disables (default) or enables the option to querying for number of covers in tables. If not disabled the user is asked to enter the number of covers (which usually is the same as number of guests) when opening a table in the table selection screen and also a configured tool bar button will be enabled. If false or not defined the user is not asked and in case a tool bar button is configured for modifying number of covers this button is disabled.</value>
+        [Required]
         [DataMember(Name = "numberOfCovers")]
-        public bool? NumberOfCovers { get; set; }
+        public Object NumberOfCovers { get; set; }
+
+        /// <summary>
+        /// Disables (default) or enables the option to querying for guest type in tables. If not disabled the user is asked to enter the guest type when opening a table in the table selection screen and also a configured tool bar button will be enabled (note: this is the same toolbar button as for number of covers). If disabled or not defined the user is not asked and in case a tool bar button is configured for modifying number of covers this button is disabled.
+        /// </summary>
+        /// <value>Disables (default) or enables the option to querying for guest type in tables. If not disabled the user is asked to enter the guest type when opening a table in the table selection screen and also a configured tool bar button will be enabled (note: this is the same toolbar button as for number of covers). If disabled or not defined the user is not asked and in case a tool bar button is configured for modifying number of covers this button is disabled.</value>
+        [Required]
+        [DataMember(Name = "guestType")]
+        public Object GuestType { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -51,6 +61,7 @@ namespace Os.Server.Models
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  NumberOfCovers: ").Append(NumberOfCovers).Append("\n");
+            sb.Append("  GuestType: ").Append(GuestType).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -101,6 +112,11 @@ namespace Os.Server.Models
                     NumberOfCovers == other.NumberOfCovers ||
                     NumberOfCovers != null &&
                     NumberOfCovers.Equals(other.NumberOfCovers)
+                ) &&
+                (
+                    GuestType == other.GuestType ||
+                    GuestType != null &&
+                    GuestType.Equals(other.GuestType)
                 );
         }
 
@@ -120,6 +136,8 @@ namespace Os.Server.Models
                     hashCode = hashCode * 59 + Name.GetHashCode();
                 if (NumberOfCovers != null)
                     hashCode = hashCode * 59 + NumberOfCovers.GetHashCode();
+                if (GuestType != null)
+                    hashCode = hashCode * 59 + GuestType.GetHashCode();
                 return hashCode;
             }
         }

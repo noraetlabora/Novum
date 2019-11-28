@@ -24,16 +24,36 @@
         <PasswordBox x:Name="txtDbPassword" HorizontalAlignment="Left" Margin="360,167,0,0" VerticalAlignment="Top" Width="120" Height="23" TabIndex="14"/>
         <TextBox  x:Name="txtDbIp" HorizontalAlignment="Left" Height="23" Margin="360,56,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="10"/>
         <Label  x:Name="lblOsServerPort" Content="Server Port" HorizontalAlignment="Left" Margin="15,55,0,0" VerticalAlignment="Top" Width="100"/>
-        <TextBox  x:Name="txtOsServerPort" HorizontalAlignment="Left" Height="23" Margin="120,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="1"/>
+        <TextBox  x:Name="txtOsServerPort" HorizontalAlignment="Left" Height="23" Margin="100,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="1"/>
         <Label  x:Name="lblOsClientIp" Content="Client Ip" HorizontalAlignment="Left" Margin="15,82,0,0" VerticalAlignment="Top" Width="100"/>
         <Label  x:Name="lblOsClientPort" Content="Client Port" HorizontalAlignment="Left" Margin="15,109,0,0" VerticalAlignment="Top" Width="100"/>
-        <TextBox  x:Name="txtOsClientPort" HorizontalAlignment="Left" Height="23" Margin="120,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="3"/>
-        <TextBox  x:Name="txtOsClientIp" HorizontalAlignment="Left" Height="23" Margin="120,82,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="2"/>
+        <TextBox  x:Name="txtOsClientPort" HorizontalAlignment="Left" Height="23" Margin="100,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="3"/>
+        <TextBox  x:Name="txtOsClientIp" HorizontalAlignment="Left" Height="23" Margin="100,82,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TabIndex="2"/>
         <Label Content="OrderSolutions" Margin="10,6,570,680" FontSize="24" />
         <Border x:Name="brdServiceStatus" BorderThickness="1" HorizontalAlignment="Left" Height="90" Margin="10,342,0,0" VerticalAlignment="Top" Width="790" Background="{DynamicResource Success}" CornerRadius="5,5,5,5" >
             <Label Content="Service Status" Margin="9,0,0,0" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Left" />
         </Border>
         <Label  x:Name="lblServiceStatus" Content="Service is running" HorizontalAlignment="Left" Margin="180,373,0,0" VerticalAlignment="Top" Width="566" FontSize="18"/>
         <Border BorderThickness="1" HorizontalAlignment="Left" Height="300" Margin="551,10,0,0" VerticalAlignment="Top" Width="250" Background="{DynamicResource Primary}" CornerRadius="5,5,5,5" />
+        <Label  x:Name="lblLocalization" Content="Localization" HorizontalAlignment="Left" Margin="559,57,0,0" VerticalAlignment="Top" Width="100"/>
+        <ComboBox x:Name="cmbLocalization" HorizontalAlignment="Left" Margin="667,59,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem Content="de_AT"/>
+            <ComboBoxItem Content="en_US"/>
+        </ComboBox>
+        <Label Content="Client" Margin="554,6,36,687" FontSize="24" />
+        <Label  x:Name="lblPriceEntryMode" Content="Price Entry Mode" HorizontalAlignment="Left" Margin="559,82,0,0" VerticalAlignment="Top" Width="100"/>
+        <ComboBox x:Name="cmbPriceEntryMode" HorizontalAlignment="Left" Margin="667,85,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem Content="CommaToSet"/>
+            <ComboBoxItem Content="FixedComma"/>
+        </ComboBox>
+        <CheckBox x:Name="chbDisableSubTables" Content="Disable SubTables" HorizontalAlignment="Left" Margin="561,221,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="chbMoveAllSubTables" Content="Move All SubTables" HorizontalAlignment="Left" Margin="561,239,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="chbMoveSingleSubTable" Content="Move Single Tables" HorizontalAlignment="Left" Margin="561,257,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="chbTip" Content="Tip" HorizontalAlignment="Left" Margin="561,275,0,0" VerticalAlignment="Top"/>
+        <Label  x:Name="lblAuthentication" Content="Authentication" HorizontalAlignment="Left" Margin="559,108,0,0" VerticalAlignment="Top" Width="100"/>
+        <ComboBox x:Name="cmbAuthenticationMode" HorizontalAlignment="Left" Margin="667,111,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem Content="number"/>
+            <ComboBoxItem Content="selection"/>
+        </ComboBox>
     </Grid>
 </UserControl>

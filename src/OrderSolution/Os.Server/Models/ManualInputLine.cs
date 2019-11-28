@@ -36,9 +36,9 @@ namespace Os.Server.Models
         public string DefaultValue { get; set; }
 
         /// <summary>
-        /// Regular expression used for validating the input. Per default (if not specified) we use the expression .* which will allow any string.
+        /// Regular expression used for validating the input. Per default (if not specified) we use the expression .* which will allow any string. For text input only.
         /// </summary>
-        /// <value>Regular expression used for validating the input. Per default (if not specified) we use the expression .* which will allow any string.</value>
+        /// <value>Regular expression used for validating the input. Per default (if not specified) we use the expression .* which will allow any string. For text input only.</value>
         [DataMember(Name = "regExpValidator")]
         public string RegExpValidator { get; set; }
 
@@ -48,6 +48,34 @@ namespace Os.Server.Models
         /// <value>The label for the input line that describes what the user is up to enter in that line. Usually shown above or left to the input field.</value>
         [DataMember(Name = "label")]
         public string Label { get; set; }
+
+        /// <summary>
+        /// Defines the input type. Default is text.
+        /// </summary>
+        /// <value>Defines the input type. Default is text.</value>
+        [DataMember(Name = "type")]
+        public Object Type { get; set; }
+
+        /// <summary>
+        /// Defines the minimum allowed numeric value. If not defined no minimum limit is used. For Type \&quot;numeric\&quot; only.
+        /// </summary>
+        /// <value>Defines the minimum allowed numeric value. If not defined no minimum limit is used. For Type \&quot;numeric\&quot; only.</value>
+        [DataMember(Name = "minValue")]
+        public int? MinValue { get; set; }
+
+        /// <summary>
+        /// Defines the maximum allowed numeric value. If not defined no maximum limit is used. For Type \&quot;numeric\&quot; only.
+        /// </summary>
+        /// <value>Defines the maximum allowed numeric value. If not defined no maximum limit is used. For Type \&quot;numeric\&quot; only.</value>
+        [DataMember(Name = "maxValue")]
+        public int? MaxValue { get; set; }
+
+        /// <summary>
+        /// Defines the number of decimal digits. Default is 0. For example if 2 decimal digits are defined. A value of 124 represents the number \&quot;1.24\&quot; and is also shown like this in the input field. For Type \&quot;numeric\&quot; only.
+        /// </summary>
+        /// <value>Defines the number of decimal digits. Default is 0. For example if 2 decimal digits are defined. A value of 124 represents the number \&quot;1.24\&quot; and is also shown like this in the input field. For Type \&quot;numeric\&quot; only.</value>
+        [DataMember(Name = "decimalDigits")]
+        public int? DecimalDigits { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -61,6 +89,10 @@ namespace Os.Server.Models
             sb.Append("  DefaultValue: ").Append(DefaultValue).Append("\n");
             sb.Append("  RegExpValidator: ").Append(RegExpValidator).Append("\n");
             sb.Append("  Label: ").Append(Label).Append("\n");
+            sb.Append("  Type: ").Append(Type).Append("\n");
+            sb.Append("  MinValue: ").Append(MinValue).Append("\n");
+            sb.Append("  MaxValue: ").Append(MaxValue).Append("\n");
+            sb.Append("  DecimalDigits: ").Append(DecimalDigits).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -116,6 +148,26 @@ namespace Os.Server.Models
                     Label == other.Label ||
                     Label != null &&
                     Label.Equals(other.Label)
+                ) &&
+                (
+                    Type == other.Type ||
+                    Type != null &&
+                    Type.Equals(other.Type)
+                ) &&
+                (
+                    MinValue == other.MinValue ||
+                    MinValue != null &&
+                    MinValue.Equals(other.MinValue)
+                ) &&
+                (
+                    MaxValue == other.MaxValue ||
+                    MaxValue != null &&
+                    MaxValue.Equals(other.MaxValue)
+                ) &&
+                (
+                    DecimalDigits == other.DecimalDigits ||
+                    DecimalDigits != null &&
+                    DecimalDigits.Equals(other.DecimalDigits)
                 );
         }
 
@@ -137,6 +189,14 @@ namespace Os.Server.Models
                     hashCode = hashCode * 59 + RegExpValidator.GetHashCode();
                 if (Label != null)
                     hashCode = hashCode * 59 + Label.GetHashCode();
+                if (Type != null)
+                    hashCode = hashCode * 59 + Type.GetHashCode();
+                if (MinValue != null)
+                    hashCode = hashCode * 59 + MinValue.GetHashCode();
+                if (MaxValue != null)
+                    hashCode = hashCode * 59 + MaxValue.GetHashCode();
+                if (DecimalDigits != null)
+                    hashCode = hashCode * 59 + DecimalDigits.GetHashCode();
                 return hashCode;
             }
         }

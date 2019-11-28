@@ -71,8 +71,9 @@ namespace Os.Server.Models
         public List<ArticleModifierGroup> ModifierGroups { get; set; }
 
         /// <summary>
-        /// Gets or Sets ComboGroups
+        /// If set this makes this article a combo which is a set of other articles that can be ordered. Typically this construct is used for creating menus (like first course and main course) or oder sets (like a meal with a drink and a combined price).
         /// </summary>
+        /// <value>If set this makes this article a combo which is a set of other articles that can be ordered. Typically this construct is used for creating menus (like first course and main course) or oder sets (like a meal with a drink and a combined price).</value>
         [DataMember(Name = "comboGroups")]
         public List<ArticleComboGroups> ComboGroups { get; set; }
 

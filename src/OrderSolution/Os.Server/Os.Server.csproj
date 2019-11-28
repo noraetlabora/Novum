@@ -21,7 +21,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="NCR\OsClient\OsClient.19.2.1.8.om7app">
+    <None Remove="NCR\OsClient\OsClient.19.2.3.2.om7app" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="NCR\OsClient\OsClient.19.2.3.2.om7app">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="NCR\OsServer\LICENSES">

@@ -157,5 +157,64 @@ namespace Os.Server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, osError);
             }
         }
+
+        /// <summary>
+        /// Modifiers properties of the given table.
+        /// </summary>
+
+        /// <param name="tableId">The table of which the properties are updated.</param>
+        /// <param name="newProperties">The properties with their values to be updated. NOTE: Only the properties that are given in this options are updated. If a property is not part of this object it must not be changed.</param>
+        /// <response code="204"></response>
+        /// <response code="401"></response>
+        /// <response code="403"></response>
+        /// <response code="409"></response>
+        [HttpPatch]
+        [Route("/api/v2/actions/tables/modifyProperties/{tableId}")]
+        public virtual IActionResult TablesModifyProperties([FromRoute][Required]string tableId, [FromBody]Models.TableProperties newProperties)
+        {
+            try
+            {
+                var session = Sessions.GetSession(Request);
+                // return StatusCode(204);
+                // return StatusCode(401);
+                // return StatusCode(403);
+                // return StatusCode(409);
+                throw new NotImplementedException("/api/v2/actions/tables/modifyProperties/ not implemented");
+            }
+            catch (Exception ex)
+            {
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
+                var osError = new Models.OsError();
+                osError.ErrorMsg = ex.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, osError);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+
+        /// <param name="tableId"></param>
+        /// <param name="data"></param>
+        /// <response code="200">New course added</response>
+        [HttpPost]
+        [Route("/api/v2/actions/tables/addCourse/{tableId}")]
+        public virtual IActionResult TablesAddCourse([FromRoute][Required]string tableId, [FromBody]Models.AddCourseData data)
+        {
+            try
+            {
+                var session = Sessions.GetSession(Request);
+                throw new NotImplementedException("/api/v2/actions/tables/addCourse/ not implemented");
+                //200 - Ok
+                //return new OkObjectResult(null);
+            }
+            catch (Exception ex)
+            {
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
+                var osError = new Models.OsError();
+                osError.ErrorMsg = ex.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, osError);
+            }
+        }
     }
 }

@@ -20,7 +20,8 @@ namespace Nt.Services.UserControls
     public partial class OrderSolutions : UserControl
     {
         private const string novOsServiceName = "Novacom OrderSolution Server";
-        private string configurationFile = AppDomain.CurrentDomain.BaseDirectory + @"\OrderSolution\Os.Server.config.json";
+        private string osServerConfigurationFile = AppDomain.CurrentDomain.BaseDirectory + @"\OrderSolution\Os.Server.config.json";
+        private string osClientConfigurationFile = AppDomain.CurrentDomain.BaseDirectory + @"\OrderSolution\Os.Client.config.json";
 
         public OrderSolutions()
         {
@@ -30,6 +31,11 @@ namespace Nt.Services.UserControls
             dispatcherTimer.Tick += new EventHandler(serviceStatus_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 2);
             dispatcherTimer.Start();
+        }
+
+        public override bool ShouldSerializeContent()
+        {
+            return base.ShouldSerializeContent();
         }
 
         private void serviceStatus_Tick(object sender, EventArgs e)
@@ -107,7 +113,8 @@ namespace Nt.Services.UserControls
                     DisableArguments();
                     btnServiceInstall.IsEnabled = false;
                     btnServiceRun.IsEnabled = false;
-                    SaveArguments();
+                    SaveServerConfiguration();
+                    SaveClientConfiguration();
                     Service.Start(novOsServiceName);
                     System.Threading.Thread.Sleep(10000);
                     NcrOsServer("start");
@@ -189,7 +196,7 @@ namespace Nt.Services.UserControls
             txtOsClientPort.IsEnabled = false;
         }
 
-        private void SaveArguments()
+        private void SaveServerConfiguration()
         {
             var osServerConfiguration = new Os.Server.OsServerConfiguration();
             osServerConfiguration.DatabaseIp = txtDbIp.Text;
@@ -204,40 +211,103 @@ namespace Nt.Services.UserControls
             var jsonOption = new System.Text.Json.JsonSerializerOptions();
             jsonOption.WriteIndented = true;
             string json = System.Text.Json.JsonSerializer.Serialize(osServerConfiguration, jsonOption);
-            System.IO.File.WriteAllText(configurationFile, json);
+            System.IO.File.WriteAllText(osServerConfigurationFile, json);
         }
 
-        private void LoadArguments()
+        private void SaveClientConfiguration()
         {
-            var osServerConfiguration = new Os.Server.OsServerConfiguration();
+            var osClientConfiguration = new Os.Server.OsClientConfiguration();
+
+            var jsonOption = new System.Text.Json.JsonSerializerOptions();
+            jsonOption.WriteIndented = true;
+
+            //CommaToSet
+            if (cmbPriceEntryMode.Text.Equals("CommaToSet"))
+                osClientConfiguration.PriceEntryMode = "0";
+            //FixedComma
+            else
+                osClientConfiguration.PriceEntryMode = "1";
+
+            if ((bool)chbDisableSubTables.IsChecked)
+                osClientConfiguration.DisableSubtables = true;
+            else
+                osClientConfiguration.DisableSubtables = false;
+
+            osClientConfiguration.Localization = cmbLocalization.Text;
+            osClientConfiguration.AuthenthicationMode = cmbAuthenticationMode.Text;
+            osClientConfiguration.FeatureMoveAllSubTables = (bool)chbMoveAllSubTables.IsChecked;
+            osClientConfiguration.FeatureMoveSingleSubTable = (bool)chbMoveSingleSubTable.IsChecked;
+            osClientConfiguration.FeatureTip = (bool)chbTip.IsChecked;
+
+            string json = System.Text.Json.JsonSerializer.Serialize(osClientConfiguration, jsonOption);
+            System.IO.File.WriteAllText(osClientConfigurationFile, json);
+        }
+
+        private void LoadClientConfiguration()
+        {
+            var osClientConfiguration = new Os.Server.OsClientConfiguration();
 
             try
             {
-                var json = System.IO.File.ReadAllText(configurationFile);
-                osServerConfiguration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.OsServerConfiguration>(json);
+                var json = System.IO.File.ReadAllText(osClientConfigurationFile);
+                osClientConfiguration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.OsClientConfiguration>(json);
+
+                //CommaToSet
+                if (osClientConfiguration.PriceEntryMode.Equals("0"))
+                    cmbPriceEntryMode.Text = "CommaToSet";
+                else
+                    cmbPriceEntryMode.Text = "FixedComma";
+
+                if (osClientConfiguration.DisableSubtables)
+                    chbDisableSubTables.IsChecked = true;
+                else
+                    chbDisableSubTables.IsChecked = false;
+
+                cmbLocalization.Text = osClientConfiguration.Localization;
+                cmbAuthenticationMode.Text = osClientConfiguration.AuthenthicationMode;
+                chbMoveAllSubTables.IsChecked = osClientConfiguration.FeatureMoveAllSubTables;
+                chbMoveSingleSubTable.IsChecked = osClientConfiguration.FeatureMoveSingleSubTable;
+                chbTip.IsChecked = osClientConfiguration.FeatureTip;
             }
             catch
             {
             }
 
-            txtDbIp.Text = osServerConfiguration.DatabaseIp;
-            txtDbPort.Text = osServerConfiguration.DatabasePort.ToString();
-            txtDbNamespace.Text = osServerConfiguration.DatabaseNamespace;
-            txtDbUser.Text = osServerConfiguration.DatabaseUser;
-            txtDbPassword.Password = Nt.Util.Encryption.DecryptString(osServerConfiguration.DatabasePassword);
-            txtOsServerPort.Text = osServerConfiguration.OsServerPort.ToString();
-            txtOsClientIp.Text = osServerConfiguration.OsClientIp;
-            txtOsClientPort.Text = osServerConfiguration.OsClientPort.ToString(); 
+        }
+
+        private void LoadServerConfiguration()
+        {
+            var osServerConfiguration = new Os.Server.OsServerConfiguration();
+
+            try
+            {
+                var json = System.IO.File.ReadAllText(osServerConfigurationFile);
+                osServerConfiguration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.OsServerConfiguration>(json);
+
+                txtDbIp.Text = osServerConfiguration.DatabaseIp;
+                txtDbPort.Text = osServerConfiguration.DatabasePort.ToString();
+                txtDbNamespace.Text = osServerConfiguration.DatabaseNamespace;
+                txtDbUser.Text = osServerConfiguration.DatabaseUser;
+                txtDbPassword.Password = Nt.Util.Encryption.DecryptString(osServerConfiguration.DatabasePassword);
+                txtOsServerPort.Text = osServerConfiguration.OsServerPort.ToString();
+                txtOsClientIp.Text = osServerConfiguration.OsClientIp;
+                txtOsClientPort.Text = osServerConfiguration.OsClientPort.ToString();
+            }
+            catch
+            {
+            }
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadArguments();
+            LoadServerConfiguration();
+            LoadClientConfiguration();
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            SaveArguments();
+            SaveServerConfiguration();
+            SaveClientConfiguration();
         }
 
         private void NcrOsServer(string argument)

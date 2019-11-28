@@ -36,15 +36,16 @@ namespace Os.Server.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// If set this defines the limit how many choices (&#x3D; sum of all the quantities of the choices from the content) If not defined the quantity allowed is unlimited. Typically only done for choices that have a price and sold as supplements.
+        /// If set this defines the limit how many choices (&#x3D; sum of all the quantities of the choices from the content). If not defined the quantity allowed is unlimited. Typically only done for choices that have a price and sold as supplements.
         /// </summary>
-        /// <value>If set this defines the limit how many choices (&#x3D; sum of all the quantities of the choices from the content) If not defined the quantity allowed is unlimited. Typically only done for choices that have a price and sold as supplements.</value>
+        /// <value>If set this defines the limit how many choices (&#x3D; sum of all the quantities of the choices from the content). If not defined the quantity allowed is unlimited. Typically only done for choices that have a price and sold as supplements.</value>
         [DataMember(Name = "maxQuantity")]
         public int? MaxQuantity { get; set; }
 
         /// <summary>
-        /// Gets or Sets Content
+        /// Defines the content of this combo group.
         /// </summary>
+        /// <value>Defines the content of this combo group.</value>
         [DataMember(Name = "content")]
         public List<ComboContentEntry> Content { get; set; }
 

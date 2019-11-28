@@ -21,7 +21,7 @@ namespace Os.Server.Models
     /// 
     /// </summary>
     [DataContract]
-    public partial class Category : IEquatable<Category>
+    public partial class Category : CategoryEntryBase, IEquatable<Category>
     {
         /// <summary>
         /// Gets or Sets Name
@@ -53,7 +53,7 @@ namespace Os.Server.Models
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
-        public string ToJson()
+        public new string ToJson()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }

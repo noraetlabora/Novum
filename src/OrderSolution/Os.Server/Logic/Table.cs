@@ -1,5 +1,4 @@
 using Nt.Database;
-using Os.Server.Models;
 using System;
 using System.Collections.Generic;
 
@@ -74,10 +73,10 @@ namespace Os.Server.Logic
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static TableResult MoveSubTable(Nt.Data.Session session, MoveSubtables data)
+        public static Models.TableResultEx MoveSubTable(Nt.Data.Session session, Models.MoveSubtables data)
         {
             //iterate over all subTables and split to the target table
-            foreach(var sourceTableId in data.SubTableIds)
+            foreach (var sourceTableId in data.SubTableIds)
             {
                 var sourceTableMainId = GetMainTable(sourceTableId);
                 var tablePostfix = sourceTableId.Replace(sourceTableMainId, "");
@@ -85,7 +84,7 @@ namespace Os.Server.Logic
                 DB.Api.Table.SplitStart(session, sourceTableId, targetTableId);
                 //
                 var ntOrders = DB.Api.Order.GetOrders(sourceTableId);
-                foreach(var ntOrder in ntOrders)
+                foreach (var ntOrder in ntOrders)
                 {
                     DB.Api.Table.SplitOrder(session, sourceTableId, targetTableId, ntOrder.Value, ntOrder.Value.Quantity);
                 }
@@ -182,9 +181,9 @@ namespace Os.Server.Logic
             return table;
         }
 
-        private static TableResult GetTableResult(Nt.Data.Session session, string tableName)
+        private static Models.TableResultEx GetTableResult(Nt.Data.Session session, string tableName)
         {
-            var osTableResult = new Models.TableResult();
+            var osTableResult = new Models.TableResultEx();
             var ntTables = DB.Api.Table.GetTables(session);
             var ntMainTableName = "";
 

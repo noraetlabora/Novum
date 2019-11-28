@@ -50,17 +50,25 @@ namespace Os.Server.Models
         public bool? AskForAmount { get; set; }
 
         /// <summary>
+        /// Optional. If true it requires that the check/bill is only paid with this single payment medium. As a result if first another payment medium is used to partially pay a check/bill (like a 10 EUR check is paid with 2 EUR cash) all media types with this flag set will be disabled.
+        /// </summary>
+        /// <value>Optional. If true it requires that the check/bill is only paid with this single payment medium. As a result if first another payment medium is used to partially pay a check/bill (like a 10 EUR check is paid with 2 EUR cash) all media types with this flag set will be disabled.</value>
+        [DataMember(Name = "fullPaymentOnly")]
+        public bool? FullPaymentOnly { get; set; }
+
+        /// <summary>
+        /// Optional. If true the payments using this media ID are consolidated into a single payment line with a counter. Otherwise (default) each payment has it&#39;s own line on the payment screen.
+        /// </summary>
+        /// <value>Optional. If true the payments using this media ID are consolidated into a single payment line with a counter. Otherwise (default) each payment has it&#39;s own line on the payment screen.</value>
+        [DataMember(Name = "consolidatePayments")]
+        public bool? ConsolidatePayments { get; set; }
+
+        /// <summary>
         /// If set the payment medium will trigger to ask for specific data from the user when it is selected in the payment media selection screen. This type of payment medium will ALWAYS trigger actions/pay/preAuthorize request!  Example: Let&#39;s say you plan to create a payment media to read an MSR card but if using the MSR fails (for example because of a bad magnetic strip) you want to enter the cards ID manually. In this case you have to create 2 different payment media types. First one for the MSR and the second one for manual input. So the client user has to decide which one to use. In case swiping the card fails they will cancel that procedure and select the manual entry medium instead.
         /// </summary>
         /// <value>If set the payment medium will trigger to ask for specific data from the user when it is selected in the payment media selection screen. This type of payment medium will ALWAYS trigger actions/pay/preAuthorize request!  Example: Let&#39;s say you plan to create a payment media to read an MSR card but if using the MSR fails (for example because of a bad magnetic strip) you want to enter the cards ID manually. In this case you have to create 2 different payment media types. First one for the MSR and the second one for manual input. So the client user has to decide which one to use. In case swiping the card fails they will cancel that procedure and select the manual entry medium instead.</value>
         [DataMember(Name = "requestInput")]
         public Object RequestInput { get; set; }
-
-        /// <summary>
-        /// Gets or Sets FullPaymentOnly
-        /// </summary>
-        [DataMember(Name = "fullPaymentOnly")]
-        public bool? FullPaymentOnly { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -74,8 +82,9 @@ namespace Os.Server.Models
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("  AllowOverPayment: ").Append(AllowOverPayment).Append("\n");
             sb.Append("  AskForAmount: ").Append(AskForAmount).Append("\n");
-            sb.Append("  RequestInput: ").Append(RequestInput).Append("\n");
             sb.Append("  FullPaymentOnly: ").Append(FullPaymentOnly).Append("\n");
+            sb.Append("  ConsolidatePayments: ").Append(ConsolidatePayments).Append("\n");
+            sb.Append("  RequestInput: ").Append(RequestInput).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -133,14 +142,19 @@ namespace Os.Server.Models
                     AskForAmount.Equals(other.AskForAmount)
                 ) &&
                 (
-                    RequestInput == other.RequestInput ||
-                    RequestInput != null &&
-                    RequestInput.Equals(other.RequestInput)
-                ) &&
-                (
                     FullPaymentOnly == other.FullPaymentOnly ||
                     FullPaymentOnly != null &&
                     FullPaymentOnly.Equals(other.FullPaymentOnly)
+                ) &&
+                (
+                    ConsolidatePayments == other.ConsolidatePayments ||
+                    ConsolidatePayments != null &&
+                    ConsolidatePayments.Equals(other.ConsolidatePayments)
+                ) &&
+                (
+                    RequestInput == other.RequestInput ||
+                    RequestInput != null &&
+                    RequestInput.Equals(other.RequestInput)
                 );
         }
 
@@ -162,10 +176,12 @@ namespace Os.Server.Models
                     hashCode = hashCode * 59 + AllowOverPayment.GetHashCode();
                 if (AskForAmount != null)
                     hashCode = hashCode * 59 + AskForAmount.GetHashCode();
-                if (RequestInput != null)
-                    hashCode = hashCode * 59 + RequestInput.GetHashCode();
                 if (FullPaymentOnly != null)
                     hashCode = hashCode * 59 + FullPaymentOnly.GetHashCode();
+                if (ConsolidatePayments != null)
+                    hashCode = hashCode * 59 + ConsolidatePayments.GetHashCode();
+                if (RequestInput != null)
+                    hashCode = hashCode * 59 + RequestInput.GetHashCode();
                 return hashCode;
             }
         }

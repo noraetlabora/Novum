@@ -37,17 +37,17 @@ namespace Os.Server.Models
         public string ArticleId { get; set; }
 
         /// <summary>
-        /// The unpaid quantity of this orderline.
+        /// The unpaid quantity of this order line.
         /// </summary>
-        /// <value>The unpaid quantity of this orderline.</value>
+        /// <value>The unpaid quantity of this order line.</value>
         [Required]
         [DataMember(Name = "quantity")]
         public int? Quantity { get; set; }
 
         /// <summary>
-        /// The unpaid price of this orderline.
+        /// The unpaid price of this order line.
         /// </summary>
-        /// <value>The unpaid price of this orderline.</value>
+        /// <value>The unpaid price of this order line.</value>
         [Required]
         [DataMember(Name = "singlePrice")]
         public int? SinglePrice { get; set; }
@@ -92,10 +92,25 @@ namespace Os.Server.Models
         public OrderLineStatus? Status { get; set; }
 
         /// <summary>
-        /// Gets or Sets Modifiers
+        /// If set defines the modifiers for this order line.
         /// </summary>
+        /// <value>If set defines the modifiers for this order line.</value>
         [DataMember(Name = "modifiers")]
         public List<OrderLineModifier> Modifiers { get; set; }
+
+        /// <summary>
+        /// If set this order line is a combo member and defines to which head / comboGroup this order line belongs to.
+        /// </summary>
+        /// <value>If set this order line is a combo member and defines to which head / comboGroup this order line belongs to.</value>
+        [DataMember(Name = "combo")]
+        public Object Combo { get; set; }
+
+        /// <summary>
+        /// Only supported if coursing features is enabled (see osConfiguration for details). Optional. If set it refers to a course defined for the table this line is ordered in or the global courses list if no table specific courses are set. NOTE: If courses feature is enabled but no course ID is specified it is expected that this order line is going to be in the first course of the courses list.
+        /// </summary>
+        /// <value>Only supported if coursing features is enabled (see osConfiguration for details). Optional. If set it refers to a course defined for the table this line is ordered in or the global courses list if no table specific courses are set. NOTE: If courses feature is enabled but no course ID is specified it is expected that this order line is going to be in the first course of the courses list.</value>
+        [DataMember(Name = "courseId")]
+        public string CourseId { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -111,6 +126,8 @@ namespace Os.Server.Models
             sb.Append("  SinglePrice: ").Append(SinglePrice).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
             sb.Append("  Modifiers: ").Append(Modifiers).Append("\n");
+            sb.Append("  Combo: ").Append(Combo).Append("\n");
+            sb.Append("  CourseId: ").Append(CourseId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -176,6 +193,16 @@ namespace Os.Server.Models
                     Modifiers == other.Modifiers ||
                     Modifiers != null &&
                     Modifiers.SequenceEqual(other.Modifiers)
+                ) &&
+                (
+                    Combo == other.Combo ||
+                    Combo != null &&
+                    Combo.Equals(other.Combo)
+                ) &&
+                (
+                    CourseId == other.CourseId ||
+                    CourseId != null &&
+                    CourseId.Equals(other.CourseId)
                 );
         }
 
@@ -201,6 +228,10 @@ namespace Os.Server.Models
                     hashCode = hashCode * 59 + Status.GetHashCode();
                 if (Modifiers != null)
                     hashCode = hashCode * 59 + Modifiers.GetHashCode();
+                if (Combo != null)
+                    hashCode = hashCode * 59 + Combo.GetHashCode();
+                if (CourseId != null)
+                    hashCode = hashCode * 59 + CourseId.GetHashCode();
                 return hashCode;
             }
         }

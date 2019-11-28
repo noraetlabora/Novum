@@ -49,7 +49,7 @@ namespace Os.Server.Logic
                 session.WaiterId = waiterId;
             }
             // login over waiter selection
-            else 
+            else
             {
                 var validWaiter = Nt.Database.DB.Api.Waiter.ValidWaiter(loginUser.Id, loginUser.Password);
                 if (!validWaiter)

@@ -73,7 +73,7 @@
         public override string ToString()
         {
             var builder = new System.Text.StringBuilder();
-            builder.Append("OsArguments: dbIp=").Append(DatabaseIp);
+            builder.Append("OsServerConfiguration: dbIp=").Append(DatabaseIp);
             builder.Append(", dbPrt=").Append(DatabasePort);
             builder.Append(", dbNs=").Append(DatabaseNamespace);
             builder.Append(", dbUsr=").Append(DatabaseUser);

@@ -112,15 +112,18 @@ namespace Os.Server.Controllers
             {
                 var osConfiguration = new Models.OsConfiguration();
                 osConfiguration.Global = new Dictionary<string, string>();
-                osConfiguration.Global.Add("language", "de");
-                osConfiguration.Global.Add("locale", "de_DE");
-                osConfiguration.Global.Add("priceEntryMode", "0");
-                osConfiguration.Global.Add("disableSubtables", "0");
-                osConfiguration.Global.Add("authenticationMode", "number");
+                osConfiguration.Global.Add("language", OsServer.ClientConfiguration.GetLanguageCode());
+                osConfiguration.Global.Add("locale", OsServer.ClientConfiguration.Localization);
+                osConfiguration.Global.Add("priceEntryMode", OsServer.ClientConfiguration.PriceEntryMode);
+                osConfiguration.Global.Add("disableSubtables", OsServer.ClientConfiguration.DisableSubtables ? "1" : "0");
+                osConfiguration.Global.Add("authenticationMode", OsServer.ClientConfiguration.AuthenthicationMode);
                 osConfiguration.Features = new List<string>();
-                osConfiguration.Features.Add("moveAllSubTables");
-                osConfiguration.Features.Add("moveSingleSubTable");
-                osConfiguration.Features.Add("tip");
+                if (OsServer.ClientConfiguration.FeatureMoveAllSubTables)
+                    osConfiguration.Features.Add("moveAllSubTables");
+                if (OsServer.ClientConfiguration.FeatureMoveSingleSubTable)
+                    osConfiguration.Features.Add("moveSingleSubTable");
+                if (OsServer.ClientConfiguration.FeatureTip)
+                    osConfiguration.Features.Add("tip");
                 return new ObjectResult(osConfiguration);
             }
             catch (Exception ex)
@@ -133,8 +136,9 @@ namespace Os.Server.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Get the predefined available payment media types.
         /// </summary>
+        /// <remarks>IMPORTANT:  The first medium has a special behavior as it is available 2 times:  - It is shown in the payment media list in the payment media screen as configured and can be used normally. - It is shown as a quick payment button left to the \&quot;Pay...\&quot; button in the payment screen (&#x3D; quick pay button). It will be used as quick payment method      and will have \&quot;askForAmount\&quot; flag be forced to false (and so also \&quot;allowOverPayment\&quot; is also false). It will be used to fully pay the      whole selected amount with the specified tip.      Example: If a check with 22 EUR + 2 tip is paid with the quick pay button which is named \&quot;Pay Cash\&quot; in the demo the payment will be executed             with the \&quot;Cash\&quot; media type (as this is the first one in the list) and it will pay with the full amount (22 EUR) on the current check and the tip (2 EUR)</remarks>
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/data/paymentMedia")]
@@ -261,6 +265,56 @@ namespace Os.Server.Controllers
                 var session = Sessions.GetSession(Request);
                 var tables = Logic.Table.GetTables(session);
                 return new ObjectResult(tables);
+            }
+            catch (Exception ex)
+            {
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
+                var osError = new Models.OsError();
+                osError.ErrorMsg = ex.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, osError);
+            }
+        }
+
+        /// <summary>
+        /// Only supported if coursing features is enabled (see osConfiguration for details). Get list of standard courses.
+        /// </summary>
+        /// <response code="200"></response>
+        [HttpGet]
+        [Route("/api/v2/data/courses")]
+        public virtual IActionResult CoursesGet()
+        {
+            try
+            {
+                var session = Sessions.GetSession(Request);
+
+                throw new NotImplementedException("/api/v2/data/courses is not yet implemented");
+
+                //return new ObjectResult(null);
+            }
+            catch (Exception ex)
+            {
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
+                var osError = new Models.OsError();
+                osError.ErrorMsg = ex.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, osError);
+            }
+        }
+
+        /// <summary>
+        /// Only supported if coursing features is enabled (see osConfiguration for details). Get list of standard courses.
+        /// </summary>
+        /// <response code="200"></response>
+        [HttpGet]
+        [Route("/api/v2/data/guestTypes")]
+        public virtual IActionResult GuestTypesGet()
+        {
+            try
+            {
+                var session = Sessions.GetSession(Request);
+
+                throw new NotImplementedException("/api/v2/data/guestTypes is not yet implemented");
+
+                //return new ObjectResult(null);
             }
             catch (Exception ex)
             {

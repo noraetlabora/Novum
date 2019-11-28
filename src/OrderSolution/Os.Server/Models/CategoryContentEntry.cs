@@ -28,10 +28,17 @@ namespace Os.Server.Models
         public Category Category { get; set; }
 
         /// <summary>
-        /// Gets or Sets ArticleId
+        /// The article that is part of this content. OBSOLETE. Use the .article property instead.
         /// </summary>
+        /// <value>The article that is part of this content. OBSOLETE. Use the .article property instead.</value>
         [DataMember(Name = "articleId")]
         public string ArticleId { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Article
+        /// </summary>
+        [DataMember(Name = "article")]
+        public Article2 Article { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -43,6 +50,7 @@ namespace Os.Server.Models
             sb.Append("class CategoryContentEntry {\n");
             sb.Append("  Category: ").Append(Category).Append("\n");
             sb.Append("  ArticleId: ").Append(ArticleId).Append("\n");
+            sb.Append("  Article: ").Append(Article).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -88,6 +96,11 @@ namespace Os.Server.Models
                     ArticleId == other.ArticleId ||
                     ArticleId != null &&
                     ArticleId.Equals(other.ArticleId)
+                ) &&
+                (
+                    Article == other.Article ||
+                    Article != null &&
+                    Article.Equals(other.Article)
                 );
         }
 
@@ -105,6 +118,8 @@ namespace Os.Server.Models
                     hashCode = hashCode * 59 + Category.GetHashCode();
                 if (ArticleId != null)
                     hashCode = hashCode * 59 + ArticleId.GetHashCode();
+                if (Article != null)
+                    hashCode = hashCode * 59 + Article.GetHashCode();
                 return hashCode;
             }
         }
