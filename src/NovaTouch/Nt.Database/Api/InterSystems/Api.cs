@@ -18,6 +18,7 @@ namespace Nt.Database.Api.InterSystems
         private static Fiscal fiscal;
         private static Order order;
         private static Pos pos;
+        private static Hotel hotel;
 
         /// <summary>
         /// 
@@ -39,6 +40,7 @@ namespace Nt.Database.Api.InterSystems
             fiscal = new Fiscal();
             order = new Order();
             pos = new Pos();
+            hotel = new Hotel();
         }
 
         public IDbMisc Misc
@@ -97,6 +99,11 @@ namespace Nt.Database.Api.InterSystems
         public IDbPos Pos
         {
             get { return pos; }
+        }
+
+        public IDbHotel Hotel
+        {
+            get { return hotel; }
         }
 
         public void Initialize()

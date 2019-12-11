@@ -48,7 +48,20 @@ namespace Os.Server.Controllers
         [Route("/api/v2/actions/pay/preAuthorize")]
         public virtual IActionResult PayPreAuthorize([FromBody]Models.PreAuthData data)
         {
-            throw new NotImplementedException("/api/v2/actions/pay/preAuthorize is not yet implemented");
+            try
+            {
+                var session = Sessions.GetSession(Request);
+                var authorizationResult = Logic.Payment.PreAuthorize(session, data);
+                // 204 - No Content 
+                return new ObjectResult(authorizationResult);
+            }
+            catch (Exception ex)
+            {
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
+                var osError = new Models.OsError();
+                osError.ErrorMsg = ex.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, osError);
+            }
         }
 
         /// <summary>

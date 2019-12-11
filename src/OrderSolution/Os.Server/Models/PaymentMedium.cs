@@ -68,7 +68,7 @@ namespace Os.Server.Models
         /// </summary>
         /// <value>If set the payment medium will trigger to ask for specific data from the user when it is selected in the payment media selection screen. This type of payment medium will ALWAYS trigger actions/pay/preAuthorize request!  Example: Let&#39;s say you plan to create a payment media to read an MSR card but if using the MSR fails (for example because of a bad magnetic strip) you want to enter the cards ID manually. In this case you have to create 2 different payment media types. First one for the MSR and the second one for manual input. So the client user has to decide which one to use. In case swiping the card fails they will cancel that procedure and select the manual entry medium instead.</value>
         [DataMember(Name = "requestInput")]
-        public Object RequestInput { get; set; }
+        public InputQueryPrompt RequestInput { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

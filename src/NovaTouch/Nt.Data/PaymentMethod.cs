@@ -58,6 +58,25 @@ namespace Nt.Data
         /// <value></value>
         public string TransactionId { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public string PartnerId { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public string RoomNumber { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public string RoomBookingNumber { get; set; }
+
+
         #endregion
 
         #region Constructor

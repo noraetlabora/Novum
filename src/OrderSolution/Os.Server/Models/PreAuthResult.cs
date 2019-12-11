@@ -34,7 +34,7 @@ namespace Os.Server.Models
         /// </summary>
         /// <value>If set a popup dialog is presented to the user before the user can continue. Supported types: \&quot;ok\&quot; and \&quot;accept\&quot;.</value>
         [DataMember(Name = "dialog")]
-        public Object Dialog { get; set; }
+        public OsDialog Dialog { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

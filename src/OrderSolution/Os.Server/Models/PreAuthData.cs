@@ -65,28 +65,28 @@ namespace Os.Server.Models
         /// </summary>
         /// <value>In case the payment medium is an Magnetic Stripe card the data that was read.</value>
         [DataMember(Name = "msrData")]
-        public Object MsrData { get; set; }
+        public MsrData MsrData { get; set; }
 
         /// <summary>
         /// In case the user did a manual data input.
         /// </summary>
         /// <value>In case the user did a manual data input.</value>
         [DataMember(Name = "manualData")]
-        public Object ManualData { get; set; }
+        public ManualInputData ManualData { get; set; }
 
         /// <summary>
         /// In case the payment medium is an NFC tag the data that was read from it.
         /// </summary>
         /// <value>In case the payment medium is an NFC tag the data that was read from it.</value>
         [DataMember(Name = "nfcData")]
-        public Object NfcData { get; set; }
+        public NfcData NfcData { get; set; }
 
         /// <summary>
         /// In case the payment medium is a bar code the data read from it.
         /// </summary>
         /// <value>In case the payment medium is a bar code the data read from it.</value>
         [DataMember(Name = "barcodeData")]
-        public Object BarcodeData { get; set; }
+        public BarcodeData BarcodeData { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

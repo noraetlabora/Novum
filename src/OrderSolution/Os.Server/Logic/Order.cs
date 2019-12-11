@@ -305,7 +305,7 @@ namespace Os.Server.Logic
             osOrderLine.Id = ntOrder.Id;
             osOrderLine.ArticleId = ntOrder.ArticleId;
             osOrderLine.Quantity = (int)ntOrder.Quantity;
-            osOrderLine.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100);
+            osOrderLine.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100m);
             osOrderLine.Status = GetOsOrderLineStatus(ntOrder.Status);
 
             //Modifiers

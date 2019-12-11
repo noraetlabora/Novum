@@ -94,9 +94,7 @@ namespace Os.Server.Logic
             ntCachedPaymentTypes = Nt.Database.DB.Api.Payment.GetPaymentTypes();
             foreach (var ntPaymentType in ntCachedPaymentTypes.Values)
             {
-                var osPaymentMedium = new Models.PaymentMedium();
-                osPaymentMedium.Id = ntPaymentType.Id;
-                osPaymentMedium.Name = ntPaymentType.Name;
+                var osPaymentMedium = GetPaymentMedium(ntPaymentType);
                 osPaymentMedia.Add(osPaymentMedium);
             }
 
@@ -110,6 +108,32 @@ namespace Os.Server.Logic
             }
 
             return osPaymentMedia;
+        }
+
+        private static Models.PaymentMedium GetPaymentMedium(Nt.Data.PaymentType ntPaymentType)
+        {
+            var osPaymentMedium = new Models.PaymentMedium();
+            osPaymentMedium.Id = ntPaymentType.Id;
+            osPaymentMedium.Name = ntPaymentType.Name;
+
+            switch(ntPaymentType.Program)
+            {
+                // payment room number
+                case "^WKG2K7E":
+                    osPaymentMedium.FullPaymentOnly = true;               
+                    osPaymentMedium.RequestInput = new Models.InputQueryPrompt();
+                    osPaymentMedium.RequestInput.MethodManual = new Models.ManualInput();
+                    osPaymentMedium.RequestInput.MethodManual.Lines = new List<Models.ManualInputLine>();
+                    //Roomnumber
+                    var manualInputLine = new Models.ManualInputLine();
+                    manualInputLine.Key = "ROOM";
+                    manualInputLine.Label = Resources.Dictionary.GetString("Room_Number");
+                    manualInputLine.Type = Models.ManualInputType.TextEnum;
+                    osPaymentMedium.RequestInput.MethodManual.Lines.Add(manualInputLine);
+                    break;
+            }
+
+            return osPaymentMedium;
         }
 
         /// <summary>

@@ -132,6 +132,12 @@
   <data name="Order_VoidNotAllowed" xml:space="preserve">
     <value>void of order is not allowed</value>
   </data>
+  <data name="Payment_Tip" xml:space="preserve">
+    <value>tip</value>
+  </data>
+  <data name="Room_Number" xml:space="preserve">
+    <value>room number</value>
+  </data>
   <data name="Table_NotOpen" xml:space="preserve">
     <value>table {0} is not open</value>
   </data>

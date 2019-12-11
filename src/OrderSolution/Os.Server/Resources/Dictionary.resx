@@ -135,6 +135,12 @@
   <data name="Order_VoidNotAllowed" xml:space="preserve">
     <value>Bonstorno ist nicht erlaubt</value>
   </data>
+  <data name="Payment_Tip" xml:space="preserve">
+    <value>Trinkgeld</value>
+  </data>
+  <data name="Room_Number" xml:space="preserve">
+    <value>Zimmernummer</value>
+  </data>
   <data name="Table_NotOpen" xml:space="preserve">
     <value>Tisch {0} ist nicht offen</value>
   </data>

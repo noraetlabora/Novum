@@ -54,7 +54,7 @@ namespace Os.Server.Models
         /// </summary>
         /// <value>Defines the input type. Default is text.</value>
         [DataMember(Name = "type")]
-        public Object Type { get; set; }
+        public ManualInputType Type { get; set; }
 
         /// <summary>
         /// Defines the minimum allowed numeric value. If not defined no minimum limit is used. For Type \&quot;numeric\&quot; only.

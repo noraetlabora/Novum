@@ -42,7 +42,7 @@ namespace Os.Server.Models
         /// <value>Defines the type of the dialog to be shown to the user.s ATTENTION: Some types will not be available for some actions. Please check in the actions descriptions.</value>
         [Required]
         [DataMember(Name = "type")]
-        public Object Type { get; set; }
+        public DialogType Type { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -100,11 +100,6 @@ namespace Os.Server.Models
                     Message == other.Message ||
                     Message != null &&
                     Message.Equals(other.Message)
-                ) &&
-                (
-                    Type == other.Type ||
-                    Type != null &&
-                    Type.Equals(other.Type)
                 );
         }
 
@@ -122,8 +117,6 @@ namespace Os.Server.Models
                     hashCode = hashCode * 59 + Header.GetHashCode();
                 if (Message != null)
                     hashCode = hashCode * 59 + Message.GetHashCode();
-                if (Type != null)
-                    hashCode = hashCode * 59 + Type.GetHashCode();
                 return hashCode;
             }
         }

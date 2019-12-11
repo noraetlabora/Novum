@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Nt.Data;
 
 namespace Os.Server.Logic
 {
@@ -9,6 +10,8 @@ namespace Os.Server.Logic
     /// </summary>
     public class Payment
     {
+
+        public static Dictionary<string, Nt.Data.PaymentMethod> AuthData = new Dictionary<string, PaymentMethod>();
 
         /// <summary>
         /// 
@@ -29,28 +32,11 @@ namespace Os.Server.Logic
             //order lines
             var tableId = data.SubTableIds[0];
             var ntOrders = Nt.Database.DB.Api.Order.GetOrders(tableId);
-
             //payment information
             var ntPaymentInformation = new Nt.Data.PaymentInformation();
             ntPaymentInformation.PrinterId = data.Printer;
-
             //payment methods
-            var ntPaymentMethods = new List<Nt.Data.PaymentMethod>();
-
-            foreach (var osPayment in data.Payments)
-            {
-                var ntPaymentMethod = GetPaymentMethod(osPayment.PaymentMediumId);
-
-                //tip
-                if (data.Tip > 0)
-                {
-                    ntPaymentMethod.Tip = decimal.Divide((decimal)data.Tip, 100.0m);
-                    data.Tip = 0;
-                }
-
-                ntPaymentMethod.Amount = decimal.Divide((decimal)osPayment.AmountPaid, 100.0m) - ntPaymentMethod.Tip;
-                ntPaymentMethods.Add(ntPaymentMethod);
-            }
+            List<PaymentMethod> ntPaymentMethods = GetNtPaymentMethods(data.Payments, data.Tip);
 
             //pay
             var ntPaymentResult = Nt.Database.DB.Api.Payment.Pay(session, tableId, ntOrders.Values.ToList(), ntPaymentMethods, ntPaymentInformation);
@@ -85,24 +71,16 @@ namespace Os.Server.Logic
             //payment information
             var ntPaymentInformation = new Nt.Data.PaymentInformation();
             ntPaymentInformation.PrinterId = data.Printer;
-
             //payment methods
-            var ntPaymentMethods = new List<Nt.Data.PaymentMethod>();
-            foreach (var osPayment in data.Payments)
-            {
-                var ntPaymentMethod = GetPaymentMethod(osPayment.PaymentMediumId);
+            List<PaymentMethod> ntPaymentMethods = GetNtPaymentMethods(data.Payments, data.Tip);
+            //orders
+            List<Nt.Data.Order> ntOrders = GetNtOrders(data, tableId);
+            //pay
+            var ntPaymentResult = Nt.Database.DB.Api.Payment.Pay(session, tableId, ntOrders, ntPaymentMethods, ntPaymentInformation);
+        }
 
-                //tip
-                if (data.Tip > 0)
-                {
-                    ntPaymentMethod.Tip = decimal.Divide((decimal)data.Tip, 100.0m);
-                    data.Tip = 0;
-                }
-
-                ntPaymentMethod.Amount = decimal.Divide((decimal)osPayment.AmountPaid, 100.0m) - ntPaymentMethod.Tip;
-                ntPaymentMethods.Add(ntPaymentMethod);
-            }
-
+        private static List<Nt.Data.Order> GetNtOrders(Models.PayOrderLines data, string tableId)
+        {
             //orderlines
             var ntAllOrders = Nt.Database.DB.Api.Order.GetOrders(tableId);
             var ntOrders = new List<Nt.Data.Order>();
@@ -119,8 +97,60 @@ namespace Os.Server.Logic
                 ntOrders.Add(ntOrder);
             }
 
-            //pay
-            var ntPaymentResult = Nt.Database.DB.Api.Payment.Pay(session, tableId, ntOrders, ntPaymentMethods, ntPaymentInformation);
+            return ntOrders;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static Models.PreAuthResult PreAuthorize(Session session, Models.PreAuthData data)
+        {
+
+            var preAuthResult = new Models.PreAuthResult();
+            var paymentMethod = new Nt.Data.PaymentMethod();
+            Nt.Data.PaymentType paymentType;
+            Data.ntCachedPaymentTypes.TryGetValue(data.MediumID, out paymentType);
+
+            if (data.ManualData != null)
+            {
+                foreach (var line in data.ManualData.Lines)
+                {
+                    switch (line.Key) {
+                        case "ROOM":
+                            var room = Nt.Database.DB.Api.Hotel.GetRoom(session, paymentType.PartnerId, line.Value);
+                            if (room == null)
+                                throw new Exception("Zimmer " + line.Value + " nicht gefunden");
+                            //set up dialog
+                            preAuthResult.Dialog = new Models.OsDialog();
+                            preAuthResult.Dialog.Header = "Zimmerabrechnung";
+                            preAuthResult.Dialog.Message = "Zimmer für " + room.Name;
+                            preAuthResult.Dialog.Type = Models.DialogType.YesNoEnum;
+                            paymentMethod.RoomNumber = room.Id;
+                            paymentMethod.RoomBookingNumber = room.BookingNumber;
+                            break;
+                    }
+                }
+            }
+
+            var preAuthMedium = new Models.PreAuthMedium();
+            preAuthMedium.AuthCode = Guid.NewGuid().ToString();
+            preAuthMedium.AuthAmount = data.ReqAmount;
+            preAuthMedium.AuthTip = data.ReqTip;
+            preAuthResult.AuthMedia = new List<Models.PreAuthMedium>();
+            preAuthResult.AuthMedia.Add(preAuthMedium);
+            //save paymentMethod
+            paymentMethod.Amount = decimal.Divide((decimal)data.ReqAmount, 100m);
+            paymentMethod.Tip = decimal.Divide((decimal)data.ReqTip, 100m);
+            paymentMethod.PaymentTypeId = paymentType.Id;
+            paymentMethod.AssignmentTypeId = "N";
+            paymentMethod.PartnerId = paymentType.PartnerId;
+            paymentMethod.Program = paymentType.Program;
+            AuthData.Add(preAuthMedium.AuthCode, paymentMethod);
+
+            return preAuthResult;
         }
 
         private static Nt.Data.PaymentMethod GetPaymentMethod(string paymentMediumId)
@@ -151,6 +181,39 @@ namespace Os.Server.Logic
 
             //no valid payment or assignment type
             throw new Exception("payment method must be a payment type or an assignment type: " + paymentMediumId.ToString());
+        }
+
+        private static List<PaymentMethod> GetNtPaymentMethods(List<Models.Payment> osPayments, int? tip)
+        {
+            var ntPaymentMethods = new List<Nt.Data.PaymentMethod>();
+
+            foreach (var osPayment in osPayments)
+            {
+                var ntPaymentMethod = GetPaymentMethod(osPayment.PaymentMediumId);
+
+                // preauthorized paymentType
+                if (osPayment.AuthCode != null)
+                {
+                    Nt.Data.PaymentMethod authorizedPaymentMethod;
+                    if (AuthData.TryGetValue(osPayment.AuthCode, out authorizedPaymentMethod))
+                    {
+                        ntPaymentMethod = authorizedPaymentMethod;
+                        AuthData.Remove(osPayment.AuthCode);
+                    }
+                }
+
+                //tip
+                if (tip > 0)
+                {
+                    ntPaymentMethod.Tip = decimal.Divide((decimal)tip, 100.0m);
+                    tip = 0;
+                }
+
+                ntPaymentMethod.Amount = decimal.Divide((decimal)osPayment.AmountPaid, 100.0m) - ntPaymentMethod.Tip;
+                ntPaymentMethods.Add(ntPaymentMethod);
+            }
+
+            return ntPaymentMethods;
         }
     }
 }

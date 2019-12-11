@@ -35,21 +35,21 @@ namespace Os.Server.Models
         /// </summary>
         /// <value>If set it will trigger a manual input. ATTENTION: ONLY A SINGLE method is allowed to be set. If multiple are set an error will be thrown!</value>
         [DataMember(Name = "methodManual")]
-        public Object MethodManual { get; set; }
+        public ManualInput MethodManual { get; set; }
 
         /// <summary>
         /// If set it will trigger an magnetic stripe card reading procedure. ATTENTION: ONLY A SINGLE method is allowed to be set. If multiple are set an error will be thrown!
         /// </summary>
         /// <value>If set it will trigger an magnetic stripe card reading procedure. ATTENTION: ONLY A SINGLE method is allowed to be set. If multiple are set an error will be thrown!</value>
         [DataMember(Name = "methodMSR")]
-        public Object MethodMSR { get; set; }
+        public MsrInput MethodMSR { get; set; }
 
         /// <summary>
         /// If set it will trigger an NFC tag reading procedure. NOTE: At the moment only ISO UID can be read. ATTENTION: ONLY A SINGLE method is allowed to be set. If multiple are set an error will be thrown!
         /// </summary>
         /// <value>If set it will trigger an NFC tag reading procedure. NOTE: At the moment only ISO UID can be read. ATTENTION: ONLY A SINGLE method is allowed to be set. If multiple are set an error will be thrown!</value>
         [DataMember(Name = "methodNFC")]
-        public Object MethodNFC { get; set; }
+        public NfcInput MethodNFC { get; set; }
 
         /// <summary>
         /// Gets or Sets MethodBarcode

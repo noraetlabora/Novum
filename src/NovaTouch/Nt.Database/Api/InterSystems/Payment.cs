@@ -22,7 +22,7 @@ namespace Nt.Database.Api.InterSystems
         {
             var paymentTypes = new Dictionary<string, Nt.Data.PaymentType>();
             var sql = new StringBuilder();
-            sql.Append(" SELECT IKA, bez, prg, druanz, unterschrift ");
+            sql.Append(" SELECT IKA, bez, prg, druanz, unterschrift, Copa ");
             sql.Append(" FROM NT.Zahlart ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
@@ -35,6 +35,7 @@ namespace Nt.Database.Api.InterSystems
                 paymentType.Name = DataObject.GetString(dataRow, "bez");
                 paymentType.Program = DataObject.GetString(dataRow, "prg");
                 paymentType.ReceiptCount = DataObject.GetUInt(dataRow, "druanz");
+                paymentType.PartnerId = DataObject.GetString(dataRow, "Copa");
                 var signature = DataObject.GetString(dataRow, "unterschrift");
 
                 if (signature.Equals("0"))
@@ -142,8 +143,9 @@ namespace Nt.Database.Api.InterSystems
             dataString.Append(paymentMethod.Tip).Append(DataString.DoublePipes);
             dataString.Append(paymentMethod.Comment).Append(DataString.DoublePipes);
             dataString.Append("").Append(DataString.DoublePipes); //Adresse
-            dataString.Append("").Append(DataString.DoublePipes); //ZimmerCOPA
-            dataString.Append("").Append(DataString.DoublePipes); //ZimmerBuchnr
+            dataString.Append(paymentMethod.PartnerId).Append(DataString.DoublePipes); //ZimmerCOPA
+            dataString.Append(paymentMethod.RoomBookingNumber).Append(DataString.DoublePipes); //ZimmerBuchnr
+            dataString.Append(paymentMethod.RoomNumber).Append(DataString.DoublePipes); //ZimmerNummer
             dataString.Append("").Append(DataString.DoublePipes); //Ids
             dataString.Append("").Append(DataString.DoublePipes); //Beschreibung
             dataString.Append("").Append(DataString.DoublePipes); //SerNr
