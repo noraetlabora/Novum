@@ -55,17 +55,13 @@ namespace Os.Server.Logic
             var orderLineResult = new Models.OrderLineResult();
 
             if (data.EnteredPrice != null)
-            {
                 Nt.Database.DB.Api.Article.CheckEnteredPrice(session, data.ArticleId, decimal.Divide((decimal)data.EnteredPrice, 100.0m));
-            }
 
             var order = Nt.Database.DB.Api.Order.GetNewOrder(session, data.ArticleId);
             order.Quantity = (decimal)data.Quantity;
 
             if (data.EnteredPrice != null)
-            {
                 order.UnitPrice = decimal.Divide((decimal)data.EnteredPrice, 100.0m);
-            }
 
             session.AddOrder(order);
 

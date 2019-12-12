@@ -110,6 +110,7 @@ namespace Os.Server.Logic
         {
 
             var preAuthResult = new Models.PreAuthResult();
+            var preAuthMedium = new Models.PreAuthMedium();
             var paymentMethod = new Nt.Data.PaymentMethod();
             Nt.Data.PaymentType paymentType;
             Data.ntCachedPaymentTypes.TryGetValue(data.MediumID, out paymentType);
@@ -135,20 +136,39 @@ namespace Os.Server.Logic
                 }
             }
 
-            var preAuthMedium = new Models.PreAuthMedium();
+            if (data.ReqAmount != null)
+            {
+                paymentMethod.Amount = decimal.Divide((decimal)data.ReqAmount, 100m);
+                preAuthMedium.AuthAmount = data.ReqAmount;
+            }
+            else
+            {
+                paymentMethod.Amount = 0;
+                preAuthMedium.AuthAmount = 0;
+            }
+
+            if (data.ReqTip != null)
+            {
+                paymentMethod.Tip = decimal.Divide((decimal)data.ReqTip, 100m);
+                preAuthMedium.AuthTip = data.ReqTip;
+            }
+            else
+            {
+                paymentMethod.Tip = 0;
+                preAuthMedium.AuthTip = 0;
+            }
+
             preAuthMedium.AuthCode = Guid.NewGuid().ToString();
-            preAuthMedium.AuthAmount = data.ReqAmount;
-            preAuthMedium.AuthTip = data.ReqTip;
             preAuthResult.AuthMedia = new List<Models.PreAuthMedium>();
-            preAuthResult.AuthMedia.Add(preAuthMedium);
-            //save paymentMethod
-            paymentMethod.Amount = decimal.Divide((decimal)data.ReqAmount, 100m);
-            paymentMethod.Tip = decimal.Divide((decimal)data.ReqTip, 100m);
+            //
             paymentMethod.PaymentTypeId = paymentType.Id;
             paymentMethod.AssignmentTypeId = "N";
             paymentMethod.PartnerId = paymentType.PartnerId;
             paymentMethod.Program = paymentType.Program;
+            //save Medium in Result and global
+            preAuthResult.AuthMedia.Add(preAuthMedium);
             AuthData.Add(preAuthMedium.AuthCode, paymentMethod);
+            Nt.Logging.Log.Server.Debug("AuthData contains " + AuthData.Count + " values after adding guid " + preAuthMedium.AuthCode);
 
             return preAuthResult;
         }
@@ -199,6 +219,7 @@ namespace Os.Server.Logic
                     {
                         ntPaymentMethod = authorizedPaymentMethod;
                         AuthData.Remove(osPayment.AuthCode);
+                        Nt.Logging.Log.Server.Debug("AuthData contains " + AuthData.Count + " values after removing guid " + osPayment.AuthCode);
                     }
                 }
 
