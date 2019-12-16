@@ -9,6 +9,7 @@ namespace Os.Server.Services
     internal class DatabaseService : IHostedService, IDisposable
     {
         private Timer _timer;
+        private bool staticDataInitialLoaded = false;
 
         public DatabaseService()
         {
@@ -31,18 +32,6 @@ namespace Os.Server.Services
             if (Nt.Database.DB.Instance.State != System.Data.ConnectionState.Open)
                 throw new Exception("database connection is not open");
 
-            //cache static data
-            Logic.Data.GetArticles();
-            Logic.Data.GetCategories();
-            Logic.Data.GetModifierGroups();
-            Logic.Data.GetPaymentMedia();
-            Logic.Data.GetPrinters();
-            Logic.Data.GetUsers();
-            Nt.Database.DB.Api.Misc.GetArticleGroups();
-            Nt.Database.DB.Api.Misc.GetTaxGroups();
-
-            Nt.Logging.Log.Server.Info("static data initial cached");
-
             _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(20));
             return Task.CompletedTask;
         }
@@ -52,20 +41,26 @@ namespace Os.Server.Services
             try
             {
                 Nt.Database.DB.Instance.Ping();
-                System.Diagnostics.Debug.WriteLine("DatabaseService: State = " + Nt.Database.DB.Instance.State);
-                if (Nt.Database.DB.Instance.State == System.Data.ConnectionState.Broken)
+                switch (Nt.Database.DB.Instance.State)
                 {
-                    System.Diagnostics.Debug.WriteLine("DatabaseService: closing Connection");
-                    Nt.Database.DB.Instance.Close();
-                    System.Diagnostics.Debug.WriteLine("DatabaseService: opening Connection");
-                    Nt.Database.DB.Instance.Open();
-                    System.Diagnostics.Debug.WriteLine("DatabaseService: State = " + Nt.Database.DB.Instance.State);
-                }
-                else if (Nt.Database.DB.Instance.State == System.Data.ConnectionState.Closed)
-                {
-                    System.Diagnostics.Debug.WriteLine("DatabaseService: opening Connection");
-                    Nt.Database.DB.Instance.Open();
-                    System.Diagnostics.Debug.WriteLine("DatabaseService: State = " + Nt.Database.DB.Instance.State);
+                    case System.Data.ConnectionState.Closed:
+                        Nt.Logging.Log.Database.Warn("DatabaseService: connection is closed");
+                        Nt.Database.DB.Instance.Open();
+                        break;
+                    case System.Data.ConnectionState.Broken:
+                        Nt.Logging.Log.Database.Warn("DatabaseService: connection is broken");
+                        Nt.Database.DB.Instance.Close();
+                        Nt.Database.DB.Instance.Open();
+                        break;
+                    case System.Data.ConnectionState.Connecting:
+                        Nt.Logging.Log.Database.Info("DatabaseService: connection is connecting");
+                        break;
+                    case System.Data.ConnectionState.Executing:
+                        Nt.Logging.Log.Database.Info("DatabaseService: connection is executing");
+                        break;
+                    case System.Data.ConnectionState.Fetching:
+                        Nt.Logging.Log.Database.Info("DatabaseService: connection is fetching");
+                        break;
                 }
                 Os.Server.Logic.Data.CheckStaticData();
             }

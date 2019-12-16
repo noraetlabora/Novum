@@ -147,7 +147,6 @@ namespace Os.Server.Controllers
             try
             {
                 var paymentMedia = Logic.Data.GetPaymentMedia();
-                Logic.Data.InitialStaticDataSent = true;
                 Nt.Database.DB.Api.Misc.SetSnapshotTime(Controllers.OsHostController.PosStatus.SessionId);
                 return new ObjectResult(paymentMedia);
             }

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using NLog.Web;
 using System;
 using System.Resources;
 using System.ServiceProcess;
@@ -42,16 +41,16 @@ namespace Os.Server
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();
 
-                if (Environment.UserInteractive)
-                {
-                    Nt.Logging.Log.Server.Info("starting in console");
-                    webHost.Run();
-                }
-                else
+                if (Console.IsOutputRedirected)
                 {
                     Nt.Logging.Log.Server.Info("starting as service");
                     var webHostService = new Services.OsWebHostService(webHost);
                     ServiceBase.Run(webHostService);
+                }
+                else
+                {
+                    Nt.Logging.Log.Server.Info("starting in console");
+                    webHost.Run();
                 }
             }
             catch (Exception ex)
@@ -81,8 +80,7 @@ namespace Os.Server
                     .ConfigureLogging(logging =>
                     {
                         logging.ClearProviders();
-                    })
-                    .UseNLog();
+                    });
 
         private static void GetConfig()
         {
@@ -112,5 +110,6 @@ namespace Os.Server
         {
             _clientApi = new Client.ClientApi(string.Format("http://{0}:{1}", ServerConfiguration.OsClientIp, ServerConfiguration.OsClientPort));
         }
+
     }
 }

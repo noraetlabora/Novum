@@ -20,16 +20,6 @@ namespace Os.Server.Logic
 
         #endregion  //private fields
 
-        #region Properties
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        public static bool InitialStaticDataSent { get; set; }
-
-        #endregion
-
         #region public methods
 
         /// <summary>
@@ -37,9 +27,6 @@ namespace Os.Server.Logic
         /// </summary>
         public static void CheckStaticData()
         {
-            if (!InitialStaticDataSent)
-                return;
-
             // snapshot time exists, data is up to date
             if (Nt.Database.DB.Api.Misc.HasSnapshotTime(Controllers.OsHostController.PosStatus.SessionId))
                 return;
@@ -48,6 +35,12 @@ namespace Os.Server.Logic
 
             Logic.Data.GetArticles();
             Logic.Data.GetCategories();
+            Logic.Data.GetModifierGroups();
+            Logic.Data.GetPaymentMedia();
+            Logic.Data.GetPrinters();
+            Logic.Data.GetUsers();
+            Nt.Database.DB.Api.Misc.GetArticleGroups();
+            Nt.Database.DB.Api.Misc.GetTaxGroups();
 
             Nt.Logging.Log.Server.Info("new static data cached");
 

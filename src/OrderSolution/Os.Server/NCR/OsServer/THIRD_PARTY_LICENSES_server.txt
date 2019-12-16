@@ -127,7 +127,7 @@ node.js modules the OrderSolution Server depends on:
         "licenseUrl": "https://github.com/chalk/supports-color/raw/master/license",
         "parents": "OsServerRuntime"
     },
-    "swagger-ui-dist@3.24.0": {
+    "swagger-ui-dist@3.24.3": {
         "licenses": "Apache-2.0",
         "repository": "https://github.com/swagger-api/swagger-ui",
         "licenseUrl": "https://github.com/swagger-api/swagger-ui",
