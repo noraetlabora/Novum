@@ -313,8 +313,9 @@ namespace Nt.Services.UserControls
 
         private void NcrOsServer(string argument)
         {
+
             var assemblyFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var ncrOsServer = assemblyFolder + "\\OrderSolution\\NRC\\OsServer\\OsServerRun.exe";
+            var ncrOsServer = System.IO.Path.Combine(assemblyFolder, @"OrderSolution\NCR\OsServer\OsServerRun.exe");
 
             Logging.Log.Service.Info(argument + " service NCR OrderSolution Server" + System.Environment.NewLine + ncrOsServer);
 
@@ -325,7 +326,7 @@ namespace Nt.Services.UserControls
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 process.StartInfo.RedirectStandardOutput = true;
-                Logging.Log.Service.Info(ncrOsServer + argument);
+                Logging.Log.Service.Info(ncrOsServer + " " + argument);
                 process.Start();
                 process.WaitForExit();
 

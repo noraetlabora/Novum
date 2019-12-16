@@ -55,10 +55,6 @@ namespace Nt.Services
             var builder = new StringBuilder();
             builder.Append(" create \"").Append(serviceName).Append("\"");
             builder.Append(" binPath=\"").Append(binPath).Append("\"");
-            RunServiceControl(builder.ToString());
-            //configure service to auto - service automatically started at boot time, even if no user logs on
-            builder = new StringBuilder();
-            builder.Append(" create \"").Append(serviceName).Append("\"");
             builder.Append(" start=auto");
             RunServiceControl(builder.ToString());
         }
