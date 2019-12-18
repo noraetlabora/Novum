@@ -166,6 +166,13 @@ namespace Nt.Services.UserControls
             txtOsServerPort.IsEnabled = true;
             txtOsClientIp.IsEnabled = true;
             txtOsClientPort.IsEnabled = true;
+            cmbLocalization.IsEnabled = true;
+            cmbPriceEntryMode.IsEnabled = true;
+            cmbAuthenticationMode.IsEnabled = true;
+            chbDisableSubTables.IsEnabled = true;
+            chbMoveAllSubTables.IsEnabled = true;
+            chbMoveSingleSubTable.IsEnabled = true;
+            chbTip.IsEnabled = true;
         }
 
         private void DisableArguments()
@@ -178,6 +185,13 @@ namespace Nt.Services.UserControls
             txtOsServerPort.IsEnabled = false;
             txtOsClientIp.IsEnabled = false;
             txtOsClientPort.IsEnabled = false;
+            cmbLocalization.IsEnabled = false;
+            cmbPriceEntryMode.IsEnabled = false;
+            cmbAuthenticationMode.IsEnabled = false;
+            chbDisableSubTables.IsEnabled = false;
+            chbMoveAllSubTables.IsEnabled = false;
+            chbMoveSingleSubTable.IsEnabled = false;
+            chbTip.IsEnabled = false;
         }
 
         private void SaveServerConfiguration()
@@ -313,11 +327,10 @@ namespace Nt.Services.UserControls
 
         private void NcrOsServer(string argument)
         {
-
             var assemblyFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             var ncrOsServer = System.IO.Path.Combine(assemblyFolder, @"OrderSolution\NCR\OsServer\OsServerRun.exe");
-
-            Logging.Log.Service.Info(argument + " service NCR OrderSolution Server" + System.Environment.NewLine + ncrOsServer);
+            Logging.Log.Service.Info("call NCR OrderSolution Server to " + argument);
+            Logging.Log.Service.Info(ncrOsServer + " " + argument);
 
             using (Process process = new Process())
             {
@@ -326,7 +339,6 @@ namespace Nt.Services.UserControls
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 process.StartInfo.RedirectStandardOutput = true;
-                Logging.Log.Service.Info(ncrOsServer + " " + argument);
                 process.Start();
                 process.WaitForExit();
 
