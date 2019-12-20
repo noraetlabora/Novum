@@ -107,7 +107,7 @@ namespace Os.Server
             sb.Append(serialNumber).Append("|");
             sb.Append(request.HttpContext.Connection.Id).Append("|");
             sb.Append(request.Method.Substring(0, 3)).Append("|");
-            sb.Append(request.Path.Value).Append("|");
+            sb.Append(request.Path.Value).Append(request.QueryString).Append("|");
             sb.Append(bodyAsText);
 
             if (!notLoggingRequests.Contains(request.Path.Value.ToLower()))
