@@ -212,6 +212,7 @@ namespace Nt.Data
 
             if (this.Status.Equals(OrderStatus.NewOrder))
                 this.UnitPrice += GetModifierUnitPrice(modifier);
+
             _modifiers.Add(modifier);
         }
 
@@ -250,6 +251,7 @@ namespace Nt.Data
                 modifierUnitPrice = Nt.Data.Utils.Math.Round(modifierUnitPrice, modifier.Rounding);
                 return modifierUnitPrice;
             }
+
             return modifier.UnitPrice;
         }
 

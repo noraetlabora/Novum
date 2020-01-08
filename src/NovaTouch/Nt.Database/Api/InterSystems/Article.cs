@@ -23,7 +23,7 @@ namespace Nt.Database.Api.InterSystems
         {
             var articles = new Dictionary<string, Nt.Data.Article>();
             var sql = new StringBuilder();
-            sql.Append(" SELECT A.ANR, A.bez, AK.vkaend, AK.nameaend ");
+            sql.Append(" SELECT A.ANR, A.vkbez, AK.vkaend, AK.nameaend ");
             sql.Append(" FROM WW.ANR A ");
             sql.Append(" LEFT JOIN WW.ANRKassa AK ON (AK.FA=A.FA AND AK.ANR=A.ANR) ");
             sql.Append(" WHERE A.passiv > ").Append(Interaction.SqlToday);
@@ -33,7 +33,7 @@ namespace Nt.Database.Api.InterSystems
             {
                 var article = new Nt.Data.Article();
                 article.Id = DataObject.GetString(dataRow, "Anr");
-                article.Name = DataObject.GetString(dataRow, "bez");
+                article.Name = DataObject.GetString(dataRow, "vkbez");
                 article.AskForPrice = DataObject.GetBool(dataRow, "vkaend");
                 article.AskForName = DataObject.GetBool(dataRow, "nameaend");
 

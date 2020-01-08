@@ -143,6 +143,9 @@ namespace Nt.Database.Api.InterSystems
                     case "SEC-4":
                         permissionType = Nt.Data.Permission.PermissionType.CancelConfirmedOrder;
                         break;
+                    case "SEC-15":
+                        permissionType = Nt.Data.Permission.PermissionType.CancelUnconfirmedOrder;
+                        break;
                     case "SPLITT":
                         permissionType = Nt.Data.Permission.PermissionType.SplitTable;
                         break;

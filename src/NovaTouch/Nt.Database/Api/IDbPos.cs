@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Nt.Database.Api
 {
     /// <summary>
@@ -44,5 +46,19 @@ namespace Nt.Database.Api
         /// <param name="sercieAreaId"></param>
         /// <returns></returns>
         string GetPriceLevel(string sercieAreaId);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="posId"></param>
+        /// <returns></returns>
+        Data.Pos GetPos(string posId);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="posId"></param>
+        /// <returns></returns>
+        List<string> GetAlternativePosIds(string posId);
     }
 }

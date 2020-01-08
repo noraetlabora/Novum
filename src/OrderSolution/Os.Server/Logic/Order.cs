@@ -52,23 +52,25 @@ namespace Os.Server.Logic
             if (session.CurrentTable == null)
                 throw new Exception(Resources.Dictionary.GetString("Table_NotFound"));
 
-            var orderLineResult = new Models.OrderLineResult();
+            var osOrderLineResult = new Models.OrderLineResult();
 
             if (data.EnteredPrice != null)
                 Nt.Database.DB.Api.Article.CheckEnteredPrice(session, data.ArticleId, decimal.Divide((decimal)data.EnteredPrice, 100.0m));
 
-            var order = Nt.Database.DB.Api.Order.GetNewOrder(session, data.ArticleId);
-            order.Quantity = (decimal)data.Quantity;
+            var ntOrder = Nt.Database.DB.Api.Order.GetNewOrder(session, data.ArticleId);
+            ntOrder.Quantity = (decimal)data.Quantity;
 
             if (data.EnteredPrice != null)
-                order.UnitPrice = decimal.Divide((decimal)data.EnteredPrice, 100.0m);
+                ntOrder.UnitPrice = decimal.Divide((decimal)data.EnteredPrice, 100.0m);
 
-            session.AddOrder(order);
+            if (data.Modifiers != null)
+                SetModifiers(session, ntOrder, data.Modifiers);
 
-            orderLineResult.Id = order.Id;
-            orderLineResult.SinglePrice = (int)decimal.Multiply(order.UnitPrice, 100.0m);
+            session.AddOrder(ntOrder);
+            osOrderLineResult.Id = ntOrder.Id;
+            osOrderLineResult.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100.0m);
 
-            return orderLineResult;
+            return osOrderLineResult;
         }
 
         /// <summary>
@@ -80,9 +82,6 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static Models.OrderLineVoidResult Void(Nt.Data.Session session, string orderLineId, Models.OrderLineVoid data)
         {
-            if (session.NotPermitted(Nt.Data.Permission.PermissionType.CancelConfirmedOrder))
-                throw new Exception(Resources.Dictionary.GetString("Order_VoidNotAllowed"));
-
             if (session.CurrentTable == null)
                 throw new Exception(Resources.Dictionary.GetString("Table_NotOpen"));
 
@@ -96,30 +95,47 @@ namespace Os.Server.Logic
                 ntOrder = ntOrders[orderLineId];
             }
 
-            // set voidResult
-            var voidResult = new Models.OrderLineVoidResult();
-            voidResult.OrderLineId = orderLineId;
-            voidResult.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100);
-            if (data.Quantity >= ntOrder.Quantity)
-                voidResult.Quantity = 0;
-            else
-                voidResult.Quantity = ((int)ntOrder.Quantity - data.Quantity);
-
             switch (ntOrder.Status)
             {
                 case Nt.Data.Order.OrderStatus.NewOrder:
+                    if (session.NotPermitted(Nt.Data.Permission.PermissionType.CancelUnconfirmedOrder))
+                    {
+                        Nt.Logging.Log.Server.Error("void new order is not allowed: " + orderLineId);
+                        throw new Exception(Resources.Dictionary.GetString("Order_VoidNotAllowed"));
+                    }
+                        
                     var price = decimal.Multiply((decimal)data.Quantity, ntOrder.UnitPrice);
                     Nt.Database.DB.Api.Order.VoidNewOrder(session, session.CurrentTable.Id, ntOrder.ArticleId, (decimal)data.Quantity, price, ntOrder.AssignmentTypeId, "");
+                    session.VoidOrder(orderLineId, (decimal)data.Quantity);
                     break;
                 case Nt.Data.Order.OrderStatus.Prebooked:
+                    if (session.NotPermitted(Nt.Data.Permission.PermissionType.CancelUnconfirmedOrder))
+                    {
+                        Nt.Logging.Log.Server.Error("void prebooked order is not allowed: " + orderLineId);
+                        throw new Exception(Resources.Dictionary.GetString("Order_VoidNotAllowed"));
+                    }
+
                     Nt.Database.DB.Api.Order.VoidPrebookedOrder(session, session.CurrentTable.Id, (decimal)data.Quantity, ntOrder.SequenceNumber, "");
                     break;
                 case Nt.Data.Order.OrderStatus.Ordered:
+                    if (session.NotPermitted(Nt.Data.Permission.PermissionType.CancelConfirmedOrder))
+                    {
+                        Nt.Logging.Log.Server.Error("void confirmed order is not allowed: " + orderLineId);
+                        throw new Exception(Resources.Dictionary.GetString("Order_VoidNotAllowed"));
+                    }
+
                     Nt.Database.DB.Api.Order.VoidOrderedOrder(session, session.CurrentTable.Id, ntOrder, (decimal)data.Quantity, data.CancellationReasonId, "");
                     break;
             }
 
-            session.VoidOrder(ntOrder.Id, (decimal)data.Quantity);
+            var voidResult = new Models.OrderLineVoidResult();
+            voidResult.OrderLineId = orderLineId;
+            voidResult.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100.0m);
+            if (data.Quantity >= ntOrder.Quantity)
+                voidResult.Quantity = 0;
+            else
+                voidResult.Quantity = ((int)ntOrder.Quantity - data.Quantity);
+            
             return voidResult;
         }
 
@@ -138,67 +154,13 @@ namespace Os.Server.Logic
             if (!session.ContainsOrder(orderLineId))
                 throw new Exception(Resources.Dictionary.GetString("Order_NotFound"));
 
-            //search in new/uncommited orders
             var ntOrder = session.GetOrder(orderLineId);
 
             var osOrderLineResult = new Models.OrderLineResult();
-            var singlePrice = ntOrder.UnitPrice;
-            osOrderLineResult.Modifiers = new List<Models.OrderLineResultModifier>();
+            osOrderLineResult.Modifiers = SetModifiers(session, ntOrder, data.Modifiers);
+            osOrderLineResult.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100.0m);
+            osOrderLineResult.Id = ntOrder.Id;
 
-            ntOrder.ClearModifiers();
-
-            foreach (var osOrderLineModifier2 in data.Modifiers)
-            {
-                var osOrderLineResultModifier = new Models.OrderLineResultModifier();
-                ///////////////////////////////////
-                //choices
-                ///////////////////////////////////
-                if (osOrderLineModifier2.Choices != null && osOrderLineModifier2.Choices.Count > 0)
-                {
-                    osOrderLineResultModifier.Choices = new List<Models.OrderLineResultModifierChoice>();
-
-                    foreach (var osOrderLineModifierChoice2 in osOrderLineModifier2.Choices)
-                    {
-                        var ntModifier = Nt.Database.DB.Api.Modifier.GetModifier(session, osOrderLineModifierChoice2.ModifierChoiceId, 1.0m);
-                        ntOrder.AddModifier(ntModifier);
-
-                        var osOrderLineResultModifierChoice = new Models.OrderLineResultModifierChoice();
-                        osOrderLineResultModifierChoice.ModifierChoiceId = ntModifier.ArticleId;
-                        if (ntModifier.Percent != 0.0m)
-                        {
-                            singlePrice += ntOrder.UnitPrice * 0.01m * ntModifier.Percent;
-                            singlePrice = Nt.Data.Utils.Math.Round(singlePrice, ntModifier.Rounding);
-                        }
-                        else
-                        {
-                            singlePrice += ntModifier.UnitPrice;
-                        }
-
-                        osOrderLineResultModifier.Choices.Add(osOrderLineResultModifierChoice);
-                    }
-                }
-                ///////////////////////////////////
-                //text input
-                ///////////////////////////////////
-                if (!string.IsNullOrEmpty(osOrderLineModifier2.TextInput))
-                {
-                    var ntTextModifier = new Nt.Data.Modifier();
-                    ntTextModifier.Name = osOrderLineModifier2.TextInput;
-                    ntOrder.AddModifier(ntTextModifier);
-                }
-
-                ///////////////////////////////////
-                //fax input
-                ///////////////////////////////////
-                if (!string.IsNullOrEmpty(osOrderLineModifier2.FaxInputID))
-                {
-                    var ntFaxModifier = new Nt.Data.Modifier();
-                    ntFaxModifier.Image = Image.GetImage(osOrderLineModifier2.FaxInputID);
-                    ntOrder.AddModifier(ntFaxModifier);
-                }
-            }
-
-            osOrderLineResult.SinglePrice = (int)decimal.Multiply(singlePrice, 100.0m);
             return osOrderLineResult;
         }
 
@@ -301,7 +263,7 @@ namespace Os.Server.Logic
             osOrderLine.Id = ntOrder.Id;
             osOrderLine.ArticleId = ntOrder.ArticleId;
             osOrderLine.Quantity = (int)ntOrder.Quantity;
-            osOrderLine.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100m);
+            osOrderLine.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100.0m);
             osOrderLine.Status = GetOsOrderLineStatus(ntOrder.Status);
 
             //Modifiers
@@ -332,11 +294,61 @@ namespace Os.Server.Logic
                     }
 
                     osOrderLine.Modifiers.Add(osOrderLineModifier);
-
                 }
             }
 
             return osOrderLine;
+        }
+
+        private static List<Models.OrderLineResultModifier> SetModifiers(Nt.Data.Session session, Nt.Data.Order ntOrder, List<Models.OrderLineModifier> osOrderLineModifiers)
+        {
+            var osOrderLineResultModifiers = new List<Models.OrderLineResultModifier>();
+            ntOrder.ClearModifiers();
+
+            foreach (var osOrderLineModifier in osOrderLineModifiers)
+            {
+                var osOrderLineResultModifier = new Models.OrderLineResultModifier();
+                ///////////////////////////////////
+                //choices
+                ///////////////////////////////////
+                if (osOrderLineModifier.Choices != null && osOrderLineModifier.Choices.Count > 0)
+                {
+                    osOrderLineResultModifier.Choices = new List<Models.OrderLineResultModifierChoice>();
+
+                    foreach (var osOrderLineModifierChoice in osOrderLineModifier.Choices)
+                    {
+                        var ntModifier = Nt.Database.DB.Api.Modifier.GetModifier(session, osOrderLineModifierChoice.ModifierChoiceId, 1.0m);
+                        ntModifier.MenuId = osOrderLineModifier.ModifierGroupId;
+                        ntOrder.AddModifier(ntModifier);
+
+                        var osOrderLineResultModifierChoice = new Models.OrderLineResultModifierChoice();
+                        osOrderLineResultModifierChoice.ModifierChoiceId = ntModifier.ArticleId;
+                        osOrderLineResultModifier.Choices.Add(osOrderLineResultModifierChoice);
+                    }
+                    osOrderLineResultModifiers.Add(osOrderLineResultModifier);
+                }
+                ///////////////////////////////////
+                //text input
+                ///////////////////////////////////
+                if (!string.IsNullOrEmpty(osOrderLineModifier.TextInput))
+                {
+                    var ntTextModifier = new Nt.Data.Modifier();
+                    ntTextModifier.Name = osOrderLineModifier.TextInput;
+                    ntOrder.AddModifier(ntTextModifier);
+                }
+
+                ///////////////////////////////////
+                //fax input
+                ///////////////////////////////////
+                if (!string.IsNullOrEmpty(osOrderLineModifier.FaxInputID))
+                {
+                    var ntFaxModifier = new Nt.Data.Modifier();
+                    ntFaxModifier.Image = Image.GetImage(osOrderLineModifier.FaxInputID);
+                    ntOrder.AddModifier(ntFaxModifier);
+                }
+            }
+
+            return osOrderLineResultModifiers;
         }
 
         #endregion

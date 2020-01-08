@@ -42,7 +42,7 @@ namespace Os.Server.Models
         /// </summary>
         /// <value>Modifiers to be assigned for this order line.</value>
         [DataMember(Name = "modifiers")]
-        public List<OrderLineModifier2> Modifiers { get; set; }
+        public List<OrderLineModifier> Modifiers { get; set; }
 
         /// <summary>
         /// The ID of the article ordered with this order line.

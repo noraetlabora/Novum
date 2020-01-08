@@ -22,22 +22,18 @@ namespace Os.Server.Models
     public partial class OrderLineModifierChoice : IEquatable<OrderLineModifierChoice>
     {
         /// <summary>
-        /// Gets or Sets ModifierChoiceId
+        /// The ID of the choice that was selected.
         /// </summary>
+        /// <value>The ID of the choice that was selected.</value>
         [DataMember(Name = "modifierChoiceId")]
         public string ModifierChoiceId { get; set; }
 
         /// <summary>
-        /// Gets or Sets Amount
+        /// The amount how often the choices was selected. Defaults to 1 if omitted.
         /// </summary>
+        /// <value>The amount how often the choices was selected. Defaults to 1 if omitted.</value>
         [DataMember(Name = "amount")]
         public int? Amount { get; set; }
-
-        /// <summary>
-        /// Gets or Sets ChoicePrice
-        /// </summary>
-        [DataMember(Name = "choicePrice")]
-        public int? ChoicePrice { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -46,10 +42,9 @@ namespace Os.Server.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class OrderLineModifierChoice {\n");
+            sb.Append("class OrderLineModifierChoice2 {\n");
             sb.Append("  ModifierChoiceId: ").Append(ModifierChoiceId).Append("\n");
             sb.Append("  Amount: ").Append(Amount).Append("\n");
-            sb.Append("  ChoicePrice: ").Append(ChoicePrice).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -76,9 +71,9 @@ namespace Os.Server.Models
         }
 
         /// <summary>
-        /// Returns true if OrderLineModifierChoice instances are equal
+        /// Returns true if OrderLineModifierChoice2 instances are equal
         /// </summary>
-        /// <param name="other">Instance of OrderLineModifierChoice to be compared</param>
+        /// <param name="other">Instance of OrderLineModifierChoice2 to be compared</param>
         /// <returns>Boolean</returns>
         public bool Equals(OrderLineModifierChoice other)
         {
@@ -95,11 +90,6 @@ namespace Os.Server.Models
                     Amount == other.Amount ||
                     Amount != null &&
                     Amount.Equals(other.Amount)
-                ) &&
-                (
-                    ChoicePrice == other.ChoicePrice ||
-                    ChoicePrice != null &&
-                    ChoicePrice.Equals(other.ChoicePrice)
                 );
         }
 
@@ -117,8 +107,6 @@ namespace Os.Server.Models
                     hashCode = hashCode * 59 + ModifierChoiceId.GetHashCode();
                 if (Amount != null)
                     hashCode = hashCode * 59 + Amount.GetHashCode();
-                if (ChoicePrice != null)
-                    hashCode = hashCode * 59 + ChoicePrice.GetHashCode();
                 return hashCode;
             }
         }

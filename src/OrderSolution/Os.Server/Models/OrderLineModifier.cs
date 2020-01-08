@@ -24,27 +24,30 @@ namespace Os.Server.Models
     public partial class OrderLineModifier : IEquatable<OrderLineModifier>
     {
         /// <summary>
-        /// Gets or Sets ModifierGroupId
+        /// The ID of the modifier group this modifiers belong to. This must be the group ID the choices belong to.
         /// </summary>
+        /// <value>The ID of the modifier group this modifiers belong to. This must be the group ID the choices belong to.</value>
         [DataMember(Name = "modifierGroupId")]
         public string ModifierGroupId { get; set; }
 
         /// <summary>
-        /// Gets or Sets TextInput
+        /// The entered text in case the modifier group is of type free text entry.
         /// </summary>
+        /// <value>The entered text in case the modifier group is of type free text entry.</value>
         [DataMember(Name = "textInput")]
         public string TextInput { get; set; }
 
         /// <summary>
-        /// The ID of the FaxInput image. Can be a number, URL, ... The format if this ID is defined by the POS storage behavior. TODO: When the FaxInput storage API is defined we may have to update this.
+        /// The ID of the FaxInput image in case the modifier group is of type fax. Can be a number, URL, ... The format if this ID is defined by the POS storage behavior. TODO: When the FaxInput storage API is defined we may have to update this.
         /// </summary>
-        /// <value>The ID of the FaxInput image. Can be a number, URL, ... The format if this ID is defined by the POS storage behavior. TODO: When the FaxInput storage API is defined we may have to update this.</value>
+        /// <value>The ID of the FaxInput image in case the modifier group is of type fax. Can be a number, URL, ... The format if this ID is defined by the POS storage behavior. TODO: When the FaxInput storage API is defined we may have to update this.</value>
         [DataMember(Name = "faxInputID")]
         public string FaxInputID { get; set; }
 
         /// <summary>
-        /// Gets or Sets Choices
+        /// The selected choices in case modifier group is of type PickOne, PickMultiple, PickNumeric, Pick...
         /// </summary>
+        /// <value>The selected choices in case modifier group is of type PickOne, PickMultiple, PickNumeric, Pick...</value>
         [DataMember(Name = "choices")]
         public List<OrderLineModifierChoice> Choices { get; set; }
 

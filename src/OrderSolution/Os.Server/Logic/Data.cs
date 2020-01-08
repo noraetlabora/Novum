@@ -11,8 +11,8 @@ namespace Os.Server.Logic
     {
 
         #region private fields;
-        private static List<Models.Article> osCachedArticles;
-        private static List<Models.Category> osCachedCategories;
+        internal static Dictionary<string, Models.Article> osCachedArticles;
+        internal static List<Models.Category> osCachedCategories;
         internal static Dictionary<string, Nt.Data.PaymentType> ntCachedPaymentTypes;
         internal static Dictionary<string, Nt.Data.AssignmentType> ntCachedAssignmentTypes;
         private static readonly string[] notSupportedArticleIds = { "PLU", "$KONTO:", "$GUTSCHEIN:", "$GUTSCHEINBET:", "$RABATT:", "GANG:", "$FILTER:" };
@@ -190,7 +190,7 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static List<Models.Article> GetCachedArticles()
         {
-            return osCachedArticles;
+            return osCachedArticles.Values.ToList();
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static List<Models.Article> GetArticles()
         {
-            var osArticles = new List<Models.Article>();
+            var osArticles = new Dictionary<string, Models.Article>();
             var ntArticles = Nt.Database.DB.Api.Article.GetArticles();
             var ntModifierMenus = Nt.Database.DB.Api.Modifier.GetModifierMenus();
             var osArticleModifierGroups = GetArticleModifierGroups();
@@ -227,11 +227,11 @@ namespace Os.Server.Logic
                         }
                     }
                 }
-                osArticles.Add(osArticle);
+                osArticles.Add(osArticle.Id, osArticle);
             }
 
             osCachedArticles = osArticles;
-            return osArticles;
+            return osArticles.Values.ToList();
         }
         #endregion  //Articles
 
@@ -377,14 +377,26 @@ namespace Os.Server.Logic
         public static List<Models.ServiceArea> GetServiceAreas()
         {
             var osServiceAreas = new List<Models.ServiceArea>();
-            var ntServiceAreas = Nt.Database.DB.Api.Misc.GetServiceAreas();
-            foreach (var ntServiceArea in ntServiceAreas.Values)
+            var currentPosId = Nt.Database.DB.Api.Pos.GetPosId();
+            var posIds = Nt.Database.DB.Api.Pos.GetAlternativePosIds(currentPosId);
+            var serviceAreas = new Dictionary<string, string>();
+
+            var pos = Nt.Database.DB.Api.Pos.GetPos(currentPosId);
+            var osServiceArea = new Models.ServiceArea();
+            osServiceArea.Id = pos.Id;
+            osServiceArea.Name = Nt.Database.DB.Api.Pos.GetServiceAreaName(pos.ServiceAreaId);
+            serviceAreas.Add(pos.ServiceAreaId, osServiceArea.Name);
+
+            foreach (var posId in posIds)
             {
-                var osServiceArea = new Models.ServiceArea();
-                osServiceArea.Id = ntServiceArea.Id;
-                osServiceArea.Name = ntServiceArea.Name;
-                osServiceAreas.Add(osServiceArea);
+                pos = Nt.Database.DB.Api.Pos.GetPos(posId);
+                osServiceArea = new Models.ServiceArea();
+                osServiceArea.Id = pos.Id;
+                osServiceArea.Name = Nt.Database.DB.Api.Pos.GetServiceAreaName(pos.ServiceAreaId);
+                if (!serviceAreas.ContainsKey(pos.ServiceAreaId))
+                    osServiceAreas.Add(osServiceArea);
             }
+
             return osServiceAreas;
         }
 

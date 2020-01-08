@@ -54,25 +54,22 @@ namespace Nt.Database.Api.InterSystems
                     var order = new Nt.Data.Order();
                     orderLine++;
                     order.TableId = tableId;
-                    
                     order.AssignmentTypeId = indexList.GetString(0);
                     order.ArticleId = indexList.GetString(1);
                     order.UnitPrice = indexList.GetDecimal(2);
                     order.ReferenceId = indexList.GetString(3);
                     order.Quantity = dataList.GetDecimal(1);
                     order.Status = (Nt.Data.Order.OrderStatus)dataList.GetUInt(2);
-
-                    //
-                    if (order.Status == Data.Order.OrderStatus.Ordered)
-                        order.Line = 0;
-                    else
-                        order.Line = orderLine;
-
                     order.Name = dataList.GetString(4);
                     order.CourseMenu = dataList.GetString(7);
                     order.CourseNumber = dataList.GetString(8);
                     order.CourseName = dataList.GetString(16);
                     order.ArticleGroupId = dataList.GetString(23);
+
+                    if (order.Status == Data.Order.OrderStatus.Ordered)
+                        order.Line = 0;
+                    else
+                        order.Line = orderLine;
 
                     //
                     if (Misc.cachedArticleGroups.ContainsKey(order.ArticleGroupId))

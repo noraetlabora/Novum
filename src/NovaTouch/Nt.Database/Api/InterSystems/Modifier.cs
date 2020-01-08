@@ -52,7 +52,7 @@ namespace Nt.Database.Api.InterSystems
         {
             var modifierItems = new Dictionary<string, Nt.Data.ModifierItem>();
             var sql = new StringBuilder();
-            sql.Append(" SELECT M.ROW, M.COL, M.ANR, M.bgcolor, M.fgcolor, W.bez ");
+            sql.Append(" SELECT M.ROW, M.COL, M.ANR, M.bgcolor, M.fgcolor, W.vkbez ");
             sql.Append(" FROM NT.TouchUmenuZeilen M ");
             sql.Append(" LEFT JOIN WW.ANR AS W ON (W.FA = M.FA AND W.ANR = M.ANR) ");
             sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
@@ -64,7 +64,7 @@ namespace Nt.Database.Api.InterSystems
             {
                 var modifierItem = new Nt.Data.ModifierItem();
                 modifierItem.Id = DataObject.GetString(dataRow, "ANR");
-                modifierItem.Name = DataObject.GetString(dataRow, "bez");
+                modifierItem.Name = DataObject.GetString(dataRow, "vkbez");
                 modifierItem.Row = DataObject.GetUInt(dataRow, "ROW");
                 modifierItem.Column = DataObject.GetUInt(dataRow, "COL");
                 modifierItem.BackgroundColor = DataObject.GetString(dataRow, "bgcolor");

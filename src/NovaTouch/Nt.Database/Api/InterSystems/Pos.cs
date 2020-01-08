@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
@@ -56,6 +57,45 @@ namespace Nt.Database.Api.InterSystems
         public string GetPriceLevel(string sercieAreaId)
         {
             return Interaction.CallClassMethod("cmWW.VKO", "GetVKPEbene", Api.ClientId, sercieAreaId);
+        }
+
+        public Data.Pos GetPos(string posId)
+        {
+            var pos = new Data.Pos();
+
+            var sql = new StringBuilder();
+            sql.Append(" SELECT KASSA, Vko, bez ");
+            sql.Append(" FROM NT.KassenStamm ");
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
+            sql.Append(" AND   KASSA = ").Append(Interaction.SqlQuote(posId));
+            var dataTable = Interaction.GetDataTable(sql.ToString());
+
+            if (dataTable.Rows.Count == 0)
+                return null;
+
+            DataRow dataRow = dataTable.Rows[0];
+            pos.Id = DataObject.GetString(dataRow, "KASSA");
+            pos.Name = DataObject.GetString(dataRow, "bez");
+            pos.ServiceAreaId = DataObject.GetString(dataRow, "VKO");
+
+            return pos;
+        }
+
+        public List<string> GetAlternativePosIds(string posId)
+        {
+            var posIds = new List<string>();
+            var dbString = Interaction.CallClassMethod("cmNT.Kassa", "GetUmleitungsKassen", Api.ClientId, posId);
+            var posDataString = new DataString(dbString);
+            var posArray = posDataString.SplitByChar96();
+
+            foreach (var singlePosString in posArray)
+            {
+                var singlePosDataString = new DataString(singlePosString);
+                var singlePosArray = singlePosDataString.SplitByDoublePipes();
+                posIds.Add(singlePosArray[0]);
+            }
+
+            return posIds;
         }
 
     }

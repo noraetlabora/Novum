@@ -42,7 +42,7 @@ namespace Os.Server.Models
         /// </summary>
         /// <value>The modifiers for this orderline.</value>
         [DataMember(Name = "modifiers")]
-        public List<OrderLineModifier2> Modifiers { get; set; }
+        public List<OrderLineModifier> Modifiers { get; set; }
 
         /// <summary>
         /// If set this order line is a combo member and defines to which head / comboGroup this order line belongs to.
