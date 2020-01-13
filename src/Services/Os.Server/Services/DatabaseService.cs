@@ -9,7 +9,6 @@ namespace Os.Server.Services
     internal class DatabaseService : IHostedService, IDisposable
     {
         private Timer _timer;
-        private bool staticDataInitialLoaded = false;
 
         public DatabaseService()
         {

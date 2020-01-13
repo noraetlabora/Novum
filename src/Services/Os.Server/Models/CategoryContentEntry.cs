@@ -38,7 +38,7 @@ namespace Os.Server.Models
         /// Gets or Sets Article
         /// </summary>
         [DataMember(Name = "article")]
-        public Article2 Article { get; set; }
+        public Article Article { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object

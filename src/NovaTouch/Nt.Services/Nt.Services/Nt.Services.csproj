@@ -12,8 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\OrderSolution\Os.Server\OsClientConfiguration.cs" Link="Configuration\OsClientConfiguration.cs" />
-    <Compile Include="..\..\..\OrderSolution\Os.Server\OsServerConfiguration.cs" Link="Configuration\OsServerConfiguration.cs" />
+    <Compile Include="..\..\..\Services\Os.Server\OsClientConfiguration.cs" Link="Configuration\OsClientConfiguration.cs" />
+    <Compile Include="..\..\..\Services\Os.Server\OsServerConfiguration.cs" Link="Configuration\OsServerConfiguration.cs" />
   </ItemGroup>
   
   <ItemGroup>

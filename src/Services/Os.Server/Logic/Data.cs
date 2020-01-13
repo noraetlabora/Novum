@@ -593,20 +593,24 @@ namespace Os.Server.Logic
 
                 if (ntMenuItem.ArticleId.StartsWith("$"))
                 {
-                    // ignore sub/sub/.../menu 
-                    if (subMenu > 3)
+                    // ignore sub/.../menu 
+                    if (subMenu >= 1)
                         continue;
+
                     var subMenuId = ntMenuItem.ArticleId.Substring(1);
-                    // ignore submenu when equals to menuId
-                    if (subMenuId.Equals(menuId))
-                        continue;
-                    // subMenuId not known
+
+                    //// subMenuId not known
                     if (!ntMenus.ContainsKey(subMenuId))
                         continue;
-                    //
+
                     osCategoryContentEntry.Category = new Models.Category();
                     osCategoryContentEntry.Category.Name = ntMenus[subMenuId].Name;
-                    osCategoryContentEntry.Category.Content = GetCategoryContent(subMenuId, ntMenus, ntMenuItems, subMenu + 1);
+
+                    // dont add content if submenu equals current menuId
+                    if (subMenuId.Equals(menuId))
+                        osCategoryContentEntry.Category.Content = new List<Models.CategoryContentEntry>();
+                    else
+                        osCategoryContentEntry.Category.Content = GetCategoryContent(subMenuId, ntMenus, ntMenuItems, subMenu + 1);
                 }
                 else
                 {

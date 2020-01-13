@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Nt.Data
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Pos
     {
         #region Properties
