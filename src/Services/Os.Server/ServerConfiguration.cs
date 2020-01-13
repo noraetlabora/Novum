@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class OsServerConfiguration
+    public class ServerConfiguration
     {
         /// <summary>
         /// 
@@ -49,7 +49,7 @@
         /// <summary>
         /// 
         /// </summary>
-        public OsServerConfiguration()
+        public ServerConfiguration()
         {
             DatabaseIp = "localhost";
             DatabasePort = 0;
@@ -61,7 +61,7 @@
             OsClientPort = 0;
         }
 
-        public OsServerConfiguration(string json)
+        public ServerConfiguration(string json)
         {
 
         }

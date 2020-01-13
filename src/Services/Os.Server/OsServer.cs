@@ -18,8 +18,8 @@ namespace Os.Server
         /// <summary>
         /// 
         /// </summary>
-        public static OsServerConfiguration ServerConfiguration { get; private set; }
-        public static OsClientConfiguration ClientConfiguration { get; private set; }
+        public static ServerConfiguration ServerConfiguration { get; private set; }
+        public static ClientConfiguration ClientConfiguration { get; private set; }
         public static ResourceManager Dictionary { get; private set; }
         private static Client.ClientApi _clientApi;
 
@@ -44,7 +44,7 @@ namespace Os.Server
                 if (Console.IsOutputRedirected)
                 {
                     Nt.Logging.Log.Server.Info("starting as service");
-                    var webHostService = new Services.OsWebHostService(webHost);
+                    var webHostService = new Services.WebHostService(webHost);
                     ServiceBase.Run(webHostService);
                 }
                 else
@@ -89,9 +89,9 @@ namespace Os.Server
                 throw new Exception("couldn't find configuration file " + serverConfigFile);
             }
 
-            ServerConfiguration = new Os.Server.OsServerConfiguration();
+            ServerConfiguration = new Os.Server.ServerConfiguration();
             var json = System.IO.File.ReadAllText(serverConfigFile);
-            ServerConfiguration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.OsServerConfiguration>(json);
+            ServerConfiguration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.ServerConfiguration>(json);
             ServerConfiguration.DatabasePassword = Nt.Util.Encryption.DecryptString(ServerConfiguration.DatabasePassword);
             Nt.Logging.Log.Server.Info("ServerConfiguration : " + ServerConfiguration.ToString());
 
@@ -100,9 +100,9 @@ namespace Os.Server
                 throw new Exception("couldn't find configuration file " + clientConfigFile);
             }
 
-            ClientConfiguration = new Os.Server.OsClientConfiguration();
+            ClientConfiguration = new Os.Server.ClientConfiguration();
             json = System.IO.File.ReadAllText(clientConfigFile);
-            ClientConfiguration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.OsClientConfiguration>(json);
+            ClientConfiguration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.ClientConfiguration>(json);
             Nt.Logging.Log.Server.Info("ClientConfiguration : " + ClientConfiguration.ToString());
         }
 

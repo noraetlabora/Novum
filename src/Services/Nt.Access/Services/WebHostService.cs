@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 
-namespace Os.Server.Services
+namespace Nt.Access.Services
 {
     /// <summary>
     /// 
     /// </summary>
-    public class OsWebHostService : Microsoft.AspNetCore.Hosting.WindowsServices.WebHostService
+    public class WebHostService : Microsoft.AspNetCore.Hosting.WindowsServices.WebHostService
     {
         /// <summary>
         /// 
         /// </summary>
-        public OsWebHostService(IWebHost host) : base(host)
+        public WebHostService(IWebHost host) : base(host)
         {
 
         }

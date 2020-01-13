@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public class OsClientConfiguration
+    public class ClientConfiguration
     {
 
         /// <summary>
@@ -21,7 +21,7 @@
         /// <summary>
         /// 
         /// </summary>
-        public OsClientConfiguration()
+        public ClientConfiguration()
         {
             Localization = "de-AT";
             PriceEntryMode = "0";
@@ -32,7 +32,7 @@
             FeatureTip = true;
         }
 
-        public OsClientConfiguration(string json)
+        public ClientConfiguration(string json)
         {
 
         }
