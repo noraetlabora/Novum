@@ -70,7 +70,7 @@ paths:
       summary: >-
         Get the status of the host / POS. This will be regularly called by
         clients to detect status changes (like host / POS restarts)
-      operationId: postMediumPayment
+      operationId: postMediumCancellation
       consumes:
         - application/json
       parameters:
@@ -119,6 +119,15 @@ definitions:
     type: object
     properties:
       message:
+        type: string
+      type: 
+        type: string
+      code:
+        type: integer
+        format: int32
+      userTitle:
+        type: string
+      userMessage:
         type: string
   Payment:
     description: This object contains all Information of the payment with a medium

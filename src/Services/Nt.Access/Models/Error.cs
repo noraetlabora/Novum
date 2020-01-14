@@ -9,8 +9,8 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace Nt.Access.Models
 {
@@ -27,6 +27,30 @@ namespace Nt.Access.Models
         public string Message { get; set; }
 
         /// <summary>
+        /// Gets or Sets Type
+        /// </summary>
+        [DataMember(Name = "type")]
+        public string Type { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Code
+        /// </summary>
+        [DataMember(Name = "code")]
+        public int? Code { get; set; }
+
+        /// <summary>
+        /// Gets or Sets UserTitle
+        /// </summary>
+        [DataMember(Name = "userTitle")]
+        public string UserTitle { get; set; }
+
+        /// <summary>
+        /// Gets or Sets UserMessage
+        /// </summary>
+        [DataMember(Name = "userMessage")]
+        public string UserMessage { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -35,6 +59,10 @@ namespace Nt.Access.Models
             var sb = new StringBuilder();
             sb.Append("class Error {\n");
             sb.Append("  Message: ").Append(Message).Append("\n");
+            sb.Append("  Type: ").Append(Type).Append("\n");
+            sb.Append("  Code: ").Append(Code).Append("\n");
+            sb.Append("  UserTitle: ").Append(UserTitle).Append("\n");
+            sb.Append("  UserMessage: ").Append(UserMessage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -76,6 +104,26 @@ namespace Nt.Access.Models
                     Message == other.Message ||
                     Message != null &&
                     Message.Equals(other.Message)
+                ) &&
+                (
+                    Type == other.Type ||
+                    Type != null &&
+                    Type.Equals(other.Type)
+                ) &&
+                (
+                    Code == other.Code ||
+                    Code != null &&
+                    Code.Equals(other.Code)
+                ) &&
+                (
+                    UserTitle == other.UserTitle ||
+                    UserTitle != null &&
+                    UserTitle.Equals(other.UserTitle)
+                ) &&
+                (
+                    UserMessage == other.UserMessage ||
+                    UserMessage != null &&
+                    UserMessage.Equals(other.UserMessage)
                 );
         }
 
@@ -91,6 +139,14 @@ namespace Nt.Access.Models
                 // Suitable nullity checks etc, of course :)
                 if (Message != null)
                     hashCode = hashCode * 59 + Message.GetHashCode();
+                if (Type != null)
+                    hashCode = hashCode * 59 + Type.GetHashCode();
+                if (Code != null)
+                    hashCode = hashCode * 59 + Code.GetHashCode();
+                if (UserTitle != null)
+                    hashCode = hashCode * 59 + UserTitle.GetHashCode();
+                if (UserMessage != null)
+                    hashCode = hashCode * 59 + UserMessage.GetHashCode();
                 return hashCode;
             }
         }
