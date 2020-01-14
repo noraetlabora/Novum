@@ -11,7 +11,7 @@ paths:
     get:
       tags:
         - medium
-      operationId: cancellationReasons_Get
+      operationId: getMediumInformation
       parameters:
         - type: string
           name: mediumId
@@ -32,14 +32,14 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/Error'
-  '/api/v1/mediums/{mediumId}/payment':
+  '/api/v1/mediums/{mediumId}/payments':
     post:
       tags:
         - medium
       summary: >-
         Get the status of the host / POS. This will be regularly called by
         clients to detect status changes (like host / POS restarts)
-      operationId: mediumPayment
+      operationId: postMediumPayment
       consumes:
         - application/json
       parameters:
@@ -63,14 +63,14 @@ paths:
           description: ''
           schema:
             $ref: '#/definitions/Information'
-  '/api/v1/mediums/{mediumId}/cancellation':
+  '/api/v1/mediums/{mediumId}/cancellations':
     post:
       tags:
         - medium
       summary: >-
         Get the status of the host / POS. This will be regularly called by
         clients to detect status changes (like host / POS restarts)
-      operationId: mediumCancellation
+      operationId: postMediumPayment
       consumes:
         - application/json
       parameters:

@@ -70,6 +70,8 @@ namespace Nt.Access
             sb.Append(request.Path.Value).Append(request.QueryString).Append("|");
             sb.Append(bodyAsText);
 
+            Nt.Logging.Log.Communication.Info(sb.ToString());
+
             return bodyAsText;
         }
 

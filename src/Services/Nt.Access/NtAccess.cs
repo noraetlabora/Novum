@@ -18,7 +18,7 @@ namespace Nt.Access
             try
             {
                 Nt.Logging.Log.Server.Info("================================================================== Nt.Access  ==================================================================");
-                GetConfig();
+                //GetConfig();
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();
 
@@ -51,7 +51,8 @@ namespace Nt.Access
                     .UseKestrel()
                     .ConfigureKestrel(options =>
                     {
-                        options.ListenAnyIP((int)ServerConfiguration.Port, listenOptions =>
+                        //options.ListenAnyIP((int)ServerConfiguration.Port, listenOptions =>
+                        options.ListenAnyIP(5000, listenOptions =>
                         {
                             listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
                         });

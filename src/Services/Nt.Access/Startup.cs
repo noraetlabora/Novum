@@ -31,7 +31,7 @@ namespace Nt.Access
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddControllers();
         }
 
         /// <summary>

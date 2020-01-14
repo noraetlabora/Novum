@@ -22,7 +22,6 @@ namespace Nt.Access.Controllers
         /// <summary>
         /// 
         /// </summary>
-
         /// <param name="mediumId">xxxyyy</param>
         /// <response code="200"></response>
         /// <response code="400"></response>
@@ -36,11 +35,12 @@ namespace Nt.Access.Controllers
         /// <summary>
         /// Get the status of the host / POS. This will be regularly called by clients to detect status changes (like host / POS restarts)
         /// </summary>
-
-        /// <param name="mediumId">xxxyyy</param>
+        /// <param name="mediumId">id of the medium</param>
         /// <param name="data"></param>
         /// <response code="200"></response>
-        public virtual IActionResult MediumCancellation([FromRoute][Required]string mediumId, [FromBody]Models.Cancellation data)
+        [HttpPost]
+        [Route("/api/v1/mediums/{mediumId}/payments")]
+        public virtual IActionResult MediumPayment([FromRoute][Required]string mediumId, [FromBody]Models.Payment data)
         {
             throw new System.NotImplementedException();
         }
@@ -48,13 +48,12 @@ namespace Nt.Access.Controllers
         /// <summary>
         /// Get the status of the host / POS. This will be regularly called by clients to detect status changes (like host / POS restarts)
         /// </summary>
-
-        /// <param name="mediumId">id of the medium</param>
+        /// <param name="mediumId">xxxyyy</param>
         /// <param name="data"></param>
         /// <response code="200"></response>
         [HttpPost]
-        [Route("/api/v1/mediums/{mediumId}/payment")]
-        public virtual IActionResult MediumPayment([FromRoute][Required]string mediumId, [FromBody]Models.Payment data)
+        [Route("/api/v1/mediums/{mediumId}/cancellations")]
+        public virtual IActionResult MediumCancellation([FromRoute][Required]string mediumId, [FromBody]Models.Cancellation data)
         {
             throw new System.NotImplementedException();
         }
