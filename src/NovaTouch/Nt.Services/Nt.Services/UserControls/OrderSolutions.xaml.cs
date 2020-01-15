@@ -198,7 +198,7 @@ namespace Nt.Services.UserControls
         {
             try
             {
-                var osServerConfiguration = new Os.Server.OsServerConfiguration();
+                var osServerConfiguration = new Os.Server.ServerConfiguration();
                 osServerConfiguration.DatabaseIp = txtDbIp.Text;
                 osServerConfiguration.DatabasePort = uint.Parse(txtDbPort.Text);
                 osServerConfiguration.DatabaseNamespace = txtDbNamespace.Text;
@@ -224,7 +224,7 @@ namespace Nt.Services.UserControls
         {
             try
             {
-                var osClientConfiguration = new Os.Server.OsClientConfiguration();
+                var osClientConfiguration = new Os.Server.ClientConfiguration();
 
                 var jsonOption = new System.Text.Json.JsonSerializerOptions();
                 jsonOption.WriteIndented = true;
@@ -246,6 +246,7 @@ namespace Nt.Services.UserControls
                 osClientConfiguration.FeatureMoveAllSubTables = (bool)chbMoveAllSubTables.IsChecked;
                 osClientConfiguration.FeatureMoveSingleSubTable = (bool)chbMoveSingleSubTable.IsChecked;
                 osClientConfiguration.FeatureTip = (bool)chbTip.IsChecked;
+                osClientConfiguration.Coursing = (bool)chbCoursing.IsChecked;
 
                 string json = System.Text.Json.JsonSerializer.Serialize(osClientConfiguration, jsonOption);
                 System.IO.File.WriteAllText(osClientConfigurationFile, json);
@@ -258,12 +259,12 @@ namespace Nt.Services.UserControls
 
         private void LoadClientConfiguration()
         {
-            var osClientConfiguration = new Os.Server.OsClientConfiguration();
+            var osClientConfiguration = new Os.Server.ClientConfiguration();
 
             try
             {
                 var json = System.IO.File.ReadAllText(osClientConfigurationFile);
-                osClientConfiguration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.OsClientConfiguration>(json);
+                osClientConfiguration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.ClientConfiguration>(json);
 
                 //CommaToSet
                 if (osClientConfiguration.PriceEntryMode.Equals("0"))
@@ -281,6 +282,7 @@ namespace Nt.Services.UserControls
                 chbMoveAllSubTables.IsChecked = osClientConfiguration.FeatureMoveAllSubTables;
                 chbMoveSingleSubTable.IsChecked = osClientConfiguration.FeatureMoveSingleSubTable;
                 chbTip.IsChecked = osClientConfiguration.FeatureTip;
+                chbCoursing.IsChecked = osClientConfiguration.Coursing;
             }
             catch(Exception ex)
             {
@@ -291,12 +293,12 @@ namespace Nt.Services.UserControls
 
         private void LoadServerConfiguration()
         {
-            var osServerConfiguration = new Os.Server.OsServerConfiguration();
+            var osServerConfiguration = new Os.Server.ServerConfiguration();
 
             try
             {
                 var json = System.IO.File.ReadAllText(osServerConfigurationFile);
-                osServerConfiguration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.OsServerConfiguration>(json);
+                osServerConfiguration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.ServerConfiguration>(json);
 
                 txtDbIp.Text = osServerConfiguration.DatabaseIp;
                 txtDbPort.Text = osServerConfiguration.DatabasePort.ToString();

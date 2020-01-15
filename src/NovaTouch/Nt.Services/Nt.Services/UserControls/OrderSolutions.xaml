@@ -46,14 +46,15 @@
             <ComboBoxItem Content="CommaToSet"/>
             <ComboBoxItem Content="FixedComma"/>
         </ComboBox>
-        <CheckBox x:Name="chbDisableSubTables" Content="Disable SubTables" HorizontalAlignment="Left" Margin="561,221,0,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="chbMoveAllSubTables" Content="Move All SubTables" HorizontalAlignment="Left" Margin="561,239,0,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="chbMoveSingleSubTable" Content="Move Single Tables" HorizontalAlignment="Left" Margin="561,257,0,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="chbTip" Content="Tip" HorizontalAlignment="Left" Margin="561,275,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="chbDisableSubTables" Content="Disable SubTables" HorizontalAlignment="Left" Margin="561,201,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="chbMoveAllSubTables" Content="Move All SubTables" HorizontalAlignment="Left" Margin="561,219,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="chbMoveSingleSubTable" Content="Move Single Tables" HorizontalAlignment="Left" Margin="561,237,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="chbTip" Content="Tip" HorizontalAlignment="Left" Margin="561,255,0,0" VerticalAlignment="Top"/>
         <Label  x:Name="lblAuthentication" Content="Authentication" HorizontalAlignment="Left" Margin="559,108,0,0" VerticalAlignment="Top" Width="100"/>
         <ComboBox x:Name="cmbAuthenticationMode" HorizontalAlignment="Left" Margin="667,111,0,0" VerticalAlignment="Top" Width="120">
             <ComboBoxItem Content="number"/>
             <ComboBoxItem Content="selection"/>
         </ComboBox>
+        <CheckBox x:Name="chbCoursing" Content="Coursing" HorizontalAlignment="Left" Margin="561,273,0,0" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>

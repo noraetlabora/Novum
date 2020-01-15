@@ -14,6 +14,7 @@
         public string PriceEntryMode { get; set; }
         public bool DisableSubtables { get; set; }
         public string AuthenthicationMode { get; set; }
+        public bool Coursing { get; set; }
         public bool FeatureMoveAllSubTables { get; set; }
         public bool FeatureMoveSingleSubTable { get; set; }
         public bool FeatureTip { get; set; }
@@ -30,6 +31,7 @@
             FeatureMoveAllSubTables = true;
             FeatureMoveSingleSubTable = true;
             FeatureTip = true;
+            Coursing = true;
         }
 
         public ClientConfiguration(string json)
@@ -67,6 +69,7 @@
             builder.Append(", moveAllSubTables=").Append(this.FeatureMoveAllSubTables);
             builder.Append(", moveSingleSubTables=").Append(this.FeatureMoveSingleSubTable);
             builder.Append(", tip=").Append(this.FeatureTip);
+            builder.Append(", coursing = ").Append(this.Coursing);
 
             return builder.ToString();
         }

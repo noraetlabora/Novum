@@ -117,6 +117,7 @@ namespace Os.Server.Controllers
                 osConfiguration.Global.Add("priceEntryMode", OsServer.ClientConfiguration.PriceEntryMode);
                 osConfiguration.Global.Add("disableSubtables", OsServer.ClientConfiguration.DisableSubtables ? "1" : "0");
                 osConfiguration.Global.Add("authenticationMode", OsServer.ClientConfiguration.AuthenthicationMode);
+                TODO: osConfiguration.Global.Add("coursingMode", OsServer.ClientConfiguration.Coursing ? "manual" : "disabled");
                 osConfiguration.Features = new List<string>();
                 if (OsServer.ClientConfiguration.FeatureMoveAllSubTables)
                     osConfiguration.Features.Add("moveAllSubTables");
@@ -124,7 +125,15 @@ namespace Os.Server.Controllers
                     osConfiguration.Features.Add("moveSingleSubTable");
                 if (OsServer.ClientConfiguration.FeatureTip)
                     osConfiguration.Features.Add("tip");
+                if (OsServer.ClientConfiguration.Coursing)
+                    osConfiguration.Features.Add("addCourseOnLongPress");
+
+                //TODO: delete folowing 2 lines
+                osConfiguration.Global.Add("coursingMode", "manual");
+                osConfiguration.Features.Add("addCourseOnLongPress");
+
                 return new ObjectResult(osConfiguration);
+
             }
             catch (Exception ex)
             {
