@@ -76,6 +76,24 @@ namespace Os.Server.Logic
 
         #endregion
 
+        #region Course
+
+        public static List<Models.Course> GetCourses()
+        {
+            var osCourses = new List<Models.Course>();
+            var ntCourses = Nt.Database.DB.Api.Misc.GetCourses();
+            foreach (var ntCourse in ntCourses.Values)
+            {
+                var osCourse = new Models.Course();
+                osCourse.Id = ntCourse.Id;
+                osCourse.Name = ntCourse.Name;
+                osCourses.Add(osCourse);
+            }
+            return osCourses;
+        }
+
+        #endregion
+
         #region PaymentMedia
         /// <summary>
         /// 

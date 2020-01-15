@@ -72,6 +72,29 @@ namespace Nt.Database.Api.InterSystems
             return cancellationReasons;
         }
 
+        public Dictionary<string, Course> GetCourses()
+        {
+            var courses = new Dictionary<string, Nt.Data.Course>();
+            var sql = new StringBuilder();
+            sql.Append(" SELECT GANGMENU, GANG, bez ");
+            sql.Append(" FROM WW.Speisenfolge ");
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
+            sql.Append(" AND  passiv > ").Append(Interaction.SqlToday);
+            var dataTable = Interaction.GetDataTable(sql.ToString());
+
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                var course = new Nt.Data.Course();
+                course.Menu = DataObject.GetInt(dataRow, "GANGMENU");
+                course.Number = DataObject.GetInt(dataRow, "GANG");
+                course.Name = DataObject.GetString(dataRow, "bez");
+                if (!courses.ContainsKey(course.Id))
+                    courses.Add(course.Id, course);
+            }
+
+            return courses;
+        }
+
         /// <summary>
         /// 
         /// </summary>

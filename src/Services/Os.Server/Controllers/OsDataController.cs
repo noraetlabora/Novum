@@ -66,6 +66,7 @@ namespace Os.Server.Controllers
         {
             try
             {
+                //HACK: always use Menu Category "1"
                 var categories = Logic.Data.GetCachedCategories("1");
                 return new ObjectResult(categories);
             }
@@ -111,13 +112,15 @@ namespace Os.Server.Controllers
             try
             {
                 var osConfiguration = new Models.OsConfiguration();
+                //globals
                 osConfiguration.Global = new Dictionary<string, string>();
                 osConfiguration.Global.Add("language", OsServer.ClientConfiguration.GetLanguageCode());
                 osConfiguration.Global.Add("locale", OsServer.ClientConfiguration.Localization);
                 osConfiguration.Global.Add("priceEntryMode", OsServer.ClientConfiguration.PriceEntryMode);
                 osConfiguration.Global.Add("disableSubtables", OsServer.ClientConfiguration.DisableSubtables ? "1" : "0");
                 osConfiguration.Global.Add("authenticationMode", OsServer.ClientConfiguration.AuthenthicationMode);
-                TODO: osConfiguration.Global.Add("coursingMode", OsServer.ClientConfiguration.Coursing ? "manual" : "disabled");
+                osConfiguration.Global.Add("coursingMode", OsServer.ClientConfiguration.Coursing ? "manual" : "disabled");
+                //features
                 osConfiguration.Features = new List<string>();
                 if (OsServer.ClientConfiguration.FeatureMoveAllSubTables)
                     osConfiguration.Features.Add("moveAllSubTables");
@@ -128,7 +131,7 @@ namespace Os.Server.Controllers
                 if (OsServer.ClientConfiguration.Coursing)
                     osConfiguration.Features.Add("addCourseOnLongPress");
 
-                //TODO: delete folowing 2 lines
+                //TODO: delete folowing 2 lines - manual course and addCourseOnLongPress
                 osConfiguration.Global.Add("coursingMode", "manual");
                 osConfiguration.Features.Add("addCourseOnLongPress");
 
@@ -293,11 +296,8 @@ namespace Os.Server.Controllers
         {
             try
             {
-                var session = Sessions.GetSession(Request);
-
-                throw new NotImplementedException("/api/v2/data/courses is not yet implemented");
-
-                //return new ObjectResult(null);
+                var courses = Logic.Data.GetCourses();
+                return new ObjectResult(courses);
             }
             catch (Exception ex)
             {

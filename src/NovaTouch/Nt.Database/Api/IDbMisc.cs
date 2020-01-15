@@ -35,6 +35,12 @@ namespace Nt.Database.Api
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        Dictionary<string, Nt.Data.Course> GetCourses();
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
         bool HasSnapshotTime(string guid);
