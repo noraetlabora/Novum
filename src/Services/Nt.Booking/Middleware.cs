@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nt.Access
+namespace Nt.Booking
 {
     /// <summary>
     ///  Middleware for Logging all Requests and Response

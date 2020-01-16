@@ -12,7 +12,7 @@ using System;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace Nt.Access.Models
+namespace Nt.Booking.Models
 {
     /// <summary>
     /// error object

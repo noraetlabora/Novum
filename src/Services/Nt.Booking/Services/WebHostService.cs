@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 
-namespace Nt.Access.Services
+namespace Nt.Booking.Services
 {
     /// <summary>
     /// 

@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
-namespace Nt.Access.Controllers
+namespace Nt.Booking.Controllers
 {
     /// <summary>
     /// 

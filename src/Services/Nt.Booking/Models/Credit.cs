@@ -12,25 +12,27 @@ using System;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Nt.Access.Models
+namespace Nt.Booking.Models
 {
     /// <summary>
-    /// This object contains all Information of the cancellation with a medium
+    /// credit object
     /// </summary>
     [DataContract]
-    public partial class Cancellation : IEquatable<Cancellation>
+    public partial class Credit : IEquatable<Credit>
     {
         /// <summary>
-        /// Gets or Sets Id
+        /// credit balance (*100)
         /// </summary>
-        [DataMember(Name = "id")]
-        public string Id { get; set; }
+        /// <value>credit balance (*100)</value>
+        [DataMember(Name = "amount")]
+        public int? Amount { get; set; }
 
         /// <summary>
-        /// Gets or Sets Name
+        /// credit balance at opening (*100)
         /// </summary>
-        [DataMember(Name = "name")]
-        public string Name { get; set; }
+        /// <value>credit balance at opening (*100)</value>
+        [DataMember(Name = "openingAmount")]
+        public int? OpeningAmount { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -39,9 +41,9 @@ namespace Nt.Access.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Cancellation {\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  Name: ").Append(Name).Append("\n");
+            sb.Append("class Credit {\n");
+            sb.Append("  Amount: ").Append(Amount).Append("\n");
+            sb.Append("  OpeningAmount: ").Append(OpeningAmount).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -65,29 +67,29 @@ namespace Nt.Access.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Cancellation)obj);
+            return obj.GetType() == GetType() && Equals((Credit)obj);
         }
 
         /// <summary>
-        /// Returns true if Cancellation instances are equal
+        /// Returns true if Credit instances are equal
         /// </summary>
-        /// <param name="other">Instance of Cancellation to be compared</param>
+        /// <param name="other">Instance of Credit to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(Cancellation other)
+        public bool Equals(Credit other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return
                 (
-                    Id == other.Id ||
-                    Id != null &&
-                    Id.Equals(other.Id)
+                    Amount == other.Amount ||
+                    Amount != null &&
+                    Amount.Equals(other.Amount)
                 ) &&
                 (
-                    Name == other.Name ||
-                    Name != null &&
-                    Name.Equals(other.Name)
+                    OpeningAmount == other.OpeningAmount ||
+                    OpeningAmount != null &&
+                    OpeningAmount.Equals(other.OpeningAmount)
                 );
         }
 
@@ -101,10 +103,10 @@ namespace Nt.Access.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                if (Id != null)
-                    hashCode = hashCode * 59 + Id.GetHashCode();
-                if (Name != null)
-                    hashCode = hashCode * 59 + Name.GetHashCode();
+                if (Amount != null)
+                    hashCode = hashCode * 59 + Amount.GetHashCode();
+                if (OpeningAmount != null)
+                    hashCode = hashCode * 59 + OpeningAmount.GetHashCode();
                 return hashCode;
             }
         }
@@ -112,12 +114,12 @@ namespace Nt.Access.Models
         #region Operators
 #pragma warning disable 1591
 
-        public static bool operator ==(Cancellation left, Cancellation right)
+        public static bool operator ==(Credit left, Credit right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(Cancellation left, Cancellation right)
+        public static bool operator !=(Credit left, Credit right)
         {
             return !Equals(left, right);
         }

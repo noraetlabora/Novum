@@ -5,19 +5,19 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.ServiceProcess;
 
-namespace Nt.Access
+namespace Nt.Booking
 {
     public class Program
     {
 
         public static ServerConfiguration ServerConfiguration { get; private set; }
-        private static string serverConfigFile = AppDomain.CurrentDomain.BaseDirectory + @"\Nt.Access.config.json";
+        private static string serverConfigFile = AppDomain.CurrentDomain.BaseDirectory + @"\Nt.Booking.config.json";
 
         public static void Main(string[] args)
         {
             try
             {
-                Nt.Logging.Log.Server.Info("================================================================== Nt.Access  ==================================================================");
+                Nt.Logging.Log.Server.Info("================================================================== Nt.Booking  ==================================================================");
                 //GetConfig();
 
                 var webHostBuilder = CreateWebHostBuilder(args);

@@ -12,27 +12,20 @@ using System;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Nt.Access.Models
+namespace Nt.Booking.Models
 {
     /// <summary>
-    /// credit object
+    /// owner of the medium
     /// </summary>
     [DataContract]
-    public partial class Credit : IEquatable<Credit>
+    public partial class Owner : IEquatable<Owner>
     {
         /// <summary>
-        /// credit balance (*100)
+        /// name of the owner (John Doe)
         /// </summary>
-        /// <value>credit balance (*100)</value>
-        [DataMember(Name = "amount")]
-        public int? Amount { get; set; }
-
-        /// <summary>
-        /// credit balance at opening (*100)
-        /// </summary>
-        /// <value>credit balance at opening (*100)</value>
-        [DataMember(Name = "openingAmount")]
-        public int? OpeningAmount { get; set; }
+        /// <value>name of the owner (John Doe)</value>
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -41,9 +34,8 @@ namespace Nt.Access.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Credit {\n");
-            sb.Append("  Amount: ").Append(Amount).Append("\n");
-            sb.Append("  OpeningAmount: ").Append(OpeningAmount).Append("\n");
+            sb.Append("class Owner {\n");
+            sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -67,29 +59,24 @@ namespace Nt.Access.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Credit)obj);
+            return obj.GetType() == GetType() && Equals((Owner)obj);
         }
 
         /// <summary>
-        /// Returns true if Credit instances are equal
+        /// Returns true if Owner instances are equal
         /// </summary>
-        /// <param name="other">Instance of Credit to be compared</param>
+        /// <param name="other">Instance of Owner to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(Credit other)
+        public bool Equals(Owner other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return
                 (
-                    Amount == other.Amount ||
-                    Amount != null &&
-                    Amount.Equals(other.Amount)
-                ) &&
-                (
-                    OpeningAmount == other.OpeningAmount ||
-                    OpeningAmount != null &&
-                    OpeningAmount.Equals(other.OpeningAmount)
+                    Name == other.Name ||
+                    Name != null &&
+                    Name.Equals(other.Name)
                 );
         }
 
@@ -103,10 +90,8 @@ namespace Nt.Access.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                if (Amount != null)
-                    hashCode = hashCode * 59 + Amount.GetHashCode();
-                if (OpeningAmount != null)
-                    hashCode = hashCode * 59 + OpeningAmount.GetHashCode();
+                if (Name != null)
+                    hashCode = hashCode * 59 + Name.GetHashCode();
                 return hashCode;
             }
         }
@@ -114,12 +99,12 @@ namespace Nt.Access.Models
         #region Operators
 #pragma warning disable 1591
 
-        public static bool operator ==(Credit left, Credit right)
+        public static bool operator ==(Owner left, Owner right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(Credit left, Credit right)
+        public static bool operator !=(Owner left, Owner right)
         {
             return !Equals(left, right);
         }

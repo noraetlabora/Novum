@@ -12,18 +12,23 @@ using System;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Nt.Access.Models
+namespace Nt.Booking.Models
 {
     /// <summary>
-    /// owner of the medium
+    /// This object contains all Information of the payment with a medium
     /// </summary>
     [DataContract]
-    public partial class Owner : IEquatable<Owner>
+    public partial class Payment : IEquatable<Payment>
     {
         /// <summary>
-        /// name of the owner (John Doe)
+        /// Gets or Sets Id
         /// </summary>
-        /// <value>name of the owner (John Doe)</value>
+        [DataMember(Name = "id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Name
+        /// </summary>
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
@@ -34,7 +39,8 @@ namespace Nt.Access.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Owner {\n");
+            sb.Append("class Payment {\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
@@ -59,20 +65,25 @@ namespace Nt.Access.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Owner)obj);
+            return obj.GetType() == GetType() && Equals((Payment)obj);
         }
 
         /// <summary>
-        /// Returns true if Owner instances are equal
+        /// Returns true if Payment instances are equal
         /// </summary>
-        /// <param name="other">Instance of Owner to be compared</param>
+        /// <param name="other">Instance of Payment to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(Owner other)
+        public bool Equals(Payment other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return
+                (
+                    Id == other.Id ||
+                    Id != null &&
+                    Id.Equals(other.Id)
+                ) &&
                 (
                     Name == other.Name ||
                     Name != null &&
@@ -90,6 +101,8 @@ namespace Nt.Access.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
+                if (Id != null)
+                    hashCode = hashCode * 59 + Id.GetHashCode();
                 if (Name != null)
                     hashCode = hashCode * 59 + Name.GetHashCode();
                 return hashCode;
@@ -99,12 +112,12 @@ namespace Nt.Access.Models
         #region Operators
 #pragma warning disable 1591
 
-        public static bool operator ==(Owner left, Owner right)
+        public static bool operator ==(Payment left, Payment right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(Owner left, Owner right)
+        public static bool operator !=(Payment left, Payment right)
         {
             return !Equals(left, right);
         }

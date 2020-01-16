@@ -12,7 +12,7 @@ using System;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Nt.Access.Models
+namespace Nt.Booking.Models
 {
     /// <summary>
     /// debit object

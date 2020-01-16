@@ -1,4 +1,4 @@
-﻿namespace Nt.Access
+﻿namespace Nt.Booking
 {
     /// <summary>
     /// 
