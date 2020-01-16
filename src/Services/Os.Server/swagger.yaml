@@ -1,0 +1,2450 @@
+﻿x-generator: NSwag v13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v12.0.0.0))
+swagger: '2.0'
+info:
+  title: OrderSolution HTTP API
+  version: 0.0.0
+host: '10.0.0.136:12346'
+schemes:
+  - http
+paths:
+  /api/v2/actionButtonHandler/refresh:
+    post:
+      tags:
+        - ActionButtonHandler
+      summary: This is a custom controller to demonstrate how to handle requests triggered by an ActionButton.
+      operationId: ActionButtonHandler_refresh
+      consumes:
+        - application/json
+        - text/json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: The data received from an action button request. This specifies the context in which the button was pressed.
+          schema:
+            $ref: '#/definitions/ActionButtonRequestData'
+          x-nullable: false
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/ActionButtonResponseData'
+  /api/v2/data/cancellationReasons:
+    get:
+      tags:
+        - data
+      operationId: cancellationReasons_Get
+      produces:
+        - application/json
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CancellationReason'
+  /api/v2/hostStatus:
+    get:
+      tags:
+        - host
+      summary: Get the status of the host / POS. This will be regularly called by clients to detect status changes (like host / POS restarts)
+      operationId: hostStatus_Get
+      produces:
+        - application/json
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/PosStatus'
+  /api/v2/data/osConfiguration:
+    get:
+      tags:
+        - data
+      operationId: osConfiguration_Get
+      produces:
+        - application/json
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/OsConfiguration'
+  /api/v2/data/paymentMedia:
+    get:
+      tags:
+        - data
+      summary: Get the predefined available payment media types.
+      description: |-
+        IMPORTANT:
+
+        The first medium has a special behavior as it is available 2 times:
+
+        - It is shown in the payment media list in the payment media screen as configured and can be used normally.
+        - It is shown as a quick payment button left to the "Pay..." button in the payment screen (= quick pay button). It will be used as quick payment method
+             and will have "askForAmount" flag be forced to false (and so also "allowOverPayment" is also false). It will be used to fully pay the
+             whole selected amount with the specified tip.
+             Example: If a check with 22 EUR + 2 tip is paid with the quick pay button which is named "Pay Cash" in the demo the payment will be executed
+                    with the "Cash" media type (as this is the first one in the list) and it will pay with the full amount (22 EUR) on the current check and the tip (2 EUR)
+      operationId: paymentMedia_Get
+      produces:
+        - application/json
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PaymentMedium'
+  /api/v2/data/printers:
+    get:
+      tags:
+        - data
+      operationId: printers_Get
+      produces:
+        - application/json
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Printer'
+  /api/v2/data/articles:
+    get:
+      tags:
+        - data
+      operationId: articles_Get
+      produces:
+        - application/json
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Article'
+  /api/v2/data/categories:
+    get:
+      tags:
+        - data
+      operationId: categories_Get
+      produces:
+        - application/json
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Category'
+  /api/v2/data/courses:
+    get:
+      tags:
+        - data
+      summary: |-
+        Only supported if coursing features is enabled (see osConfiguration for details).
+        Get list of standard courses.
+      operationId: courses_Get
+      produces:
+        - application/json
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Course'
+  '/api/v2/images/fax/{id}':
+    get:
+      tags:
+        - images/fax
+      operationId: faxImage_Get
+      parameters:
+        - type: string
+          name: id
+          in: path
+          required: true
+          x-nullable: true
+      responses:
+        '200':
+          x-nullable: true
+          description: ''
+          schema:
+            type: file
+    put:
+      tags:
+        - images/fax
+      summary: 'OBSOLETE: The OrderSolution is not using the PUT operation anymore since 0.9.9.x to avoid race conditions when the same fax image is used in different order lines. Instead only POST to create new images on every change is used.'
+      operationId: faxImage_Put
+      parameters:
+        - type: string
+          name: id
+          in: path
+          required: true
+          description: The ID of the fax image to overwrite.
+          x-nullable: true
+      responses:
+        '400':
+          description: ''
+      deprecated: true
+  /api/v2/images/fax:
+    post:
+      tags:
+        - images/fax
+      summary: |-
+        Store a new fax image on the server.
+        NOTE: The data will be read frsom the body as raw binary bytes.
+      operationId: faxImage_Post
+      parameters:
+        - type: string
+          name: subTableId
+          in: query
+          description: |-
+            Context information about the sub table to which the fax image is planned to be sent for.
+            When later referring to the fax image id we will always do so in the context of that sub table.
+            This also means in case the sub table is not valid anymore (e.g. closed via payment) the OrderSolution also does not have a need for
+            that image anymore which means the image can safely be deleted (from the OrderSolution perspective).
+          x-nullable: true
+      responses:
+        '201':
+          description: Reports the location of the newly created resource in the http header
+        '400':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/OsError'
+        '403':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/OsError'
+  /api/v2/data/guestTypes:
+    get:
+      tags:
+        - data
+      summary: |-
+        Only supported if coursing features is enabled (see osConfiguration for details).
+        Get list of standard courses.
+      operationId: guestTypes_Get
+      produces:
+        - application/json
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GuestType'
+  /api/v2/data/modifierGroups:
+    get:
+      tags:
+        - data
+      operationId: modifierGroups_Get
+      produces:
+        - application/json
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ModifierGroup'
+  /api/v2/data/orderLines:
+    get:
+      tags:
+        - runtime data
+      summary: |-
+        Get the order lines possibly filtered by the sub table id.
+        NOTE: Only committed order lines (where actions/tables/FinalizeOrder was called) will be returned by this call.
+      operationId: orderLines_Get
+      parameters:
+        - type: string
+          name: subTableId
+          in: query
+          description: The sub table ID getting orderlines for.
+          x-nullable: true
+        - type: string
+          name: status
+          in: query
+          description: |-
+            If specified the status of the orderlines that are required.
+                        If not provided all orderlines with status Ordered and Committed are returned
+          x-schema:
+            $ref: '#/definitions/OrderLineStatus'
+          x-nullable: true
+          enum:
+            - unknown
+            - ordered
+            - committed
+            - paid
+      responses:
+        '200':
+          x-nullable: false
+          description: Orderlines with their unpaid quantity/price
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/OrderLine'
+  /api/v2/data/serviceAreas:
+    get:
+      tags:
+        - data
+      operationId: serviceAreas_Get
+      produces:
+        - application/json
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ServiceArea'
+  /api/v2/data/tables:
+    get:
+      tags:
+        - runtime data
+      summary: Get open tables for the service area.
+      operationId: tables_GetOpen
+      produces:
+        - application/json
+      parameters:
+        - type: string
+          name: serviceAreaId
+          in: query
+          description: The service area id of the service area.
+          x-nullable: true
+      responses:
+        '200':
+          x-nullable: false
+          description: open tables array
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TableResult'
+  /api/v2/data/users:
+    get:
+      tags:
+        - data
+      operationId: users_Get
+      produces:
+        - application/json
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+  /api/v2/actions/auth/login:
+    post:
+      tags:
+        - actions
+      summary: 'Execute a login transaction. NOTE: Will set an "AuthToken" cookie needed in later authorized requests.'
+      operationId: auth_login
+      consumes:
+        - application/json
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LoginUser'
+          x-nullable: false
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/LoginResult'
+        '204':
+          description: ''
+        '401':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/OsError'
+  /api/v2/actions/auth/logout:
+    post:
+      tags:
+        - actions
+      summary: Logout from the server.
+      operationId: auth_logout
+      responses:
+        '204':
+          description: ''
+  /api/v2/actions/init/registerClient:
+    post:
+      tags:
+        - actions
+      summary: |-
+        Get initialization data for the client.
+        Clients will have to call transactions/login to execute meaningful transactions.
+      operationId: init_registerClient
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: clientData
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ClientInfo'
+          x-nullable: false
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/RegisterClientResponse'
+        '400':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/OsError'
+        '412':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/OsError'
+  /api/v2/actions/init/registerGateway:
+    post:
+      tags:
+        - actions
+      summary: |-
+        Informs about a gateway (like OsServer) that is configured to work with this POS.
+        A gateway is a system / server that clients use to communicate with the server.
+
+        IMPORTANT: The response of type POSInfo must include a valid PartnerId. If no valid ID is provided the OsServer
+        will exit.
+      operationId: init_registerGateway
+      consumes:
+        - application/json
+      parameters:
+        - name: gatewayInfo
+          in: body
+          required: true
+          description: Information about the gateway.
+          schema:
+            $ref: '#/definitions/GatewayInfo'
+          x-nullable: false
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/RegisterGatewayResponse'
+  '/api/v2/actions/orderLines/void/{orderLineId}':
+    post:
+      tags:
+        - actions/orderlines
+      summary: Void an order line or a given quantity of it.
+      description: |-
+        IMPORTANT:
+
+        - If the order line to be voided is a combo member it's combo parameters are untouched.
+          This is the reason why they are not part of this transaction.
+      operationId: orderLines_Void
+      consumes:
+        - application/json
+      parameters:
+        - type: string
+          name: orderLineId
+          in: path
+          required: true
+          description: The order line id to void / to reduce the quantity of.
+          x-nullable: true
+        - name: data
+          in: body
+          required: true
+          description: |-
+            Details about the void operation to be executed on this order line. 
+                        If null the whole orderline will be voided.
+          schema:
+            $ref: '#/definitions/OrderLineVoid'
+          x-nullable: false
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/OrderLineVoidResult'
+        '204':
+          description: ''
+  '/api/v2/actions/orderLines/add/{subTableId}':
+    post:
+      tags:
+        - actions/orderlines
+      summary: |-
+        Add a new order line to a sub table.
+        (e.g. when the waiter orders an article on a table)
+      operationId: orderLines_add
+      consumes:
+        - application/json
+      parameters:
+        - type: string
+          name: subTableId
+          in: path
+          required: true
+          description: |-
+            The ID of the subtable to add the order line to.
+            Note: Orders are always part of a subtable and subtables are part of a table. This means at least 1 subtable exists for each table to allow ordering / adding orderlines.
+          x-nullable: true
+        - name: data
+          in: body
+          required: true
+          description: The order line to add.
+          schema:
+            $ref: '#/definitions/OrderLineAdd'
+          x-nullable: false
+      responses:
+        '201':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/OrderLineResult'
+  '/api/v2/actions/orderLines/split/{orderLineId}':
+    post:
+      tags:
+        - actions/orderlines
+      summary: Split an existing order line into 2 order lines so that they can later be modified / moved / ... independently.
+      description: |-
+        IMPORTANT: 
+
+        - The split action is done to allow this operation in a single transaction instead of calling void and add separately.
+        - If the order line to be split is a combo member the combo parameters are untouched.
+          This is the reason why these parameters are not part of the split operation.
+
+        E.g. if the original order line is "3xCoke" and the provided split quantity is 2 the expected result is 
+        first/original order line with 1xCoke second order line (new one) with 2xCoke.
+        ATTENTION: When splitting an order line that has a FAX modifier the fax image must be copied so that as a result
+            The first/original order line has the original fax image ID and the second (new) order line has a copy of the first one with 
+            a new fax image ID.
+      operationId: orderLines_split
+      consumes:
+        - application/json
+      parameters:
+        - type: string
+          name: orderLineId
+          in: path
+          required: true
+          description: The order line to split.
+          x-nullable: true
+        - name: data
+          in: body
+          required: true
+          description: Details about how to split this order line.
+          schema:
+            $ref: '#/definitions/OrderLineSplit'
+          x-nullable: false
+      responses:
+        '201':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/OrderLineSplitResult'
+  '/api/v2/actions/orderLines/modifyUncommitted/{orderLineId}':
+    post:
+      tags:
+        - actions/orderlines
+      summary: Modifies (= replaces) an uncommitted order line.
+      description: |-
+        IMPORTANT: 
+
+        - Any existing modifiers of the order line are replaced with the new modifiers. 
+          For example if an order line "1x Coke with ice" is modified to be "1x Coke with Citron" the ice is also gone
+          so the operation works as a replacement and not as a patch of the existing data.
+        - If the order line to be modified is a combo member the combo parameters are untouched.
+          This is the reason why these parameters are not part of the split operation.
+      operationId: orderLines_modifyUncommitted
+      consumes:
+        - application/json
+      parameters:
+        - type: string
+          name: orderLineId
+          in: path
+          required: true
+          description: The order line to be modified / replaced
+          x-nullable: true
+        - name: data
+          in: body
+          required: true
+          description: The new data to be used for this order line (same as for the add request)
+          schema:
+            $ref: '#/definitions/OrderLineModify'
+          x-nullable: false
+      responses:
+        '201':
+          x-nullable: false
+          description: OrderLineResult informing about the new ids / prices of the modified order line.
+          schema:
+            $ref: '#/definitions/OrderLineResult'
+  /api/v2/actions/pay/subTables:
+    post:
+      tags:
+        - actions/pay
+      summary: Pay sub full subtables. If the pay action is executed successfully the subtables will be fully paid and closed.
+      operationId: pay_subTables
+      consumes:
+        - application/json
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: Pay data describing which payments have to be executed for which subtables
+          schema:
+            $ref: '#/definitions/PaySubTables'
+          x-nullable: false
+      responses:
+        '200':
+          x-nullable: false
+          description: OK in case the payment was successful and the receipt is moved to the printer queue.
+          schema:
+            $ref: '#/definitions/PayResult'
+        '204':
+          description: OK in case the payment was successful and the receipt is moved to the printer queue.
+  /api/v2/actions/pay/orderLines:
+    post:
+      tags:
+        - actions/pay
+      summary: Pay individual order lines. Typically used when the bill is split.
+      operationId: pay_orderLines
+      consumes:
+        - application/json
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: The order lines to be paid + payment info.
+          schema:
+            $ref: '#/definitions/PayOrderLines'
+          x-nullable: false
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/PayResult'
+        '204':
+          description: ''
+  /api/v2/actions/pay/preAuthorize:
+    post:
+      tags:
+        - actions/pay
+      summary: |-
+        Will be used when a payment medium was used that is configured to require pre-authorization.
+        If accepted (OK, 200) the medium will be used for the pay action.
+        If not accepted (Conflict, 409) it will be ignored.
+      operationId: pay_preAuthorize
+      consumes:
+        - application/json
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PreAuthData'
+          x-nullable: false
+      responses:
+        '200':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/PreAuthResult'
+        '404':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/OsError'
+        '409':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/OsError'
+  /api/v2/actions/subTables/create:
+    post:
+      tags:
+        - actions/subtables
+      summary: Create a new subtable.
+      operationId: subTables_create
+      parameters:
+        - type: string
+          name: tableId
+          in: query
+          description: The table this sub table is created for.
+          x-nullable: true
+      responses:
+        '201':
+          x-nullable: false
+          description: ''
+          schema:
+            $ref: '#/definitions/SubTable'
+  /api/v2/actions/subTables/move:
+    post:
+      tags:
+        - actions/subtables
+      summary: Move sub tables to another table. This can be a single or multiple or all subTables of a table.
+      operationId: subTables_move
+      consumes:
+        - application/json
+      parameters:
+        - name: data
+          in: body
+          required: true
+          description: Defines the data for the action (source subTables to move + target table to move to)
+          schema:
+            $ref: '#/definitions/MoveSubtables'
+          x-nullable: false
+      responses:
+        '200':
+          x-nullable: false
+          description: On success the new/updated data of the target table. This is the same result as from a call to tables/openByName.
+          schema:
+            $ref: '#/definitions/TableResultEx'
+  '/api/v2/actions/tables/openByName/{name}':
+    post:
+      tags:
+        - actions/tables
+      summary: Open table by name. If it does not exist it will be created.
+      operationId: tables_openByName
+      parameters:
+        - type: string
+          name: name
+          in: path
+          required: true
+          description: The Name of the table to be opened. Is unique in the service area defined.
+          x-nullable: true
+        - type: string
+          name: serviceAreaId
+          in: query
+          description: The ID of the service area in which the table should be opened.
+          x-nullable: true
+        - type: boolean
+          name: prePayment
+          in: query
+          description: If provided defines if the request is in preparation of a payment action.
+          default: false
+          x-nullable: true
+      responses:
+        '200':
+          x-nullable: false
+          description: Existing table opened.
+          schema:
+            $ref: '#/definitions/TableResultEx'
+        '201':
+          x-nullable: false
+          description: New table opened.
+          schema:
+            $ref: '#/definitions/TableResultEx'
+  '/api/v2/actions/tables/modifyProperties/{tableId}':
+    patch:
+      tags:
+        - actions/tables
+      summary: Modifiers properties of the given table.
+      operationId: tables_modifyProperties
+      consumes:
+        - application/json
+      parameters:
+        - type: string
+          name: tableId
+          in: path
+          required: true
+          description: The table of which the properties are updated.
+          x-nullable: true
+        - name: newProperties
+          in: body
+          required: true
+          description: |-
+            The properties with their values to be updated.
+            NOTE: Only the properties that are given in this options are updated. If a property is not part of this object it must not be changed.
+          schema:
+            $ref: '#/definitions/TableProperties'
+          x-nullable: false
+      responses:
+        '204':
+          description: ''
+        '401':
+          description: ''
+        '403':
+          description: ''
+        '409':
+          description: ''
+  '/api/v2/actions/tables/finalizeOrder/{tableId}':
+    post:
+      tags:
+        - actions/tables
+      summary: Finalize the current order so that they the open orders are committed and the table is getting unlocked.
+      operationId: tables_finalizeOrder
+      parameters:
+        - type: string
+          name: tableId
+          in: path
+          required: true
+          description: Table to commit orders for.
+          x-nullable: true
+      responses:
+        '204':
+          description: ''
+        '401':
+          description: ''
+        '403':
+          description: ''
+        '409':
+          description: ''
+  '/api/v2/actions/tables/cancelOrder/{tableId}':
+    post:
+      tags:
+        - actions/tables
+      summary: Cancels the current order procedure for the table. The table will be unlocked and all uncommitted orders will be deleted.
+      operationId: tables_cancelOrder
+      parameters:
+        - type: string
+          name: tableId
+          in: path
+          required: true
+          description: The table to work on.
+          x-nullable: true
+      responses:
+        '204':
+          description: ''
+        '401':
+          description: ''
+        '403':
+          description: ''
+        '409':
+          description: ''
+  '/api/v2/actions/tables/addCourse/{tableId}':
+    post:
+      tags:
+        - actions/tables
+      operationId: tables_addCourse
+      consumes:
+        - application/json
+      parameters:
+        - type: string
+          name: tableId
+          in: path
+          required: true
+          x-nullable: true
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AddCourseData'
+          x-nullable: false
+      responses:
+        '200':
+          x-nullable: false
+          description: New course added
+          schema:
+            $ref: '#/definitions/TableResultEx'
+definitions:
+  ActionButtonResponseData:
+    type: object
+    description: Defines actions to be taken as a result of pressing the action button.
+    properties:
+      dialog:
+        description: 'IMPORTANT: For ActionButton responses ONLY the OK dialog is supported.'
+        allOf:
+          - $ref: '#/definitions/OsDialog'
+      onSuccess:
+        $ref: '#/definitions/ActionButtonOnSuccess'
+  OsDialog:
+    type: object
+    description: |-
+      A dialog type used in some POS responses to force the OsApp to show a dialog to the user.
+                  
+      NOTE: At the moment only a dialog with an OK button is supported. So it's an option to show final information to the user
+              but there is no option to get some results back.
+    required:
+      - type
+    properties:
+      header:
+        type: string
+        description: Header to be shown for this message on the dialog.
+      message:
+        type: string
+        description: |-
+          Message to be shown in the dialog.
+          The text can be formated by using Qt's subset of html/richtext. Details see https://doc.qt.io/qt-5/richtext-html-subset.html.
+      type:
+        description: |-
+          Defines the type of the dialog to be shown to the user.s
+          ATTENTION: Some types will not be available for some actions. Please check in the actions descriptions.
+        allOf:
+          - $ref: '#/definitions/DialogType'
+  DialogType:
+    type: string
+    description: ''
+    x-enumNames:
+      - ok
+      - yesNo
+    enum:
+      - ok
+      - yesNo
+  ActionButtonOnSuccess:
+    type: object
+    required:
+      - exec
+    properties:
+      exec:
+        description: Take a specific OrderSolution action.
+        allOf:
+          - $ref: '#/definitions/ExecCommands'
+  ExecCommands:
+    type: string
+    description: ''
+    x-enumNames:
+      - reload
+    enum:
+      - reload
+  ActionButtonRequestData:
+    type: object
+    properties:
+      language:
+        type: string
+      printer:
+        type: string
+      screen:
+        $ref: '#/definitions/ScreenContextData'
+  ScreenContextData:
+    type: object
+    properties:
+      id:
+        type: string
+      table:
+        $ref: '#/definitions/TableContextData'
+  TableContextData:
+    type: object
+    properties:
+      id:
+        type: string
+      subTable:
+        $ref: '#/definitions/SubTableContextData'
+  SubTableContextData:
+    type: object
+    properties:
+      id:
+        type: string
+      selectedOLId:
+        type: string
+  CancellationReason:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+  PosStatus:
+    type: object
+    properties:
+      sessionId:
+        type: string
+        description: Whenever the POS is restarted this session should change to allow the gateway to detect restarts.
+  OsConfiguration:
+    type: object
+    description: |-
+      Configuration parameters from the POS for the OrderSolution system.
+      IMPORTANT: On further details about possible configuration please check the OrderSolution SDK documentation chapter 
+      "Configuration" / "OsApp Configuration".
+    properties:
+      global:
+        type: object
+        description: |-
+          Key = key of configuration
+          Value = value of the configuration
+
+          Some possible settings (further details see sdk documentation); if not set the default value is used:
+            language = en / de / ...                  (en is default)
+            locale = en / de_DE / ...                 (en is default)
+            priceEntryMode = 0 / 1                    (0 is default; decimal price entry with comma key)
+            disableSubTables = 0 / 1                  (0 is default; subtables are enabled)
+            authenticationMode = selection / number   (selection is default)
+            coursingMode = disabled / manual          (disabled is default); if set also GET data/courses has to be implemented
+        additionalProperties:
+          type: string
+      features:
+        type: array
+        description: |-
+          Defines a list of features the POS system supports. Details about possible options check OrderSolution SDK documentation.
+
+          Some possible entries:
+              tip,
+              moveAllSubTables, 
+              moveSingleSubTable, 
+              addCourseOnLongPress        // if set also POST tables/addCourse as well as the courses list at tables/openByName must be implemented
+              guestType                   // if set also GET data/guestTypes has to be implemented
+        items:
+          type: string
+      screens:
+        description: Defines the configuration of screens used. If no configuration is provided the default configuration is used.
+        allOf:
+          - $ref: '#/definitions/ScreensConfiguration'
+  ScreensConfiguration:
+    type: object
+    properties:
+      tableSelection:
+        description: Configuration of the tableSeleciton screen.
+        allOf:
+          - $ref: '#/definitions/TableSelectionScreenConfig'
+      order:
+        description: Configuration of the order screen.
+        allOf:
+          - $ref: '#/definitions/OrderScreenConfig'
+      payment:
+        description: Configuration of the payment screen.
+        allOf:
+          - $ref: '#/definitions/PaymentScreenConfig'
+      paymentMedia:
+        description: Configuration of the paymentMedia screen.
+        allOf:
+          - $ref: '#/definitions/PaymentMediaScreenConfig'
+  TableSelectionScreenConfig:
+    type: object
+    properties:
+      toolbar:
+        description: Get / set the type of this toolbar.
+        allOf:
+          - $ref: '#/definitions/ToolbarTableSelectionConfig'
+  ToolbarTableSelectionConfig:
+    type: object
+    properties:
+      buttons:
+        type: array
+        description: |-
+          Configuration of the single buttons in the toolbar.
+          The buttons will be shown in order of this list in the toolbar.
+          If a screen has a back button this button is not configurable and is always shown at the beginning of the toolbar.
+                      
+        items:
+          $ref: '#/definitions/TBTableSelectConfig'
+  TBTableSelectConfig:
+    type: object
+    required:
+      - type
+    properties:
+      type:
+        description: Get / set the type of this toolbar.
+        allOf:
+          - $ref: '#/definitions/TBTableSelectType'
+      action:
+        description: The detailed configuration of action buttons (= when type == "action")
+        allOf:
+          - $ref: '#/definitions/TBOrderActionConfig'
+  TBTableSelectType:
+    type: string
+    description: ''
+    x-enumNames:
+      - calculator
+      - payment
+      - serviceArea
+      - printerSelection
+      - action
+    enum:
+      - calculator
+      - payment
+      - serviceArea
+      - printerSelection
+      - action
+  TBOrderActionConfig:
+    type: object
+    required:
+      - url
+    properties:
+      text:
+        type: object
+        description: So far only supported for action buttons
+        additionalProperties:
+          type: string
+      url:
+        type: string
+      icon:
+        type: string
+  OrderScreenConfig:
+    type: object
+    properties:
+      toolbar:
+        description: Get / set the type of this toolbar.
+        allOf:
+          - $ref: '#/definitions/ToolbarOrderConfig'
+  ToolbarOrderConfig:
+    type: object
+    properties:
+      buttons:
+        type: array
+        description: |-
+          Configuration of the single buttons in the toolbar.
+          The buttons will be shown in order of this list in the toolbar.
+          If a screen has a back button this button is not configurable and is always shown at the beginning of the toolbar.
+                      
+        items:
+          $ref: '#/definitions/TBOrderConfig'
+  TBOrderConfig:
+    type: object
+    required:
+      - type
+    properties:
+      type:
+        description: Get / set the type of this toolbar.
+        allOf:
+          - $ref: '#/definitions/TBOrderType'
+      action:
+        description: The detailed configuration of action buttons (= when type == "action")
+        allOf:
+          - $ref: '#/definitions/TBOrderActionConfig'
+  TBOrderType:
+    type: string
+    description: ''
+    x-enumNames:
+      - calculator
+      - payment
+      - orderMode
+      - move
+      - action
+    enum:
+      - calculator
+      - payment
+      - orderMode
+      - move
+      - action
+  PaymentScreenConfig:
+    type: object
+    properties:
+      toolbar:
+        description: Get / set the type of this toolbar.
+        allOf:
+          - $ref: '#/definitions/ToolbarPaymentConfig'
+  ToolbarPaymentConfig:
+    type: object
+    properties:
+      buttons:
+        type: array
+        description: |-
+          Configuration of the single buttons in the toolbar.
+          The buttons will be shown in order of this list in the toolbar.
+          If a screen has a back button this button is not configurable and is always shown at the beginning of the toolbar.
+                      
+        items:
+          $ref: '#/definitions/TBPaymentConfig'
+  TBPaymentConfig:
+    type: object
+    required:
+      - type
+    properties:
+      type:
+        description: Get / set the type of this toolbar.
+        allOf:
+          - $ref: '#/definitions/TBPaymentType'
+  TBPaymentType:
+    type: string
+    description: ''
+    x-enumNames:
+      - calculator
+      - printerSelection
+      - tip
+    enum:
+      - calculator
+      - printerSelection
+      - tip
+  PaymentMediaScreenConfig:
+    type: object
+    properties:
+      toolbar:
+        description: Get / set the type of this toolbar.
+        allOf:
+          - $ref: '#/definitions/ToolbarPaymentMediaConfig'
+  ToolbarPaymentMediaConfig:
+    type: object
+    properties:
+      buttons:
+        type: array
+        description: |-
+          Configuration of the single buttons in the toolbar.
+          The buttons will be shown in order of this list in the toolbar.
+          If a screen has a back button this button is not configurable and is always shown at the beginning of the toolbar.
+                      
+        items:
+          $ref: '#/definitions/TBPaymentMediaConfig'
+  TBPaymentMediaConfig:
+    type: object
+    required:
+      - type
+    properties:
+      type:
+        description: Get / set the type of this toolbar.
+        allOf:
+          - $ref: '#/definitions/TBPaymentMediaType'
+  TBPaymentMediaType:
+    type: string
+    description: ''
+    x-enumNames:
+      - calculator
+      - printerSelection
+    enum:
+      - calculator
+      - printerSelection
+  PaymentMedium:
+    type: object
+    properties:
+      id:
+        type: string
+        description: The id to identify this medium.
+      name:
+        type: string
+        description: The name of this medium that will be shown to the user in the payment media selection screen.
+      allowOverPayment:
+        type: boolean
+        description: Optional. false or not defined (= default) when using this media the app will not allow to enter a higher payment amount as to be paid. true = over payment is allowed
+      askForAmount:
+        type: boolean
+        description: |-
+          Optional. Whether or not to ask the user for an amount (default == true == ask for amount)
+          If false, the normal “ask for amount” popup will not be shown when selecting the payment medium.
+          If a requestInput method is defined the entered amount will be set in actions/pay/preAuthorize request and the final used amount will
+          come from the response to actions/pay/preAuthorize. Otherwise the entered amount will be set in the actions/pay/orderlines or actions/pay/subtables request.
+      fullPaymentOnly:
+        type: boolean
+        description: |-
+          Optional. If true it requires that the check/bill is only paid with this single payment medium.
+          As a result if first another payment medium is used to partially pay a check/bill (like a 10 EUR check is paid with 2 EUR cash) all media types with this flag set will be disabled.
+      consolidatePayments:
+        type: boolean
+        description: |-
+          Optional. If true the payments using this media ID are consolidated into a single payment line with a counter.
+          Otherwise (default) each payment has it's own line on the payment screen.
+      requestInput:
+        description: |-
+          If set the payment medium will trigger to ask for specific data from the user when it is selected in the payment media selection screen.
+          This type of payment medium will ALWAYS trigger actions/pay/preAuthorize request!
+
+          Example: Let's say you plan to create a payment media to read an MSR card but if using the MSR fails (for example because of a bad magnetic strip) you
+          want to enter the cards ID manually. In this case you have to create 2 different payment media types. First one for the MSR and the second one for manual
+          input. So the client user has to decide which one to use. In case swiping the card fails they will cancel that procedure and select the manual entry medium instead.
+        allOf:
+          - $ref: '#/definitions/InputQueryPrompt'
+  InputQueryPrompt:
+    type: object
+    description: |-
+      Defines a set of potentially used input types. 
+      ATTENTION: From the allowed methods ONLY A SINGLE one is allowed to be set. If multiple are set an error will be thrown!
+    properties:
+      prompt:
+        type: object
+        description: |-
+          A prompt message presented to the user while the input is read.
+          Example for MSR: "Please swipe your ACME InHouse Credit Card!"
+          Key is the language tag (like "en" or "de"). Value is the text in that language.
+        additionalProperties:
+          type: string
+      methodManual:
+        description: |-
+          If set it will trigger a manual input.
+          ATTENTION: ONLY A SINGLE method is allowed to be set. If multiple are set an error will be thrown!
+        allOf:
+          - $ref: '#/definitions/ManualInput'
+      methodMSR:
+        description: |-
+          If set it will trigger an magnetic stripe card reading procedure.
+          ATTENTION: ONLY A SINGLE method is allowed to be set. If multiple are set an error will be thrown!
+        allOf:
+          - $ref: '#/definitions/MsrInput'
+      methodNFC:
+        description: |-
+          If set it will trigger an NFC tag reading procedure.
+          NOTE: At the moment only ISO UID can be read.
+          ATTENTION: ONLY A SINGLE method is allowed to be set. If multiple are set an error will be thrown!
+        allOf:
+          - $ref: '#/definitions/NfcInput'
+      methodBarcode:
+        $ref: '#/definitions/BarcodeInput'
+  ManualInput:
+    type: object
+    description: A set of manual input definitions describing each single line to be read from the user.
+    properties:
+      lines:
+        type: array
+        description: 'List of defined line definitions. First entry will be for the first line, second for the second input line and so on.'
+        items:
+          $ref: '#/definitions/ManualInputLine'
+  ManualInputLine:
+    type: object
+    description: Input definition of a single manual line.
+    properties:
+      key:
+        type: string
+        description: The key for this input line that will be used in the data reporting (see ManualInputDataLine.Key).
+      defaultValue:
+        type: string
+        description: The default value used if the user does not enter anything in this line.
+      regExpValidator:
+        type: string
+        description: |-
+          Regular expression used for validating the input. Per default (if not specified) we use the expression .* which will allow any string.
+          For text input only.
+      label:
+        type: string
+        description: The label for the input line that describes what the user is up to enter in that line. Usually shown above or left to the input field.
+      type:
+        description: Defines the input type. Default is text.
+        allOf:
+          - $ref: '#/definitions/ManualInputType'
+      minValue:
+        type: integer
+        description: |-
+          Defines the minimum allowed numeric value. If not defined no minimum limit is used.
+          For Type "numeric" only.
+        format: int32
+      maxValue:
+        type: integer
+        description: |-
+          Defines the maximum allowed numeric value. If not defined no maximum limit is used.
+          For Type "numeric" only.
+        format: int32
+      decimalDigits:
+        type: integer
+        description: |-
+          Defines the number of decimal digits. Default is 0.
+          For example if 2 decimal digits are defined. A value of 124 represents the number "1.24" and is also
+          shown like this in the input field.
+          For Type "numeric" only.
+        format: int32
+  ManualInputType:
+    type: string
+    description: ''
+    x-enumNames:
+      - text
+      - numeric
+    enum:
+      - text
+      - numeric
+  MsrInput:
+    type: object
+    description: Defines which tracks of the magnetic stripe card to read.
+    properties:
+      enabledTracks:
+        type: array
+        description: |-
+          Defines the track numbers that will be read and returned.
+          All tracks must be read successfully so that any data is returned.
+          Allowed Values: 1,2,3
+          Example for reading all 3 tracks: [ 1,2,3 ]
+        items:
+          type: integer
+          format: int32
+  NfcInput:
+    type: object
+    description: |-
+      Defines the input parameters for reading media via the NFC hardware reader.
+      Supported media types depend on the actual device but typically these are NFC compatible
+      tags or order cards base on the ISO 14443 A+b and similar standards.
+      IMORTANT: At the moment only reading the UID of the tags are supported
+    required:
+      - isoUID
+    properties:
+      isoUID:
+        type: boolean
+        description: |-
+          true to force query the ISO UID from the read tag.
+          NOTE: This is currently the only valid data type and must be set to true.
+  BarcodeInput:
+    type: object
+    description: |-
+      Defines the input parameters for reading media via the NFC hardware reader.
+      Supported media types depend on the actual device but typically these are NFC compatible
+      tags or order cards base on the ISO 14443 A+b and similar standards.
+      IMORTANT: At the moment only reading the UID of the tags are supported
+    required:
+      - illuminationMode
+    properties:
+      illuminationMode:
+        $ref: '#/definitions/BarcodeIlluminationMode'
+      symbologies:
+        type: array
+        description: |-
+          Possible values are (take care to use identical casing):
+            AustralianPost,
+            AztecCode,
+            BritishPost,
+            CanadianPost,
+            ChinaPost,
+            Codabar,
+            Codablock,
+            Code11,
+            Code128,
+            Code16K,
+            Code32,
+            Code39,
+            Code49,
+            Code93,
+            CouponCode,
+            DataMatrix,
+            EanUccComposite,
+            Ean13,
+            Ean8,
+            GS1_128,
+            Interleaved2of5,
+            ISBT,
+            JapanesePost,
+            KIXPost,
+            LabelCode4,
+            LabelCode5,
+            KoreaPost,
+            Matrix2of5,
+            MaxiCode,
+            MicroPDF417,
+            MSI,
+            OCR_USMoneyFont,
+            OCR_A,
+            OCR_B,
+            PDF417,
+            PlanetCode,
+            PlesseyCode,
+            PosiCode,
+            Postnet,
+            QRCode,
+            RSS,
+            Straight2of5_IATA,
+            Straight2of5_Industrial,
+            TLC39,
+            Telepen,
+            TriopticCode,
+            UCC_EAN128,
+            UPC_A,
+            UPC_E0,
+            UPC_E1
+        items:
+          type: string
+      format:
+        type: string
+        description: |-
+          Defines the response data encoding format of the bar code.
+          It must be one of "string" which is the default if not set or "base64"
+  BarcodeIlluminationMode:
+    type: string
+    description: ''
+    x-enumNames:
+      - 'off'
+      - aimer
+      - illumination
+      - aimerAndIlluminationAlternating
+      - aimerAndIllumination
+    enum:
+      - 'off'
+      - aimer
+      - illumination
+      - aimerAndIlluminationAlternating
+      - aimerAndIllumination
+  Printer:
+    type: object
+    properties:
+      name:
+        type: string
+        description: |-
+          The friendly name of the printer informing the employee about which printer it is
+          or where the printer might be connected to (like if it is a belt printer it should be clear
+          from the name to which handheld this belt printer is connected to)
+      path:
+        type: string
+        description: The path of the printer used to define the printer to which a print job is sent
+  Article:
+    type: object
+    required:
+      - mustEnterPrice
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      receiptName:
+        type: string
+      plu:
+        type: string
+      mustEnterPrice:
+        type: integer
+        description: |-
+          Defines if the Article force price entry when ordered.
+          0 = not forced; 1 = price entry forced
+        format: int32
+      forceShowModifiers:
+        type: boolean
+        description: |-
+          If set to true AND modifier groups are assigned it forces the modifier screen to be shown right after the article was selected for ordering. (replaces the .IsMandatory from previous versions)
+          IMPORTANT: If this article does not have ModifierGroups this setting is not allowed.
+      modifierGroups:
+        type: array
+        description: |-
+          This defines the possible modifiers of this article.
+          IMPORTANT: If the article has comboGroups assigning ModifierGroups is not allowed!
+        items:
+          $ref: '#/definitions/ArticleModifierGroup'
+      comboGroups:
+        type: array
+        description: |-
+          If set this makes this article a combo which is a set of other articles that can be ordered.
+          Typically this construct is used for creating menus (like first course and main course) or oder sets (like a meal with a drink and a combined price).
+        items:
+          $ref: '#/definitions/ArticleComboGroups'
+  ArticleModifierGroup:
+    type: object
+    properties:
+      modifierGroupId:
+        type: string
+  ArticleComboGroups:
+    type: object
+    description: Used when an article is not a normal article but instead a combo.
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      maxQuantity:
+        type: integer
+        description: |-
+          If set this defines the limit how many choices (= sum of all the quantities of the choices from the content).
+          If not defined the quantity allowed is unlimited. Typically only done for choices that have a price and sold as supplements.
+        format: int32
+      content:
+        type: array
+        description: Defines the content of this combo group.
+        items:
+          $ref: '#/definitions/ComboContentEntry'
+  ComboContentEntry:
+    type: object
+    properties:
+      articleId:
+        type: string
+  Category:
+    allOf:
+      - $ref: '#/definitions/CategoryEntryBase'
+      - type: object
+        properties:
+          name:
+            type: string
+          content:
+            type: array
+            items:
+              $ref: '#/definitions/CategoryContentEntry'
+  CategoryContentEntry:
+    type: object
+    properties:
+      category:
+        $ref: '#/definitions/Category'
+      articleId:
+        type: string
+        description: |-
+          The article that is part of this content.
+          OBSOLETE. Use the .article property instead.
+      article:
+        $ref: '#/definitions/Article2'
+  Article2:
+    allOf:
+      - $ref: '#/definitions/CategoryEntryBase'
+      - type: object
+        properties:
+          id:
+            type: string
+            description: The ID of the article referenced.
+  CategoryEntryBase:
+    type: object
+    properties:
+      bgColor:
+        type: string
+        description: |-
+          Defines the color that will be assigned to this button in the article chooser (right bottom of the order screen).
+          This can be used to allow better orientation for the user on this screen.
+          Note: Which part of the button will be colored depends on the current client implementation.
+  Course:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+  OsError:
+    type: object
+    properties:
+      errorMsg:
+        type: string
+  GuestType:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+  ModifierGroup:
+    type: object
+    required:
+      - type
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      question:
+        type: string
+      type:
+        $ref: '#/definitions/ModifierType'
+      minChoices:
+        type: integer
+        format: int32
+      maxChoices:
+        type: integer
+        format: int32
+      choices:
+        type: array
+        items:
+          $ref: '#/definitions/ModifierChoice'
+  ModifierType:
+    type: string
+    description: |-
+      0 – pickOne - One option to select from ModifierGroupChoices.
+      1 – pickMultiple - Select several options from ModifierGroupChoices.
+      2 – pickNumeric - Select numeric choices from ModifierGroupChoices
+      3 – textInput -  Asks for arbitary text input
+      4 – faxInput - Asks for handwritten input
+    x-enumNames:
+      - pickOne
+      - pickMultiple
+      - pickNumeric
+      - textInput
+      - faxInput
+    enum:
+      - pickOne
+      - pickMultiple
+      - pickNumeric
+      - textInput
+      - faxInput
+  ModifierChoice:
+    type: object
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      receiptName:
+        type: string
+      defaultAmount:
+        type: integer
+        format: int32
+      minAmount:
+        type: integer
+        format: int32
+      maxAmount:
+        type: integer
+        format: int32
+  OrderLine:
+    type: object
+    required:
+      - quantity
+      - singlePrice
+      - status
+    properties:
+      id:
+        type: string
+      articleId:
+        type: string
+      quantity:
+        type: integer
+        description: The unpaid quantity of this order line.
+        format: int32
+      singlePrice:
+        type: integer
+        description: The unpaid price of this order line.
+        format: int32
+      status:
+        $ref: '#/definitions/OrderLineStatus'
+      modifiers:
+        type: array
+        description: If set defines the modifiers for this order line.
+        items:
+          $ref: '#/definitions/OrderLineModifier'
+      combo:
+        description: If set this order line is a combo member and defines to which head / comboGroup this order line belongs to.
+        allOf:
+          - $ref: '#/definitions/OrderLineCombo'
+      courseId:
+        type: string
+        description: |-
+          Only supported if coursing features is enabled (see osConfiguration for details).
+          Optional. If set it refers to a course defined for the table this line is ordered in or the global courses list if no table specific courses are set.
+          NOTE: If courses feature is enabled but no course ID is specified it is expected that this order line is going to be in the first course of the courses list.
+  OrderLineStatus:
+    type: string
+    description: |-
+      Represents the status of a given order line.
+      Unknown = 0,
+      Ordered = 1, // This order line was not yet committed/confirmed
+      Committed = 2,
+      Paid = 3
+    x-enumNames:
+      - Unknown
+      - Ordered
+      - Committed
+      - Paid
+    enum:
+      - unknown
+      - ordered
+      - committed
+      - paid
+  OrderLineModifier:
+    type: object
+    properties:
+      modifierGroupId:
+        type: string
+      textInput:
+        type: string
+      faxInputID:
+        type: string
+        description: |-
+          The ID of the FaxInput image. Can be a number, URL, ...
+          The format if this ID is defined by the POS storage behavior.
+          TODO: When the FaxInput storage API is defined we may have to update this.
+      choices:
+        type: array
+        items:
+          $ref: '#/definitions/OrderLineModifierChoice'
+  OrderLineModifierChoice:
+    type: object
+    properties:
+      modifierChoiceId:
+        type: string
+      amount:
+        type: integer
+        format: int32
+      choicePrice:
+        type: integer
+        format: int32
+  OrderLineCombo:
+    type: object
+    description: If assigned to an order line this marks the order line as a combo member.
+    properties:
+      parentId:
+        type: string
+        description: The id of the parent order line (the combo head) this combo member belongs to.
+      comboGroupId:
+        type: string
+        description: The id of the combo group from which this combo member was ordered.
+  ServiceArea:
+    type: object
+    required:
+      - numberOfCovers
+      - guestType
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      numberOfCovers:
+        description: |-
+          Disables (default) or enables the option to querying for number of covers in tables.
+          If not disabled the user is asked to enter the number of covers (which usually is the same as number of guests) when opening a table in the table selection screen
+          and also a configured tool bar button will be enabled.
+          If false or not defined the user is not asked and in case a tool bar button is configured for modifying number of covers this button is disabled.
+        allOf:
+          - $ref: '#/definitions/NumberOfCoversMode'
+      guestType:
+        description: |-
+          Disables (default) or enables the option to querying for guest type in tables.
+          If not disabled the user is asked to enter the guest type when opening a table in the table selection screen and also a configured tool bar
+          button will be enabled (note: this is the same toolbar button as for number of covers).
+          If disabled or not defined the user is not asked and in case a tool bar button is configured for modifying number of covers this button is disabled.
+        allOf:
+          - $ref: '#/definitions/GuestTypeMode'
+  NumberOfCoversMode:
+    type: string
+    description: ''
+    x-enumNames:
+      - disabled
+      - required
+    enum:
+      - disabled
+      - required
+  GuestTypeMode:
+    type: string
+    description: ''
+    x-enumNames:
+      - disabled
+      - required
+    enum:
+      - disabled
+      - required
+  TableResult:
+    type: object
+    required:
+      - lastActivityTime
+      - bookedAmount
+    properties:
+      id:
+        type: string
+        description: ID of the table.
+      name:
+        type: string
+        description: Name of the table.
+      lastActivityTime:
+        type: integer
+        description: Last time there was activity on this table. (Unix time-stamp in seconds = seconds since Jan 01 1970 UTC)
+        format: int32
+      bookedAmount:
+        type: integer
+        description: |-
+          The amount (that finally has to be paid) that is currently booked on this table .
+          This is the sum of all orderlines in all subtables of this table including possible choice prices.
+        format: int32
+      subTables:
+        type: array
+        description: The subtables of this table.
+        items:
+          $ref: '#/definitions/SubTable'
+      serviceAreaId:
+        type: string
+        description: The ID of the service area this table belongs to.
+  SubTable:
+    type: object
+    description: Information about the subtable
+    properties:
+      id:
+        type: string
+        description: |-
+          The ID of the subtable.
+                      
+      name:
+        type: string
+        description: The name of the subtable.
+      isSelected:
+        type: boolean
+        description: If true this subtable will be selected when the table is opened. Can be used to directly show another subtable as the first one int he list to the user.
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+        description: |-
+          The user / employee identifier.
+          Will be used in the auth/login action.
+      name:
+        type: string
+        description: |-
+          The employees real name like John Doe.
+          This name will be shown on the status bar of the clients after login
+  LoginResult:
+    type: object
+    properties:
+      serviceAreaId:
+        type: string
+        description: |-
+          (optional) Set the default service area selected after login.
+          If not set the default service area is the first one in the definitions.
+  LoginUser:
+    type: object
+    properties:
+      id:
+        type: string
+        description: For example when doing user selection via list with PIN the Id is the id of the employee selected from the list of data/employees.
+      password:
+        type: string
+        description: |-
+          Optional. Only provided if a real login authentication procedure was executed.
+          For example when doing user selection via list with PIN the PIN is the password.
+  RegisterClientResponse:
+    type: object
+    required:
+      - utcTime
+    properties:
+      utcTime:
+        type: integer
+        description: |-
+          The current UTC time stamp (in seconds since epoch time).
+          Used for synchronization between clients and the server.
+        format: int32
+      clientName:
+        type: string
+        description: |-
+          If provided this name will be shown in the connection / login screen instead of the device name configured in the device (done via SC2).
+          If not provided the original name as provided in the request / ClientInfo is shown.
+  ClientInfo:
+    type: object
+    description: Holds data about the remote client application / device that want's to communicate with the POS system.
+    properties:
+      version:
+        type: string
+        description: The version of the remote client application we are talking to.
+      id:
+        type: string
+        description: The id of the remote client we are talking to. (should consist of an application name + device serial number)
+      clientName:
+        type: string
+        description: The configured device name that can be configured via SC2 and is shown in our top status bar in the connect screen.
+      printerPath:
+        type: string
+        description: |-
+          Optional. A path to the printer that can be used for send print jobs to this client if it supports them.
+          For Orderman handheld devices this path will be provided if an Orderman belt printer is paired with that device.
+          To send print jobs you can use the "/printers" API of the OsServer instance this initialization request was coming from.
+          Example (we assume the OsServer is running on local host and it's httpApi port is configured to 12344:
+              - You receive the path "/printers/125-49944541"
+              - You can query details about this printer via "GET http://localhost:12344/api/v1/printers/125-49944541"
+              - To send a new print job: "POST http://localhost:12344/api/v1/printers/125-49944541/jobs" which will return 
+                with a print job id immediately (in this example 38428)
+              - to query the print job status: "GET http://localhost:12344/api/v1/printers/125-49944541/jobs/38428"
+  RegisterGatewayResponse:
+    type: object
+    description: Provides site specific data on successful initialization to OsServer.
+    required:
+      - utcTime
+    properties:
+      restaurantName:
+        type: string
+        description: The name of the restaurant we are working with.
+      partnerId:
+        type: string
+        description: |-
+          A partner ID is necessary to run OrderSolution beyond demonstration mode. To get your free partner ID, please contact SystemIntegration@orderman.com.
+          In case you have more than one product, you should ask for separate partner IDs.
+          Partner IDs should be kept confidential.
+          In future versions, it is possible we display the given integration name visibly to the end customer.
+      utcTime:
+        type: integer
+        description: |-
+          The current UTC time stamp (in seconds since epoch time).
+          Used for synchronization between clients and the server.
+        format: int32
+  GatewayInfo:
+    type: object
+    properties:
+      httpApiPort:
+        type: integer
+        description: |-
+          The gateways port at which we can query status via http. For OsServer the default configuration in the configuration file is 12344.
+          If omitted the gateway does not support status queries.
+        format: int32
+      name:
+        type: string
+        description: The gateways name. In case of OsServer this name is defined in the servers configuration file.
+      id:
+        type: string
+        description: The gateways ID. In case of an OsServer this ID is automatically generated on first start or set via the configuration file.
+      gatewaySessionId:
+        type: string
+        description: The session ID of the gateway. It will change whenever the gateway restarts.
+  OrderLineVoidResult:
+    type: object
+    description: Provides information about the new status of the orderline after void processing.
+    required:
+      - singlePrice
+      - quantity
+    properties:
+      orderLineId:
+        type: string
+        description: The ID of the orderline that a void operation was executed on.
+      singlePrice:
+        type: integer
+        description: |-
+          The single price of the orderline.
+          This will typically be the same as before but it might change in case of volume discounts.
+        format: int32
+      quantity:
+        type: integer
+        description: The new quantity of this orderline.
+        format: int32
+  OrderLineVoid:
+    type: object
+    properties:
+      quantity:
+        type: integer
+        description: |-
+          Defines the quantity that is voided from an existing orderline.
+          If the quantity is 0 nothing is changed.
+          If the quantity is &gt;= the quantity of the orderline the whole orderline will be voided.
+        format: int32
+      cancellationReasonId:
+        type: string
+        description: |-
+          Defines the cancellation reason that must be provided if a already committed orderline should
+          be voided.
+  OrderLineResult:
+    type: object
+    required:
+      - singlePrice
+    properties:
+      id:
+        type: string
+        description: The ID of the orderline in question.
+      singlePrice:
+        type: integer
+        description: The single price of the order line / article.
+        format: int32
+      modifiers:
+        type: array
+        description: The modifiers of that orderline.
+        items:
+          $ref: '#/definitions/OrderLineResultModifier'
+  OrderLineResultModifier:
+    type: object
+    properties:
+      choices:
+        type: array
+        description: The modifier choices.
+        items:
+          $ref: '#/definitions/OrderLineResultModifierChoice'
+  OrderLineResultModifierChoice:
+    type: object
+    properties:
+      modifierChoiceId:
+        type: string
+        description: The ID of the choices in question.
+      choicePrice:
+        type: integer
+        description: If provided the price of that choice.
+        format: int32
+  OrderLineAdd:
+    type: object
+    properties:
+      quantity:
+        type: integer
+        description: The quantity for this order line. When adding a new order line this value must be set.
+        format: int32
+      enteredPrice:
+        type: integer
+        description: |-
+          Defines a manual price for this order line.
+          NOTE: You must not provide this parameter if you want the price to be calculated by the POS.
+        format: int32
+      modifiers:
+        type: array
+        description: Modifiers to be assigned for this order line.
+        items:
+          $ref: '#/definitions/OrderLineModifier2'
+      articleId:
+        type: string
+        description: The ID of the article ordered with this order line.
+      combo:
+        description: If set this order line is a combo member and defines to which head / comboGroup this order line belongs to.
+        allOf:
+          - $ref: '#/definitions/OrderLineCombo'
+      courseId:
+        type: string
+        description: |-
+          Only supported if coursing features is enabled (see osConfiguration for details).
+          Optional. If set it refers to a course defined for the table this line is ordered in or the global courses list if no table specific courses are set.
+          NOTE: If courses feature is enabled but no course ID is specified it is expected that this order line is going to be in the first course of the course list.
+  OrderLineModifier2:
+    type: object
+    properties:
+      modifierGroupId:
+        type: string
+        description: The ID of the modifier group this modifiers belong to. This must be the group ID the choices belong to.
+      textInput:
+        type: string
+        description: The entered text in case the modifier group is of type free text entry.
+      faxInputID:
+        type: string
+        description: |-
+          The ID of the FaxInput image in case the modifier group is of type fax. Can be a number, URL, ...
+          The format if this ID is defined by the POS storage behavior.
+          TODO: When the FaxInput storage API is defined we may have to update this.
+      choices:
+        type: array
+        description: 'The selected choices in case modifier group is of type PickOne, PickMultiple, PickNumeric, Pick...'
+        items:
+          $ref: '#/definitions/OrderLineModifierChoice2'
+  OrderLineModifierChoice2:
+    type: object
+    properties:
+      modifierChoiceId:
+        type: string
+        description: The ID of the choice that was selected.
+      amount:
+        type: integer
+        description: The amount how often the choices was selected. Defaults to 1 if omitted.
+        format: int32
+  OrderLineSplitResult:
+    type: object
+    description: The result of a successful order line split operation.
+    properties:
+      originalOl:
+        description: |-
+          The original orderline from which data was split away with it's updated data.
+          e.g. if from 3xCoke we split 2xCoke away this one will be the 1xCoke line.
+        allOf:
+          - $ref: '#/definitions/OrderLine'
+      splittedOl:
+        description: |-
+          The new orderline that was created by this split operation.
+          e.g. if from 3xCoke we split 2xCoke away this one will be the 2xCoke line.
+        allOf:
+          - $ref: '#/definitions/OrderLine'
+  OrderLineSplit:
+    type: object
+    description: Details about how an order line should be split.
+    properties:
+      quantity:
+        type: integer
+        description: 'The quantity that should get split away from the original orderline.            '
+        format: int32
+  OrderLineModify:
+    type: object
+    properties:
+      quantity:
+        type: integer
+        description: The quantity for this order line. When adding a new order line this value must be set.
+        format: int32
+      enteredPrice:
+        type: integer
+        description: |-
+          Defines a manual price for this order line.
+          NOTE: You must not provide this parameter if you want the price to be calculated by the POS.
+        format: int32
+      modifiers:
+        type: array
+        description: The modifiers for this orderline.
+        items:
+          $ref: '#/definitions/OrderLineModifier2'
+      combo:
+        description: If set this order line is a combo member and defines to which head / comboGroup this order line belongs to.
+        allOf:
+          - $ref: '#/definitions/OrderLineCombo'
+      courseId:
+        type: string
+        description: |-
+          Only supported if coursing features is enabled (see osConfiguration for details).
+          Optional. If set it refers to a course defined for the table this line is ordered in or the global courses list if no table specific courses are set.
+          NOTE: If courses feature is enabled but no course ID is specified it is expected that this order line is going to be in the first course of the course list.
+  PayResult:
+    type: object
+    properties:
+      dialog:
+        description: When set a dialog will be shown to the user before the payment screen is really closed.
+        allOf:
+          - $ref: '#/definitions/OsDialog'
+  PaySubTables:
+    allOf:
+      - $ref: '#/definitions/PayBase'
+      - type: object
+        description: Pay data describing which payments have to be executed for paying full subtables with all their order lines.
+        required:
+          - subTableIds
+        properties:
+          subTableIds:
+            type: array
+            description: |-
+              Array of sub table ids. The sum of the amount of all these subtables together will be paid by 
+              Payments.
+              NOTE: The sub table IDs can only be from the same table. An error will be returned if they are from more then one
+              table.
+            items:
+              type: string
+  PayBase:
+    type: object
+    description: Base type for executing payments for something and execute print jobs (like for the bill for that payment).
+    x-abstract: true
+    properties:
+      payments:
+        type: array
+        description: |-
+          The payments to be executed on the amount sum we get from all the sub tables or order lines to be paid + the tip.
+          Special Case: Empty payments / Payments omitted is used to close empty tables.
+        items:
+          $ref: '#/definitions/Payment'
+      tip:
+        type: integer
+        description: |-
+          (optional) The tip the customers want's to give to the waiter. (same format as other prices)
+          Note: To use tip functionality "enableTip" must be "1" in osConfiguration.
+        format: int32
+      printer:
+        type: string
+        description: |-
+          Identifies the printer to send the receipt print job to. 
+          example: 'local://1'
+          check GET /api/v2/data/Printers to get a list of supported print targets
+  Payment:
+    type: object
+    description: Describes a single payment done. A receipt can be paid with several different payments.
+    required:
+      - amountPaid
+    properties:
+      amountPaid:
+        type: integer
+        description: The amount that will get paid.
+        format: int32
+      paymentMediumId:
+        type: string
+        description: 'The payment media type (id) used for this amount. (example: Cash, Credit Card, ...)'
+      authCode:
+        type: string
+        description: |-
+          Some payment media types require a pre-authorization.
+          The pre-authorization process returns an authorization code that will be provided here to
+          refer to the detailed authorized payment amount + the medium data.
+  PayOrderLines:
+    allOf:
+      - $ref: '#/definitions/PayBase'
+      - type: object
+        properties:
+          paidLines:
+            type: array
+            description: List of order line payments that represent the order lines (-parts) that will be paid with this set.
+            items:
+              $ref: '#/definitions/OrderLineQuantity'
+  OrderLineQuantity:
+    type: object
+    required:
+      - quantity
+    properties:
+      orderLineId:
+        type: string
+        description: The ID of the order line to be paid.
+      quantity:
+        type: integer
+        description: |-
+          The quantity of the order line in question that should be paid.
+          IMPORTANT: This can be the full order line or just a part of it.
+        format: int32
+  PreAuthResult:
+    type: object
+    properties:
+      authMedia:
+        type: array
+        items:
+          $ref: '#/definitions/PreAuthMedium'
+      dialog:
+        description: |-
+          If set a popup dialog is presented to the user before the user can continue.
+          Supported types: "ok" and "accept".
+        allOf:
+          - $ref: '#/definitions/OsDialog'
+  PreAuthMedium:
+    type: object
+    required:
+      - authAmount
+      - authTip
+    properties:
+      authCode:
+        type: string
+        description: This is the code to be used in the later pay action to identify this authorized payment medium and it's amount.
+      authAmount:
+        type: integer
+        description: |-
+          The amount that was authorized. This can be the same as the requested amount but can also be lower.
+          Examples when this might be lower then the requested amount:
+              - if the lines include articles that are not allowed for this payment medium
+              - and others
+        format: int32
+      authTip:
+        type: integer
+        description: |-
+          The tip amount that was authorized.
+          Examples when this might be lower then the requested amount:
+              - if the medium does not allow to pay the tip with it
+              - and others
+        format: int32
+      receiptName:
+        type: string
+        description: |-
+          If set the name that this payment will have on the receipt / display.
+          Can be used for adding information about the finally used payment medium like which type of credit card
+          was used or how many loyalty points were used for this payment of other things.
+  PreAuthData:
+    type: object
+    required:
+      - reqAmount
+    properties:
+      subTableIds:
+        type: array
+        description: |-
+          Array of sub table id that are planned to be paid by this medium.
+          NOTE: The sub table IDs can only be from the same table. An error will be returned if they are from more then one
+          table.
+          Either SubTableIds OR Lines are defined.
+        items:
+          type: string
+      lines:
+        type: array
+        description: |-
+          List of order lines that (or their parts) that are planned to be paid with this medium.
+          NOTE: Depending on configuration also other payment media types are used in addition to pay for these 
+              lines so it's acceptable if the requested amount is smaller than the sum of this list.
+          Either SubTableIds OR Lines are defined.
+        items:
+          $ref: '#/definitions/OrderLineQuantity'
+      reqTip:
+        type: integer
+        description: |-
+          Optional. If provided this is the requested tip that the customer want's to give.
+          NOTE: Some payment media may not be suitable for also paying tip so the tip is requested separate from the amount.
+        format: int32
+      reqAmount:
+        type: integer
+        description: |-
+          The amount that the customer want's to pay with this medium type.
+          The requested amount is the sum of lines + potential overpayment. It does not include the tip.
+        format: int32
+      mediumID:
+        type: string
+        description: |-
+          The ID of the payment medium the customer want's to use for this payment pre-authorization.
+          This refers to a medium from data/paymentMedia.
+      msrData:
+        description: In case the payment medium is an Magnetic Stripe card the data that was read.
+        allOf:
+          - $ref: '#/definitions/MsrData'
+      manualData:
+        description: In case the user did a manual data input.
+        allOf:
+          - $ref: '#/definitions/ManualInputData'
+      nfcData:
+        description: In case the payment medium is an NFC tag the data that was read from it.
+        allOf:
+          - $ref: '#/definitions/NfcData'
+      barcodeData:
+        description: In case the payment medium is a bar code the data read from it.
+        allOf:
+          - $ref: '#/definitions/BarcodeData'
+  MsrData:
+    type: object
+    description: |-
+      Holds the track data of an MSR read action.
+      NOTE: Will only contain the tracks that were enabled in the MsrInput definition.
+    properties:
+      track1:
+        type: string
+      track2:
+        type: string
+      track3:
+        type: string
+  ManualInputData:
+    type: object
+    properties:
+      lines:
+        type: array
+        items:
+          $ref: '#/definitions/ManualInputLineData'
+  ManualInputLineData:
+    type: object
+    properties:
+      key:
+        type: string
+      value:
+        type: string
+  NfcData:
+    type: object
+    description: Holds the data of a read Nfc card / tag
+    required:
+      - type
+    properties:
+      type:
+        description: A string giving some information about the type of the tag.
+        allOf:
+          - $ref: '#/definitions/NfcTagType'
+      uid:
+        type: string
+        description: The UID bytes of the tag encoded as a hexadecimal string.
+  NfcTagType:
+    type: string
+    description: ''
+    x-enumNames:
+      - ProprietaryTag
+      - NfcTagType1
+      - NfcTagType2
+      - NfcTagType3
+      - NfcTagType4
+      - MifareTag
+    enum:
+      - proprietaryTag
+      - nfcTagType1
+      - nfcTagType2
+      - nfcTagType3
+      - nfcTagType4
+      - mifareTag
+  BarcodeData:
+    type: object
+    description: Holds the data of a read bar code
+    properties:
+      symbology:
+        type: string
+        description: The symbology of the read bar code. See Symbologies for to be expected options.
+      data:
+        type: string
+        description: The bar code data encoded in the format as defined. See Format.
+  TableResultEx:
+    allOf:
+      - $ref: '#/definitions/TableResult'
+      - type: object
+        properties:
+          properties:
+            description: |-
+              Properties of this table.
+              If undefined no properties have yet been assigned to this table.
+            allOf:
+              - $ref: '#/definitions/TableProperties'
+          courseSelectedId:
+            type: string
+            description: |-
+              Only supported if coursing features is enabled (see osConfiguration for details).
+              If set this course is the selected one when entering the order screen. If not set the first course in the list of courses gets selected.
+          courses:
+            type: array
+            description: |-
+              Only supported if coursing features is enabled (see osConfiguration for details).
+              Get list of specific courses for this table that replaces the global defined courses list.
+              IMPORTANT: For performance reasons the courses list should not be set if it is identical to the global courses list.
+            items:
+              $ref: '#/definitions/Course'
+  TableProperties:
+    type: object
+    properties:
+      numberOfCovers:
+        type: integer
+        description: |-
+          The number of covers / guests currently set for this table. If undefined the number of covers have not yet been set.
+          Note: At the moment the OrderSolution is not actively using this value but is just used to collect / modify this data for POS side use.
+        format: int32
+      guestTypes:
+        type: array
+        description: |-
+          The guest types configured for this table. This is one out of the list of available guest types from GET .../data/guestTypes
+          NOTE: Typically only a single guest type will be set but in future new features might allow to set multiple.
+        items:
+          type: string
+  MoveSubtables:
+    type: object
+    properties:
+      subTableIds:
+        type: array
+        description: |-
+          The ids of the sub tables to be moved.
+          CONSTRAINT: These sub tables must be part of a single table and it is not allowed to use sub tables from different tables in this request.
+        items:
+          type: string
+      targetTableId:
+        type: string
+        description: |-
+          Id of the target table to move the sub tables to.
+          CONSTRAINT: This table will only be valid if it was opened before (= actions/tables/openByName was called).
+  AddCourseData:
+    type: object
+    properties:
+      addAfterId:
+        type: string
+        description: |-
+          Optional.
+          If set the new course is added/inserted after the course with the id provided here in the tables course list.
+          If not set the new course is added at the end of the tables course list.
+          Note: If the table does not yet have a table course list the global course list must be set in the table and the new table is added/inserted into this new list.

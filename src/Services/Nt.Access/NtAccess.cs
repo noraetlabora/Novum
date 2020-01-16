@@ -19,6 +19,7 @@ namespace Nt.Access
             {
                 Nt.Logging.Log.Server.Info("================================================================== Nt.Access  ==================================================================");
                 //GetConfig();
+
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();
 

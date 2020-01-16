@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="AccessSystems\Mafis\" />
+    <Folder Include="AccessSystems\Gantner\" />
     <Folder Include="Logic\" />
   </ItemGroup>
 
