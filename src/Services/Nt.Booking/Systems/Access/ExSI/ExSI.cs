@@ -9,11 +9,13 @@ namespace Nt.Booking.Systems.Access.ExSI
         {
             Partner = "ExSI";
         }
-        public override Models.Information CheckMedium(string mediumId)
+
+        public override string Cancel()
         {
             throw new NotImplementedException();
         }
-        public override Models.Cancellation Cancel()
+
+        public override string CheckMedium(string mediumId)
         {
             throw new NotImplementedException();
         }
@@ -22,6 +24,5 @@ namespace Nt.Booking.Systems.Access.ExSI
         {
             throw new NotImplementedException();
         }
-
     }
 }

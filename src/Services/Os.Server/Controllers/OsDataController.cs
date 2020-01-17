@@ -66,10 +66,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
-                var osError = new Models.OsError();
-                osError.ErrorMsg = ex.Message;
-                return StatusCode(httpStatusCode, osError);
+                return GetExceptionResponse(ex, StatusCodes.Status500InternalServerError);
             }
         }
 

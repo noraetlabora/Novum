@@ -74,5 +74,5 @@ namespace Nt.Booking
             Nt.Logging.Log.Server.Info("ServerConfiguration : " + ServerConfiguration.ToString());
         }
 
-    }    
+    }
 }

@@ -9,22 +9,22 @@
  */
 
 using System;
-using System.Text;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace Nt.Booking.Models
-{ 
+{
     /// <summary>
     /// owner of the medium
     /// </summary>
     [DataContract]
     public partial class Owner : IEquatable<Owner>
-    { 
+    {
         /// <summary>
         /// name of the owner (John Doe)
         /// </summary>
         /// <value>name of the owner (John Doe)</value>
-        [DataMember(Name="name")]
+        [DataMember(Name = "name")]
         public string Name { get; set; }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Nt.Booking.Models
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return 
+            return
                 (
                     Name == other.Name ||
                     Name != null &&
@@ -90,14 +90,14 @@ namespace Nt.Booking.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Name != null)
+                if (Name != null)
                     hashCode = hashCode * 59 + Name.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(Owner left, Owner right)
         {
@@ -109,7 +109,7 @@ namespace Nt.Booking.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

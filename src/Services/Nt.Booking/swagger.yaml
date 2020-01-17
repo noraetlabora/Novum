@@ -142,9 +142,9 @@ definitions:
     description: error object
     type: object
     properties:
-      message:
+      id:
         type: string
-      code:
+      message:
         type: string
       partnerMessage:
         type: string

@@ -9,45 +9,45 @@
  */
 
 using System;
-using System.Text;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace Nt.Booking.Models
-{ 
+{
     /// <summary>
     /// error object
     /// </summary>
     [DataContract]
     public partial class Error : IEquatable<Error>
-    { 
+    {
+        /// <summary>
+        /// Gets or Sets Id
+        /// </summary>
+        [DataMember(Name = "id")]
+        public string Id { get; set; }
+
         /// <summary>
         /// Gets or Sets Message
         /// </summary>
-        [DataMember(Name="message")]
+        [DataMember(Name = "message")]
         public string Message { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Code
-        /// </summary>
-        [DataMember(Name="code")]
-        public string Code { get; set; }
 
         /// <summary>
         /// Gets or Sets PartnerMessage
         /// </summary>
-        [DataMember(Name="partnerMessage")]
+        [DataMember(Name = "partnerMessage")]
         public string PartnerMessage { get; set; }
 
         /// <summary>
         /// Gets or Sets PartnerCode
         /// </summary>
-        [DataMember(Name="partnerCode")]
+        [DataMember(Name = "partnerCode")]
         public string PartnerCode { get; set; }
 
         /// <summary>
         /// Gets or Sets UserMessage
         /// </summary>
-        [DataMember(Name="userMessage")]
+        [DataMember(Name = "userMessage")]
         public string UserMessage { get; set; }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Nt.Booking.Models
             var sb = new StringBuilder();
             sb.Append("class Error {\n");
             sb.Append("  Message: ").Append(Message).Append("\n");
-            sb.Append("  Code: ").Append(Code).Append("\n");
+            sb.Append("  Code: ").Append(Id).Append("\n");
             sb.Append("  PartnerMessage: ").Append(PartnerMessage).Append("\n");
             sb.Append("  PartnerCode: ").Append(PartnerCode).Append("\n");
             sb.Append("  UserMessage: ").Append(UserMessage).Append("\n");
@@ -99,27 +99,27 @@ namespace Nt.Booking.Models
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return 
+            return
                 (
                     Message == other.Message ||
                     Message != null &&
                     Message.Equals(other.Message)
-                ) && 
+                ) &&
                 (
-                    Code == other.Code ||
-                    Code != null &&
-                    Code.Equals(other.Code)
-                ) && 
+                    Id == other.Id ||
+                    Id != null &&
+                    Id.Equals(other.Id)
+                ) &&
                 (
                     PartnerMessage == other.PartnerMessage ||
                     PartnerMessage != null &&
                     PartnerMessage.Equals(other.PartnerMessage)
-                ) && 
+                ) &&
                 (
                     PartnerCode == other.PartnerCode ||
                     PartnerCode != null &&
                     PartnerCode.Equals(other.PartnerCode)
-                ) && 
+                ) &&
                 (
                     UserMessage == other.UserMessage ||
                     UserMessage != null &&
@@ -137,22 +137,22 @@ namespace Nt.Booking.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Message != null)
+                if (Message != null)
                     hashCode = hashCode * 59 + Message.GetHashCode();
-                    if (Code != null)
-                    hashCode = hashCode * 59 + Code.GetHashCode();
-                    if (PartnerMessage != null)
+                if (Id != null)
+                    hashCode = hashCode * 59 + Id.GetHashCode();
+                if (PartnerMessage != null)
                     hashCode = hashCode * 59 + PartnerMessage.GetHashCode();
-                    if (PartnerCode != null)
+                if (PartnerCode != null)
                     hashCode = hashCode * 59 + PartnerCode.GetHashCode();
-                    if (UserMessage != null)
+                if (UserMessage != null)
                     hashCode = hashCode * 59 + UserMessage.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(Error left, Error right)
         {
@@ -164,7 +164,7 @@ namespace Nt.Booking.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

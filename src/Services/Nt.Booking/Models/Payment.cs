@@ -9,27 +9,27 @@
  */
 
 using System;
-using System.Text;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace Nt.Booking.Models
-{ 
+{
     /// <summary>
     /// This object contains all information of the payment with a medium
     /// </summary>
     [DataContract]
     public partial class Payment : IEquatable<Payment>
-    { 
+    {
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [DataMember(Name="id")]
+        [DataMember(Name = "id")]
         public string Id { get; set; }
 
         /// <summary>
         /// Gets or Sets Name
         /// </summary>
-        [DataMember(Name="name")]
+        [DataMember(Name = "name")]
         public string Name { get; set; }
 
         /// <summary>
@@ -78,12 +78,12 @@ namespace Nt.Booking.Models
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return 
+            return
                 (
                     Id == other.Id ||
                     Id != null &&
                     Id.Equals(other.Id)
-                ) && 
+                ) &&
                 (
                     Name == other.Name ||
                     Name != null &&
@@ -101,16 +101,16 @@ namespace Nt.Booking.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Id != null)
+                if (Id != null)
                     hashCode = hashCode * 59 + Id.GetHashCode();
-                    if (Name != null)
+                if (Name != null)
                     hashCode = hashCode * 59 + Name.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(Payment left, Payment right)
         {
@@ -122,7 +122,7 @@ namespace Nt.Booking.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

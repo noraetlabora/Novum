@@ -9,47 +9,47 @@
  */
 
 using System;
-using System.Text;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace Nt.Booking.Models
-{ 
+{
     /// <summary>
     /// This object contains all Information of the medium
     /// </summary>
     [DataContract]
     public partial class Information : IEquatable<Information>
-    { 
+    {
         /// <summary>
         /// Gets or Sets Owner
         /// </summary>
-        [DataMember(Name="owner")]
+        [DataMember(Name = "owner")]
         public Owner Owner { get; set; }
 
         /// <summary>
         /// Gets or Sets Debit
         /// </summary>
-        [DataMember(Name="debit")]
+        [DataMember(Name = "debit")]
         public Debit Debit { get; set; }
 
         /// <summary>
         /// Gets or Sets Credit
         /// </summary>
-        [DataMember(Name="credit")]
+        [DataMember(Name = "credit")]
         public Credit Credit { get; set; }
 
         /// <summary>
         /// currency in ISO 4217 (EUR/CHF/GBP/USD/JPY/CNY/...)
         /// </summary>
         /// <value>currency in ISO 4217 (EUR/CHF/GBP/USD/JPY/CNY/...)</value>
-        [DataMember(Name="currency")]
+        [DataMember(Name = "currency")]
         public string Currency { get; set; }
 
         /// <summary>
         /// type of discount
         /// </summary>
         /// <value>type of discount</value>
-        [DataMember(Name="discountType")]
+        [DataMember(Name = "discountType")]
         public string DiscountType { get; set; }
 
         /// <summary>
@@ -101,27 +101,27 @@ namespace Nt.Booking.Models
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return 
+            return
                 (
                     Owner == other.Owner ||
                     Owner != null &&
                     Owner.Equals(other.Owner)
-                ) && 
+                ) &&
                 (
                     Debit == other.Debit ||
                     Debit != null &&
                     Debit.Equals(other.Debit)
-                ) && 
+                ) &&
                 (
                     Credit == other.Credit ||
                     Credit != null &&
                     Credit.Equals(other.Credit)
-                ) && 
+                ) &&
                 (
                     Currency == other.Currency ||
                     Currency != null &&
                     Currency.Equals(other.Currency)
-                ) && 
+                ) &&
                 (
                     DiscountType == other.DiscountType ||
                     DiscountType != null &&
@@ -139,22 +139,22 @@ namespace Nt.Booking.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Owner != null)
+                if (Owner != null)
                     hashCode = hashCode * 59 + Owner.GetHashCode();
-                    if (Debit != null)
+                if (Debit != null)
                     hashCode = hashCode * 59 + Debit.GetHashCode();
-                    if (Credit != null)
+                if (Credit != null)
                     hashCode = hashCode * 59 + Credit.GetHashCode();
-                    if (Currency != null)
+                if (Currency != null)
                     hashCode = hashCode * 59 + Currency.GetHashCode();
-                    if (DiscountType != null)
+                if (DiscountType != null)
                     hashCode = hashCode * 59 + DiscountType.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(Information left, Information right)
         {
@@ -166,7 +166,7 @@ namespace Nt.Booking.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

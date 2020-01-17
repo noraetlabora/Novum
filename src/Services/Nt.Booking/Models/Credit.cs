@@ -9,29 +9,29 @@
  */
 
 using System;
-using System.Text;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace Nt.Booking.Models
-{ 
+{
     /// <summary>
     /// credit object
     /// </summary>
     [DataContract]
     public partial class Credit : IEquatable<Credit>
-    { 
+    {
         /// <summary>
         /// credit balance (*100)
         /// </summary>
         /// <value>credit balance (*100)</value>
-        [DataMember(Name="amount")]
+        [DataMember(Name = "amount")]
         public int? Amount { get; set; }
 
         /// <summary>
         /// credit balance at opening (*100)
         /// </summary>
         /// <value>credit balance at opening (*100)</value>
-        [DataMember(Name="openingAmount")]
+        [DataMember(Name = "openingAmount")]
         public int? OpeningAmount { get; set; }
 
         /// <summary>
@@ -80,12 +80,12 @@ namespace Nt.Booking.Models
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
-            return 
+            return
                 (
                     Amount == other.Amount ||
                     Amount != null &&
                     Amount.Equals(other.Amount)
-                ) && 
+                ) &&
                 (
                     OpeningAmount == other.OpeningAmount ||
                     OpeningAmount != null &&
@@ -103,16 +103,16 @@ namespace Nt.Booking.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Amount != null)
+                if (Amount != null)
                     hashCode = hashCode * 59 + Amount.GetHashCode();
-                    if (OpeningAmount != null)
+                if (OpeningAmount != null)
                     hashCode = hashCode * 59 + OpeningAmount.GetHashCode();
                 return hashCode;
             }
         }
 
         #region Operators
-        #pragma warning disable 1591
+#pragma warning disable 1591
 
         public static bool operator ==(Credit left, Credit right)
         {
@@ -124,7 +124,7 @@ namespace Nt.Booking.Models
             return !Equals(left, right);
         }
 
-        #pragma warning restore 1591
+#pragma warning restore 1591
         #endregion Operators
     }
 }

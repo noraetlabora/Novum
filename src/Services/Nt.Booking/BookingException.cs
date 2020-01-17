@@ -6,9 +6,7 @@ namespace Nt.Booking
     public class BookingException : Exception
     {
 
-#pragma warning disable CS0114 // Member hides inherited member; missing override keyword
-        public string Message { get; set; }
-#pragma warning restore CS0114 // Member hides inherited member; missing override keyword
+        public int HttpStatusCode { get; set; }
         public string Code { get; set; }
         public string PartnerMessage { get; set; }
         public string PartnerCode { get; set; }
@@ -19,9 +17,9 @@ namespace Nt.Booking
 
         }
 
-        public BookingException(string message, string code, string partnerMessage, string partnerCode, string userMessage)
+        public BookingException(string message, int httpStatusCode, string code, string partnerMessage, string partnerCode, string userMessage) : base(message)
         {
-            this.Message = message;
+            this.HttpStatusCode = httpStatusCode;
             this.Code = code;
             this.PartnerMessage = partnerMessage;
             this.PartnerCode = partnerCode;
@@ -32,6 +30,7 @@ namespace Nt.Booking
         {
             var sB = new StringBuilder();
             sB.Append("BookingException:");
+            sB.Append(" HttpStatusCode: ").Append(HttpStatusCode);
             sB.Append(" Message = ").Append(Message);
             sB.Append(" Code = ").Append(Code);
             sB.Append(" PartnerMessage = ").Append(PartnerMessage);
