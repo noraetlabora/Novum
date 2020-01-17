@@ -5,13 +5,17 @@ namespace Nt.Booking.Systems.Access.ExSI
     public class ExSI : SystemBase
     {
 
-        public override string CheckMedium(string mediumId)
+        public ExSI()
+        {
+            Partner = "ExSI";
+        }
+        public override Models.Information CheckMedium(string mediumId)
         {
             throw new NotImplementedException();
         }
-        public override string Cancel()
+        public override Models.Cancellation Cancel()
         {
-            return this.name;
+            throw new NotImplementedException();
         }
 
         public override string Pay()

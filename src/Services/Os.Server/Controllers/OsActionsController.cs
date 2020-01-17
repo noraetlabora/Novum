@@ -29,12 +29,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
-                session.WaiterId = "";
-                var osError = new Models.OsError();
-                osError.ErrorMsg = ex.Message;
-                //401 - Unauthorized
-                return new UnauthorizedObjectResult(osError);
+                return GetExceptionResponse(ex, StatusCodes.Status401Unauthorized);
             }
         }
 
@@ -55,10 +50,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
-                var osError = new Models.OsError();
-                osError.ErrorMsg = ex.Message;
-                return StatusCode(StatusCodes.Status500InternalServerError, osError);
+                return GetExceptionResponse(ex, StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -101,11 +93,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
-                var osError = new Models.OsError();
-                osError.ErrorMsg = ex.Message;
-                //400 - BadRequest
-                return new BadRequestObjectResult(osError);
+                return GetExceptionResponse(ex, StatusCodes.Status400BadRequest);
             }
         }
 
@@ -132,10 +120,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
-                var osError = new Models.OsError();
-                osError.ErrorMsg = ex.Message;
-                return StatusCode(StatusCodes.Status500InternalServerError, osError);
+                return GetExceptionResponse(ex, StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -150,6 +135,14 @@ namespace Os.Server.Controllers
         public virtual IActionResult ActionButtonHandlerRefresh([FromBody]Models.ActionButtonRequestData data)
         {
             throw new NotImplementedException("/api/v2/actionButtonHandler/refresh is not yet implemented");
+        }
+
+        private IActionResult GetExceptionResponse(Exception ex, int httpStatusCode)
+        {
+            Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
+            var osError = new Models.OsError();
+            osError.ErrorMsg = ex.Message;
+            return StatusCode(httpStatusCode, osError);
         }
     }
 }

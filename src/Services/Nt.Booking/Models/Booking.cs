@@ -9,30 +9,28 @@
  */
 
 using System;
-using System.Text;
 using System.Runtime.Serialization;
+using System.Text;
 
 namespace Nt.Booking.Models
 { 
     /// <summary>
-    /// credit object
+    /// This object contains all information of a booking (payment/cancellation)
     /// </summary>
     [DataContract]
-    public partial class Credit : IEquatable<Credit>
+    public partial class Booking : IEquatable<Booking>
     { 
         /// <summary>
-        /// credit balance (*100)
+        /// Gets or Sets Id
         /// </summary>
-        /// <value>credit balance (*100)</value>
-        [DataMember(Name="amount")]
-        public int? Amount { get; set; }
+        [DataMember(Name="id")]
+        public string Id { get; set; }
 
         /// <summary>
-        /// credit balance at opening (*100)
+        /// Gets or Sets UserMessage
         /// </summary>
-        /// <value>credit balance at opening (*100)</value>
-        [DataMember(Name="openingAmount")]
-        public int? OpeningAmount { get; set; }
+        [DataMember(Name="userMessage")]
+        public string UserMessage { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -41,9 +39,9 @@ namespace Nt.Booking.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Credit {\n");
-            sb.Append("  Amount: ").Append(Amount).Append("\n");
-            sb.Append("  OpeningAmount: ").Append(OpeningAmount).Append("\n");
+            sb.Append("class Booking {\n");
+            sb.Append("  Id: ").Append(Id).Append("\n");
+            sb.Append("  UserMessage: ").Append(UserMessage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -67,29 +65,29 @@ namespace Nt.Booking.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Credit)obj);
+            return obj.GetType() == GetType() && Equals((Booking)obj);
         }
 
         /// <summary>
-        /// Returns true if Credit instances are equal
+        /// Returns true if Booking instances are equal
         /// </summary>
-        /// <param name="other">Instance of Credit to be compared</param>
+        /// <param name="other">Instance of Booking to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(Credit other)
+        public bool Equals(Booking other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
             return 
                 (
-                    Amount == other.Amount ||
-                    Amount != null &&
-                    Amount.Equals(other.Amount)
+                    Id == other.Id ||
+                    Id != null &&
+                    Id.Equals(other.Id)
                 ) && 
                 (
-                    OpeningAmount == other.OpeningAmount ||
-                    OpeningAmount != null &&
-                    OpeningAmount.Equals(other.OpeningAmount)
+                    UserMessage == other.UserMessage ||
+                    UserMessage != null &&
+                    UserMessage.Equals(other.UserMessage)
                 );
         }
 
@@ -103,10 +101,10 @@ namespace Nt.Booking.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                    if (Amount != null)
-                    hashCode = hashCode * 59 + Amount.GetHashCode();
-                    if (OpeningAmount != null)
-                    hashCode = hashCode * 59 + OpeningAmount.GetHashCode();
+                    if (Id != null)
+                    hashCode = hashCode * 59 + Id.GetHashCode();
+                    if (UserMessage != null)
+                    hashCode = hashCode * 59 + UserMessage.GetHashCode();
                 return hashCode;
             }
         }
@@ -114,12 +112,12 @@ namespace Nt.Booking.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(Credit left, Credit right)
+        public static bool operator ==(Booking left, Booking right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(Credit left, Credit right)
+        public static bool operator !=(Booking left, Booking right)
         {
             return !Equals(left, right);
         }

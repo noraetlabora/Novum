@@ -29,10 +29,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
-                var osError = new Models.OsError();
-                osError.ErrorMsg = ex.Message;
-                return StatusCode(StatusCodes.Status500InternalServerError, osError);
+                return GetExceptionResponse(ex, StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -56,10 +53,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
-                var osError = new Models.OsError();
-                osError.ErrorMsg = ex.Message;
-                return StatusCode(StatusCodes.Status500InternalServerError, osError);
+                return GetExceptionResponse(ex, StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -83,10 +77,7 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
-                var osError = new Models.OsError();
-                osError.ErrorMsg = ex.Message;
-                return StatusCode(StatusCodes.Status500InternalServerError, osError);
+                return GetExceptionResponse(ex, StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -113,11 +104,16 @@ namespace Os.Server.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
-                var osError = new Models.OsError();
-                osError.ErrorMsg = ex.Message;
-                return StatusCode(StatusCodes.Status500InternalServerError, osError);
+                return GetExceptionResponse(ex, StatusCodes.Status500InternalServerError);
             }
+        }
+
+        private IActionResult GetExceptionResponse(Exception ex, int httpStatusCode)
+        {
+            Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
+            var osError = new Models.OsError();
+            osError.ErrorMsg = ex.Message;
+            return StatusCode(httpStatusCode, osError);
         }
     }
 }
