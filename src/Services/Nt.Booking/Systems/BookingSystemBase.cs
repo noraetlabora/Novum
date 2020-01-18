@@ -1,14 +1,17 @@
-﻿
+﻿using System.Collections.Generic;
+
 namespace Nt.Booking.Systems
 {
-    public abstract class SystemBase
+    public abstract class BookingSystemBase
     {
         public string Partner { get; protected set; }
 
-        public abstract string CheckMedium(string mediumId);
+        public abstract Models.Information GetMediumInformation(string mediumId);
 
-        public abstract string Pay();
+        public abstract List<Models.Information> GetMediumInformation();
 
-        public abstract string Cancel();
+        public abstract Models.Booking Pay();
+
+        public abstract Models.Booking Cancel();
     }
 }

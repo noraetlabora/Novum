@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using Nt.Booking.Models;
 
 namespace Nt.Booking.Systems.Access.ExSI
 {
-    public class ExSI : SystemBase
+    public class ExSI : BookingSystemBase
     {
 
         public ExSI()
@@ -10,19 +12,39 @@ namespace Nt.Booking.Systems.Access.ExSI
             Partner = "ExSI";
         }
 
-        public override string Cancel()
+        public override Models.Booking Cancel()
         {
-            throw new NotImplementedException();
+            var ex = new BookingException("ExSI method 'cancel' is not yet implemented");
+            ex.HttpStatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status501NotImplemented;
+            throw ex;
         }
 
-        public override string CheckMedium(string mediumId)
+        public override Information GetMediumInformation(string mediumId)
         {
-            throw new NotImplementedException();
+            var information = new Information();
+            var owner = new Owner();
+            owner.Name = "Norbert Rastl";
+            var credit = new Credit();
+            credit.Amount = 1499;
+            credit.OpeningAmount = 2000;
+            information.Owner = owner;
+            information.Credit = credit;
+
+            return information;
         }
 
-        public override string Pay()
+        public override List<Information> GetMediumInformation()
         {
-            throw new NotImplementedException();
+            var ex = new BookingException("ExSI can't return a list of medium information");
+            ex.HttpStatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status405MethodNotAllowed;
+            throw ex;
+        }
+
+        public override Models.Booking Pay()
+        {
+            var ex = new BookingException("ExSI method 'pay' is not yet implemented");
+            ex.HttpStatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status501NotImplemented;
+            throw ex;
         }
     }
 }

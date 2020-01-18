@@ -8,6 +8,11 @@
         /// <summary>
         /// 
         /// </summary>
+        public string BookingSystemName { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public uint Port { get; set; }
         /// <summary>
         /// 
@@ -23,11 +28,6 @@
             Port = 12345;
         }
 
-        public ServerConfiguration(string json)
-        {
-
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -35,7 +35,9 @@
         public override string ToString()
         {
             var builder = new System.Text.StringBuilder();
-            builder.Append("ServerConfiguration: Port=").Append(Port);
+            builder.Append("ServerConfiguration: ");
+            builder.Append(" System = ").Append(BookingSystemName);
+            builder.Append(" Port =").Append(Port);
             return builder.ToString();
         }
     }

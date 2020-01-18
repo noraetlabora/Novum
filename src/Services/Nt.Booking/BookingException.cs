@@ -12,7 +12,7 @@ namespace Nt.Booking
         public string PartnerCode { get; set; }
         public string UserMessage { get; set; }
 
-        public BookingException()
+        public BookingException(string message) : base(message)
         {
 
         }

@@ -33,19 +33,8 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var information = new Models.Information();
-                information.Currency = "EUR";
-                information.DiscountType = "ABC";
-                //
-                var credit = new Models.Credit();
-                credit.Amount = 1222;
-                //
-                var owner = new Models.Owner();
-                owner.Name = "Norbert Rastl";
-                //
-                information.Credit = credit;
-                information.Owner = owner;
-                return new ObjectResult(information);
+                var mediumInformation = NtBooking.BookingSystem.GetMediumInformation(mediumId);
+                return new ObjectResult(mediumInformation);
             }
             catch (BookingException ex)
             {
@@ -66,11 +55,12 @@ namespace Nt.Booking.Controllers
         /// <response code="400"></response>
         [HttpGet]
         [Route("/api/v1/mediums/")]
-        public virtual IActionResult GetMediums([FromRoute][Required]string mediumId)
+        public virtual IActionResult GetMediums()
         {
             try
             {
-                return StatusCode(StatusCodes.Status501NotImplemented, "/api/v1/mediums/");
+                var mediumInformation = NtBooking.BookingSystem.GetMediumInformation();
+                return new ObjectResult(mediumInformation);
             }
             catch (BookingException ex)
             {
@@ -94,8 +84,7 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var booking = new Models.Booking();
-                booking.Id = "TransactionId1234";
+                var booking = NtBooking.BookingSystem.Pay();
                 return new ObjectResult(booking);
             }
             catch (BookingException ex)
@@ -120,8 +109,7 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var booking = new Models.Booking();
-                booking.Id = "TransactionId1234";
+                var booking = NtBooking.BookingSystem.Pay();
                 return new ObjectResult(booking);
             }
             catch (BookingException ex)

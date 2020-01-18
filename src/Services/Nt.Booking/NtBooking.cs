@@ -2,15 +2,17 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
+using Nt.Booking.Systems;
 using System;
 using System.ServiceProcess;
 
 namespace Nt.Booking
 {
-    public class Program
+    public class NtBooking
     {
 
         public static ServerConfiguration ServerConfiguration { get; private set; }
+        public static Systems.BookingSystemBase BookingSystem { get; private set; }
         private static string serverConfigFile = AppDomain.CurrentDomain.BaseDirectory + @"\Nt.Booking.config.json";
 
         public static void Main(string[] args)
@@ -18,8 +20,10 @@ namespace Nt.Booking
             try
             {
                 Nt.Logging.Log.Server.Info("================================================================== Nt.Booking  ==================================================================");
-                //GetConfig();
-
+                //TODO: GetConfig();
+                //TODO: delete following lines
+                ServerConfiguration = System.Text.Json.JsonSerializer.Deserialize<ServerConfiguration>("{\"BookingSystemName\": \"ExSI\", \"Port\": 5000}");
+                BookingSystem = GetSystem(ServerConfiguration.BookingSystemName);
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();
 
@@ -74,5 +78,18 @@ namespace Nt.Booking
             Nt.Logging.Log.Server.Info("ServerConfiguration : " + ServerConfiguration.ToString());
         }
 
+        private static BookingSystemBase GetSystem(string system)
+        {
+            Nt.Logging.Log.Server.Info("creating booking system " + system);
+            switch (system)
+            {
+                case "ExSI":
+                    return new Systems.Access.ExSI.ExSI();
+                case "Gantner":
+                    throw new NotImplementedException("booking system Gantner is not yet implemented");
+                default:
+                    throw new Exception("couldn't find a corresponding booking system for " + system);
+            }
+        }
     }
 }
