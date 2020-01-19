@@ -2,6 +2,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Nt.Booking.Systems;
 using System;
 using System.ServiceProcess;
@@ -56,14 +57,18 @@ namespace Nt.Booking
                     .UseKestrel()
                     .ConfigureKestrel(options =>
                     {
-                        //options.ListenAnyIP((int)ServerConfiguration.Port, listenOptions =>
-                        options.ListenAnyIP(5000, listenOptions =>
+                        options.ListenAnyIP((int)ServerConfiguration.Port, listenOptions =>
                         {
                             listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
                         });
                         options.AllowSynchronousIO = true;
                     })
-                    .UseStartup<Startup>();
+
+                    .UseStartup<Startup>()
+                    .ConfigureLogging(logging =>
+                    {
+                        logging.ClearProviders();
+                    });
 
         private static void GetConfig()
         {

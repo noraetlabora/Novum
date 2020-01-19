@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Nt.Booking.Models;
 using System.Collections.Generic;
-using Nt.Booking.Models;
 
 namespace Nt.Booking.Systems.Access.ExSI
 {
