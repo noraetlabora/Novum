@@ -38,11 +38,11 @@ namespace Nt.Booking.Controllers
             }
             catch (BookingException ex)
             {
-                return GeExceptiontResponse(ex);
+                return GetExceptionResponse(ex);
             }
             catch (Exception ex)
             {
-                return GeExceptiontResponse(ex);
+                return GetExceptionResponse(ex);
             }
         }
 
@@ -64,11 +64,11 @@ namespace Nt.Booking.Controllers
             }
             catch (BookingException ex)
             {
-                return GeExceptiontResponse(ex);
+                return GetExceptionResponse(ex);
             }
             catch (Exception ex)
             {
-                return GeExceptiontResponse(ex);
+                return GetExceptionResponse(ex);
             }
         }
 
@@ -89,11 +89,11 @@ namespace Nt.Booking.Controllers
             }
             catch (BookingException ex)
             {
-                return GeExceptiontResponse(ex);
+                return GetExceptionResponse(ex);
             }
             catch (Exception ex)
             {
-                return GeExceptiontResponse(ex);
+                return GetExceptionResponse(ex);
             }
         }
 
@@ -114,32 +114,34 @@ namespace Nt.Booking.Controllers
             }
             catch (BookingException ex)
             {
-                return GeExceptiontResponse(ex);
+                return GetExceptionResponse(ex);
             }
             catch (Exception ex)
             {
-                return GeExceptiontResponse(ex);
+                return GetExceptionResponse(ex);
             }
         }
 
         #region private methods
 
-        private ObjectResult GeExceptiontResponse(BookingException ex)
+        private ObjectResult GetExceptionResponse(BookingException ex)
         {
             Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
+            //
             var error = new Models.Error();
             error.Message = ex.Message;
             error.UserMessage = ex.UserMessage;
             error.PartnerCode = ex.PartnerCode;
             error.PartnerMessage = ex.PartnerMessage;
             error.Id = ex.Code;
-
+            //
             return StatusCode(ex.HttpStatusCode, error);
         }
 
-        private ObjectResult GeExceptiontResponse(Exception ex)
+        private ObjectResult GetExceptionResponse(Exception ex)
         {
             Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
+            //
             var error = new Models.Error();
             error.Message = ex.Message;
             //500
