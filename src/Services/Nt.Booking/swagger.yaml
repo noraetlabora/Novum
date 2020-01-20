@@ -26,12 +26,12 @@ paths:
           x-nullable: false
           description: ''
           schema:
-            $ref: '#/definitions/Information'
+            $ref: '#/definitions/InformationResponse'
         '400':
           x-nullable: false
           description: ''
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/ErrorResponse'
   '/api/v1/mediums/':
     get:
       tags:
@@ -53,12 +53,12 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Information'
+              $ref: '#/definitions/InformationResponse'
         '400':
           x-nullable: false
           description: ''
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/ErrorResponse'
   '/api/v1/mediums/{mediumId}/payments':
     post:
       tags:
@@ -80,7 +80,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/Payment'
+            $ref: '#/definitions/PaymentRequest'
           x-nullable: false
       produces:
         - application/json
@@ -89,7 +89,7 @@ paths:
           x-nullable: false
           description: ''
           schema:
-            $ref: '#/definitions/Booking'
+            $ref: '#/definitions/BookingResponse'
   '/api/v1/mediums/{mediumId}/cancellations':
     post:
       tags:
@@ -111,7 +111,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/Cancellation'
+            $ref: '#/definitions/CancellationRequest'
           x-nullable: false
       produces:
         - application/json
@@ -120,9 +120,9 @@ paths:
           x-nullable: false
           description: ''
           schema:
-            $ref: '#/definitions/Booking'
+            $ref: '#/definitions/BookingResponse'
 definitions:
-  Information:
+  InformationResponse:
     description: This object contains all Information of the medium
     type: object
     properties:
@@ -138,13 +138,13 @@ definitions:
       discountType:
         description: type of discount
         type: string
-  Error:
+  ErrorResponse:
     description: error object
     type: object
     properties:
       message:
         type: string
-     bookingSystem:
+      bookingSystem:
         type: string
       bookingSystemMessage:
         type: string
@@ -152,15 +152,129 @@ definitions:
         type: string
       DisplayMessage:
         type: string
-  Payment:
+  PaymentRequest:
     description: This object contains all information of the payment with a medium
     type: object
     properties:
-      id:
+      clientId:
         type: string
-      name:
+        description: ID of the requesting system
+      clientName:
         type: string
-  Cancellation:
+        description: Name of the requesting system
+      waiterId:
+        type: string
+        description: ID of the POS operator
+      waiterName:
+        type: string
+        description: Name of the POS operator
+      posId:
+        type: string
+        description: ID of the POS
+      posName:
+        type: string
+        description: Name of the POS
+      serviceAreaId:
+        type: string
+        description: ID of the service area
+      serviceAreaName:
+        type: string
+        description: Name of the service area
+      tableId:
+        type: string
+        description: ID of the table
+      tableName:
+        type: string
+        description: Name of the table
+      sale: 
+        $ref: '#/definitions/Sales'
+  Sales:
+    description: This object contains all sales
+    type: array
+    items:
+      $ref: '#/definitions/Sale'
+  Sale:
+    description: This object contains all information of a sale
+    type: object
+    properties:
+      billId:
+        type: string
+        description: ID of the bill
+      timestamp:
+        type: string
+        format: date-time
+        description: Creation date and time of the bill
+      currency:
+        type: string
+        description: Currency of the bill
+      payment: 
+        $ref: '#/definitions/Payments'
+      article: 
+        $ref: '#/definitions/Articles'
+  Payments:
+    description: This object contains all payments
+    type: array
+    items:
+      $ref: '#/definitions/Payment'
+  Payment:
+    description: This object contains all information of a payment
+    type: object
+    properties:
+      paymentTypeId:
+        type: string
+        description: ID of the payment method
+      paymentTypeName:
+        type: string
+        description: Name of the payment method
+      amount:
+        type: integer
+        description: Amount of the payment multiplied by 100
+      tip:
+        type: integer
+        description: Amount of the tip multiplied by 100
+  Articles:
+    description: This object contains all articles
+    type: array
+    items:
+      $ref: '#/definitions/Article'
+  Article:
+    description: This object contains all information of an article
+    type: object
+    properties:
+      articleId:
+        type: string
+        description: ID of the article
+      articleName:
+        type: string
+        description: Name of the article
+      quantity:
+        type: integer
+        description: Quantity multiplied by 100 
+      quantityUnit:
+        type: string
+        description: Unit of the quantity
+      articleGroupId:
+        type: string
+        description: ID of the article group
+      articleGroupName:
+        type: string
+        description: Name of the article group
+      unitPrice:
+        type: integer
+        description: Unit price multiplied by 100 including tax
+      taxRate:
+        type: integer
+        description: Tax rate multiplied by 100 
+      discountAmount:
+        type: integer
+        description: discount multiplied by 100 (discount to the total amount = unitPrice * quantity)
+      discountGroupId:
+        type: string
+        description: ID of the discount group
+      discountGroupName:
+        type: string
+        description: Name of the discount group
+  CancellationRequest:
     description: This object contains all information of the cancellation with a medium
     type: object
     properties:
@@ -168,7 +282,7 @@ definitions:
         type: string
       name:
         type: string
-  Booking:
+  BookingResponse:
     description: This object contains all information of a booking (payment/cancellation)
     type: object
     properties:
@@ -210,4 +324,4 @@ definitions:
     properties:
       name:
         description: name of the owner (John Doe)
-        type: string
+        type: string  
