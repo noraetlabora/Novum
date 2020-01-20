@@ -29,7 +29,7 @@ namespace Nt.Booking.Models
         /// <summary>
         /// Gets or Sets DisplayMessage
         /// </summary>
-        [DataMember(Name = "DisplayMessage")]
+        [DataMember(Name = "displayMessage")]
         public string DisplayMessage { get; set; }
 
         /// <summary>
