@@ -127,7 +127,6 @@ namespace Nt.Booking.Controllers
         private ObjectResult GetExceptionResponse(BookingException ex)
         {
             Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
-            //
             var error = new Models.Error();
             error.Message = ex.Message;
             error.UserMessage = ex.UserMessage;
