@@ -134,7 +134,7 @@ namespace Nt.Booking.Controllers
             error.PartnerCode = ex.PartnerCode;
             error.PartnerMessage = ex.PartnerMessage;
             error.Id = ex.Code;
-            //
+            
             return StatusCode(ex.HttpStatusCode, error);
         }
 
