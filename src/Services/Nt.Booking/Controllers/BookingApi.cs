@@ -80,7 +80,7 @@ namespace Nt.Booking.Controllers
         /// <response code="200"></response>
         [HttpPost]
         [Route("/api/v1/mediums/{mediumId}/payments")]
-        public virtual IActionResult MediumPayment([FromRoute][Required]string mediumId, [FromBody]Models.Payment payment)
+        public virtual IActionResult MediumPayment([FromRoute][Required]string mediumId, [FromBody]Models.PaymentRequest payment)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace Nt.Booking.Controllers
         /// <response code="200"></response>
         [HttpPost]
         [Route("/api/v1/mediums/{mediumId}/cancellations")]
-        public virtual IActionResult MediumCancellation([FromRoute][Required]string mediumId, [FromBody]Models.Cancellation cancellation)
+        public virtual IActionResult MediumCancellation([FromRoute][Required]string mediumId, [FromBody]Models.CancellationRequest cancellation)
         {
             try
             {
@@ -133,7 +133,7 @@ namespace Nt.Booking.Controllers
             error.BookingSystem = ex.BookingSystem.ToString();
             error.BookingSystemCode = ex.BookingSystemCode;
             error.BookingSystemMessage = ex.BookingSystemMessage;
-            
+
             return StatusCode(ex.HttpStatusCode, error);
         }
 

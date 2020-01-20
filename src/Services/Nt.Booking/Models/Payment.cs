@@ -15,22 +15,38 @@ using System.Text;
 namespace Nt.Booking.Models
 {
     /// <summary>
-    /// This object contains all information of the payment with a medium
+    /// This object contains all information of a payment
     /// </summary>
     [DataContract]
     public partial class Payment : IEquatable<Payment>
     {
         /// <summary>
-        /// Gets or Sets Id
+        /// ID of the payment method
         /// </summary>
-        [DataMember(Name = "id")]
-        public string Id { get; set; }
+        /// <value>ID of the payment method</value>
+        [DataMember(Name = "paymentTypeId")]
+        public string PaymentTypeId { get; set; }
 
         /// <summary>
-        /// Gets or Sets Name
+        /// Name of the payment method
         /// </summary>
-        [DataMember(Name = "name")]
-        public string Name { get; set; }
+        /// <value>Name of the payment method</value>
+        [DataMember(Name = "paymentTypeName")]
+        public string PaymentTypeName { get; set; }
+
+        /// <summary>
+        /// Amount of the payment  (*100)
+        /// </summary>
+        /// <value>Amount of the payment  (*100)</value>
+        [DataMember(Name = "amount")]
+        public int? Amount { get; set; }
+
+        /// <summary>
+        /// Amount of the tip  (*100)
+        /// </summary>
+        /// <value>Amount of the tip  (*100)</value>
+        [DataMember(Name = "tip")]
+        public int? Tip { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -40,8 +56,10 @@ namespace Nt.Booking.Models
         {
             var sb = new StringBuilder();
             sb.Append("class Payment {\n");
-            sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  Name: ").Append(Name).Append("\n");
+            sb.Append("  PaymentTypeId: ").Append(PaymentTypeId).Append("\n");
+            sb.Append("  PaymentTypeName: ").Append(PaymentTypeName).Append("\n");
+            sb.Append("  Amount: ").Append(Amount).Append("\n");
+            sb.Append("  Tip: ").Append(Tip).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -80,14 +98,24 @@ namespace Nt.Booking.Models
 
             return
                 (
-                    Id == other.Id ||
-                    Id != null &&
-                    Id.Equals(other.Id)
+                    PaymentTypeId == other.PaymentTypeId ||
+                    PaymentTypeId != null &&
+                    PaymentTypeId.Equals(other.PaymentTypeId)
                 ) &&
                 (
-                    Name == other.Name ||
-                    Name != null &&
-                    Name.Equals(other.Name)
+                    PaymentTypeName == other.PaymentTypeName ||
+                    PaymentTypeName != null &&
+                    PaymentTypeName.Equals(other.PaymentTypeName)
+                ) &&
+                (
+                    Amount == other.Amount ||
+                    Amount != null &&
+                    Amount.Equals(other.Amount)
+                ) &&
+                (
+                    Tip == other.Tip ||
+                    Tip != null &&
+                    Tip.Equals(other.Tip)
                 );
         }
 
@@ -101,10 +129,14 @@ namespace Nt.Booking.Models
             {
                 var hashCode = 41;
                 // Suitable nullity checks etc, of course :)
-                if (Id != null)
-                    hashCode = hashCode * 59 + Id.GetHashCode();
-                if (Name != null)
-                    hashCode = hashCode * 59 + Name.GetHashCode();
+                if (PaymentTypeId != null)
+                    hashCode = hashCode * 59 + PaymentTypeId.GetHashCode();
+                if (PaymentTypeName != null)
+                    hashCode = hashCode * 59 + PaymentTypeName.GetHashCode();
+                if (Amount != null)
+                    hashCode = hashCode * 59 + Amount.GetHashCode();
+                if (Tip != null)
+                    hashCode = hashCode * 59 + Tip.GetHashCode();
                 return hashCode;
             }
         }

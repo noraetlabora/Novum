@@ -150,7 +150,8 @@ definitions:
         type: string
       bookingSystemCode: 
         type: string
-      DisplayMessage:
+      displayMessage:
+        description: message wich should be displayed (eg. information of the medium)
         type: string
   PaymentRequest:
     description: This object contains all information of the payment with a medium
@@ -186,13 +187,10 @@ definitions:
       tableName:
         type: string
         description: Name of the table
-      sale: 
-        $ref: '#/definitions/Sales'
-  Sales:
-    description: This object contains all sales
-    type: array
-    items:
-      $ref: '#/definitions/Sale'
+      sales: 
+        type: array
+        items:
+          $ref: '#/definitions/Sale'
   Sale:
     description: This object contains all information of a sale
     type: object
@@ -206,16 +204,15 @@ definitions:
         description: Creation date and time of the bill
       currency:
         type: string
-        description: Currency of the bill
-      payment: 
-        $ref: '#/definitions/Payments'
-      article: 
-        $ref: '#/definitions/Articles'
-  Payments:
-    description: This object contains all payments
-    type: array
-    items:
-      $ref: '#/definitions/Payment'
+        description: currency in ISO 4217 (EUR/CHF/GBP/USD/JPY/CNY/...)
+      payments: 
+        type: array
+        items:
+          $ref: '#/definitions/Payment'
+      articles: 
+        type: array
+        items:
+          $ref: '#/definitions/Article'
   Payment:
     description: This object contains all information of a payment
     type: object
@@ -228,15 +225,10 @@ definitions:
         description: Name of the payment method
       amount:
         type: integer
-        description: Amount of the payment multiplied by 100
+        description: Amount of the payment  (*100)
       tip:
         type: integer
-        description: Amount of the tip multiplied by 100
-  Articles:
-    description: This object contains all articles
-    type: array
-    items:
-      $ref: '#/definitions/Article'
+        description: Amount of the tip  (*100)
   Article:
     description: This object contains all information of an article
     type: object
@@ -249,7 +241,7 @@ definitions:
         description: Name of the article
       quantity:
         type: integer
-        description: Quantity multiplied by 100 
+        description: Quantity  (*100)
       quantityUnit:
         type: string
         description: Unit of the quantity
@@ -261,13 +253,13 @@ definitions:
         description: Name of the article group
       unitPrice:
         type: integer
-        description: Unit price multiplied by 100 including tax
+        description: Unit price including tax  (*100)
       taxRate:
         type: integer
-        description: Tax rate multiplied by 100 
+        description: Tax rate  (*100)
       discountAmount:
         type: integer
-        description: discount multiplied by 100 (discount to the total amount = unitPrice * quantity)
+        description: discount (discount to the total amount = unitPrice * quantity)  (*100)
       discountGroupId:
         type: string
         description: ID of the discount group
@@ -288,7 +280,8 @@ definitions:
     properties:
       id:
         type: string
-      DisplayMessage:
+      displayMessage:
+        description: message wich should be displayed (eg. information of the medium)
         type: string
   Debit: 
     description: debit object 
