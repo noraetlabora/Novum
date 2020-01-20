@@ -14,7 +14,7 @@ namespace Nt.Booking
 
         public BookingException(string message) : base(message)
         {
-
+            //test
         }
 
         public BookingException(string message, int httpStatusCode, string code, string partnerMessage, string partnerCode, string userMessage) : base(message)
