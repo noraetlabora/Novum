@@ -21,34 +21,34 @@ namespace Nt.Booking.Models
     public partial class Error : IEquatable<Error>
     {
         /// <summary>
-        /// Gets or Sets Id
-        /// </summary>
-        [DataMember(Name = "id")]
-        public string Id { get; set; }
-
-        /// <summary>
         /// Gets or Sets Message
         /// </summary>
         [DataMember(Name = "message")]
         public string Message { get; set; }
 
         /// <summary>
-        /// Gets or Sets PartnerMessage
+        /// Gets or Sets BookingSystem
         /// </summary>
-        [DataMember(Name = "partnerMessage")]
-        public string PartnerMessage { get; set; }
+        [DataMember(Name = "bookingSystem")]
+        public string BookingSystem { get; set; }
 
         /// <summary>
-        /// Gets or Sets PartnerCode
+        /// Gets or Sets BookingSystemMessage
         /// </summary>
-        [DataMember(Name = "partnerCode")]
-        public string PartnerCode { get; set; }
+        [DataMember(Name = "bookingSystemMessage")]
+        public string BookingSystemMessage { get; set; }
 
         /// <summary>
-        /// Gets or Sets UserMessage
+        /// Gets or Sets BookingSystemCode
         /// </summary>
-        [DataMember(Name = "userMessage")]
-        public string UserMessage { get; set; }
+        [DataMember(Name = "bookingSystemCode")]
+        public string BookingSystemCode { get; set; }
+
+        /// <summary>
+        /// Gets or Sets DisplayMessage
+        /// </summary>
+        [DataMember(Name = "DisplayMessage")]
+        public string DisplayMessage { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -59,10 +59,10 @@ namespace Nt.Booking.Models
             var sb = new StringBuilder();
             sb.Append("class Error {\n");
             sb.Append("  Message: ").Append(Message).Append("\n");
-            sb.Append("  Code: ").Append(Id).Append("\n");
-            sb.Append("  PartnerMessage: ").Append(PartnerMessage).Append("\n");
-            sb.Append("  PartnerCode: ").Append(PartnerCode).Append("\n");
-            sb.Append("  UserMessage: ").Append(UserMessage).Append("\n");
+            sb.Append("  BookingSystem: ").Append(BookingSystem).Append("\n");
+            sb.Append("  BookingSystemMessage: ").Append(BookingSystemMessage).Append("\n");
+            sb.Append("  BookingSystemCode: ").Append(BookingSystemCode).Append("\n");
+            sb.Append("  DisplayMessage: ").Append(DisplayMessage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -106,24 +106,19 @@ namespace Nt.Booking.Models
                     Message.Equals(other.Message)
                 ) &&
                 (
-                    Id == other.Id ||
-                    Id != null &&
-                    Id.Equals(other.Id)
+                    BookingSystemMessage == other.BookingSystemMessage ||
+                    BookingSystemMessage != null &&
+                    BookingSystemMessage.Equals(other.BookingSystemMessage)
                 ) &&
                 (
-                    PartnerMessage == other.PartnerMessage ||
-                    PartnerMessage != null &&
-                    PartnerMessage.Equals(other.PartnerMessage)
+                    BookingSystemCode == other.BookingSystemCode ||
+                    BookingSystemCode != null &&
+                    BookingSystemCode.Equals(other.BookingSystemCode)
                 ) &&
                 (
-                    PartnerCode == other.PartnerCode ||
-                    PartnerCode != null &&
-                    PartnerCode.Equals(other.PartnerCode)
-                ) &&
-                (
-                    UserMessage == other.UserMessage ||
-                    UserMessage != null &&
-                    UserMessage.Equals(other.UserMessage)
+                    DisplayMessage == other.DisplayMessage ||
+                    DisplayMessage != null &&
+                    DisplayMessage.Equals(other.DisplayMessage)
                 );
         }
 
@@ -139,14 +134,14 @@ namespace Nt.Booking.Models
                 // Suitable nullity checks etc, of course :)
                 if (Message != null)
                     hashCode = hashCode * 59 + Message.GetHashCode();
-                if (Id != null)
-                    hashCode = hashCode * 59 + Id.GetHashCode();
-                if (PartnerMessage != null)
-                    hashCode = hashCode * 59 + PartnerMessage.GetHashCode();
-                if (PartnerCode != null)
-                    hashCode = hashCode * 59 + PartnerCode.GetHashCode();
-                if (UserMessage != null)
-                    hashCode = hashCode * 59 + UserMessage.GetHashCode();
+                if (BookingSystem != null)
+                    hashCode = hashCode * 59 + BookingSystem.GetHashCode();
+                if (BookingSystemMessage != null)
+                    hashCode = hashCode * 59 + BookingSystemMessage.GetHashCode();
+                if (BookingSystemCode != null)
+                    hashCode = hashCode * 59 + BookingSystemCode.GetHashCode();
+                if (DisplayMessage != null)
+                    hashCode = hashCode * 59 + DisplayMessage.GetHashCode();
                 return hashCode;
             }
         }

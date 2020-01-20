@@ -129,10 +129,10 @@ namespace Nt.Booking.Controllers
             Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
             var error = new Models.Error();
             error.Message = ex.Message;
-            error.UserMessage = ex.UserMessage;
-            error.PartnerCode = ex.PartnerCode;
-            error.PartnerMessage = ex.PartnerMessage;
-            error.Id = ex.Code;
+            error.DisplayMessage = ex.DisplayMessage;
+            error.BookingSystem = ex.BookingSystem.ToString();
+            error.BookingSystemCode = ex.BookingSystemCode;
+            error.BookingSystemMessage = ex.BookingSystemMessage;
             
             return StatusCode(ex.HttpStatusCode, error);
         }

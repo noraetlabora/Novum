@@ -142,15 +142,15 @@ definitions:
     description: error object
     type: object
     properties:
-      id:
-        type: string
       message:
         type: string
-      partnerMessage:
+     bookingSystem:
         type: string
-      partnerCode: 
+      bookingSystemMessage:
         type: string
-      userMessage:
+      bookingSystemCode: 
+        type: string
+      DisplayMessage:
         type: string
   Payment:
     description: This object contains all information of the payment with a medium
@@ -174,7 +174,7 @@ definitions:
     properties:
       id:
         type: string
-      userMessage:
+      DisplayMessage:
         type: string
   Debit: 
     description: debit object 

@@ -7,23 +7,23 @@ namespace Nt.Booking
     {
 
         public int HttpStatusCode { get; set; }
-        public string Code { get; set; }
-        public string PartnerMessage { get; set; }
-        public string PartnerCode { get; set; }
-        public string UserMessage { get; set; }
+        public NtBooking.BookingSystemType BookingSystem { get; set; }
+        public string BookingSystemMessage { get; set; }
+        public string BookingSystemCode { get; set; }
+        public string DisplayMessage { get; set; }
 
         public BookingException(string message) : base(message)
         {
-            //test
+
         }
 
-        public BookingException(string message, int httpStatusCode, string code, string partnerMessage, string partnerCode, string userMessage) : base(message)
+        public BookingException(string message, int httpStatusCode, NtBooking.BookingSystemType bookingSystem, string bookingSystemMessage, string bookingSystemCode, string displayMessage) : base(message)
         {
             this.HttpStatusCode = httpStatusCode;
-            this.Code = code;
-            this.PartnerMessage = partnerMessage;
-            this.PartnerCode = partnerCode;
-            this.UserMessage = userMessage;
+            this.BookingSystem = bookingSystem;
+            this.BookingSystemMessage = bookingSystemMessage;
+            this.BookingSystemCode = bookingSystemCode;
+            this.DisplayMessage = displayMessage;
         }
 
         public override string ToString()
@@ -32,10 +32,10 @@ namespace Nt.Booking
             sB.Append("BookingException:");
             sB.Append(" HttpStatusCode: ").Append(HttpStatusCode);
             sB.Append(" Message = ").Append(Message);
-            sB.Append(" Code = ").Append(Code);
-            sB.Append(" PartnerMessage = ").Append(PartnerMessage);
-            sB.Append(" PartnerCode = ").Append(PartnerCode);
-            sB.Append(" UserMessage = ").Append(UserMessage);
+            sB.Append(" BookingSystem: ").Append(BookingSystem);
+            sB.Append(" BookingSystemMessage = ").Append(BookingSystemMessage);
+            sB.Append(" BookingSystemCode = ").Append(BookingSystemCode);
+            sB.Append(" DisplayMessage = ").Append(DisplayMessage);
             return sB.ToString();
         }
     }

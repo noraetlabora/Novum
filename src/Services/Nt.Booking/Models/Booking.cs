@@ -27,10 +27,10 @@ namespace Nt.Booking.Models
         public string Id { get; set; }
 
         /// <summary>
-        /// Gets or Sets UserMessage
+        /// Gets or Sets DisplayMessage
         /// </summary>
-        [DataMember(Name = "userMessage")]
-        public string UserMessage { get; set; }
+        [DataMember(Name = "DisplayMessage")]
+        public string DisplayMessage { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -41,7 +41,7 @@ namespace Nt.Booking.Models
             var sb = new StringBuilder();
             sb.Append("class Booking {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
-            sb.Append("  UserMessage: ").Append(UserMessage).Append("\n");
+            sb.Append("  DisplayMessage: ").Append(DisplayMessage).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -85,9 +85,9 @@ namespace Nt.Booking.Models
                     Id.Equals(other.Id)
                 ) &&
                 (
-                    UserMessage == other.UserMessage ||
-                    UserMessage != null &&
-                    UserMessage.Equals(other.UserMessage)
+                    DisplayMessage == other.DisplayMessage ||
+                    DisplayMessage != null &&
+                    DisplayMessage.Equals(other.DisplayMessage)
                 );
         }
 
@@ -103,8 +103,8 @@ namespace Nt.Booking.Models
                 // Suitable nullity checks etc, of course :)
                 if (Id != null)
                     hashCode = hashCode * 59 + Id.GetHashCode();
-                if (UserMessage != null)
-                    hashCode = hashCode * 59 + UserMessage.GetHashCode();
+                if (DisplayMessage != null)
+                    hashCode = hashCode * 59 + DisplayMessage.GetHashCode();
                 return hashCode;
             }
         }

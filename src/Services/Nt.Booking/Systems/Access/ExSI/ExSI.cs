@@ -8,7 +8,7 @@ namespace Nt.Booking.Systems.Access.ExSI
 
         public ExSI()
         {
-            Partner = "ExSI";
+            BookingSystem = NtBooking.BookingSystemType.ExSI;
         }
 
         public override Models.Booking Cancel()

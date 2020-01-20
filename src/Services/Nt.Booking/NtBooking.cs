@@ -11,6 +11,12 @@ namespace Nt.Booking
 {
     public class NtBooking
     {
+        public enum BookingSystemType
+        {
+            ExSI,
+            Gantner,
+            SVS
+        }
 
         public static ServerConfiguration ServerConfiguration { get; private set; }
         public static Systems.BookingSystemBase BookingSystem { get; private set; }
@@ -23,8 +29,8 @@ namespace Nt.Booking
                 Nt.Logging.Log.Server.Info("================================================================== Nt.Booking  ==================================================================");
                 //TODO: GetConfig();
                 //TODO: delete following lines
-                ServerConfiguration = System.Text.Json.JsonSerializer.Deserialize<ServerConfiguration>("{\"BookingSystemName\": \"ExSI\", \"Port\": 5000}");
-                BookingSystem = GetSystem(ServerConfiguration.BookingSystemName);
+                ServerConfiguration = System.Text.Json.JsonSerializer.Deserialize<ServerConfiguration>("{\"BookingSystem\": \"ExSI\", \"Port\": 5000}");
+                BookingSystem = GetBookingSystem(ServerConfiguration.BookingSystem);
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();
 
@@ -83,17 +89,19 @@ namespace Nt.Booking
             Nt.Logging.Log.Server.Info("ServerConfiguration : " + ServerConfiguration.ToString());
         }
 
-        private static BookingSystemBase GetSystem(string system)
+        private static BookingSystemBase GetBookingSystem(BookingSystemType systemType)
         {
-            Nt.Logging.Log.Server.Info("creating booking system " + system);
-            switch (system)
+            Nt.Logging.Log.Server.Info("creating booking system " + systemType);
+            switch (systemType)
             {
-                case "ExSI":
+                case BookingSystemType.ExSI:
                     return new Systems.Access.ExSI.ExSI();
-                case "Gantner":
+                case BookingSystemType.Gantner:
                     throw new NotImplementedException("booking system Gantner is not yet implemented");
+                case BookingSystemType.SVS:
+                    throw new NotImplementedException("booking system SVS is not yet implemented");
                 default:
-                    throw new Exception("couldn't find a corresponding booking system for " + system);
+                    throw new Exception("couldn't find a corresponding booking system for " + systemType);
             }
         }
     }

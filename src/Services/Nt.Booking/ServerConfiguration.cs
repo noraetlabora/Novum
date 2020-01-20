@@ -8,17 +8,12 @@
         /// <summary>
         /// 
         /// </summary>
-        public string BookingSystemName { get; set; }
+        public NtBooking.BookingSystemType BookingSystem { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         public uint Port { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-
 
         /// <summary>
         /// 
@@ -36,7 +31,7 @@
         {
             var builder = new System.Text.StringBuilder();
             builder.Append("ServerConfiguration: ");
-            builder.Append(" System = ").Append(BookingSystemName);
+            builder.Append(" BookingSystem = ").Append(BookingSystem);
             builder.Append(" Port =").Append(Port);
             return builder.ToString();
         }
