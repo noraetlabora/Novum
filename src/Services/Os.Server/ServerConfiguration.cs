@@ -52,13 +52,13 @@
         public ServerConfiguration()
         {
             DatabaseIp = "localhost";
-            DatabasePort = 0;
+            DatabasePort = 1972;
             DatabaseNamespace = "";
             DatabaseUser = "";
             DatabasePassword = "";
-            OsServerPort = 0;
+            OsServerPort = 5000;
             OsClientIp = "localhost";
-            OsClientPort = 0;
+            OsClientPort = 5001;
         }
 
         public ServerConfiguration(string json)

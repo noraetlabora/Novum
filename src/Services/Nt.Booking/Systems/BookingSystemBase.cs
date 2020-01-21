@@ -6,12 +6,12 @@ namespace Nt.Booking.Systems
     {
         public NtBooking.BookingSystemType BookingSystem { get; protected set; }
 
-        public abstract Models.Information GetMediumInformation(string mediumId);
+        public abstract Models.InformationResponse GetMediumInformation(string mediumId);
 
-        public abstract List<Models.Information> GetMediumInformation();
+        public abstract List<Models.InformationResponse> GetMediumInformation();
 
-        public abstract Models.Booking Pay();
+        public abstract Models.BookingResponse Pay();
 
-        public abstract Models.Booking Cancel();
+        public abstract Models.BookingResponse Cancel();
     }
 }

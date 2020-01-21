@@ -8672,14 +8672,15 @@ namespace Nt.Booking.Systems.Voucher.SVS
         //{
         //}
 
-        public SvsSoapClient(string endpointUrl, string userName, string password, System.TimeSpan timeout)
+        public SvsSoapClient(string remoteAddress, string username, string password, int timeoutSeconds) : base("SvsSoapClient", remoteAddress)
         {
-            this.ChannelFactory.Credentials.UserName.UserName = userName;
+            this.ChannelFactory.Credentials.UserName.UserName = username;
             this.ChannelFactory.Credentials.UserName.Password = password;
-            this.Endpoint.Binding.OpenTimeout = timeout;
-            this.Endpoint.Binding.CloseTimeout = timeout;
-            this.Endpoint.Binding.SendTimeout = timeout;
-            this.Endpoint.Binding.ReceiveTimeout = timeout;
+            var timeSpan = new System.TimeSpan(0, 0, timeoutSeconds);
+            this.Endpoint.Binding.OpenTimeout = timeSpan;
+            this.Endpoint.Binding.CloseTimeout = timeSpan;
+            this.Endpoint.Binding.SendTimeout = timeSpan;
+            this.Endpoint.Binding.ReceiveTimeout = timeSpan;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
