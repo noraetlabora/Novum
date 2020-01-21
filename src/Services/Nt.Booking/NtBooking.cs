@@ -99,7 +99,7 @@ namespace Nt.Booking
                 case BookingSystemType.Gantner:
                     throw new NotImplementedException("booking system Gantner is not yet implemented");
                 case BookingSystemType.SVS:
-                    throw new NotImplementedException("booking system SVS is not yet implemented");
+                    return new Systems.Voucher.SVS.SVS();
                 default:
                     throw new Exception("couldn't find a corresponding booking system for " + systemType);
             }
