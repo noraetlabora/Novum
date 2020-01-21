@@ -10,8 +10,8 @@ namespace Nt.Booking.Systems
 
         public abstract List<Models.InformationResponse> GetMediumInformation();
 
-        public abstract Models.BookingResponse Pay();
+        public abstract Models.BookingResponse Pay(Models.PaymentRequest paymentRequest);
 
-        public abstract Models.BookingResponse Cancel();
+        public abstract Models.BookingResponse Cancel(Models.CancellationRequest cancellationRequest);
     }
 }

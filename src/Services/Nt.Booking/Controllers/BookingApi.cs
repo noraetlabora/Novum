@@ -80,11 +80,11 @@ namespace Nt.Booking.Controllers
         /// <response code="200"></response>
         [HttpPost]
         [Route("/api/v1/mediums/{mediumId}/payments")]
-        public virtual IActionResult MediumPayment([FromRoute][Required]string mediumId, [FromBody]Models.PaymentRequest payment)
+        public virtual IActionResult MediumPayment([FromRoute][Required]string mediumId, [FromBody]Models.PaymentRequest paymentRequest)
         {
             try
             {
-                var booking = NtBooking.BookingSystem.Pay();
+                var booking = NtBooking.BookingSystem.Pay(paymentRequest);
                 return new ObjectResult(booking);
             }
             catch (BookingException ex)
@@ -105,11 +105,11 @@ namespace Nt.Booking.Controllers
         /// <response code="200"></response>
         [HttpPost]
         [Route("/api/v1/mediums/{mediumId}/cancellations")]
-        public virtual IActionResult MediumCancellation([FromRoute][Required]string mediumId, [FromBody]Models.CancellationRequest cancellation)
+        public virtual IActionResult MediumCancellation([FromRoute][Required]string mediumId, [FromBody]Models.CancellationRequest cancellationRequest)
         {
             try
             {
-                var booking = NtBooking.BookingSystem.Pay();
+                var booking = NtBooking.BookingSystem.Cancel(cancellationRequest);
                 return new ObjectResult(booking);
             }
             catch (BookingException ex)
@@ -127,7 +127,7 @@ namespace Nt.Booking.Controllers
         private ObjectResult GetExceptionResponse(BookingException ex)
         {
             Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
-            var error = new Models.Error();
+            var error = new Models.ErrorResponse();
             error.Message = ex.Message;
             error.DisplayMessage = ex.DisplayMessage;
             error.BookingSystem = ex.BookingSystem.ToString();
@@ -141,7 +141,7 @@ namespace Nt.Booking.Controllers
         {
             Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
             //
-            var error = new Models.Error();
+            var error = new Models.ErrorResponse();
             error.Message = ex.Message;
             //500
             return StatusCode(StatusCodes.Status500InternalServerError, error);

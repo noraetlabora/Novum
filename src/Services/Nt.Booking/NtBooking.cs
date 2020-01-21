@@ -28,8 +28,15 @@ namespace Nt.Booking
             {
                 Nt.Logging.Log.Server.Info("================================================================== Nt.Booking  ==================================================================");
                 //TODO: GetConfig();
-                //TODO: delete following lines
-                ServerConfiguration = System.Text.Json.JsonSerializer.Deserialize<ServerConfiguration>("{\"BookingSystem\": \"ExSI\", \"Port\": 5000}");
+                //TODO: delete start
+                ServerConfiguration = new ServerConfiguration();
+                ServerConfiguration.BookingSystem = BookingSystemType.SVS;
+                ServerConfiguration.Port = 5000;
+                ServerConfiguration.Address = "https://webservices-cert.storedvalue.com/svsxml/v1/services/SVSXMLWay";
+                ServerConfiguration.Username = "Testuser";
+                ServerConfiguration.Password = "secretPassword";
+                ServerConfiguration.Timeout = 10;
+                //TODO: delete stop
                 BookingSystem = GetBookingSystem(ServerConfiguration);
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();
@@ -99,7 +106,7 @@ namespace Nt.Booking
                 case BookingSystemType.Gantner:
                     throw new NotImplementedException("booking system Gantner is not yet implemented");
                 case BookingSystemType.SVS:
-                    return new Systems.Voucher.SVS.SVS(serverConfig.Address, serverConfig.UserName, serverConfig.Password, serverConfig.Timeout);
+                    return new Systems.Voucher.SVS.SVS(serverConfig.Address, serverConfig.Username, serverConfig.Password, serverConfig.Timeout);
                 default:
                     throw new Exception("couldn't find a corresponding booking system for " + serverConfig.BookingSystem);
             }

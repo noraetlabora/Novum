@@ -21,15 +21,27 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsSoapClient = new SvsSoapClient(uri, username, password, timeout);
         }
 
-        public override Models.BookingResponse Cancel()
+        public override BookingResponse Cancel(CancellationRequest cancellationRequest)
         {
             throw new NotImplementedException();
         }
 
         public override InformationResponse GetMediumInformation(string mediumId)
         {
-            //svsSoapClient.networkAsync()
-            throw new NotImplementedException();
+            var networkRequest = new NetworkRequest();
+            networkRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
+            networkRequest.merchant = new Merchant();
+            networkRequest.merchant.merchantName = "Gift Card Merchant, INC";
+            networkRequest.merchant.merchantNumber = "061286";
+            networkRequest.merchant.storeNumber = "0000009999";
+            networkRequest.merchant.division = "00000";
+            networkRequest.routingID = "301";
+            networkRequest.stan = "123456"; //(HHMMSS)
+
+
+            var networkResponse = svsSoapClient.networkAsync(networkRequest);
+
+            return null;
         }
 
         public override List<InformationResponse> GetMediumInformation()
@@ -37,7 +49,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             throw new NotImplementedException();
         }
 
-        public override Models.BookingResponse Pay()
+        public override Models.BookingResponse Pay(Models.PaymentRequest paymentRequest)
         {
             throw new NotImplementedException();
         }
