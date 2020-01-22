@@ -18,7 +18,20 @@ namespace Nt.Booking.Systems.Voucher.SVS
         public SVS(string uri, string username, string password, int timeout)
         {
             BookingSystem = NtBooking.BookingSystemType.SVS;
-            svsSoapClient = new SvsSoapClient(uri, username, password, timeout);
+            var timespan = new TimeSpan(0, 0, timeout);
+            //
+            var binding = new System.ServiceModel.BasicHttpBinding(System.ServiceModel.BasicHttpSecurityMode.Transport);
+            binding.OpenTimeout = timespan;
+            binding.CloseTimeout = timespan;
+            binding.SendTimeout = timespan;
+            binding.ReceiveTimeout = timespan;
+            //
+            var endpoint = new System.ServiceModel.EndpointAddress(uri);
+            //
+            svsSoapClient = new SvsSoapClient(binding, endpoint);
+            //credentials
+            svsSoapClient.ClientCredentials.UserName.UserName = username;
+            svsSoapClient.ClientCredentials.UserName.Password = password;
         }
 
         public override BookingResponse Cancel(CancellationRequest cancellationRequest)
@@ -38,8 +51,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             networkRequest.routingID = "301";
             networkRequest.stan = "123456"; //(HHMMSS)
 
-
-            var networkResponse = svsSoapClient.networkAsync(networkRequest);
+            var networkResponse = svsSoapClient.network(networkRequest);
 
             return null;
         }

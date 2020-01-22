@@ -7,104 +7,217 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.CodeDom.Compiler;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.ServiceModel;
+using System.Threading.Tasks;
+using System.Xml.Schema;
+using System.Xml.Serialization;
+
 namespace Nt.Booking.Systems.Voucher.SVS
 {
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://service.svsxml.svs.com", ConfigurationName="Nt.Booking.Systems.Voucher.SVS.SVSXMLWay")]
-    internal interface ISvsSoapDefinition
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [ServiceContractAttribute(Namespace="http://service.svsxml.svs.com", ConfigurationName="SVSXMLWay")]
+    internal interface ISvsSoapClient
     {
         
-        [System.ServiceModel.OperationContractAttribute(Action="merchandiseReturn", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.merchandiseReturnResponse1> merchandiseReturnAsync(Nt.Booking.Systems.Voucher.SVS.merchandiseReturn request);
+        // CODEGEN: Parameter 'merchandiseReturnReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="merchandiseReturn", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="merchandiseReturnReturn")]
+        merchandiseReturnResponse1 merchandiseReturn(merchandiseReturn request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="completePurchase", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.completePurchaseResponse1> completePurchaseAsync(Nt.Booking.Systems.Voucher.SVS.completePurchase request);
+        [OperationContractAttribute(Action="merchandiseReturn", ReplyAction="*")]
+        Task<merchandiseReturnResponse1> merchandiseReturnAsync(merchandiseReturn request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="preAuthComplete", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.preAuthCompleteResponse1> preAuthCompleteAsync(Nt.Booking.Systems.Voucher.SVS.preAuthComplete request);
+        // CODEGEN: Parameter 'completePurchaseReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="completePurchase", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="completePurchaseReturn")]
+        completePurchaseResponse1 completePurchase(completePurchase request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="reload", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.reloadResponse1> reloadAsync(Nt.Booking.Systems.Voucher.SVS.reload request);
+        [OperationContractAttribute(Action="completePurchase", ReplyAction="*")]
+        Task<completePurchaseResponse1> completePurchaseAsync(completePurchase request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="cashBack", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.cashBackResponse1> cashBackAsync(Nt.Booking.Systems.Voucher.SVS.cashBack request);
+        // CODEGEN: Parameter 'preAuthCompleteReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="preAuthComplete", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="preAuthCompleteReturn")]
+        preAuthCompleteResponse1 preAuthComplete(preAuthComplete request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="evaluatePurchase", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.evaluatePurchaseResponse1> evaluatePurchaseAsync(Nt.Booking.Systems.Voucher.SVS.evaluatePurchase request);
+        [OperationContractAttribute(Action="preAuthComplete", ReplyAction="*")]
+        Task<preAuthCompleteResponse1> preAuthCompleteAsync(preAuthComplete request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="issueGiftCard", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.issueGiftCardResponse1> issueGiftCardAsync(Nt.Booking.Systems.Voucher.SVS.issueGiftCard request);
+        // CODEGEN: Parameter 'reloadReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="reload", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="reloadReturn")]
+        reloadResponse1 reload(reload request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="cardActivation", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.cardActivationResponse1> cardActivationAsync(Nt.Booking.Systems.Voucher.SVS.cardActivation request);
+        [OperationContractAttribute(Action="reload", ReplyAction="*")]
+        Task<reloadResponse1> reloadAsync(reload request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="balanceInquiry", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.balanceInquiryResponse1> balanceInquiryAsync(Nt.Booking.Systems.Voucher.SVS.balanceInquiry request);
+        // CODEGEN: Parameter 'cashBackReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="cashBack", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="cashBackReturn")]
+        cashBackResponse1 cashBack(cashBack request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="redemption", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.redemptionResponse1> redemptionAsync(Nt.Booking.Systems.Voucher.SVS.redemption request);
+        [OperationContractAttribute(Action="cashBack", ReplyAction="*")]
+        Task<cashBackResponse1> cashBackAsync(cashBack request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="issueVirtualGiftCard", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.issueVirtualGiftCardResponse1> issueVirtualGiftCardAsync(Nt.Booking.Systems.Voucher.SVS.issueVirtualGiftCard request);
+        // CODEGEN: Parameter 'evaluatePurchaseReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="evaluatePurchase", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="evaluatePurchaseReturn")]
+        evaluatePurchaseResponse1 evaluatePurchase(evaluatePurchase request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="cancel", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.cancelResponse1> cancelAsync(Nt.Booking.Systems.Voucher.SVS.cancel request);
+        [OperationContractAttribute(Action="evaluatePurchase", ReplyAction="*")]
+        Task<evaluatePurchaseResponse1> evaluatePurchaseAsync(evaluatePurchase request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="reversal", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.reversalResponse1> reversalAsync(Nt.Booking.Systems.Voucher.SVS.reversal request);
+        // CODEGEN: Parameter 'issueGiftCardReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="issueGiftCard", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="issueGiftCardReturn")]
+        issueGiftCardResponse1 issueGiftCard(issueGiftCard request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="enhancedBalanceInquiry", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.enhancedBalanceInquiryResponse1> enhancedBalanceInquiryAsync(Nt.Booking.Systems.Voucher.SVS.enhancedBalanceInquiry request);
+        [OperationContractAttribute(Action="issueGiftCard", ReplyAction="*")]
+        Task<issueGiftCardResponse1> issueGiftCardAsync(issueGiftCard request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="tip", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.tipResponse1> tipAsync(Nt.Booking.Systems.Voucher.SVS.tip request);
+        // CODEGEN: Parameter 'cardActivationReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="cardActivation", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="cardActivationReturn")]
+        cardActivationResponse1 cardActivation(cardActivation request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="network", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.networkResponse1> networkAsync(Nt.Booking.Systems.Voucher.SVS.network request);
+        [OperationContractAttribute(Action="cardActivation", ReplyAction="*")]
+        Task<cardActivationResponse1> cardActivationAsync(cardActivation request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="cardRecharge", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.cardRechargeResponse1> cardRechargeAsync(Nt.Booking.Systems.Voucher.SVS.cardRecharge request);
+        // CODEGEN: Parameter 'balanceInquiryReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="balanceInquiry", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="balanceInquiryReturn")]
+        balanceInquiryResponse1 balanceInquiry(balanceInquiry request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="preAuth", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.preAuthResponse1> preAuthAsync(Nt.Booking.Systems.Voucher.SVS.preAuth request);
+        [OperationContractAttribute(Action="balanceInquiry", ReplyAction="*")]
+        Task<balanceInquiryResponse1> balanceInquiryAsync(balanceInquiry request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="issueVirtualThirdParty", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.issueVirtualThirdPartyResponse1> issueVirtualThirdPartyAsync(Nt.Booking.Systems.Voucher.SVS.issueVirtualThirdParty request);
+        // CODEGEN: Parameter 'redemptionReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="redemption", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="redemptionReturn")]
+        redemptionResponse1 redemption(redemption request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="enableCard", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.enableCardResponse1> enableCardAsync(Nt.Booking.Systems.Voucher.SVS.enableCard request);
+        [OperationContractAttribute(Action="redemption", ReplyAction="*")]
+        Task<redemptionResponse1> redemptionAsync(redemption request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="preAuthPurchase", ReplyAction="*")]
-        [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.preAuthPurchaseResponse1> preAuthPurchaseAsync(Nt.Booking.Systems.Voucher.SVS.preAuthPurchase request);
+        // CODEGEN: Parameter 'issueVirtualGiftCardReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="issueVirtualGiftCard", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="issueVirtualGiftCardReturn")]
+        issueVirtualGiftCardResponse1 issueVirtualGiftCard(issueVirtualGiftCard request);
+        
+        [OperationContractAttribute(Action="issueVirtualGiftCard", ReplyAction="*")]
+        Task<issueVirtualGiftCardResponse1> issueVirtualGiftCardAsync(issueVirtualGiftCard request);
+        
+        // CODEGEN: Parameter 'cancelReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="cancel", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="cancelReturn")]
+        cancelResponse1 cancel(cancel request);
+        
+        [OperationContractAttribute(Action="cancel", ReplyAction="*")]
+        Task<cancelResponse1> cancelAsync(cancel request);
+        
+        // CODEGEN: Parameter 'reversalReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="reversal", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="reversalReturn")]
+        reversalResponse1 reversal(reversal request);
+        
+        [OperationContractAttribute(Action="reversal", ReplyAction="*")]
+        Task<reversalResponse1> reversalAsync(reversal request);
+        
+        // CODEGEN: Parameter 'enhancedBalanceInquiryReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="enhancedBalanceInquiry", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="enhancedBalanceInquiryReturn")]
+        enhancedBalanceInquiryResponse1 enhancedBalanceInquiry(enhancedBalanceInquiry request);
+        
+        [OperationContractAttribute(Action="enhancedBalanceInquiry", ReplyAction="*")]
+        Task<enhancedBalanceInquiryResponse1> enhancedBalanceInquiryAsync(enhancedBalanceInquiry request);
+        
+        // CODEGEN: Parameter 'tipReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="tip", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="tipReturn")]
+        tipResponse1 tip(tip request);
+        
+        [OperationContractAttribute(Action="tip", ReplyAction="*")]
+        Task<tipResponse1> tipAsync(tip request);
+        
+        // CODEGEN: Parameter 'networkReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="network", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="networkReturn")]
+        networkResponse1 network(network request);
+        
+        [OperationContractAttribute(Action="network", ReplyAction="*")]
+        Task<networkResponse1> networkAsync(network request);
+        
+        // CODEGEN: Parameter 'cardRechargeReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="cardRecharge", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="cardRechargeReturn")]
+        cardRechargeResponse1 cardRecharge(cardRecharge request);
+        
+        [OperationContractAttribute(Action="cardRecharge", ReplyAction="*")]
+        Task<cardRechargeResponse1> cardRechargeAsync(cardRecharge request);
+        
+        // CODEGEN: Parameter 'preAuthReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="preAuth", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="preAuthReturn")]
+        preAuthResponse1 preAuth(preAuth request);
+        
+        [OperationContractAttribute(Action="preAuth", ReplyAction="*")]
+        Task<preAuthResponse1> preAuthAsync(preAuth request);
+        
+        // CODEGEN: Parameter 'issueVirtualThirdPartyReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="issueVirtualThirdParty", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="issueVirtualThirdPartyReturn")]
+        issueVirtualThirdPartyResponse1 issueVirtualThirdParty(issueVirtualThirdParty request);
+        
+        [OperationContractAttribute(Action="issueVirtualThirdParty", ReplyAction="*")]
+        Task<issueVirtualThirdPartyResponse1> issueVirtualThirdPartyAsync(issueVirtualThirdParty request);
+        
+        // CODEGEN: Parameter 'enableCardReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="enableCard", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="enableCardReturn")]
+        enableCardResponse1 enableCard(enableCard request);
+        
+        [OperationContractAttribute(Action="enableCard", ReplyAction="*")]
+        Task<enableCardResponse1> enableCardAsync(enableCard request);
+        
+        // CODEGEN: Parameter 'preAuthPurchaseReturn' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'Microsoft.Xml.Serialization.XmlElementAttribute'.
+        [OperationContractAttribute(Action="preAuthPurchase", ReplyAction="*")]
+        [XmlSerializerFormatAttribute(SupportFaults=true)]
+        [return: MessageParameterAttribute(Name="preAuthPurchaseReturn")]
+        preAuthPurchaseResponse1 preAuthPurchase(preAuthPurchase request);
+        
+        [OperationContractAttribute(Action="preAuthPurchase", ReplyAction="*")]
+        Task<preAuthPurchaseResponse1> preAuthPurchaseAsync(preAuthPurchase request);
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class MerchandiseReturnRequest
     {
         
@@ -127,7 +240,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private bool checkForDuplicateField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Card card
         {
             get
@@ -141,7 +254,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string date
         {
             get
@@ -155,7 +268,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string invoiceNumber
         {
             get
@@ -169,7 +282,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Merchant merchant
         {
             get
@@ -183,7 +296,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public Amount returnAmount
         {
             get
@@ -197,7 +310,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string routingID
         {
             get
@@ -211,7 +324,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -225,7 +338,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -239,7 +352,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public bool checkForDuplicate
         {
             get
@@ -254,9 +367,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class Card
     {
         
@@ -277,7 +390,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string cardTypeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string eovDate
         {
             get
@@ -291,7 +404,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string cardCurrency
         {
             get
@@ -305,7 +418,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string cardNumber
         {
             get
@@ -319,7 +432,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public string pinNumber
         {
             get
@@ -333,7 +446,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string cardExpiration
         {
             get
@@ -347,7 +460,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string cardTrackOne
         {
             get
@@ -361,7 +474,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string cardTrackTwo
         {
             get
@@ -375,7 +488,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=7)]
         public string cardType
         {
             get
@@ -390,9 +503,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class PreAuthPurchaseResponse
     {
         
@@ -421,7 +534,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private PreAuthPurchaseOffer[] offerResponseListField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -435,7 +548,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -449,7 +562,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -463,7 +576,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -477,7 +590,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -491,7 +604,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -505,7 +618,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -519,7 +632,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -533,7 +646,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
         public string alternateId
         {
             get
@@ -547,7 +660,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
         public string posType
         {
             get
@@ -561,7 +674,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=10)]
         public string pointsBalance
         {
             get
@@ -575,8 +688,8 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=11)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [XmlArrayAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=11)]
+        [XmlArrayItemAttribute(Form=XmlSchemaForm.Unqualified)]
         public PreAuthPurchaseOffer[] offerResponseList
         {
             get
@@ -591,9 +704,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class Amount
     {
         
@@ -602,7 +715,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string currencyField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=0)]
         public double amount
         {
             get
@@ -616,7 +729,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string currency
         {
             get
@@ -631,9 +744,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class ReturnCode
     {
         
@@ -642,7 +755,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string returnDescriptionField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string returnCode
         {
             get
@@ -656,7 +769,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string returnDescription
         {
             get
@@ -671,9 +784,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class PreAuthPurchaseOffer
     {
         
@@ -684,7 +797,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string responseDescriptionField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string offerCode
         {
             get
@@ -698,7 +811,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string responseCode
         {
             get
@@ -712,7 +825,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string responseDescription
         {
             get
@@ -727,9 +840,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class PreAuthPurchaseRequest
     {
         
@@ -758,7 +871,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private OfferCodeItem[] offerCodeListField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string date
         {
             get
@@ -772,7 +885,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public Amount redemptionAmount
         {
             get
@@ -786,7 +899,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Card card
         {
             get
@@ -800,7 +913,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Merchant merchant
         {
             get
@@ -814,7 +927,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string invoiceNumber
         {
             get
@@ -828,7 +941,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string routingID
         {
             get
@@ -842,7 +955,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -856,7 +969,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -870,7 +983,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public bool checkForDuplicate
         {
             get
@@ -884,7 +997,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
         public string alternateId
         {
             get
@@ -898,7 +1011,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=10)]
         public string posType
         {
             get
@@ -912,8 +1025,8 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=11)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [XmlArrayAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=11)]
+        [XmlArrayItemAttribute(Form=XmlSchemaForm.Unqualified)]
         public OfferCodeItem[] offerCodeList
         {
             get
@@ -928,9 +1041,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class Merchant
     {
         
@@ -943,7 +1056,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string divisionField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string merchantName
         {
             get
@@ -957,7 +1070,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string merchantNumber
         {
             get
@@ -971,7 +1084,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string storeNumber
         {
             get
@@ -985,7 +1098,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public string division
         {
             get
@@ -1000,16 +1113,16 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class OfferCodeItem
     {
         
         private string offerCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string offerCode
         {
             get
@@ -1024,9 +1137,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class EnableCardResponse
     {
         
@@ -1047,7 +1160,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string redeemWindowField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string authorizationCode
         {
             get
@@ -1061,7 +1174,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public Amount balanceAmount
         {
             get
@@ -1075,7 +1188,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Card card
         {
             get
@@ -1089,7 +1202,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public string conversionRate
         {
             get
@@ -1103,7 +1216,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public ReturnCode returnCode
         {
             get
@@ -1117,7 +1230,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string stan
         {
             get
@@ -1131,7 +1244,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string transactionID
         {
             get
@@ -1145,7 +1258,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string redeemWindow
         {
             get
@@ -1160,9 +1273,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class EnableCardRequest
     {
         
@@ -1185,7 +1298,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string dateField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount amount
         {
             get
@@ -1199,7 +1312,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public Card card
         {
             get
@@ -1213,7 +1326,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Merchant merchant
         {
             get
@@ -1227,7 +1340,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public string invoiceNumber
         {
             get
@@ -1241,7 +1354,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string routingID
         {
             get
@@ -1255,7 +1368,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string stan
         {
             get
@@ -1269,7 +1382,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string transactionID
         {
             get
@@ -1283,7 +1396,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=7)]
         public bool checkForDuplicate
         {
             get
@@ -1297,7 +1410,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
         public string date
         {
             get
@@ -1312,9 +1425,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class IssueVirtualThirdPartyResponse
     {
         
@@ -1339,7 +1452,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -1353,7 +1466,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -1367,7 +1480,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -1381,7 +1494,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -1395,7 +1508,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -1409,7 +1522,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -1423,7 +1536,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -1437,7 +1550,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -1451,7 +1564,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public string campaignCode
         {
             get
@@ -1465,7 +1578,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=9)]
         public string couponCode
         {
             get
@@ -1480,9 +1593,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class IssueVirtualThirdPartyRequest
     {
         
@@ -1511,7 +1624,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string date
         {
             get
@@ -1525,7 +1638,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string invoiceNumber
         {
             get
@@ -1539,7 +1652,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount issueAmount
         {
             get
@@ -1553,7 +1666,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public string virtualInventoryID
         {
             get
@@ -1567,7 +1680,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public Merchant merchant
         {
             get
@@ -1581,7 +1694,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string routingID
         {
             get
@@ -1595,7 +1708,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -1609,7 +1722,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -1623,7 +1736,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public bool checkForDuplicate
         {
             get
@@ -1637,7 +1750,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
         public string cardType
         {
             get
@@ -1651,7 +1764,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=10)]
         public string campaignCode
         {
             get
@@ -1665,7 +1778,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=11)]
         public string couponCode
         {
             get
@@ -1680,9 +1793,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class PreAuthResponse
     {
         
@@ -1709,7 +1822,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -1723,7 +1836,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -1737,7 +1850,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -1751,7 +1864,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -1765,7 +1878,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -1779,7 +1892,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -1793,7 +1906,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -1807,7 +1920,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -1821,7 +1934,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
         public string sku
         {
             get
@@ -1835,7 +1948,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=9)]
         public string campaignCode
         {
             get
@@ -1849,7 +1962,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=10)]
         public string couponCode
         {
             get
@@ -1864,9 +1977,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class PreAuthRequest
     {
         
@@ -1895,7 +2008,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Card card
         {
             get
@@ -1909,7 +2022,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string date
         {
             get
@@ -1923,7 +2036,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string invoiceNumber
         {
             get
@@ -1937,7 +2050,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Merchant merchant
         {
             get
@@ -1951,7 +2064,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public Amount requestedAmount
         {
             get
@@ -1965,7 +2078,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string routingID
         {
             get
@@ -1979,7 +2092,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -1993,7 +2106,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -2007,7 +2120,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public bool checkForDuplicate
         {
             get
@@ -2021,7 +2134,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
         public string sku
         {
             get
@@ -2035,7 +2148,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=10)]
         public string campaignCode
         {
             get
@@ -2049,7 +2162,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=11)]
         public string couponCode
         {
             get
@@ -2064,9 +2177,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class CardRechargeResponse
     {
         
@@ -2087,7 +2200,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string transactionIDField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -2101,7 +2214,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -2115,7 +2228,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -2129,7 +2242,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -2143,7 +2256,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -2157,7 +2270,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -2171,7 +2284,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -2185,7 +2298,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -2200,9 +2313,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class CardRechargeRequest
     {
         
@@ -2225,7 +2338,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private bool checkForDuplicateField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Card card
         {
             get
@@ -2239,7 +2352,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string date
         {
             get
@@ -2253,7 +2366,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string invoiceNumber
         {
             get
@@ -2267,7 +2380,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Merchant merchant
         {
             get
@@ -2281,7 +2394,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public Amount rechargeAmount
         {
             get
@@ -2295,7 +2408,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string routingID
         {
             get
@@ -2309,7 +2422,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -2323,7 +2436,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -2337,7 +2450,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public bool checkForDuplicate
         {
             get
@@ -2352,9 +2465,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class NetworkResponse
     {
         
@@ -2365,7 +2478,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string stanField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string authorizationCode
         {
             get
@@ -2379,7 +2492,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public ReturnCode returnCode
         {
             get
@@ -2393,7 +2506,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string stan
         {
             get
@@ -2408,9 +2521,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class NetworkRequest
     {
         
@@ -2425,7 +2538,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string stanField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string date
         {
             get
@@ -2439,7 +2552,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public Merchant merchant
         {
             get
@@ -2453,7 +2566,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string networkCode
         {
             get
@@ -2467,7 +2580,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public string routingID
         {
             get
@@ -2481,7 +2594,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string stan
         {
             get
@@ -2496,9 +2609,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class TipResponse
     {
         
@@ -2519,7 +2632,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string transactionIDField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -2533,7 +2646,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -2547,7 +2660,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -2561,7 +2674,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -2575,7 +2688,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -2589,7 +2702,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -2603,7 +2716,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -2617,7 +2730,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -2632,9 +2745,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class TipRequest
     {
         
@@ -2657,7 +2770,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private bool checkForDuplicateField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Card card
         {
             get
@@ -2671,7 +2784,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string date
         {
             get
@@ -2685,7 +2798,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string invoiceNumber
         {
             get
@@ -2699,7 +2812,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Merchant merchant
         {
             get
@@ -2713,7 +2826,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string routingID
         {
             get
@@ -2727,7 +2840,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string stan
         {
             get
@@ -2741,7 +2854,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public Amount tipAmount
         {
             get
@@ -2755,7 +2868,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -2769,7 +2882,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public bool checkForDuplicate
         {
             get
@@ -2784,9 +2897,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class TransactionType
     {
         
@@ -2797,7 +2910,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string trnsDescriptionField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string trnsCDindicator
         {
             get
@@ -2811,7 +2924,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string trnsCode
         {
             get
@@ -2825,7 +2938,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string trnsDescription
         {
             get
@@ -2840,9 +2953,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class TransactionElement
     {
         
@@ -2865,7 +2978,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private Merchant merchantField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -2879,7 +2992,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string date
         {
             get
@@ -2893,7 +3006,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string time
         {
             get
@@ -2907,7 +3020,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Amount requestedAmount
         {
             get
@@ -2921,7 +3034,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public Amount trnsAmount
         {
             get
@@ -2935,7 +3048,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public TransactionType transactionType
         {
             get
@@ -2949,7 +3062,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string decimalPlaces
         {
             get
@@ -2963,7 +3076,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string eovDate
         {
             get
@@ -2977,7 +3090,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
         public Merchant merchant
         {
             get
@@ -2992,9 +3105,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class EnhancedBalanceInquiryResponse
     {
         
@@ -3019,7 +3132,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private TransactionElement[] transactionHistListField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount balanceAmount
         {
             get
@@ -3033,7 +3146,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public Amount preAuthAmount
         {
             get
@@ -3047,7 +3160,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Card card
         {
             get
@@ -3061,7 +3174,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public ReturnCode returnCode
         {
             get
@@ -3075,7 +3188,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string authorizationCode
         {
             get
@@ -3089,7 +3202,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string conversionRate
         {
             get
@@ -3103,7 +3216,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -3117,7 +3230,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -3131,7 +3244,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
         public string invoiceNumber
         {
             get
@@ -3145,8 +3258,8 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [XmlArrayAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
+        [XmlArrayItemAttribute(Form=XmlSchemaForm.Unqualified)]
         public TransactionElement[] transactionHistList
         {
             get
@@ -3161,9 +3274,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class EnhancedBalanceInquiryRequest
     {
         
@@ -3188,7 +3301,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string localeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount amount
         {
             get
@@ -3202,7 +3315,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public Card card
         {
             get
@@ -3216,7 +3329,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string date
         {
             get
@@ -3230,7 +3343,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public string invoiceNumber
         {
             get
@@ -3244,7 +3357,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public Merchant merchant
         {
             get
@@ -3258,7 +3371,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string routingID
         {
             get
@@ -3272,7 +3385,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -3286,7 +3399,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -3300,7 +3413,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public bool checkForDuplicate
         {
             get
@@ -3314,7 +3427,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
         public string locale
         {
             get
@@ -3329,9 +3442,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class ReversalResponse
     {
         
@@ -3354,7 +3467,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -3368,7 +3481,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -3382,7 +3495,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -3396,7 +3509,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -3410,7 +3523,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -3424,7 +3537,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -3438,7 +3551,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -3452,7 +3565,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=7)]
         public string campaignCode
         {
             get
@@ -3466,7 +3579,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public string couponCode
         {
             get
@@ -3481,9 +3594,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class ReversalRequest
     {
         
@@ -3506,7 +3619,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Card card
         {
             get
@@ -3520,7 +3633,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string date
         {
             get
@@ -3534,7 +3647,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string invoiceNumber
         {
             get
@@ -3548,7 +3661,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Merchant merchant
         {
             get
@@ -3562,7 +3675,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string routingID
         {
             get
@@ -3576,7 +3689,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string stan
         {
             get
@@ -3590,7 +3703,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public Amount transactionAmount
         {
             get
@@ -3604,7 +3717,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=7)]
         public string campaignCode
         {
             get
@@ -3618,7 +3731,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public string couponCode
         {
             get
@@ -3633,9 +3746,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class CancelResponse
     {
         
@@ -3658,7 +3771,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -3672,7 +3785,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -3686,7 +3799,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -3700,7 +3813,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -3714,7 +3827,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -3728,7 +3841,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -3742,7 +3855,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -3756,7 +3869,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=7)]
         public string campaignCode
         {
             get
@@ -3770,7 +3883,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public string couponCode
         {
             get
@@ -3785,9 +3898,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class CancelRequest
     {
         
@@ -3810,7 +3923,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Card card
         {
             get
@@ -3824,7 +3937,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string date
         {
             get
@@ -3838,7 +3951,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string invoiceNumber
         {
             get
@@ -3852,7 +3965,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Merchant merchant
         {
             get
@@ -3866,7 +3979,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string routingID
         {
             get
@@ -3880,7 +3993,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string stan
         {
             get
@@ -3894,7 +4007,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public Amount transactionAmount
         {
             get
@@ -3908,7 +4021,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=7)]
         public string campaignCode
         {
             get
@@ -3922,7 +4035,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public string couponCode
         {
             get
@@ -3937,9 +4050,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class IssueVirtualGiftCardResponse
     {
         
@@ -3964,7 +4077,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -3978,7 +4091,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -3992,7 +4105,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -4006,7 +4119,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -4020,7 +4133,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -4034,7 +4147,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -4048,7 +4161,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -4062,7 +4175,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -4076,7 +4189,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public string campaignCode
         {
             get
@@ -4090,7 +4203,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=9)]
         public string couponCode
         {
             get
@@ -4105,9 +4218,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class IssueVirtualGiftCardRequest
     {
         
@@ -4134,7 +4247,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string date
         {
             get
@@ -4148,7 +4261,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string invoiceNumber
         {
             get
@@ -4162,7 +4275,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount issueAmount
         {
             get
@@ -4176,7 +4289,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Merchant merchant
         {
             get
@@ -4190,7 +4303,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string routingID
         {
             get
@@ -4204,7 +4317,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string stan
         {
             get
@@ -4218,7 +4331,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string transactionID
         {
             get
@@ -4232,7 +4345,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=7)]
         public bool checkForDuplicate
         {
             get
@@ -4246,7 +4359,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
         public string cardType
         {
             get
@@ -4260,7 +4373,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=9)]
         public string campaignCode
         {
             get
@@ -4274,7 +4387,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=10)]
         public string couponCode
         {
             get
@@ -4289,9 +4402,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class RedemptionResponse
     {
         
@@ -4318,7 +4431,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -4332,7 +4445,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -4346,7 +4459,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -4360,7 +4473,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -4374,7 +4487,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -4388,7 +4501,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -4402,7 +4515,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -4416,7 +4529,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -4430,7 +4543,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
         public string sku
         {
             get
@@ -4444,7 +4557,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=9)]
         public string campaignCode
         {
             get
@@ -4458,7 +4571,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=10)]
         public string couponCode
         {
             get
@@ -4473,9 +4586,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class RedemptionRequest
     {
         
@@ -4504,7 +4617,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Card card
         {
             get
@@ -4518,7 +4631,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string date
         {
             get
@@ -4532,7 +4645,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string invoiceNumber
         {
             get
@@ -4546,7 +4659,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Merchant merchant
         {
             get
@@ -4560,7 +4673,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public Amount redemptionAmount
         {
             get
@@ -4574,7 +4687,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string routingID
         {
             get
@@ -4588,7 +4701,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -4602,7 +4715,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -4616,7 +4729,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public bool checkForDuplicate
         {
             get
@@ -4630,7 +4743,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
         public string sku
         {
             get
@@ -4644,7 +4757,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=10)]
         public string campaignCode
         {
             get
@@ -4658,7 +4771,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=11)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=11)]
         public string couponCode
         {
             get
@@ -4673,9 +4786,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class BalanceInquiryResponse
     {
         
@@ -4698,7 +4811,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string authorizationCode
         {
             get
@@ -4712,7 +4825,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public Amount balanceAmount
         {
             get
@@ -4726,7 +4839,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Card card
         {
             get
@@ -4740,7 +4853,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public string conversionRate
         {
             get
@@ -4754,7 +4867,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public ReturnCode returnCode
         {
             get
@@ -4768,7 +4881,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string stan
         {
             get
@@ -4782,7 +4895,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string transactionID
         {
             get
@@ -4796,7 +4909,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=7)]
         public string campaignCode
         {
             get
@@ -4810,7 +4923,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public string couponCode
         {
             get
@@ -4825,9 +4938,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class BalanceInquiryRequest
     {
         
@@ -4854,7 +4967,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount amount
         {
             get
@@ -4868,7 +4981,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public Card card
         {
             get
@@ -4882,7 +4995,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Merchant merchant
         {
             get
@@ -4896,7 +5009,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public string invoiceNumber
         {
             get
@@ -4910,7 +5023,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string routingID
         {
             get
@@ -4924,7 +5037,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string stan
         {
             get
@@ -4938,7 +5051,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string transactionID
         {
             get
@@ -4952,7 +5065,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=7)]
         public bool checkForDuplicate
         {
             get
@@ -4966,7 +5079,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
         public string date
         {
             get
@@ -4980,7 +5093,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=9)]
         public string campaignCode
         {
             get
@@ -4994,7 +5107,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=10)]
         public string couponCode
         {
             get
@@ -5009,9 +5122,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class CardActivationResponse
     {
         
@@ -5036,7 +5149,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -5050,7 +5163,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -5064,7 +5177,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -5078,7 +5191,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -5092,7 +5205,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -5106,7 +5219,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -5120,7 +5233,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -5134,7 +5247,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -5148,7 +5261,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public string campaignCode
         {
             get
@@ -5162,7 +5275,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=9)]
         public string couponCode
         {
             get
@@ -5177,9 +5290,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class CardActivationRequest
     {
         
@@ -5206,7 +5319,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount activationAmount
         {
             get
@@ -5220,7 +5333,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public Card card
         {
             get
@@ -5234,7 +5347,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string date
         {
             get
@@ -5248,7 +5361,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public string invoiceNumber
         {
             get
@@ -5262,7 +5375,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public Merchant merchant
         {
             get
@@ -5276,7 +5389,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string routingID
         {
             get
@@ -5290,7 +5403,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -5304,7 +5417,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -5318,7 +5431,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public bool checkForDuplicate
         {
             get
@@ -5332,7 +5445,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=9)]
         public string campaignCode
         {
             get
@@ -5346,7 +5459,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=10)]
         public string couponCode
         {
             get
@@ -5361,9 +5474,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class IssueGiftCardResponse
     {
         
@@ -5390,7 +5503,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -5404,7 +5517,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -5418,7 +5531,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -5432,7 +5545,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -5446,7 +5559,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -5460,7 +5573,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -5474,7 +5587,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -5488,7 +5601,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -5502,7 +5615,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
         public string incentiveNumber
         {
             get
@@ -5516,7 +5629,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=9)]
         public string campaignCode
         {
             get
@@ -5530,7 +5643,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=10)]
         public string couponCode
         {
             get
@@ -5545,9 +5658,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class IssueGiftCardRequest
     {
         
@@ -5574,7 +5687,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Card card
         {
             get
@@ -5588,7 +5701,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string date
         {
             get
@@ -5602,7 +5715,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string invoiceNumber
         {
             get
@@ -5616,7 +5729,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Amount issueAmount
         {
             get
@@ -5630,7 +5743,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public Merchant merchant
         {
             get
@@ -5644,7 +5757,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string routingID
         {
             get
@@ -5658,7 +5771,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -5672,7 +5785,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -5686,7 +5799,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public bool checkForDuplicate
         {
             get
@@ -5700,7 +5813,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=9)]
         public string campaignCode
         {
             get
@@ -5714,7 +5827,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=10)]
         public string couponCode
         {
             get
@@ -5729,9 +5842,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class EvaluatePurchaseOffer
     {
         
@@ -5750,7 +5863,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string longDescriptionField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string offerCode
         {
             get
@@ -5764,7 +5877,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string immediateRedeemReqd
         {
             get
@@ -5778,7 +5891,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string startDate
         {
             get
@@ -5792,7 +5905,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public string endDate
         {
             get
@@ -5806,7 +5919,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string promoCode
         {
             get
@@ -5820,7 +5933,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string shortDescription
         {
             get
@@ -5834,7 +5947,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string longDescription
         {
             get
@@ -5849,9 +5962,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class EvaluatePurchaseResponse
     {
         
@@ -5878,8 +5991,8 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string posTypeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [XmlArrayAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlArrayItemAttribute(Form=XmlSchemaForm.Unqualified)]
         public EvaluatePurchaseOffer[] offerList
         {
             get
@@ -5893,7 +6006,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string pointsBalance
         {
             get
@@ -5907,7 +6020,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string userRegistrationStatus
         {
             get
@@ -5921,7 +6034,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Amount balanceAmount
         {
             get
@@ -5935,7 +6048,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public Card card
         {
             get
@@ -5949,7 +6062,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string conversionRate
         {
             get
@@ -5963,7 +6076,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public ReturnCode returnCode
         {
             get
@@ -5977,7 +6090,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string stan
         {
             get
@@ -5991,7 +6104,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
         public string transactionID
         {
             get
@@ -6005,7 +6118,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
         public string alternateId
         {
             get
@@ -6019,7 +6132,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=10)]
         public string posType
         {
             get
@@ -6034,9 +6147,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class EvaluatePurchaseRequest
     {
         
@@ -6063,7 +6176,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string alternateIdField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string posType
         {
             get
@@ -6077,7 +6190,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string date
         {
             get
@@ -6091,7 +6204,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount redemptionAmount
         {
             get
@@ -6105,7 +6218,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -6119,7 +6232,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public Merchant merchant
         {
             get
@@ -6133,7 +6246,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string invoiceNumber
         {
             get
@@ -6147,7 +6260,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string routingID
         {
             get
@@ -6161,7 +6274,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string stan
         {
             get
@@ -6175,7 +6288,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
         public string transactionID
         {
             get
@@ -6189,7 +6302,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=9)]
         public bool checkForDuplicate
         {
             get
@@ -6203,7 +6316,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=10)]
         public string alternateId
         {
             get
@@ -6218,9 +6331,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class CashBackResponse
     {
         
@@ -6241,7 +6354,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string transactionIDField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -6255,7 +6368,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -6269,7 +6382,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -6283,7 +6396,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -6297,7 +6410,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -6311,7 +6424,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -6325,7 +6438,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -6339,7 +6452,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -6354,9 +6467,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class CashBackRequest
     {
         
@@ -6379,7 +6492,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private bool checkForDuplicateField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Card card
         {
             get
@@ -6393,7 +6506,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public Amount cashBackAmount
         {
             get
@@ -6407,7 +6520,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string date
         {
             get
@@ -6421,7 +6534,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public string invoiceNumber
         {
             get
@@ -6435,7 +6548,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public Merchant merchant
         {
             get
@@ -6449,7 +6562,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string routingID
         {
             get
@@ -6463,7 +6576,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -6477,7 +6590,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -6491,7 +6604,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public bool checkForDuplicate
         {
             get
@@ -6506,9 +6619,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class ReloadResponse
     {
         
@@ -6527,7 +6640,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string transactionIDField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -6541,7 +6654,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -6555,7 +6668,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -6569,7 +6682,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -6583,7 +6696,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -6597,7 +6710,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -6611,7 +6724,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string transactionID
         {
             get
@@ -6626,9 +6739,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class ReloadRequest
     {
         
@@ -6645,7 +6758,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string transactionIDField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Card card
         {
             get
@@ -6659,7 +6772,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string date
         {
             get
@@ -6673,7 +6786,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string invoiceNumber
         {
             get
@@ -6687,7 +6800,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Merchant merchant
         {
             get
@@ -6701,7 +6814,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public Amount reloadAmount
         {
             get
@@ -6715,7 +6828,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string transactionID
         {
             get
@@ -6730,9 +6843,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class PreAuthCompleteResponse
     {
         
@@ -6757,7 +6870,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -6771,7 +6884,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -6785,7 +6898,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -6799,7 +6912,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -6813,7 +6926,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -6827,7 +6940,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -6841,7 +6954,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -6855,7 +6968,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -6869,7 +6982,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public string campaignCode
         {
             get
@@ -6883,7 +6996,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=9)]
         public string couponCode
         {
             get
@@ -6898,9 +7011,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class PreAuthCompleteRequest
     {
         
@@ -6927,7 +7040,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string couponCodeField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Card card
         {
             get
@@ -6941,7 +7054,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string date
         {
             get
@@ -6955,7 +7068,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string invoiceNumber
         {
             get
@@ -6969,7 +7082,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Merchant merchant
         {
             get
@@ -6983,7 +7096,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string routingID
         {
             get
@@ -6997,7 +7110,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string stan
         {
             get
@@ -7011,7 +7124,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public Amount transactionAmount
         {
             get
@@ -7025,7 +7138,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -7039,7 +7152,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public bool checkForDuplicate
         {
             get
@@ -7053,7 +7166,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=9)]
         public string campaignCode
         {
             get
@@ -7067,7 +7180,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=10)]
         public string couponCode
         {
             get
@@ -7082,9 +7195,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class CompletePurchaseOffer
     {
         
@@ -7101,7 +7214,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string longDescriptionField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string offerCode
         {
             get
@@ -7115,7 +7228,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string startDate
         {
             get
@@ -7129,7 +7242,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public string endDate
         {
             get
@@ -7143,7 +7256,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public string promoCode
         {
             get
@@ -7157,7 +7270,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string shortDescription
         {
             get
@@ -7171,7 +7284,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string longDescription
         {
             get
@@ -7186,9 +7299,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class CompletePurchaseResponse
     {
         
@@ -7219,7 +7332,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private CompletePurchaseOffer[] newOfferListField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -7233,7 +7346,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -7247,7 +7360,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -7261,7 +7374,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -7275,7 +7388,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -7289,7 +7402,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -7303,7 +7416,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -7317,7 +7430,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -7331,7 +7444,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=8)]
         public string alternateId
         {
             get
@@ -7345,7 +7458,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
         public string posType
         {
             get
@@ -7359,7 +7472,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=10)]
         public string pointsBalance
         {
             get
@@ -7373,8 +7486,8 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=11)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [XmlArrayAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=11)]
+        [XmlArrayItemAttribute(Form=XmlSchemaForm.Unqualified)]
         public PreAuthPurchaseOffer[] offerResponseList
         {
             get
@@ -7388,8 +7501,8 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=12)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [XmlArrayAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=12)]
+        [XmlArrayItemAttribute(Form=XmlSchemaForm.Unqualified)]
         public CompletePurchaseOffer[] newOfferList
         {
             get
@@ -7404,9 +7517,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class CompletePurchaseRequest
     {
         
@@ -7435,7 +7548,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private OfferCodeItem[] offerCodeListField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public string date
         {
             get
@@ -7449,7 +7562,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public Amount redemptionAmount
         {
             get
@@ -7463,7 +7576,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Card card
         {
             get
@@ -7477,7 +7590,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Merchant merchant
         {
             get
@@ -7491,7 +7604,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string invoiceNumber
         {
             get
@@ -7505,7 +7618,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public string routingID
         {
             get
@@ -7519,7 +7632,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -7533,7 +7646,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -7547,7 +7660,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=8)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, Order=8)]
         public bool checkForDuplicate
         {
             get
@@ -7561,7 +7674,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=9)]
         public string alternateId
         {
             get
@@ -7575,7 +7688,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=10)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=10)]
         public string posType
         {
             get
@@ -7589,8 +7702,8 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=11)]
-        [System.Xml.Serialization.XmlArrayItemAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [XmlArrayAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=11)]
+        [XmlArrayItemAttribute(Form=XmlSchemaForm.Unqualified)]
         public OfferCodeItem[] offerCodeList
         {
             get
@@ -7605,9 +7718,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [DebuggerStepThroughAttribute()]
+    [XmlTypeAttribute(Namespace="http://beans.svsxml.svs.com")]
     public partial class MerchandiseReturnResponse
     {
         
@@ -7628,7 +7741,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private string transactionIDField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=0)]
         public Amount approvedAmount
         {
             get
@@ -7642,7 +7755,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=1)]
         public string authorizationCode
         {
             get
@@ -7656,7 +7769,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=2)]
         public Amount balanceAmount
         {
             get
@@ -7670,7 +7783,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=3)]
         public Card card
         {
             get
@@ -7684,7 +7797,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=4)]
         public string conversionRate
         {
             get
@@ -7698,7 +7811,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=5)]
         public ReturnCode returnCode
         {
             get
@@ -7712,7 +7825,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=6)]
         public string stan
         {
             get
@@ -7726,7 +7839,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true, Order=7)]
         public string transactionID
         {
             get
@@ -7740,896 +7853,896 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="merchandiseReturn", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="merchandiseReturn", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class merchandiseReturn
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.MerchandiseReturnRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public MerchandiseReturnRequest request;
         
         public merchandiseReturn()
         {
         }
         
-        public merchandiseReturn(Nt.Booking.Systems.Voucher.SVS.MerchandiseReturnRequest request)
+        public merchandiseReturn(MerchandiseReturnRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="merchandiseReturnResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="merchandiseReturnResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class merchandiseReturnResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.MerchandiseReturnResponse merchandiseReturnReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public MerchandiseReturnResponse merchandiseReturnReturn;
         
         public merchandiseReturnResponse1()
         {
         }
         
-        public merchandiseReturnResponse1(Nt.Booking.Systems.Voucher.SVS.MerchandiseReturnResponse merchandiseReturnReturn)
+        public merchandiseReturnResponse1(MerchandiseReturnResponse merchandiseReturnReturn)
         {
             this.merchandiseReturnReturn = merchandiseReturnReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="completePurchase", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="completePurchase", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class completePurchase
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.CompletePurchaseRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public CompletePurchaseRequest request;
         
         public completePurchase()
         {
         }
         
-        public completePurchase(Nt.Booking.Systems.Voucher.SVS.CompletePurchaseRequest request)
+        public completePurchase(CompletePurchaseRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="completePurchaseResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="completePurchaseResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class completePurchaseResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.CompletePurchaseResponse completePurchaseReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public CompletePurchaseResponse completePurchaseReturn;
         
         public completePurchaseResponse1()
         {
         }
         
-        public completePurchaseResponse1(Nt.Booking.Systems.Voucher.SVS.CompletePurchaseResponse completePurchaseReturn)
+        public completePurchaseResponse1(CompletePurchaseResponse completePurchaseReturn)
         {
             this.completePurchaseReturn = completePurchaseReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="preAuthComplete", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="preAuthComplete", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class preAuthComplete
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.PreAuthCompleteRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public PreAuthCompleteRequest request;
         
         public preAuthComplete()
         {
         }
         
-        public preAuthComplete(Nt.Booking.Systems.Voucher.SVS.PreAuthCompleteRequest request)
+        public preAuthComplete(PreAuthCompleteRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="preAuthCompleteResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="preAuthCompleteResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class preAuthCompleteResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.PreAuthCompleteResponse preAuthCompleteReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public PreAuthCompleteResponse preAuthCompleteReturn;
         
         public preAuthCompleteResponse1()
         {
         }
         
-        public preAuthCompleteResponse1(Nt.Booking.Systems.Voucher.SVS.PreAuthCompleteResponse preAuthCompleteReturn)
+        public preAuthCompleteResponse1(PreAuthCompleteResponse preAuthCompleteReturn)
         {
             this.preAuthCompleteReturn = preAuthCompleteReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="reload", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="reload", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class reload
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.ReloadRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public ReloadRequest request;
         
         public reload()
         {
         }
         
-        public reload(Nt.Booking.Systems.Voucher.SVS.ReloadRequest request)
+        public reload(ReloadRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="reloadResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="reloadResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class reloadResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.ReloadResponse reloadReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public ReloadResponse reloadReturn;
         
         public reloadResponse1()
         {
         }
         
-        public reloadResponse1(Nt.Booking.Systems.Voucher.SVS.ReloadResponse reloadReturn)
+        public reloadResponse1(ReloadResponse reloadReturn)
         {
             this.reloadReturn = reloadReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="cashBack", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="cashBack", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class cashBack
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.CashBackRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public CashBackRequest request;
         
         public cashBack()
         {
         }
         
-        public cashBack(Nt.Booking.Systems.Voucher.SVS.CashBackRequest request)
+        public cashBack(CashBackRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="cashBackResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="cashBackResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class cashBackResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.CashBackResponse cashBackReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public CashBackResponse cashBackReturn;
         
         public cashBackResponse1()
         {
         }
         
-        public cashBackResponse1(Nt.Booking.Systems.Voucher.SVS.CashBackResponse cashBackReturn)
+        public cashBackResponse1(CashBackResponse cashBackReturn)
         {
             this.cashBackReturn = cashBackReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="evaluatePurchase", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="evaluatePurchase", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class evaluatePurchase
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.EvaluatePurchaseRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public EvaluatePurchaseRequest request;
         
         public evaluatePurchase()
         {
         }
         
-        public evaluatePurchase(Nt.Booking.Systems.Voucher.SVS.EvaluatePurchaseRequest request)
+        public evaluatePurchase(EvaluatePurchaseRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="evaluatePurchaseResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="evaluatePurchaseResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class evaluatePurchaseResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.EvaluatePurchaseResponse evaluatePurchaseReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public EvaluatePurchaseResponse evaluatePurchaseReturn;
         
         public evaluatePurchaseResponse1()
         {
         }
         
-        public evaluatePurchaseResponse1(Nt.Booking.Systems.Voucher.SVS.EvaluatePurchaseResponse evaluatePurchaseReturn)
+        public evaluatePurchaseResponse1(EvaluatePurchaseResponse evaluatePurchaseReturn)
         {
             this.evaluatePurchaseReturn = evaluatePurchaseReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="issueGiftCard", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="issueGiftCard", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class issueGiftCard
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.IssueGiftCardRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public IssueGiftCardRequest request;
         
         public issueGiftCard()
         {
         }
         
-        public issueGiftCard(Nt.Booking.Systems.Voucher.SVS.IssueGiftCardRequest request)
+        public issueGiftCard(IssueGiftCardRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="issueGiftCardResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="issueGiftCardResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class issueGiftCardResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.IssueGiftCardResponse issueGiftCardReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public IssueGiftCardResponse issueGiftCardReturn;
         
         public issueGiftCardResponse1()
         {
         }
         
-        public issueGiftCardResponse1(Nt.Booking.Systems.Voucher.SVS.IssueGiftCardResponse issueGiftCardReturn)
+        public issueGiftCardResponse1(IssueGiftCardResponse issueGiftCardReturn)
         {
             this.issueGiftCardReturn = issueGiftCardReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="cardActivation", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="cardActivation", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class cardActivation
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.CardActivationRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public CardActivationRequest request;
         
         public cardActivation()
         {
         }
         
-        public cardActivation(Nt.Booking.Systems.Voucher.SVS.CardActivationRequest request)
+        public cardActivation(CardActivationRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="cardActivationResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="cardActivationResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class cardActivationResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.CardActivationResponse cardActivationReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public CardActivationResponse cardActivationReturn;
         
         public cardActivationResponse1()
         {
         }
         
-        public cardActivationResponse1(Nt.Booking.Systems.Voucher.SVS.CardActivationResponse cardActivationReturn)
+        public cardActivationResponse1(CardActivationResponse cardActivationReturn)
         {
             this.cardActivationReturn = cardActivationReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="balanceInquiry", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="balanceInquiry", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class balanceInquiry
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.BalanceInquiryRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public BalanceInquiryRequest request;
         
         public balanceInquiry()
         {
         }
         
-        public balanceInquiry(Nt.Booking.Systems.Voucher.SVS.BalanceInquiryRequest request)
+        public balanceInquiry(BalanceInquiryRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="balanceInquiryResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="balanceInquiryResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class balanceInquiryResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.BalanceInquiryResponse balanceInquiryReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public BalanceInquiryResponse balanceInquiryReturn;
         
         public balanceInquiryResponse1()
         {
         }
         
-        public balanceInquiryResponse1(Nt.Booking.Systems.Voucher.SVS.BalanceInquiryResponse balanceInquiryReturn)
+        public balanceInquiryResponse1(BalanceInquiryResponse balanceInquiryReturn)
         {
             this.balanceInquiryReturn = balanceInquiryReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="redemption", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="redemption", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class redemption
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.RedemptionRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public RedemptionRequest request;
         
         public redemption()
         {
         }
         
-        public redemption(Nt.Booking.Systems.Voucher.SVS.RedemptionRequest request)
+        public redemption(RedemptionRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="redemptionResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="redemptionResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class redemptionResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.RedemptionResponse redemptionReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public RedemptionResponse redemptionReturn;
         
         public redemptionResponse1()
         {
         }
         
-        public redemptionResponse1(Nt.Booking.Systems.Voucher.SVS.RedemptionResponse redemptionReturn)
+        public redemptionResponse1(RedemptionResponse redemptionReturn)
         {
             this.redemptionReturn = redemptionReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="issueVirtualGiftCard", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="issueVirtualGiftCard", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class issueVirtualGiftCard
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.IssueVirtualGiftCardRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public IssueVirtualGiftCardRequest request;
         
         public issueVirtualGiftCard()
         {
         }
         
-        public issueVirtualGiftCard(Nt.Booking.Systems.Voucher.SVS.IssueVirtualGiftCardRequest request)
+        public issueVirtualGiftCard(IssueVirtualGiftCardRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="issueVirtualGiftCardResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="issueVirtualGiftCardResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class issueVirtualGiftCardResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.IssueVirtualGiftCardResponse issueVirtualGiftCardReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public IssueVirtualGiftCardResponse issueVirtualGiftCardReturn;
         
         public issueVirtualGiftCardResponse1()
         {
         }
         
-        public issueVirtualGiftCardResponse1(Nt.Booking.Systems.Voucher.SVS.IssueVirtualGiftCardResponse issueVirtualGiftCardReturn)
+        public issueVirtualGiftCardResponse1(IssueVirtualGiftCardResponse issueVirtualGiftCardReturn)
         {
             this.issueVirtualGiftCardReturn = issueVirtualGiftCardReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="cancel", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="cancel", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class cancel
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.CancelRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public CancelRequest request;
         
         public cancel()
         {
         }
         
-        public cancel(Nt.Booking.Systems.Voucher.SVS.CancelRequest request)
+        public cancel(CancelRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="cancelResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="cancelResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class cancelResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.CancelResponse cancelReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public CancelResponse cancelReturn;
         
         public cancelResponse1()
         {
         }
         
-        public cancelResponse1(Nt.Booking.Systems.Voucher.SVS.CancelResponse cancelReturn)
+        public cancelResponse1(CancelResponse cancelReturn)
         {
             this.cancelReturn = cancelReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="reversal", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="reversal", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class reversal
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.ReversalRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public ReversalRequest request;
         
         public reversal()
         {
         }
         
-        public reversal(Nt.Booking.Systems.Voucher.SVS.ReversalRequest request)
+        public reversal(ReversalRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="reversalResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="reversalResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class reversalResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.ReversalResponse reversalReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public ReversalResponse reversalReturn;
         
         public reversalResponse1()
         {
         }
         
-        public reversalResponse1(Nt.Booking.Systems.Voucher.SVS.ReversalResponse reversalReturn)
+        public reversalResponse1(ReversalResponse reversalReturn)
         {
             this.reversalReturn = reversalReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="enhancedBalanceInquiry", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="enhancedBalanceInquiry", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class enhancedBalanceInquiry
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.EnhancedBalanceInquiryRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public EnhancedBalanceInquiryRequest request;
         
         public enhancedBalanceInquiry()
         {
         }
         
-        public enhancedBalanceInquiry(Nt.Booking.Systems.Voucher.SVS.EnhancedBalanceInquiryRequest request)
+        public enhancedBalanceInquiry(EnhancedBalanceInquiryRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="enhancedBalanceInquiryResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="enhancedBalanceInquiryResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class enhancedBalanceInquiryResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.EnhancedBalanceInquiryResponse enhancedBalanceInquiryReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public EnhancedBalanceInquiryResponse enhancedBalanceInquiryReturn;
         
         public enhancedBalanceInquiryResponse1()
         {
         }
         
-        public enhancedBalanceInquiryResponse1(Nt.Booking.Systems.Voucher.SVS.EnhancedBalanceInquiryResponse enhancedBalanceInquiryReturn)
+        public enhancedBalanceInquiryResponse1(EnhancedBalanceInquiryResponse enhancedBalanceInquiryReturn)
         {
             this.enhancedBalanceInquiryReturn = enhancedBalanceInquiryReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="tip", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="tip", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class tip
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.TipRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public TipRequest request;
         
         public tip()
         {
         }
         
-        public tip(Nt.Booking.Systems.Voucher.SVS.TipRequest request)
+        public tip(TipRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="tipResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="tipResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class tipResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.TipResponse tipReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public TipResponse tipReturn;
         
         public tipResponse1()
         {
         }
         
-        public tipResponse1(Nt.Booking.Systems.Voucher.SVS.TipResponse tipReturn)
+        public tipResponse1(TipResponse tipReturn)
         {
             this.tipReturn = tipReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="network", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="network", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class network
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.NetworkRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public NetworkRequest request;
         
         public network()
         {
         }
         
-        public network(Nt.Booking.Systems.Voucher.SVS.NetworkRequest request)
+        public network(NetworkRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="networkResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="networkResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class networkResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.NetworkResponse networkReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public NetworkResponse networkReturn;
         
         public networkResponse1()
         {
         }
         
-        public networkResponse1(Nt.Booking.Systems.Voucher.SVS.NetworkResponse networkReturn)
+        public networkResponse1(NetworkResponse networkReturn)
         {
             this.networkReturn = networkReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="cardRecharge", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="cardRecharge", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class cardRecharge
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.CardRechargeRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public CardRechargeRequest request;
         
         public cardRecharge()
         {
         }
         
-        public cardRecharge(Nt.Booking.Systems.Voucher.SVS.CardRechargeRequest request)
+        public cardRecharge(CardRechargeRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="cardRechargeResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="cardRechargeResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class cardRechargeResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.CardRechargeResponse cardRechargeReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public CardRechargeResponse cardRechargeReturn;
         
         public cardRechargeResponse1()
         {
         }
         
-        public cardRechargeResponse1(Nt.Booking.Systems.Voucher.SVS.CardRechargeResponse cardRechargeReturn)
+        public cardRechargeResponse1(CardRechargeResponse cardRechargeReturn)
         {
             this.cardRechargeReturn = cardRechargeReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="preAuth", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="preAuth", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class preAuth
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.PreAuthRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public PreAuthRequest request;
         
         public preAuth()
         {
         }
         
-        public preAuth(Nt.Booking.Systems.Voucher.SVS.PreAuthRequest request)
+        public preAuth(PreAuthRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="preAuthResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="preAuthResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class preAuthResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.PreAuthResponse preAuthReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public PreAuthResponse preAuthReturn;
         
         public preAuthResponse1()
         {
         }
         
-        public preAuthResponse1(Nt.Booking.Systems.Voucher.SVS.PreAuthResponse preAuthReturn)
+        public preAuthResponse1(PreAuthResponse preAuthReturn)
         {
             this.preAuthReturn = preAuthReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="issueVirtualThirdParty", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="issueVirtualThirdParty", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class issueVirtualThirdParty
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.IssueVirtualThirdPartyRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public IssueVirtualThirdPartyRequest request;
         
         public issueVirtualThirdParty()
         {
         }
         
-        public issueVirtualThirdParty(Nt.Booking.Systems.Voucher.SVS.IssueVirtualThirdPartyRequest request)
+        public issueVirtualThirdParty(IssueVirtualThirdPartyRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="issueVirtualThirdPartyResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="issueVirtualThirdPartyResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class issueVirtualThirdPartyResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.IssueVirtualThirdPartyResponse issueVirtualThirdPartyReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public IssueVirtualThirdPartyResponse issueVirtualThirdPartyReturn;
         
         public issueVirtualThirdPartyResponse1()
         {
         }
         
-        public issueVirtualThirdPartyResponse1(Nt.Booking.Systems.Voucher.SVS.IssueVirtualThirdPartyResponse issueVirtualThirdPartyReturn)
+        public issueVirtualThirdPartyResponse1(IssueVirtualThirdPartyResponse issueVirtualThirdPartyReturn)
         {
             this.issueVirtualThirdPartyReturn = issueVirtualThirdPartyReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="enableCard", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="enableCard", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class enableCard
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.EnableCardRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public EnableCardRequest request;
         
         public enableCard()
         {
         }
         
-        public enableCard(Nt.Booking.Systems.Voucher.SVS.EnableCardRequest request)
+        public enableCard(EnableCardRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="enableCardResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="enableCardResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class enableCardResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.EnableCardResponse enableCardReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public EnableCardResponse enableCardReturn;
         
         public enableCardResponse1()
         {
         }
         
-        public enableCardResponse1(Nt.Booking.Systems.Voucher.SVS.EnableCardResponse enableCardReturn)
+        public enableCardResponse1(EnableCardResponse enableCardReturn)
         {
             this.enableCardReturn = enableCardReturn;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="preAuthPurchase", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="preAuthPurchase", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class preAuthPurchase
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.PreAuthPurchaseRequest request;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public PreAuthPurchaseRequest request;
         
         public preAuthPurchase()
         {
         }
         
-        public preAuthPurchase(Nt.Booking.Systems.Voucher.SVS.PreAuthPurchaseRequest request)
+        public preAuthPurchase(PreAuthPurchaseRequest request)
         {
             this.request = request;
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(WrapperName="preAuthPurchaseResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+    [MessageContractAttribute(WrapperName="preAuthPurchaseResponse", WrapperNamespace="http://service.svsxml.svs.com", IsWrapped=true)]
     internal partial class preAuthPurchaseResponse1
     {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, IsNullable=true)]
-        public Nt.Booking.Systems.Voucher.SVS.PreAuthPurchaseResponse preAuthPurchaseReturn;
+        [MessageBodyMemberAttribute(Namespace="http://service.svsxml.svs.com", Order=0)]
+        [XmlElementAttribute(Form=XmlSchemaForm.Unqualified, IsNullable=true)]
+        public PreAuthPurchaseResponse preAuthPurchaseReturn;
         
         public preAuthPurchaseResponse1()
         {
         }
         
-        public preAuthPurchaseResponse1(Nt.Booking.Systems.Voucher.SVS.PreAuthPurchaseResponse preAuthPurchaseReturn)
+        public preAuthPurchaseResponse1(PreAuthPurchaseResponse preAuthPurchaseReturn)
         {
             this.preAuthPurchaseReturn = preAuthPurchaseReturn;
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    internal interface SvsSoapChannel : Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition, System.ServiceModel.IClientChannel
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    internal interface ISvsSoapClientChannel : ISvsSoapClient, IClientChannel
     {
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
-    internal partial class SvsSoapClient : System.ServiceModel.ClientBase<Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition>, Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition
+    [DebuggerStepThroughAttribute()]
+    [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
+    internal partial class SvsSoapClient : ClientBase<ISvsSoapClient>, ISvsSoapClient
     {
         
         /// <summary>
@@ -8637,378 +8750,661 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// </summary>
         /// <param name="serviceEndpoint">The endpoint to configure</param>
         /// <param name="clientCredentials">The client credentials</param>
-        //static partial void ConfigureEndpoint(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Description.ClientCredentials clientCredentials);
+        static partial void ConfigureEndpoint(System.ServiceModel.Description.ServiceEndpoint serviceEndpoint, System.ServiceModel.Description.ClientCredentials clientCredentials);
         
-        //public SvsSoapClient() : 
-        //        base(SvsSoapClient.GetDefaultBinding(), SvsSoapClient.GetDefaultEndpointAddress())
-        //{
-        //    this.Endpoint.Name = EndpointConfiguration.SvsTestWebService.ToString();
-        //    ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
-        //}
-        
-        //public SvsSoapClient(EndpointConfiguration endpointConfiguration) : 
-        //        base(SvsSoapClient.GetBindingForEndpoint(endpointConfiguration), SvsSoapClient.GetEndpointAddress(endpointConfiguration))
-        //{
-        //    this.Endpoint.Name = endpointConfiguration.ToString();
-        //    ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
-        //}
-        
-        //public SvsSoapClient(EndpointConfiguration endpointConfiguration, string remoteAddress) : 
-        //        base(SvsSoapClient.GetBindingForEndpoint(endpointConfiguration), new System.ServiceModel.EndpointAddress(remoteAddress))
-        //{
-        //    this.Endpoint.Name = endpointConfiguration.ToString();
-        //    ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
-        //}
-        
-        //public SvsSoapClient(EndpointConfiguration endpointConfiguration, System.ServiceModel.EndpointAddress remoteAddress) : 
-        //        base(SvsSoapClient.GetBindingForEndpoint(endpointConfiguration), remoteAddress)
-        //{
-        //    this.Endpoint.Name = endpointConfiguration.ToString();
-        //    ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
-        //}
-        
-        //public SvsSoapClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-        //        base(binding, remoteAddress)
-        //{
-        //}
-
-        public SvsSoapClient(string remoteAddress, string username, string password, int timeoutSeconds) : base("SvsSoapClient", remoteAddress)
+        public SvsSoapClient() : 
+                base(SvsSoapClient.GetDefaultBinding(), SvsSoapClient.GetDefaultEndpointAddress())
         {
-            this.ChannelFactory.Credentials.UserName.UserName = username;
-            this.ChannelFactory.Credentials.UserName.Password = password;
-            var timeSpan = new System.TimeSpan(0, 0, timeoutSeconds);
-            this.Endpoint.Binding.OpenTimeout = timeSpan;
-            this.Endpoint.Binding.CloseTimeout = timeSpan;
-            this.Endpoint.Binding.SendTimeout = timeSpan;
-            this.Endpoint.Binding.ReceiveTimeout = timeSpan;
+            this.Endpoint.Name = EndpointConfiguration.SvsTestWebService.ToString();
+            ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.merchandiseReturnResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.merchandiseReturnAsync(Nt.Booking.Systems.Voucher.SVS.merchandiseReturn request)
+        public SvsSoapClient(EndpointConfiguration endpointConfiguration) : 
+                base(SvsSoapClient.GetBindingForEndpoint(endpointConfiguration), SvsSoapClient.GetEndpointAddress(endpointConfiguration))
+        {
+            this.Endpoint.Name = endpointConfiguration.ToString();
+            ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
+        }
+        
+        public SvsSoapClient(EndpointConfiguration endpointConfiguration, string remoteAddress) : 
+                base(SvsSoapClient.GetBindingForEndpoint(endpointConfiguration), new EndpointAddress(remoteAddress))
+        {
+            this.Endpoint.Name = endpointConfiguration.ToString();
+            ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
+        }
+        
+        public SvsSoapClient(EndpointConfiguration endpointConfiguration, EndpointAddress remoteAddress) : 
+                base(SvsSoapClient.GetBindingForEndpoint(endpointConfiguration), remoteAddress)
+        {
+            this.Endpoint.Name = endpointConfiguration.ToString();
+            ConfigureEndpoint(this.Endpoint, this.ClientCredentials);
+        }
+        
+        public SvsSoapClient(System.ServiceModel.Channels.Binding binding, EndpointAddress remoteAddress) : 
+                base(binding, remoteAddress)
+        {
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        merchandiseReturnResponse1 ISvsSoapClient.merchandiseReturn(merchandiseReturn request)
+        {
+            return base.Channel.merchandiseReturn(request);
+        }
+        
+        public MerchandiseReturnResponse merchandiseReturn(MerchandiseReturnRequest request)
+        {
+            merchandiseReturn inValue = new merchandiseReturn();
+            inValue.request = request;
+            merchandiseReturnResponse1 retVal = ((ISvsSoapClient)(this)).merchandiseReturn(inValue);
+            return retVal.merchandiseReturnReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<merchandiseReturnResponse1> ISvsSoapClient.merchandiseReturnAsync(merchandiseReturn request)
         {
             return base.Channel.merchandiseReturnAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.merchandiseReturnResponse1> merchandiseReturnAsync(Nt.Booking.Systems.Voucher.SVS.MerchandiseReturnRequest request)
+        public Task<merchandiseReturnResponse1> merchandiseReturnAsync(MerchandiseReturnRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.merchandiseReturn inValue = new Nt.Booking.Systems.Voucher.SVS.merchandiseReturn();
+            merchandiseReturn inValue = new merchandiseReturn();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).merchandiseReturnAsync(inValue);
+            return ((ISvsSoapClient)(this)).merchandiseReturnAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.completePurchaseResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.completePurchaseAsync(Nt.Booking.Systems.Voucher.SVS.completePurchase request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        completePurchaseResponse1 ISvsSoapClient.completePurchase(completePurchase request)
+        {
+            return base.Channel.completePurchase(request);
+        }
+        
+        public CompletePurchaseResponse completePurchase(CompletePurchaseRequest request)
+        {
+            completePurchase inValue = new completePurchase();
+            inValue.request = request;
+            completePurchaseResponse1 retVal = ((ISvsSoapClient)(this)).completePurchase(inValue);
+            return retVal.completePurchaseReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<completePurchaseResponse1> ISvsSoapClient.completePurchaseAsync(completePurchase request)
         {
             return base.Channel.completePurchaseAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.completePurchaseResponse1> completePurchaseAsync(Nt.Booking.Systems.Voucher.SVS.CompletePurchaseRequest request)
+        public Task<completePurchaseResponse1> completePurchaseAsync(CompletePurchaseRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.completePurchase inValue = new Nt.Booking.Systems.Voucher.SVS.completePurchase();
+            completePurchase inValue = new completePurchase();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).completePurchaseAsync(inValue);
+            return ((ISvsSoapClient)(this)).completePurchaseAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.preAuthCompleteResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.preAuthCompleteAsync(Nt.Booking.Systems.Voucher.SVS.preAuthComplete request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        preAuthCompleteResponse1 ISvsSoapClient.preAuthComplete(preAuthComplete request)
+        {
+            return base.Channel.preAuthComplete(request);
+        }
+        
+        public PreAuthCompleteResponse preAuthComplete(PreAuthCompleteRequest request)
+        {
+            preAuthComplete inValue = new preAuthComplete();
+            inValue.request = request;
+            preAuthCompleteResponse1 retVal = ((ISvsSoapClient)(this)).preAuthComplete(inValue);
+            return retVal.preAuthCompleteReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<preAuthCompleteResponse1> ISvsSoapClient.preAuthCompleteAsync(preAuthComplete request)
         {
             return base.Channel.preAuthCompleteAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.preAuthCompleteResponse1> preAuthCompleteAsync(Nt.Booking.Systems.Voucher.SVS.PreAuthCompleteRequest request)
+        public Task<preAuthCompleteResponse1> preAuthCompleteAsync(PreAuthCompleteRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.preAuthComplete inValue = new Nt.Booking.Systems.Voucher.SVS.preAuthComplete();
+            preAuthComplete inValue = new preAuthComplete();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).preAuthCompleteAsync(inValue);
+            return ((ISvsSoapClient)(this)).preAuthCompleteAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.reloadResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.reloadAsync(Nt.Booking.Systems.Voucher.SVS.reload request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        reloadResponse1 ISvsSoapClient.reload(reload request)
+        {
+            return base.Channel.reload(request);
+        }
+        
+        public ReloadResponse reload(ReloadRequest request)
+        {
+            reload inValue = new reload();
+            inValue.request = request;
+            reloadResponse1 retVal = ((ISvsSoapClient)(this)).reload(inValue);
+            return retVal.reloadReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<reloadResponse1> ISvsSoapClient.reloadAsync(reload request)
         {
             return base.Channel.reloadAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.reloadResponse1> reloadAsync(Nt.Booking.Systems.Voucher.SVS.ReloadRequest request)
+        public Task<reloadResponse1> reloadAsync(ReloadRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.reload inValue = new Nt.Booking.Systems.Voucher.SVS.reload();
+            reload inValue = new reload();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).reloadAsync(inValue);
+            return ((ISvsSoapClient)(this)).reloadAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.cashBackResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.cashBackAsync(Nt.Booking.Systems.Voucher.SVS.cashBack request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        cashBackResponse1 ISvsSoapClient.cashBack(cashBack request)
+        {
+            return base.Channel.cashBack(request);
+        }
+        
+        public CashBackResponse cashBack(CashBackRequest request)
+        {
+            cashBack inValue = new cashBack();
+            inValue.request = request;
+            cashBackResponse1 retVal = ((ISvsSoapClient)(this)).cashBack(inValue);
+            return retVal.cashBackReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<cashBackResponse1> ISvsSoapClient.cashBackAsync(cashBack request)
         {
             return base.Channel.cashBackAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.cashBackResponse1> cashBackAsync(Nt.Booking.Systems.Voucher.SVS.CashBackRequest request)
+        public Task<cashBackResponse1> cashBackAsync(CashBackRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.cashBack inValue = new Nt.Booking.Systems.Voucher.SVS.cashBack();
+            cashBack inValue = new cashBack();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).cashBackAsync(inValue);
+            return ((ISvsSoapClient)(this)).cashBackAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.evaluatePurchaseResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.evaluatePurchaseAsync(Nt.Booking.Systems.Voucher.SVS.evaluatePurchase request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        evaluatePurchaseResponse1 ISvsSoapClient.evaluatePurchase(evaluatePurchase request)
+        {
+            return base.Channel.evaluatePurchase(request);
+        }
+        
+        public EvaluatePurchaseResponse evaluatePurchase(EvaluatePurchaseRequest request)
+        {
+            evaluatePurchase inValue = new evaluatePurchase();
+            inValue.request = request;
+            evaluatePurchaseResponse1 retVal = ((ISvsSoapClient)(this)).evaluatePurchase(inValue);
+            return retVal.evaluatePurchaseReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<evaluatePurchaseResponse1> ISvsSoapClient.evaluatePurchaseAsync(evaluatePurchase request)
         {
             return base.Channel.evaluatePurchaseAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.evaluatePurchaseResponse1> evaluatePurchaseAsync(Nt.Booking.Systems.Voucher.SVS.EvaluatePurchaseRequest request)
+        public Task<evaluatePurchaseResponse1> evaluatePurchaseAsync(EvaluatePurchaseRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.evaluatePurchase inValue = new Nt.Booking.Systems.Voucher.SVS.evaluatePurchase();
+            evaluatePurchase inValue = new evaluatePurchase();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).evaluatePurchaseAsync(inValue);
+            return ((ISvsSoapClient)(this)).evaluatePurchaseAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.issueGiftCardResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.issueGiftCardAsync(Nt.Booking.Systems.Voucher.SVS.issueGiftCard request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        issueGiftCardResponse1 ISvsSoapClient.issueGiftCard(issueGiftCard request)
+        {
+            return base.Channel.issueGiftCard(request);
+        }
+        
+        public IssueGiftCardResponse issueGiftCard(IssueGiftCardRequest request)
+        {
+            issueGiftCard inValue = new issueGiftCard();
+            inValue.request = request;
+            issueGiftCardResponse1 retVal = ((ISvsSoapClient)(this)).issueGiftCard(inValue);
+            return retVal.issueGiftCardReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<issueGiftCardResponse1> ISvsSoapClient.issueGiftCardAsync(issueGiftCard request)
         {
             return base.Channel.issueGiftCardAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.issueGiftCardResponse1> issueGiftCardAsync(Nt.Booking.Systems.Voucher.SVS.IssueGiftCardRequest request)
+        public Task<issueGiftCardResponse1> issueGiftCardAsync(IssueGiftCardRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.issueGiftCard inValue = new Nt.Booking.Systems.Voucher.SVS.issueGiftCard();
+            issueGiftCard inValue = new issueGiftCard();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).issueGiftCardAsync(inValue);
+            return ((ISvsSoapClient)(this)).issueGiftCardAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.cardActivationResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.cardActivationAsync(Nt.Booking.Systems.Voucher.SVS.cardActivation request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        cardActivationResponse1 ISvsSoapClient.cardActivation(cardActivation request)
+        {
+            return base.Channel.cardActivation(request);
+        }
+        
+        public CardActivationResponse cardActivation(CardActivationRequest request)
+        {
+            cardActivation inValue = new cardActivation();
+            inValue.request = request;
+            cardActivationResponse1 retVal = ((ISvsSoapClient)(this)).cardActivation(inValue);
+            return retVal.cardActivationReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<cardActivationResponse1> ISvsSoapClient.cardActivationAsync(cardActivation request)
         {
             return base.Channel.cardActivationAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.cardActivationResponse1> cardActivationAsync(Nt.Booking.Systems.Voucher.SVS.CardActivationRequest request)
+        public Task<cardActivationResponse1> cardActivationAsync(CardActivationRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.cardActivation inValue = new Nt.Booking.Systems.Voucher.SVS.cardActivation();
+            cardActivation inValue = new cardActivation();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).cardActivationAsync(inValue);
+            return ((ISvsSoapClient)(this)).cardActivationAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.balanceInquiryResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.balanceInquiryAsync(Nt.Booking.Systems.Voucher.SVS.balanceInquiry request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        balanceInquiryResponse1 ISvsSoapClient.balanceInquiry(balanceInquiry request)
+        {
+            return base.Channel.balanceInquiry(request);
+        }
+        
+        public BalanceInquiryResponse balanceInquiry(BalanceInquiryRequest request)
+        {
+            balanceInquiry inValue = new balanceInquiry();
+            inValue.request = request;
+            balanceInquiryResponse1 retVal = ((ISvsSoapClient)(this)).balanceInquiry(inValue);
+            return retVal.balanceInquiryReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<balanceInquiryResponse1> ISvsSoapClient.balanceInquiryAsync(balanceInquiry request)
         {
             return base.Channel.balanceInquiryAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.balanceInquiryResponse1> balanceInquiryAsync(Nt.Booking.Systems.Voucher.SVS.BalanceInquiryRequest request)
+        public Task<balanceInquiryResponse1> balanceInquiryAsync(BalanceInquiryRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.balanceInquiry inValue = new Nt.Booking.Systems.Voucher.SVS.balanceInquiry();
+            balanceInquiry inValue = new balanceInquiry();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).balanceInquiryAsync(inValue);
+            return ((ISvsSoapClient)(this)).balanceInquiryAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.redemptionResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.redemptionAsync(Nt.Booking.Systems.Voucher.SVS.redemption request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        redemptionResponse1 ISvsSoapClient.redemption(redemption request)
+        {
+            return base.Channel.redemption(request);
+        }
+        
+        public RedemptionResponse redemption(RedemptionRequest request)
+        {
+            redemption inValue = new redemption();
+            inValue.request = request;
+            redemptionResponse1 retVal = ((ISvsSoapClient)(this)).redemption(inValue);
+            return retVal.redemptionReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<redemptionResponse1> ISvsSoapClient.redemptionAsync(redemption request)
         {
             return base.Channel.redemptionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.redemptionResponse1> redemptionAsync(Nt.Booking.Systems.Voucher.SVS.RedemptionRequest request)
+        public Task<redemptionResponse1> redemptionAsync(RedemptionRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.redemption inValue = new Nt.Booking.Systems.Voucher.SVS.redemption();
+            redemption inValue = new redemption();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).redemptionAsync(inValue);
+            return ((ISvsSoapClient)(this)).redemptionAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.issueVirtualGiftCardResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.issueVirtualGiftCardAsync(Nt.Booking.Systems.Voucher.SVS.issueVirtualGiftCard request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        issueVirtualGiftCardResponse1 ISvsSoapClient.issueVirtualGiftCard(issueVirtualGiftCard request)
+        {
+            return base.Channel.issueVirtualGiftCard(request);
+        }
+        
+        public IssueVirtualGiftCardResponse issueVirtualGiftCard(IssueVirtualGiftCardRequest request)
+        {
+            issueVirtualGiftCard inValue = new issueVirtualGiftCard();
+            inValue.request = request;
+            issueVirtualGiftCardResponse1 retVal = ((ISvsSoapClient)(this)).issueVirtualGiftCard(inValue);
+            return retVal.issueVirtualGiftCardReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<issueVirtualGiftCardResponse1> ISvsSoapClient.issueVirtualGiftCardAsync(issueVirtualGiftCard request)
         {
             return base.Channel.issueVirtualGiftCardAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.issueVirtualGiftCardResponse1> issueVirtualGiftCardAsync(Nt.Booking.Systems.Voucher.SVS.IssueVirtualGiftCardRequest request)
+        public Task<issueVirtualGiftCardResponse1> issueVirtualGiftCardAsync(IssueVirtualGiftCardRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.issueVirtualGiftCard inValue = new Nt.Booking.Systems.Voucher.SVS.issueVirtualGiftCard();
+            issueVirtualGiftCard inValue = new issueVirtualGiftCard();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).issueVirtualGiftCardAsync(inValue);
+            return ((ISvsSoapClient)(this)).issueVirtualGiftCardAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.cancelResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.cancelAsync(Nt.Booking.Systems.Voucher.SVS.cancel request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        cancelResponse1 ISvsSoapClient.cancel(cancel request)
+        {
+            return base.Channel.cancel(request);
+        }
+        
+        public CancelResponse cancel(CancelRequest request)
+        {
+            cancel inValue = new cancel();
+            inValue.request = request;
+            cancelResponse1 retVal = ((ISvsSoapClient)(this)).cancel(inValue);
+            return retVal.cancelReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<cancelResponse1> ISvsSoapClient.cancelAsync(cancel request)
         {
             return base.Channel.cancelAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.cancelResponse1> cancelAsync(Nt.Booking.Systems.Voucher.SVS.CancelRequest request)
+        public Task<cancelResponse1> cancelAsync(CancelRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.cancel inValue = new Nt.Booking.Systems.Voucher.SVS.cancel();
+            cancel inValue = new cancel();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).cancelAsync(inValue);
+            return ((ISvsSoapClient)(this)).cancelAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.reversalResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.reversalAsync(Nt.Booking.Systems.Voucher.SVS.reversal request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        reversalResponse1 ISvsSoapClient.reversal(reversal request)
+        {
+            return base.Channel.reversal(request);
+        }
+        
+        public ReversalResponse reversal(ReversalRequest request)
+        {
+            reversal inValue = new reversal();
+            inValue.request = request;
+            reversalResponse1 retVal = ((ISvsSoapClient)(this)).reversal(inValue);
+            return retVal.reversalReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<reversalResponse1> ISvsSoapClient.reversalAsync(reversal request)
         {
             return base.Channel.reversalAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.reversalResponse1> reversalAsync(Nt.Booking.Systems.Voucher.SVS.ReversalRequest request)
+        public Task<reversalResponse1> reversalAsync(ReversalRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.reversal inValue = new Nt.Booking.Systems.Voucher.SVS.reversal();
+            reversal inValue = new reversal();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).reversalAsync(inValue);
+            return ((ISvsSoapClient)(this)).reversalAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.enhancedBalanceInquiryResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.enhancedBalanceInquiryAsync(Nt.Booking.Systems.Voucher.SVS.enhancedBalanceInquiry request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        enhancedBalanceInquiryResponse1 ISvsSoapClient.enhancedBalanceInquiry(enhancedBalanceInquiry request)
+        {
+            return base.Channel.enhancedBalanceInquiry(request);
+        }
+        
+        public EnhancedBalanceInquiryResponse enhancedBalanceInquiry(EnhancedBalanceInquiryRequest request)
+        {
+            enhancedBalanceInquiry inValue = new enhancedBalanceInquiry();
+            inValue.request = request;
+            enhancedBalanceInquiryResponse1 retVal = ((ISvsSoapClient)(this)).enhancedBalanceInquiry(inValue);
+            return retVal.enhancedBalanceInquiryReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<enhancedBalanceInquiryResponse1> ISvsSoapClient.enhancedBalanceInquiryAsync(enhancedBalanceInquiry request)
         {
             return base.Channel.enhancedBalanceInquiryAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.enhancedBalanceInquiryResponse1> enhancedBalanceInquiryAsync(Nt.Booking.Systems.Voucher.SVS.EnhancedBalanceInquiryRequest request)
+        public Task<enhancedBalanceInquiryResponse1> enhancedBalanceInquiryAsync(EnhancedBalanceInquiryRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.enhancedBalanceInquiry inValue = new Nt.Booking.Systems.Voucher.SVS.enhancedBalanceInquiry();
+            enhancedBalanceInquiry inValue = new enhancedBalanceInquiry();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).enhancedBalanceInquiryAsync(inValue);
+            return ((ISvsSoapClient)(this)).enhancedBalanceInquiryAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.tipResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.tipAsync(Nt.Booking.Systems.Voucher.SVS.tip request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        tipResponse1 ISvsSoapClient.tip(tip request)
+        {
+            return base.Channel.tip(request);
+        }
+        
+        public TipResponse tip(TipRequest request)
+        {
+            tip inValue = new tip();
+            inValue.request = request;
+            tipResponse1 retVal = ((ISvsSoapClient)(this)).tip(inValue);
+            return retVal.tipReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<tipResponse1> ISvsSoapClient.tipAsync(tip request)
         {
             return base.Channel.tipAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.tipResponse1> tipAsync(Nt.Booking.Systems.Voucher.SVS.TipRequest request)
+        public Task<tipResponse1> tipAsync(TipRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.tip inValue = new Nt.Booking.Systems.Voucher.SVS.tip();
+            tip inValue = new tip();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).tipAsync(inValue);
+            return ((ISvsSoapClient)(this)).tipAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.networkResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.networkAsync(Nt.Booking.Systems.Voucher.SVS.network request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        networkResponse1 ISvsSoapClient.network(network request)
+        {
+            return base.Channel.network(request);
+        }
+        
+        public NetworkResponse network(NetworkRequest request)
+        {
+            network inValue = new network();
+            inValue.request = request;
+            networkResponse1 retVal = ((ISvsSoapClient)(this)).network(inValue);
+            return retVal.networkReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<networkResponse1> ISvsSoapClient.networkAsync(network request)
         {
             return base.Channel.networkAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.networkResponse1> networkAsync(Nt.Booking.Systems.Voucher.SVS.NetworkRequest request)
+        public Task<networkResponse1> networkAsync(NetworkRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.network inValue = new Nt.Booking.Systems.Voucher.SVS.network();
+            network inValue = new network();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).networkAsync(inValue);
+            return ((ISvsSoapClient)(this)).networkAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.cardRechargeResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.cardRechargeAsync(Nt.Booking.Systems.Voucher.SVS.cardRecharge request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        cardRechargeResponse1 ISvsSoapClient.cardRecharge(cardRecharge request)
+        {
+            return base.Channel.cardRecharge(request);
+        }
+        
+        public CardRechargeResponse cardRecharge(CardRechargeRequest request)
+        {
+            cardRecharge inValue = new cardRecharge();
+            inValue.request = request;
+            cardRechargeResponse1 retVal = ((ISvsSoapClient)(this)).cardRecharge(inValue);
+            return retVal.cardRechargeReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<cardRechargeResponse1> ISvsSoapClient.cardRechargeAsync(cardRecharge request)
         {
             return base.Channel.cardRechargeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.cardRechargeResponse1> cardRechargeAsync(Nt.Booking.Systems.Voucher.SVS.CardRechargeRequest request)
+        public Task<cardRechargeResponse1> cardRechargeAsync(CardRechargeRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.cardRecharge inValue = new Nt.Booking.Systems.Voucher.SVS.cardRecharge();
+            cardRecharge inValue = new cardRecharge();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).cardRechargeAsync(inValue);
+            return ((ISvsSoapClient)(this)).cardRechargeAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.preAuthResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.preAuthAsync(Nt.Booking.Systems.Voucher.SVS.preAuth request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        preAuthResponse1 ISvsSoapClient.preAuth(preAuth request)
+        {
+            return base.Channel.preAuth(request);
+        }
+        
+        public PreAuthResponse preAuth(PreAuthRequest request)
+        {
+            preAuth inValue = new preAuth();
+            inValue.request = request;
+            preAuthResponse1 retVal = ((ISvsSoapClient)(this)).preAuth(inValue);
+            return retVal.preAuthReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<preAuthResponse1> ISvsSoapClient.preAuthAsync(preAuth request)
         {
             return base.Channel.preAuthAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.preAuthResponse1> preAuthAsync(Nt.Booking.Systems.Voucher.SVS.PreAuthRequest request)
+        public Task<preAuthResponse1> preAuthAsync(PreAuthRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.preAuth inValue = new Nt.Booking.Systems.Voucher.SVS.preAuth();
+            preAuth inValue = new preAuth();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).preAuthAsync(inValue);
+            return ((ISvsSoapClient)(this)).preAuthAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.issueVirtualThirdPartyResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.issueVirtualThirdPartyAsync(Nt.Booking.Systems.Voucher.SVS.issueVirtualThirdParty request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        issueVirtualThirdPartyResponse1 ISvsSoapClient.issueVirtualThirdParty(issueVirtualThirdParty request)
+        {
+            return base.Channel.issueVirtualThirdParty(request);
+        }
+        
+        public IssueVirtualThirdPartyResponse issueVirtualThirdParty(IssueVirtualThirdPartyRequest request)
+        {
+            issueVirtualThirdParty inValue = new issueVirtualThirdParty();
+            inValue.request = request;
+            issueVirtualThirdPartyResponse1 retVal = ((ISvsSoapClient)(this)).issueVirtualThirdParty(inValue);
+            return retVal.issueVirtualThirdPartyReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<issueVirtualThirdPartyResponse1> ISvsSoapClient.issueVirtualThirdPartyAsync(issueVirtualThirdParty request)
         {
             return base.Channel.issueVirtualThirdPartyAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.issueVirtualThirdPartyResponse1> issueVirtualThirdPartyAsync(Nt.Booking.Systems.Voucher.SVS.IssueVirtualThirdPartyRequest request)
+        public Task<issueVirtualThirdPartyResponse1> issueVirtualThirdPartyAsync(IssueVirtualThirdPartyRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.issueVirtualThirdParty inValue = new Nt.Booking.Systems.Voucher.SVS.issueVirtualThirdParty();
+            issueVirtualThirdParty inValue = new issueVirtualThirdParty();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).issueVirtualThirdPartyAsync(inValue);
+            return ((ISvsSoapClient)(this)).issueVirtualThirdPartyAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.enableCardResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.enableCardAsync(Nt.Booking.Systems.Voucher.SVS.enableCard request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        enableCardResponse1 ISvsSoapClient.enableCard(enableCard request)
+        {
+            return base.Channel.enableCard(request);
+        }
+        
+        public EnableCardResponse enableCard(EnableCardRequest request)
+        {
+            enableCard inValue = new enableCard();
+            inValue.request = request;
+            enableCardResponse1 retVal = ((ISvsSoapClient)(this)).enableCard(inValue);
+            return retVal.enableCardReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<enableCardResponse1> ISvsSoapClient.enableCardAsync(enableCard request)
         {
             return base.Channel.enableCardAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.enableCardResponse1> enableCardAsync(Nt.Booking.Systems.Voucher.SVS.EnableCardRequest request)
+        public Task<enableCardResponse1> enableCardAsync(EnableCardRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.enableCard inValue = new Nt.Booking.Systems.Voucher.SVS.enableCard();
+            enableCard inValue = new enableCard();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).enableCardAsync(inValue);
+            return ((ISvsSoapClient)(this)).enableCardAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.preAuthPurchaseResponse1> Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition.preAuthPurchaseAsync(Nt.Booking.Systems.Voucher.SVS.preAuthPurchase request)
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        preAuthPurchaseResponse1 ISvsSoapClient.preAuthPurchase(preAuthPurchase request)
+        {
+            return base.Channel.preAuthPurchase(request);
+        }
+        
+        public PreAuthPurchaseResponse preAuthPurchase(PreAuthPurchaseRequest request)
+        {
+            preAuthPurchase inValue = new preAuthPurchase();
+            inValue.request = request;
+            preAuthPurchaseResponse1 retVal = ((ISvsSoapClient)(this)).preAuthPurchase(inValue);
+            return retVal.preAuthPurchaseReturn;
+        }
+        
+        [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
+        Task<preAuthPurchaseResponse1> ISvsSoapClient.preAuthPurchaseAsync(preAuthPurchase request)
         {
             return base.Channel.preAuthPurchaseAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Nt.Booking.Systems.Voucher.SVS.preAuthPurchaseResponse1> preAuthPurchaseAsync(Nt.Booking.Systems.Voucher.SVS.PreAuthPurchaseRequest request)
+        public Task<preAuthPurchaseResponse1> preAuthPurchaseAsync(PreAuthPurchaseRequest request)
         {
-            Nt.Booking.Systems.Voucher.SVS.preAuthPurchase inValue = new Nt.Booking.Systems.Voucher.SVS.preAuthPurchase();
+            preAuthPurchase inValue = new preAuthPurchase();
             inValue.request = request;
-            return ((Nt.Booking.Systems.Voucher.SVS.ISvsSoapDefinition)(this)).preAuthPurchaseAsync(inValue);
+            return ((ISvsSoapClient)(this)).preAuthPurchaseAsync(inValue);
         }
         
-        public virtual System.Threading.Tasks.Task OpenAsync()
+        public virtual Task OpenAsync()
         {
-            return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
+            return Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
         }
         
-        public virtual System.Threading.Tasks.Task CloseAsync()
+        public virtual Task CloseAsync()
         {
-            return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
+            return Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
         }
         
-        //private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
-        //{
-        //    if ((endpointConfiguration == EndpointConfiguration.SvsTestWebService))
-        //    {
-        //        System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
-        //        result.MaxBufferSize = int.MaxValue;
-        //        result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
-        //        result.MaxReceivedMessageSize = int.MaxValue;
-        //        result.AllowCookies = true;
-        //        result.Security.Mode = System.ServiceModel.BasicHttpSecurityMode.Transport;
-        //        return result;
-        //    }
-        //    throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
-        //}
-        
-        internal static System.ServiceModel.EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
+        private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
+        {
+            if ((endpointConfiguration == EndpointConfiguration.SvsTestWebService))
+            {
+                System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
+                result.MaxBufferSize = int.MaxValue;
+                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+                result.MaxReceivedMessageSize = int.MaxValue;
+                result.AllowCookies = true;
+                result.Security.Mode = System.ServiceModel.BasicHttpSecurityMode.Transport;
+                return result;
+            }
+            throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
+        }
+
+        internal static EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
         {
             switch (endpointConfiguration)
             {
                 case EndpointConfiguration.SvsTestWebService:
-                    return new System.ServiceModel.EndpointAddress("https://webservices-cert.storedvalue.com/svsxml/v1/services/SVSXMLWay");
+                    return new EndpointAddress("https://webservices-cert.storedvalue.com/svsxml/v1/services/SVSXMLWay");
                 case EndpointConfiguration.SvsProductionWebService:
-                    //Todo: return new System.ServiceModel.EndpointAddress("https://webservices.storedvalue.com/svsxml/v1/services/SVSXMLWay");
+                //Todo: return new EndpointAddress("https://webservices.storedvalue.com/svsxml/v1/services/SVSXMLWay");
                 default:
                     throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
-            }            
+            }
         }
 
-        //private static System.ServiceModel.Channels.Binding GetDefaultBinding()
-        //{
-        //    return SvsSoapClient.GetBindingForEndpoint(EndpointConfiguration.SvsTestWebService);
-        //}
+        private static System.ServiceModel.Channels.Binding GetDefaultBinding()
+        {
+            return SvsSoapClient.GetBindingForEndpoint(EndpointConfiguration.SvsTestWebService);
+        }
 
-        //private static System.ServiceModel.EndpointAddress GetDefaultEndpointAddress()
-        //{
-        //    return SvsSoapClient.GetEndpointAddress(EndpointConfiguration.SvsTestWebService);
-        //}
+        private static EndpointAddress GetDefaultEndpointAddress()
+        {
+            return SvsSoapClient.GetEndpointAddress(EndpointConfiguration.SvsTestWebService);
+        }
 
         public enum EndpointConfiguration
         {
             
             SvsTestWebService,
-            SvsProductionWebService,
+            SvsProductionWebService
         }
     }
 }

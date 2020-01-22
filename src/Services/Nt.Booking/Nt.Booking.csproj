@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Systems\Access\ExSI\Models\" />
     <Folder Include="Systems\Hotel\" />
   </ItemGroup>
 
