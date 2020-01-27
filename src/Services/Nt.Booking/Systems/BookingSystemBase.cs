@@ -4,7 +4,7 @@ namespace Nt.Booking.Systems
 {
     public abstract class BookingSystemBase
     {
-        public NtBooking.BookingSystemType BookingSystem { get; protected set; }
+        public NtBooking.BookingSystemType Type { get; protected set; }
 
         public abstract Models.InformationResponse GetMediumInformation(string mediumId);
 

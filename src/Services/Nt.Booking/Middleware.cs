@@ -59,48 +59,43 @@ namespace Nt.Booking
             request.EnableBuffering();
             var buffer = new byte[Convert.ToInt32(request.ContentLength)];
             await request.Body.ReadAsync(buffer, 0, buffer.Length);
-            var bodyAsText = Encoding.UTF8.GetString(buffer).Replace("\n", string.Empty);
+            var json = Encoding.UTF8.GetString(buffer).Replace("\n", string.Empty);
             request.Body.Seek(0, SeekOrigin.Begin);
-
-            var sb = new StringBuilder();
-            sb.Append("Client Request ").Append("|");
-            sb.Append(request.HttpContext.TraceIdentifier).Append("|");
-            sb.Append(request.Method.Substring(0, 3)).Append("|");
-            sb.Append(request.Path.Value).Append(request.QueryString).Append("|");
-            sb.Append(bodyAsText);
-
-            Nt.Logging.Log.Communication.Info(sb.ToString());
-
-            return bodyAsText;
+            LogJson("Client Request ", request.HttpContext.TraceIdentifier, request.Method.Substring(0, 3), request.Path.Value + request.QueryString, json);
+            return json;
         }
 
         private async Task<string> ReadResponseBody(HttpResponse response)
         {
             response.Body.Seek(0, SeekOrigin.Begin);
-            var bodyAsText = await new StreamReader(response.Body).ReadToEndAsync();
+            var json = await new StreamReader(response.Body).ReadToEndAsync();
             response.Body.Seek(0, SeekOrigin.Begin);
+            LogJson("Server Response", response.HttpContext.TraceIdentifier, response.StatusCode.ToString(), response.HttpContext.Request.Path.Value, json);
+            return json;
+        }
 
+        private static void LogJson(string messageType, string traceId, string statusMethod, string path, string json)
+        {
             var sb = new StringBuilder();
-            sb.Append("Server Response").Append("|");
-            sb.Append(response.HttpContext.TraceIdentifier).Append("|");
-            sb.Append(response.StatusCode).Append("|");
-            sb.Append(response.HttpContext.Request.Path.Value).Append("|");
-            if (bodyAsText.Length > 500)
+            sb.Append(NtBooking.BookingSystem.Type).Append("|");
+            sb.Append(messageType).Append("|");
+            sb.Append(traceId).Append("|");
+            sb.Append(statusMethod).Append("|");
+            sb.Append(path).Append("|");
+            if (json.Length > 500)
             {
-                sb.Append(bodyAsText.Substring(0, 500)).Append("...");
+                sb.Append(json.Substring(0, 500)).Append("...");
             }
             else
             {
-                sb.Append(bodyAsText);
+                sb.Append(json);
             }
 
             Nt.Logging.Log.Communication.Info(sb.ToString());
-            if (bodyAsText.Length > 500)
+            if (json.Length > 500)
             {
-                Nt.Logging.Log.Communication.Debug(bodyAsText);
+                Nt.Logging.Log.Communication.Debug(json);
             }
-
-            return bodyAsText;
         }
     }
 }

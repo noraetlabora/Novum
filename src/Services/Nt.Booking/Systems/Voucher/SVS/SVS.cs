@@ -17,7 +17,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <param name="timeout">timeout in seconds for opening or closing a connection, sending request, receiving a response</param>
         public SVS(string uri, string username, string password, int timeout)
         {
-            BookingSystem = NtBooking.BookingSystemType.SVS;
+            Type = NtBooking.BookingSystemType.SVS;
             var timespan = new TimeSpan(0, 0, timeout);
             //
             var binding = new System.ServiceModel.BasicHttpBinding(System.ServiceModel.BasicHttpSecurityMode.Transport);
@@ -32,6 +32,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             //credentials
             svsSoapClient.ClientCredentials.UserName.UserName = username;
             svsSoapClient.ClientCredentials.UserName.Password = password;
+            //
         }
 
         public override BookingResponse Cancel(CancellationRequest cancellationRequest)
@@ -41,17 +42,29 @@ namespace Nt.Booking.Systems.Voucher.SVS
 
         public override InformationResponse GetMediumInformation(string mediumId)
         {
-            var networkRequest = new NetworkRequest();
-            networkRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
-            networkRequest.merchant = new Merchant();
-            networkRequest.merchant.merchantName = "Gift Card Merchant, INC";
-            networkRequest.merchant.merchantNumber = "061286";
-            networkRequest.merchant.storeNumber = "0000009999";
-            networkRequest.merchant.division = "00000";
-            networkRequest.routingID = "301";
-            networkRequest.stan = "123456"; //(HHMMSS)
+            var request = new NetworkRequest();
+            request.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
+            request.merchant = new Merchant();
+            request.merchant.merchantName = "Gift Card Merchant, INC";
+            request.merchant.merchantNumber = "061286";
+            request.merchant.storeNumber = "0000009999";
+            request.merchant.division = "00000";
+            request.routingID = "301";
+            request.stan = "123456"; //(HHMMSS)
 
-            var networkResponse = svsSoapClient.network(networkRequest);
+            try
+            {
+                var response = svsSoapClient.network(request);
+            }
+            catch(System.ServiceModel.FaultException ex)
+            {
+                switch (ex.Code.Name)
+                {
+                    case "InvalidSecurityToken":
+                        throw new BookingException(ex.Message, Microsoft.AspNetCore.Http.StatusCodes.Status511NetworkAuthenticationRequired, Type, ex.Message, ex.Code.Name, null);
+                }
+                throw ex;
+            }
 
             return null;
         }

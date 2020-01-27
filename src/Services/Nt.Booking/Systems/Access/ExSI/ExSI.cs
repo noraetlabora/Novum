@@ -8,7 +8,7 @@ namespace Nt.Booking.Systems.Access.ExSI
 
         public ExSI()
         {
-            BookingSystem = NtBooking.BookingSystemType.ExSI;
+            Type = NtBooking.BookingSystemType.ExSI;
         }
 
         public override BookingResponse Cancel(CancellationRequest cancellationRequest)
