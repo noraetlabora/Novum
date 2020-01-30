@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Nt.Booking.Systems
 {
@@ -6,7 +7,10 @@ namespace Nt.Booking.Systems
     {
         public NtBooking.BookingSystemType Type { get; protected set; }
 
-        public abstract Models.InformationResponse GetMediumInformation(string mediumId);
+        public virtual async Task<Models.InformationResponse> GetMediumInformation(string mediumId)
+        {
+            return new Models.InformationResponse();
+        }
 
         public abstract List<Models.InformationResponse> GetMediumInformation();
 

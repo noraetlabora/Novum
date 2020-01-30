@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Nt.Booking.Systems;
 using System;
+using System.Net.Http;
 using System.ServiceProcess;
 
 namespace Nt.Booking
@@ -102,7 +103,7 @@ namespace Nt.Booking
             switch (serverConfig.BookingSystem)
             {
                 case BookingSystemType.ExSI:
-                    return new Systems.Access.ExSI.ExSI();
+                    return new Systems.Access.ExSI.ExSI(); 
                 case BookingSystemType.Gantner:
                     throw new NotImplementedException("booking system Gantner is not yet implemented");
                 case BookingSystemType.SVS:

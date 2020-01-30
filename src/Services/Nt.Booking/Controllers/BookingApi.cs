@@ -12,15 +12,23 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Http;
 
 namespace Nt.Booking.Controllers
 {
+
     /// <summary>
     /// 
     /// </summary>
     [ApiController]
     public class BookingApiController : ControllerBase
     {
+
+        public static IHttpClientFactory HttpClientFactory { get; private set; }
+        public BookingApiController(IHttpClientFactory httpClientFactory)
+        {
+            HttpClientFactory = httpClientFactory;
+        }
         /// <summary>
         /// 
         /// </summary>

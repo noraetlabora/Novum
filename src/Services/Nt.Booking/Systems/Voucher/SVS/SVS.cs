@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Nt.Booking.Models;
 
 namespace Nt.Booking.Systems.Voucher.SVS
@@ -40,7 +41,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             throw new NotImplementedException();
         }
 
-        public override InformationResponse GetMediumInformation(string mediumId)
+        public override async Task<InformationResponse> GetMediumInformation(string mediumId)
         {
             var request = new NetworkRequest();
             request.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
@@ -54,7 +55,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
 
             try
             {
-                var response = svsSoapClient.network(request);
+                var response = await svsSoapClient.networkAsync(request);
             }
             catch(System.ServiceModel.FaultException ex)
             {

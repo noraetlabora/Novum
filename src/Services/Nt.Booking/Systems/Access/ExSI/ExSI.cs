@@ -1,5 +1,7 @@
 ﻿using Nt.Booking.Models;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Nt.Booking.Systems.Access.ExSI
 {
@@ -18,17 +20,22 @@ namespace Nt.Booking.Systems.Access.ExSI
             throw ex;
         }
 
-        public override InformationResponse GetMediumInformation(string mediumId)
+        public override async Task<InformationResponse> GetMediumInformation(string mediumId)
         {
+            var client = Controllers.BookingApiController.HttpClientFactory.CreateClient();
+            client.BaseAddress = new System.Uri("https://rest.ensemble.org/info/ping");
+            //var response = Task.Run(() => client.GetAsync("/"));
+            var response = client.GetAsync("/");
+
             var information = new InformationResponse();
             var owner = new Owner();
-            owner.Name = "Norbert Rastl";
+            owner.Name = response.Result.Content.ToString(); // "XYZ";
             var credit = new Credit();
             credit.Amount = 1499;
             credit.OpeningAmount = 2000;
             information.Owner = owner;
             information.Credit = credit;
-
+            information.Currency = "EUR";
             return information;
         }
 
