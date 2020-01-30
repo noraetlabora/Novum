@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using Nt.Booking.Models;
 
@@ -38,20 +39,44 @@ namespace Nt.Booking.Systems.Voucher.SVS
 
         public override BookingResponse Cancel(CancellationRequest cancellationRequest)
         {
-            throw new NotImplementedException();
+            var response = new BookingResponse();
+
+            var svsRequest = new CancelRequest();
+            svsRequest.card = new Card();
+            svsRequest.card.cardNumber = "6006491286999929112";
+            svsRequest.card.cardCurrency = "EUR"; //paymentRequest.Sales[0].Currency;
+            svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
+            svsRequest.transactionAmount = new Amount();
+            svsRequest.transactionAmount.amount = 123.23;
+            svsRequest.transactionAmount.currency = "EUR";
+            svsRequest.invoiceNumber = "Belegnr: 12345678";
+
+            try
+            {
+                var svsResponse = svsSoapClient.cancel(svsRequest);
+                //response.Id = svsResponse.
+            }
+            catch (System.ServiceModel.FaultException ex)
+            {
+                ThrowSvsException(ex);
+            }
+
+            return response;
         }
 
-        public override async Task<InformationResponse> GetMediumInformation(string mediumId)
+        public override InformationResponse GetMediumInformation(string mediumId)
         {
-            var request = new NetworkRequest();
-            request.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
-            request.merchant = new Merchant();
-            request.merchant.merchantName = "Gift Card Merchant, INC";
-            request.merchant.merchantNumber = "061286";
-            request.merchant.storeNumber = "0000009999";
-            request.merchant.division = "00000";
-            request.routingID = "301";
-            request.stan = "123456"; //(HHMMSS)
+            var response = new InformationResponse();
+
+            var svsRequest = new NetworkRequest();
+            svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
+            svsRequest.merchant = new Merchant();
+            svsRequest.merchant.merchantName = "Gift Card Merchant, INC";
+            svsRequest.merchant.merchantNumber = "061286";
+            svsRequest.merchant.storeNumber = "0000009999";
+            svsRequest.merchant.division = "00000";
+            svsRequest.routingID = "301";
+            svsRequest.stan = "123456"; //(HHMMSS)
 
             try
             {
@@ -59,15 +84,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
             }
             catch(System.ServiceModel.FaultException ex)
             {
-                switch (ex.Code.Name)
-                {
-                    case "InvalidSecurityToken":
-                        throw new BookingException(ex.Message, Microsoft.AspNetCore.Http.StatusCodes.Status511NetworkAuthenticationRequired, Type, ex.Message, ex.Code.Name, null);
-                }
-                throw ex;
+                ThrowSvsException(ex);
             }
 
-            return null;
+            return response;
         }
 
         public override List<InformationResponse> GetMediumInformation()
@@ -77,7 +97,40 @@ namespace Nt.Booking.Systems.Voucher.SVS
 
         public override Models.BookingResponse Pay(Models.PaymentRequest paymentRequest)
         {
-            throw new NotImplementedException();
+            var response = new BookingResponse();
+
+            var svsRequest = new RedemptionRequest();
+            svsRequest.card = new Card();
+            svsRequest.card.cardNumber = "6006491286999929112";
+            svsRequest.card.cardCurrency = "EUR"; //paymentRequest.Sales[0].Currency;
+            svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
+            svsRequest.redemptionAmount = new Amount();
+            svsRequest.redemptionAmount.amount = 123.23;
+            svsRequest.redemptionAmount.currency = "EUR";
+            svsRequest.invoiceNumber = "Belegnr: 12345678";
+
+            try
+            {
+                var svsResponse = svsSoapClient.redemption(svsRequest);
+            }
+            catch (System.ServiceModel.FaultException ex)
+            {
+                ThrowSvsException(ex);
+            }
+
+            return response;
+        }
+
+        private void ThrowSvsException(System.ServiceModel.FaultException ex)
+        {
+            switch (ex.Code.Name)
+            {
+                case "InvalidSecurityToken":
+                    throw new BookingException(ex.Message, StatusCodes.Status401Unauthorized, Type, ex.Message, ex.Code.Name, null);
+            }
+
+            //throw fault exception
+            throw ex;
         }
     }
 }
