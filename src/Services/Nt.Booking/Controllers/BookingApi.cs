@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Nt.Booking.Controllers
 {
@@ -37,11 +38,14 @@ namespace Nt.Booking.Controllers
         /// <response code="400"></response>
         [HttpGet]
         [Route("/api/v1/mediums/{mediumId}")]
-        public virtual IActionResult GetMedium([FromRoute][Required]string mediumId)
+        public virtual async Task<IActionResult> GetMediumAsync([FromRoute][Required]string mediumId)
         {
             try
             {
-                var mediumInformation = NtBooking.BookingSystem.GetMediumInformation(mediumId);
+                System.Diagnostics.Debug.WriteLine("GetMedium Background" + System.Threading.Thread.CurrentThread.IsBackground);
+                System.Diagnostics.Debug.WriteLine("GetMedium Pool" + System.Threading.Thread.CurrentThread.IsThreadPoolThread);
+                System.Diagnostics.Debug.WriteLine("GetMedium ThreadId" + System.Threading.Thread.CurrentThread.ManagedThreadId);
+                var mediumInformation = await NtBooking.BookingSystem.GetMediumInformation(mediumId);
                 return new ObjectResult(mediumInformation);
             }
             catch (BookingException ex)

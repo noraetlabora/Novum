@@ -9,13 +9,21 @@ namespace Nt.Booking.Systems
 
         public virtual async Task<Models.InformationResponse> GetMediumInformation(string mediumId)
         {
-            return new Models.InformationResponse();
+            throw new System.NotImplementedException();
         }
 
-        public abstract List<Models.InformationResponse> GetMediumInformation();
+        public virtual async Task<List<Models.InformationResponse>> GetMediumInformation() {
+            throw new System.NotImplementedException();
+        }
 
-        public abstract Models.BookingResponse Pay(Models.PaymentRequest paymentRequest);
+        public virtual async Task<Models.BookingResponse> Pay(Models.PaymentRequest paymentRequest)
+        {
+            throw new System.NotImplementedException();
+        }
 
-        public abstract Models.BookingResponse Cancel(Models.CancellationRequest cancellationRequest);
+        public virtual async Task<Models.BookingResponse> Cancel(Models.CancellationRequest cancellationRequest)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

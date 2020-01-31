@@ -37,7 +37,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             //
         }
 
-        public override BookingResponse Cancel(CancellationRequest cancellationRequest)
+        public override async Task<BookingResponse> Cancel(CancellationRequest cancellationRequest)
         {
             var response = new BookingResponse();
 
@@ -53,7 +53,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
 
             try
             {
-                var svsResponse = svsSoapClient.cancel(svsRequest);
+                var svsResponse = await svsSoapClient.cancelAsync(svsRequest);
                 //response.Id = svsResponse.
             }
             catch (System.ServiceModel.FaultException ex)
@@ -64,7 +64,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             return response;
         }
 
-        public override InformationResponse GetMediumInformation(string mediumId)
+        public override async Task<InformationResponse> GetMediumInformation(string mediumId)
         {
             var response = new InformationResponse();
 
@@ -78,9 +78,15 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.routingID = "301";
             svsRequest.stan = "123456"; //(HHMMSS)
 
+            //ToDo
+            System.Diagnostics.Debug.WriteLine("GetMediumInformation Background" + System.Threading.Thread.CurrentThread.IsBackground);
+            System.Diagnostics.Debug.WriteLine("GetMediumInformation Pool" + System.Threading.Thread.CurrentThread.IsThreadPoolThread);
+            System.Diagnostics.Debug.WriteLine("GetMediumInformation ThreadId" + System.Threading.Thread.CurrentThread.ManagedThreadId);
+            response.Currency = "EUR";
+
             try
             {
-                var response = await svsSoapClient.networkAsync(request);
+                //var svsResponse = await svsSoapClient.networkAsync(svsRequest);
             }
             catch(System.ServiceModel.FaultException ex)
             {
@@ -90,12 +96,12 @@ namespace Nt.Booking.Systems.Voucher.SVS
             return response;
         }
 
-        public override List<InformationResponse> GetMediumInformation()
+        public override async Task<List<InformationResponse>> GetMediumInformation()
         {
             throw new NotImplementedException();
         }
 
-        public override Models.BookingResponse Pay(Models.PaymentRequest paymentRequest)
+        public override async Task<Models.BookingResponse> Pay(Models.PaymentRequest paymentRequest)
         {
             var response = new BookingResponse();
 
@@ -111,7 +117,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
 
             try
             {
-                var svsResponse = svsSoapClient.redemption(svsRequest);
+                var svsResponse = await svsSoapClient.redemptionAsync(svsRequest);
             }
             catch (System.ServiceModel.FaultException ex)
             {
