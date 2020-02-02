@@ -65,6 +65,7 @@ namespace Os.Server
                 using (var responseBody = new MemoryStream())
                 {
                     httpContext.Response.Body = responseBody;
+                    //do stuff in controllers
                     await _next(httpContext);
 
                     //read and log response body

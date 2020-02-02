@@ -23,6 +23,7 @@ namespace Os.Server.Services
             connectionString.Append("; Namespace=").Append(OsServer.ServerConfiguration.DatabaseNamespace);
             connectionString.Append("; User ID=").Append(OsServer.ServerConfiguration.DatabaseUser);
             connectionString.Append("; Password=").Append(OsServer.ServerConfiguration.DatabasePassword);
+            //connectionString.Append("; Min Pool Size = 20;  Max Pool Size = 100; Connection Reset = true; Connection Lifetime = 5;");
             Nt.Database.DB.Instance.ConnectionString = connectionString.ToString();
             Nt.Database.DB.Instance.Open();
 

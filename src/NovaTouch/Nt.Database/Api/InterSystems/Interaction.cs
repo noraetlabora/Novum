@@ -30,8 +30,8 @@ namespace Nt.Database.Api.InterSystems
         {
             var dataTable = new DataTable();
             var stackTrace = new System.Diagnostics.StackTrace();
-            var caller = stackTrace.GetFrame(1).GetMethod().Name;
-            Logging.Log.Database.Debug(caller + "|SQL|" + sql);
+            var traceIdCaller = (uint)DateTime.Now.Ticks.GetHashCode() + "|" + stackTrace.GetFrame(1).GetMethod().Name;
+            Logging.Log.Database.Debug(traceIdCaller + "|SQL|" + sql); 
 
             try
             {
@@ -39,18 +39,17 @@ namespace Nt.Database.Api.InterSystems
                 var dataAdapter = new IRISDataAdapter(sql, DB.Connection);
                 dataTable = new DataTable();
                 dataAdapter.Fill(dataTable);
-                Logging.Log.Database.Debug(caller + "|SQLRowCount|" + dataTable.Rows.Count);
+                Logging.Log.Database.Debug(traceIdCaller + "|SQLRowCount|" + dataTable.Rows.Count);
             }
             catch (Exception ex)
             {
-                System.Threading.Monitor.Exit(DB.Connection);
                 if (DB.Connection.State == ConnectionState.Closed ||
                     DB.Connection.State == ConnectionState.Broken)
                 {
-                    Logging.Log.Database.Error(ex, caller + "|SQL|no connection to database");
+                    Logging.Log.Database.Error(ex, traceIdCaller + "|SQL|no connection to database");
                     throw new Exception(Resources.Dictionary.GetString("DB_NoConnection"));
                 }
-                Logging.Log.Database.Error(ex, caller + "|SQL|" + sql);
+                Logging.Log.Database.Error(ex, traceIdCaller + "|SQL|" + sql);
                 throw ex;
             }
             finally
@@ -182,15 +181,15 @@ namespace Nt.Database.Api.InterSystems
         private static string CallClassMethod(string className, string methodName, object[] args)
         {
             var stackTrace = new System.Diagnostics.StackTrace();
-            var caller = stackTrace.GetFrame(2).GetMethod().Name;
+            var traceIdCaller = (uint)DateTime.Now.Ticks.GetHashCode() + "|" + stackTrace.GetFrame(2).GetMethod().Name;
             var classMethod = string.Format("##class({0}).{1}({2})", className, methodName, string.Join(",", args));
-            Logging.Log.Database.Debug(caller + "|ClassMethod|" + classMethod);
+            Logging.Log.Database.Debug(traceIdCaller + "|ClassMethod|" + classMethod);
 
             try
             {
                 System.Threading.Monitor.Enter(DB.Xep);
                 Object returnValue = DB.Xep.CallClassMethod(className, methodName, args);
-                Logging.Log.Database.Debug(caller + "|ClassMethodReturnValue|" + returnValue.ToString());
+                Logging.Log.Database.Debug(traceIdCaller + "|ClassMethodReturnValue|" + returnValue.ToString());
                 return returnValue.ToString();
             }
             catch (Exception ex)
@@ -198,11 +197,11 @@ namespace Nt.Database.Api.InterSystems
                 if (DB.Connection.State == ConnectionState.Closed ||
                     DB.Connection.State == ConnectionState.Broken)
                 {
-                    Logging.Log.Database.Error(ex, caller + "|ClassMethod|no connection to database");
+                    Logging.Log.Database.Error(ex, traceIdCaller + "|ClassMethod|no connection to database");
                     throw new Exception(Resources.Dictionary.GetString("DB_NoConnection"));
                 }
 
-                Logging.Log.Database.Error(ex, caller + "|ClassMethod|" + classMethod);
+                Logging.Log.Database.Error(ex, traceIdCaller + "|ClassMethod|" + classMethod);
                 throw ex;
             }
             finally
@@ -278,25 +277,25 @@ namespace Nt.Database.Api.InterSystems
         private static void CallVoidClassMethod(string className, string methodName, object[] args)
         {
             var stackTrace = new System.Diagnostics.StackTrace();
-            var caller = stackTrace.GetFrame(2).GetMethod().Name;
+            var traceIdCaller = (uint)DateTime.Now.Ticks.GetHashCode() + "|" + stackTrace.GetFrame(2).GetMethod().Name;
             var classMethod = string.Format("##class({0}).{1}({2})", className, methodName, string.Join(",", args));
-            Logging.Log.Database.Debug(caller + "|VoidClassMethod|" + classMethod);
+            Logging.Log.Database.Debug(traceIdCaller + "|VoidClassMethod|" + classMethod);
 
             try
             {
                 System.Threading.Monitor.Enter(DB.Xep);
                 DB.Xep.CallVoidClassMethod(className, methodName, args);
-                Logging.Log.Database.Debug(caller + "|VoidClassMethod|success");
+                Logging.Log.Database.Debug(traceIdCaller + "|VoidClassMethod|success");
             }
             catch (Exception ex)
             {
                 if (DB.Connection.State == ConnectionState.Closed ||
                     DB.Connection.State == ConnectionState.Broken)
                 {
-                    Logging.Log.Database.Error(ex, caller + "|VoidClassMethod|no connection to database");
+                    Logging.Log.Database.Error(ex, traceIdCaller + "|VoidClassMethod|no connection to database");
                     throw new Exception(Resources.Dictionary.GetString("DB_NoConnection"));
                 }
-                Logging.Log.Database.Error(ex, caller + "|VoidClassMethod|" + classMethod);
+                Logging.Log.Database.Error(ex, traceIdCaller + "|VoidClassMethod|" + classMethod);
                 throw ex;
             }
             finally
