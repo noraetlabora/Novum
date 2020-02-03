@@ -32,7 +32,7 @@ namespace Nt.Booking
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
+            //services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.);
             services.AddMvc().AddJsonOptions(options => { options.JsonSerializerOptions.IgnoreNullValues = true; });
             services.AddHttpClient();
         }
@@ -44,8 +44,8 @@ namespace Nt.Booking
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseHsts();
-            app.UseHttpsRedirection();
+            //app.UseHsts();
+            //app.UseHttpsRedirection();
             app.UseMiddleware<Middleware>();
             app.UseRouting();
             app.UseEndpoints(endpoints =>

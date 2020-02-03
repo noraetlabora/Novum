@@ -31,7 +31,7 @@ namespace Nt.Booking
                 //TODO: GetConfig();
                 //TODO: delete start
                 ServerConfiguration = new ServerConfiguration();
-                ServerConfiguration.BookingSystem = BookingSystemType.SVS;
+                ServerConfiguration.BookingSystem = BookingSystemType.ExSI;
                 ServerConfiguration.Port = 5000;
                 ServerConfiguration.Address = "https://webservices-cert.storedvalue.com/svsxml/v1/services/SVSXMLWay";
                 ServerConfiguration.Username = "Testuser";
