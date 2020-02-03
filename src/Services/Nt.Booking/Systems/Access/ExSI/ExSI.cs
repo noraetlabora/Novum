@@ -24,7 +24,6 @@ namespace Nt.Booking.Systems.Access.ExSI
         {
             var client = Controllers.BookingApiController.HttpClientFactory.CreateClient();
             var response = await client.GetAsync("/");
-
             var information = new InformationResponse();
             var owner = new Owner();
             owner.Name = "Norbert Rastl";
