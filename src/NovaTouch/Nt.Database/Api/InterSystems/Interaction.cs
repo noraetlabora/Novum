@@ -31,10 +31,14 @@ namespace Nt.Database.Api.InterSystems
             var dataTable = new DataTable();
             var stackTrace = new System.Diagnostics.StackTrace();
             var traceIdCaller = (uint)DateTime.Now.Ticks.GetHashCode() + "|" + stackTrace.GetFrame(1).GetMethod().Name;
-            Logging.Log.Database.Debug(traceIdCaller + "|SQL|" + sql); 
+            Logging.Log.Database.Debug(traceIdCaller + "|SQL|" + sql);
+
+            //Todo
+            System.Diagnostics.Debug.WriteLine("GetDataTable ThreadId: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
 
             try
             {
+                //System.Diagnostics.Debug.WriteLine("GetDataTable is locked?" + System.Threading.Monitor.TryEnter(DB.Connection));
                 System.Threading.Monitor.Enter(DB.Connection);
                 var dataAdapter = new IRISDataAdapter(sql, DB.Connection);
                 dataTable = new DataTable();
@@ -185,8 +189,12 @@ namespace Nt.Database.Api.InterSystems
             var classMethod = string.Format("##class({0}).{1}({2})", className, methodName, string.Join(",", args));
             Logging.Log.Database.Debug(traceIdCaller + "|ClassMethod|" + classMethod);
 
+            //Todo
+            System.Diagnostics.Debug.WriteLine("CallClassMethod ThreadId: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
+
             try
             {
+                //System.Diagnostics.Debug.WriteLine("CallClassMethod is locked?" + System.Threading.Monitor.TryEnter(DB.Xep));
                 System.Threading.Monitor.Enter(DB.Xep);
                 Object returnValue = DB.Xep.CallClassMethod(className, methodName, args);
                 Logging.Log.Database.Debug(traceIdCaller + "|ClassMethodReturnValue|" + returnValue.ToString());
@@ -281,8 +289,12 @@ namespace Nt.Database.Api.InterSystems
             var classMethod = string.Format("##class({0}).{1}({2})", className, methodName, string.Join(",", args));
             Logging.Log.Database.Debug(traceIdCaller + "|VoidClassMethod|" + classMethod);
 
+            //Todo
+            System.Diagnostics.Debug.WriteLine("CallVoidClassMethod ThreadId: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
+
             try
             {
+                //System.Diagnostics.Debug.WriteLine("CallVoidClassMethod is locked?" + System.Threading.Monitor.TryEnter(DB.Xep));
                 System.Threading.Monitor.Enter(DB.Xep);
                 DB.Xep.CallVoidClassMethod(className, methodName, args);
                 Logging.Log.Database.Debug(traceIdCaller + "|VoidClassMethod|success");
