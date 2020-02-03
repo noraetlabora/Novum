@@ -4,13 +4,13 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nt.Booking
+namespace Nt.Booking.Middlewares
 {
     /// <summary>
     ///  Middleware for Logging all Requests and Response
     /// https://salslab.com/a/safely-logging-api-requests-and-responses-in-asp-net-core
     /// </summary>
-    public class Middleware
+    public class LogMiddleware
     {
 
         private readonly RequestDelegate _next;
@@ -19,7 +19,7 @@ namespace Nt.Booking
         /// 
         /// </summary>
         /// <param name="next"></param>
-        public Middleware(RequestDelegate next)
+        public LogMiddleware(RequestDelegate next)
         {
             _next = next;
         }

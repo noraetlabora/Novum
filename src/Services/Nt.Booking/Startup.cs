@@ -46,7 +46,7 @@ namespace Nt.Booking
         {
             //app.UseHsts();
             //app.UseHttpsRedirection();
-            app.UseMiddleware<Middleware>();
+            app.UseMiddleware<Middlewares.LogMiddleware>();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
