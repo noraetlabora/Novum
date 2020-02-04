@@ -1,4 +1,6 @@
 
+using System.Threading.Tasks;
+
 namespace Nt.Database.Api.InterSystems
 {
     /// <summary>
@@ -106,9 +108,9 @@ namespace Nt.Database.Api.InterSystems
             get { return hotel; }
         }
 
-        public void Initialize()
+        public async Task Initialize()
         {
-            Api.ClientId = Interaction.CallClassMethod("cmNT.Kassa", "GetOmanFirma");
+            Api.ClientId = await Interaction.CallClassMethod("cmNT.Kassa", "GetOmanFirma");
             Logging.Log.Database.Info("ClientId = " + Api.ClientId);
         }
     }

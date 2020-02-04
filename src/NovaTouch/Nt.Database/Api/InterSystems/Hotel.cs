@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -29,10 +30,10 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="session"></param>
         /// <param name="partnerId"></param>
         /// <param name="roomNumber"></param>
-        public Nt.Data.Room GetRoom(Nt.Data.Session session, string partnerId, string roomNumber)
+        public async Task<Nt.Data.Room> GetRoom(Nt.Data.Session session, string partnerId, string roomNumber)
         {
             Nt.Data.Room room = null;
-            var dbString = Interaction.CallClassMethod("cmNT.AbrOmanHotelIFC", "GetZimmerDetail", session.ClientId, session.PosId, session.WaiterId, partnerId, roomNumber);
+            var dbString = await Interaction.CallClassMethod("cmNT.AbrOmanHotelIFC", "GetZimmerDetail", session.ClientId, session.PosId, session.WaiterId, partnerId, roomNumber);
             var dataString = new DataString(dbString);
             var roomsString = dataString.SplitByChar96();
 
@@ -55,10 +56,10 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="session"></param>
         /// <param name="partnerId"></param>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.Room> GetRooms(Nt.Data.Session session, string partnerId)
+        public async Task<Dictionary<string, Nt.Data.Room>> GetRooms(Nt.Data.Session session, string partnerId)
         {
             var rooms = new Dictionary<string, Nt.Data.Room>();
-            var dbString = Interaction.CallClassMethod("cmNT.AbrOmanHotelIFC", "GetZimmerliste", session.ClientId, session.PosId, session.WaiterId, partnerId, "", "");
+            var dbString = await Interaction.CallClassMethod("cmNT.AbrOmanHotelIFC", "GetZimmerliste", session.ClientId, session.PosId, session.WaiterId, partnerId, "", "");
             var dataString = new DataString(dbString);
             var dataList = new DataList(dataString.SplitByChar96());
 

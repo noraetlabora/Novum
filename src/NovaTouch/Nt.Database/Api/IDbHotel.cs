@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api
 {
@@ -17,7 +18,7 @@ namespace Nt.Database.Api
         /// <param name="session"></param>
         /// <param name="partnerId"></param>
         /// <param name="roomNumber"></param>
-        Nt.Data.Room GetRoom(Nt.Data.Session session, string partnerId, string roomNumber);
+        Task<Nt.Data.Room> GetRoom(Nt.Data.Session session, string partnerId, string roomNumber);
 
         /// <summary>
         /// 
@@ -25,6 +26,6 @@ namespace Nt.Database.Api
         /// <param name="session"></param>
         /// <param name="partnerId"></param>
         /// <returns></returns>
-        Dictionary<string, Nt.Data.Room> GetRooms(Nt.Data.Session session, string partnerId);
+        Task<Dictionary<string, Nt.Data.Room>> GetRooms(Nt.Data.Session session, string partnerId);
     }
 }

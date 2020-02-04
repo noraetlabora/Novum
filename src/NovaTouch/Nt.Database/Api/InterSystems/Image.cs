@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -16,7 +17,7 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Nt.Data.Image GetImage(Nt.Data.Session session, string imageId)
+        public async Task<Nt.Data.Image> GetImage(Nt.Data.Session session, string imageId)
         {
             // var dbString = Interaction.CallClassMethod("cmNT.OmPrint", "GetFaxNachricht", session.ClientId, imageId);
             // var dataString = new DataString(dbString);
@@ -35,7 +36,7 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public string SetImage(Nt.Data.Session session, Nt.Data.Image image)
+        public async Task<string> SetImage(Nt.Data.Session session, Nt.Data.Image image)
         {
             throw new NotImplementedException();
         }

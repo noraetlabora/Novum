@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Threading.Tasks;
 using Nt.Data;
 
 namespace Nt.Database.Api.InterSystems
@@ -19,7 +20,7 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, ArticleGroup> GetArticleGroups()
+        public async Task<Dictionary<string, ArticleGroup>> GetArticleGroups()
         {
             var articleGroups = new Dictionary<string, Nt.Data.ArticleGroup>();
             var sql = new StringBuilder();
@@ -27,7 +28,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" FROM WW.AGR ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -49,7 +50,7 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.CancellationResason> GetCancellationReason()
+        public async Task<Dictionary<string, Nt.Data.CancellationResason>> GetCancellationReason()
         {
             var cancellationReasons = new Dictionary<string, Nt.Data.CancellationResason>();
             var sql = new StringBuilder();
@@ -57,7 +58,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" FROM NT.StornoGrund ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -72,7 +73,7 @@ namespace Nt.Database.Api.InterSystems
             return cancellationReasons;
         }
 
-        public Dictionary<string, Course> GetCourses()
+        public async Task<Dictionary<string, Course>> GetCourses()
         {
             var courses = new Dictionary<string, Nt.Data.Course>();
             var sql = new StringBuilder();
@@ -80,7 +81,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" FROM WW.Speisenfolge ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND  passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -99,7 +100,7 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.ServiceArea> GetServiceAreas()
+        public async Task<Dictionary<string, Nt.Data.ServiceArea>> GetServiceAreas()
         {
             var serviceAreas = new Dictionary<string, Nt.Data.ServiceArea>();
             var sql = new StringBuilder();
@@ -107,7 +108,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" FROM WW.VKO ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND  passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -125,7 +126,7 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, TaxGroup> GetTaxGroups()
+        public async Task<Dictionary<string, TaxGroup>> GetTaxGroups()
         {
             var taxGroups = new Dictionary<string, Nt.Data.TaxGroup>();
             var sql = new StringBuilder();
@@ -134,7 +135,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" INNER JOIN WW.STGRSteuer B ON (B.FA = A.FA AND B.STGR = A.STGR AND B.GILT <= ").Append(Interaction.SqlToday).Append(")");
             sql.Append(" WHERE A.FA = ").Append(Api.ClientId);
             sql.Append(" AND A.passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -159,9 +160,9 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public bool HasSnapshotTime(string guid)
+        public async Task<bool> HasSnapshotTime(string guid)
         {
-            var lastSnapshotTime = Interaction.CallClassMethod("cmNT.Kasse", "GetOrdermanSnapshot", Api.ClientId, guid);
+            var lastSnapshotTime = await Interaction.CallClassMethod("cmNT.Kasse", "GetOrdermanSnapshot", Api.ClientId, guid);
             if (string.IsNullOrEmpty(lastSnapshotTime))
                 return false;
             return true;
@@ -172,9 +173,9 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public void SetSnapshotTime(string guid)
+        public async Task SetSnapshotTime(string guid)
         {
-            Interaction.CallClassMethod("cmNT.Kasse", "SetOrdermanSnapshot", Api.ClientId, guid);
+            _ = await Interaction.CallClassMethod("cmNT.Kasse", "SetOrdermanSnapshot", Api.ClientId, guid);
         }
 
         #endregion

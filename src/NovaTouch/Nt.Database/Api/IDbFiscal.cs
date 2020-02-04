@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api
 {
@@ -14,48 +15,48 @@ namespace Nt.Database.Api
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        string GetMode(Data.Session session);
+        Task<string> GetMode(Data.Session session);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        string GetModulVersion(Data.Session session);
+        Task<string> GetModulVersion(Data.Session session);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        string GetConfiguration(Data.Session session);
+        Task<string> GetConfiguration(Data.Session session);
        
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        string GetClient(Data.Session session);
+        Task<string> GetClient(Data.Session session);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        string GetUser(Data.Session session);
+        Task<string> GetUser(Data.Session session);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        object GetProvider(Data.Session session);
+        Task<object> GetProvider(Data.Session session);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
-        string CheckSystem(Data.Session session);
+        Task<string> CheckSystem(Data.Session session);
 
         /// <summary>
         /// 
@@ -65,19 +66,19 @@ namespace Nt.Database.Api
         /// <param name="paymentMethods"></param>
         /// <param name="paymentInformation"></param>
         /// <returns></returns>
-        object SendTransaction(Data.Session session, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation);
+        Task<object> SendTransaction(Data.Session session, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
-        void CommitTransaction(Data.Session session);
+        Task CommitTransaction(Data.Session session);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
         /// <param name="reason"></param>
-        void RollbackTransaction(Data.Session session, string reason);
+        Task RollbackTransaction(Data.Session session, string reason);
     }
 }

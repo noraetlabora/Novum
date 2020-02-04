@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api
 {
@@ -11,7 +12,7 @@ namespace Nt.Database.Api
         /// 
         /// </summary>
         /// <returns></returns>
-        Dictionary<string, Nt.Data.PaymentType> GetPaymentTypes();
+        Task<Dictionary<string, Nt.Data.PaymentType>> GetPaymentTypes();
 
         /// <summary>
         /// 
@@ -22,13 +23,13 @@ namespace Nt.Database.Api
         /// <param name="paymentMethods"></param>
         /// <param name="paymentInformation"></param>
         /// <returns></returns>
-        Nt.Data.PaymentResult Pay(Nt.Data.Session session, string tableId, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation);
+        Task<Nt.Data.PaymentResult> Pay(Nt.Data.Session session, string tableId, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation);
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        Dictionary<string, Nt.Data.AssignmentType> GetAssignmentTypes();
+        Task<Dictionary<string, Nt.Data.AssignmentType>> GetAssignmentTypes();
 
     }
 }

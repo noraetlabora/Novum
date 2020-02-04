@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -15,7 +16,7 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.Printer> GetInvoicePrinters()
+        public async Task<Dictionary<string, Nt.Data.Printer>> GetInvoicePrinters()
         {
             var printers = new Dictionary<string, Nt.Data.Printer>();
             var sql = new StringBuilder();
@@ -24,7 +25,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND DEV LIKE 'RD%' ");
             sql.Append(" AND pas = 0");
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -46,9 +47,9 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        public string GetPrintJobId(Nt.Data.Session session)
+        public async Task<string> GetPrintJobId(Nt.Data.Session session)
         {
-            return Interaction.CallClassMethod("cmNT.OmPrint", "GetNextAuftrag", session.ClientId, session.SerialNumber);
+            return await Interaction.CallClassMethod("cmNT.OmPrint", "GetNextAuftrag", session.ClientId, session.SerialNumber);
         }
 
 
@@ -58,9 +59,9 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="session"></param>
         /// <param name="printJobId"></param>
         /// <returns></returns>
-        public List<string> GetPrintData(Nt.Data.Session session, string printJobId)
+        public async Task<List<string>> GetPrintData(Nt.Data.Session session, string printJobId)
         {
-            var printData = Interaction.CallClassMethod("cmNT.OmPrint", "GetAuftrag", session.ClientId, session.SerialNumber, printJobId);
+            var printData = await Interaction.CallClassMethod("cmNT.OmPrint", "GetAuftrag", session.ClientId, session.SerialNumber, printJobId);
             var printDataString = new DataString(printData);
             return new List<string>(printDataString.SplitByCRLF());
         }
@@ -70,9 +71,9 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="session"></param>
         /// <param name="printJobId"></param>
-        public void DeletePrintJobId(Nt.Data.Session session, string printJobId)
+        public async Task DeletePrintJobId(Nt.Data.Session session, string printJobId)
         {
-            Interaction.CallVoidClassMethod("cmNT.OmPrint", "SetAuftragFertig", session.ClientId, session.SerialNumber, printJobId);
+            await Interaction.CallVoidClassMethod("cmNT.OmPrint", "SetAuftragFertig", session.ClientId, session.SerialNumber, printJobId);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api
 {
@@ -18,7 +19,7 @@ namespace Nt.Database.Api
         /// 
         /// </summary>
         /// <returns></returns>
-        Dictionary<string, Nt.Data.Article> GetArticles();
+        Task<Dictionary<string, Nt.Data.Article>> GetArticles();
 
         /// <summary>
         /// 
@@ -26,7 +27,7 @@ namespace Nt.Database.Api
         /// <param name="session"></param>
         /// <param name="articleId"></param>
         /// <returns></returns>
-        bool IsAvailable(Nt.Data.Session session, string articleId);
+        Task<bool> IsAvailable(Nt.Data.Session session, string articleId);
 
         /// <summary>
         /// 
@@ -34,6 +35,6 @@ namespace Nt.Database.Api
         /// <param name="session"></param>
         /// <param name="articleId"></param>
         /// <param name="price"></param>
-        void CheckEnteredPrice(Nt.Data.Session session, string articleId, decimal price);
+        Task CheckEnteredPrice(Nt.Data.Session session, string articleId, decimal price);
     }
 }

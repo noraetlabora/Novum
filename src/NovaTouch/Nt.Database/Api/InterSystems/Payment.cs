@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -18,7 +19,7 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.PaymentType> GetPaymentTypes()
+        public async Task<Dictionary<string, Nt.Data.PaymentType>> GetPaymentTypes()
         {
             var paymentTypes = new Dictionary<string, Nt.Data.PaymentType>();
             var sql = new StringBuilder();
@@ -26,7 +27,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" FROM NT.Zahlart ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -50,7 +51,7 @@ namespace Nt.Database.Api.InterSystems
             return paymentTypes;
         }
 
-        public Nt.Data.PaymentResult Pay(Nt.Data.Session session, string tableId, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation)
+        public async Task<Nt.Data.PaymentResult> Pay(Nt.Data.Session session, string tableId, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation)
         {
             var ordersDataString = Order.GetOrderDataString(orders);
             var paymentMethodsDataString = Payment.GetPaymentMethodDataString(paymentMethods);
@@ -58,17 +59,17 @@ namespace Nt.Database.Api.InterSystems
             var paymentOptionDataString = Payment.GetPaymentOptionDataString(paymentInformation);
 
             //send the Fiscal Transaction if there is a provider
-            var fiscalResult = (Nov.NT.POS.Fiscal.FiscalResult)DB.Api.Fiscal.SendTransaction(session, orders, paymentMethods, paymentInformation);
+            var fiscalResult = (Nov.NT.POS.Fiscal.FiscalResult)await DB.Api.Fiscal.SendTransaction(session, orders, paymentMethods, paymentInformation);
             var fiscalResultString = string.Empty;
             if (fiscalResult != null)
                 fiscalResultString = fiscalResult.ToDtoString();
             
             //actual payment in database
-            var dbString = Interaction.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersDataString, paymentBillDataString, paymentMethodsDataString, paymentOptionDataString, "", "", "", "", "", fiscalResultString);
+            var dbString = await Interaction.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersDataString, paymentBillDataString, paymentMethodsDataString, paymentOptionDataString, "", "", "", "", "", fiscalResultString);
 
             if (dbString.StartsWith("FM"))
             {
-                DB.Api.Fiscal.RollbackTransaction(session, dbString);
+                await DB.Api.Fiscal.RollbackTransaction(session, dbString);
                 throw new Exception(dbString);
             }
 
@@ -86,7 +87,7 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.AssignmentType> GetAssignmentTypes()
+        public async Task<Dictionary<string, Nt.Data.AssignmentType>> GetAssignmentTypes()
         {
             var assignmentTypes = new Dictionary<string, Nt.Data.AssignmentType>();
             var sql = new StringBuilder();
@@ -94,7 +95,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" FROM WW.VA ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {

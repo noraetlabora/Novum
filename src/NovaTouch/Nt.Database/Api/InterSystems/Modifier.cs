@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -18,7 +19,7 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.ModifierMenu> GetModifierMenus()
+        public async Task<Dictionary<string, Nt.Data.ModifierMenu>> GetModifierMenus()
         {
             var modifierMenus = new Dictionary<string, Nt.Data.ModifierMenu>();
             var sql = new StringBuilder();
@@ -26,7 +27,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" FROM NT.TouchUmenu ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND aend = 1");
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -48,7 +49,7 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="modifierMenuId"></param>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.ModifierItem> GetModifierItems(string modifierMenuId)
+        public async Task<Dictionary<string, Nt.Data.ModifierItem>> GetModifierItems(string modifierMenuId)
         {
             var modifierItems = new Dictionary<string, Nt.Data.ModifierItem>();
             var sql = new StringBuilder();
@@ -58,7 +59,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
             sql.Append(" AND M.UMENU = ").Append(modifierMenuId);
             sql.Append(" AND M.ANR <> '' ");
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -83,14 +84,14 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<Nt.Data.MenuItemModifierMenu> GetMenuItemModifierMenus()
+        public async Task<List<Nt.Data.MenuItemModifierMenu>> GetMenuItemModifierMenus()
         {
             var menus = new List<Nt.Data.MenuItemModifierMenu>();
             var sql = new StringBuilder();
             sql.Append(" SELECT UMENU, ROW, COL, LFD, AendUMenu ");
             sql.Append(" FROM NT.TouchUmenuZeilenA ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -116,10 +117,10 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="articleId"></param>
         /// <param name="quantity"></param>
         /// <returns></returns>
-        public Nt.Data.Modifier GetModifier(Nt.Data.Session session, string articleId, decimal quantity)
+        public async Task<Nt.Data.Modifier> GetModifier(Nt.Data.Session session, string articleId, decimal quantity)
         {
             var modifier = new Nt.Data.Modifier();
-            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetArtikelDaten", session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", "", "", "", articleId, "", quantity);
+            var dbString = await Interaction.CallClassMethod("cmNT.BonOman", "GetArtikelDaten", session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", "", "", "", articleId, "", quantity);
             var dataString = new DataString(dbString);
             var dataList = new DataList(dataString.SplitByChar96());
 

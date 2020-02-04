@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api
 {
@@ -11,19 +12,19 @@ namespace Nt.Database.Api
         /// 
         /// </summary>
         /// <returns></returns>
-        Dictionary<string, Nt.Data.Printer> GetInvoicePrinters();
+        Task<Dictionary<string, Nt.Data.Printer>> GetInvoicePrinters();
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        string GetPrintJobId(Nt.Data.Session session);
+        Task<string> GetPrintJobId(Nt.Data.Session session);
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        List<string> GetPrintData(Nt.Data.Session session, string printJobId);
+        Task<List<string>> GetPrintData(Nt.Data.Session session, string printJobId);
 
         /// <summary>
         /// 
@@ -31,6 +32,6 @@ namespace Nt.Database.Api
         /// <param name="session"></param>
         /// <param name="printJobId"></param>
         /// <returns></returns>
-        void DeletePrintJobId(Nt.Data.Session session, string printJobId);
+        Task DeletePrintJobId(Nt.Data.Session session, string printJobId);
     }
 }

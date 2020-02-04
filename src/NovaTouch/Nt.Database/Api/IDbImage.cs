@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace Nt.Database.Api
 {
     /// <summary>
@@ -9,13 +11,13 @@ namespace Nt.Database.Api
         /// 
         /// </summary>
         /// <returns></returns>
-        Nt.Data.Image GetImage(Nt.Data.Session session, string imageId);
+        Task<Nt.Data.Image> GetImage(Nt.Data.Session session, string imageId);
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        string SetImage(Nt.Data.Session session, Nt.Data.Image image);
+        Task<string> SetImage(Nt.Data.Session session, Nt.Data.Image image);
 
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api
 {
@@ -11,27 +12,27 @@ namespace Nt.Database.Api
         /// 
         /// </summary>
         /// <returns></returns>
-        Dictionary<string, Nt.Data.Menu> GetMenus();
+        Task<Dictionary<string, Nt.Data.Menu>> GetMenus();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="posId"></param>
         /// <returns></returns>
-        string GetMenuId(string posId);
+        Task<string> GetMenuId(string posId);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="menuId"></param>
         /// <returns></returns>
-        Dictionary<string, Nt.Data.Menu> GetMainMenus(string menuId);
+        Task<Dictionary<string, Nt.Data.Menu>> GetMainMenus(string menuId);
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        List<Nt.Data.MenuItem> GetMenuItems();
+        Task<List<Nt.Data.MenuItem>> GetMenuItems();
 
     }
 }

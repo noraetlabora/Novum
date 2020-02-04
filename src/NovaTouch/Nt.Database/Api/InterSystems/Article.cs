@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -19,7 +20,7 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.Article> GetArticles()
+        public async Task<Dictionary<string, Nt.Data.Article>> GetArticles()
         {
             var articles = new Dictionary<string, Nt.Data.Article>();
             var sql = new StringBuilder();
@@ -27,7 +28,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" FROM WW.ANR A ");
             sql.Append(" LEFT JOIN WW.ANRKassa AK ON (AK.FA=A.FA AND AK.ANR=A.ANR) ");
             sql.Append(" WHERE A.passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Interaction.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -50,9 +51,9 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="session"></param>
         /// <param name="articleId"></param>
         /// <param name="price"></param>
-        public void CheckEnteredPrice(Nt.Data.Session session, string articleId, decimal price)
+        public async Task CheckEnteredPrice(Nt.Data.Session session, string articleId, decimal price)
         {
-            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "CheckArtikelpreis", session.ClientId, session.PosId, session.WaiterId, "tableId", articleId, price);
+            var dbString = await Interaction.CallClassMethod("cmNT.BonOman", "CheckArtikelpreis", session.ClientId, session.PosId, session.WaiterId, "tableId", articleId, price);
             var checkPriceString = new DataString(dbString);
             var checkPriceArray = checkPriceString.SplitByChar96();
             var checkPriceList = new DataList(checkPriceArray);
@@ -73,10 +74,10 @@ namespace Nt.Database.Api.InterSystems
             }
         }
 
-        public bool IsAvailable(Nt.Data.Session session, string articleId)
+        public Task<bool> IsAvailable(Nt.Data.Session session, string articleId)
         {
             //Interaction.CallVoidClassMethod("cmNT.BonOman", "CheckArtikelVerfuegbarkeit", session.Department, session.PosId, session.WaiterId, "", articleId, notOrderedQuantity, request.Quantity);
-            return true;
+            return Task.Run(() => true);
         }
 
         internal static void CheckAvailibility(string availability, string articleName)

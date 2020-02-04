@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api
 {
@@ -11,7 +12,7 @@ namespace Nt.Database.Api
         /// 
         /// </summary>
         /// <returns></returns>
-        Dictionary<string, Nt.Data.Table> GetTables(Nt.Data.Session session);
+        Task<Dictionary<string, Nt.Data.Table>> GetTables(Nt.Data.Session session);
 
         /// <summary>
         /// 
@@ -19,7 +20,7 @@ namespace Nt.Database.Api
         /// <param name="session"></param>
         /// <param name="tableName"></param>
         /// <returns></returns>
-        string GetTableId(Nt.Data.Session session, string tableName);
+        Task<string> GetTableId(Nt.Data.Session session, string tableName);
 
         /// <summary>
         /// 
@@ -27,7 +28,7 @@ namespace Nt.Database.Api
         /// <param name="session"></param>
         /// <param name="tableId"></param>
         /// <returns></returns>
-        string GetTableName(Nt.Data.Session session, string tableId);
+        Task<string> GetTableName(Nt.Data.Session session, string tableId);
 
         /// <summary>
         /// 
@@ -35,21 +36,21 @@ namespace Nt.Database.Api
         /// <param name="session"></param>
         /// <param name="tableId"></param>
         /// <returns></returns>
-        string GetNewSubTableId(Nt.Data.Session session, string tableId);
+        Task<string> GetNewSubTableId(Nt.Data.Session session, string tableId);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
         /// <param name="tableId"></param>
-        void OpenTable(Nt.Data.Session session, string tableId);
+        Task OpenTable(Nt.Data.Session session, string tableId);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
         /// <param name="tableId"></param>
-        void UnlockTable(Nt.Data.Session session, string tableId);
+        Task UnlockTable(Nt.Data.Session session, string tableId);
 
         /// <summary>
         /// 
@@ -57,7 +58,7 @@ namespace Nt.Database.Api
         /// <param name="session"></param>
         /// <param name="sourceTableId"></param>
         /// <param name="targetTableId"></param>
-        void SplitStart(Nt.Data.Session session, string sourceTableId, string targetTableId);
+        Task SplitStart(Nt.Data.Session session, string sourceTableId, string targetTableId);
 
         /// <summary>
         /// 
@@ -67,12 +68,12 @@ namespace Nt.Database.Api
         /// <param name="targetTableId"></param>
         /// <param name="order"></param>
         /// <param name="quantity"></param>
-        void SplitOrder(Nt.Data.Session session, string sourceTableId, string targetTableId, Nt.Data.Order order, decimal quantity);
+        Task SplitOrder(Nt.Data.Session session, string sourceTableId, string targetTableId, Nt.Data.Order order, decimal quantity);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
-        void SplitDone(Nt.Data.Session session);
+        Task SplitDone(Nt.Data.Session session);
     }
 }
