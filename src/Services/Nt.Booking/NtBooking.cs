@@ -5,7 +5,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Nt.Booking.Systems;
 using System;
-using System.Net.Http;
 using System.ServiceProcess;
 
 namespace Nt.Booking
@@ -20,7 +19,10 @@ namespace Nt.Booking
         }
 
         public static ServerConfiguration ServerConfiguration { get; private set; }
-        public static Systems.BookingSystemBase BookingSystem { get; private set; }
+
+        //public static Systems.BookingSystemBase BookingSystem { get; private set; }
+        public static IBookingSystem BookingSystem;
+
         private static string serverConfigFile = AppDomain.CurrentDomain.BaseDirectory + @"\Nt.Booking.config.json";
 
         public static void Main(string[] args)
@@ -38,7 +40,8 @@ namespace Nt.Booking
                 ServerConfiguration.Password = "secretPassword";
                 ServerConfiguration.Timeout = 10;
                 //TODO: delete stop
-                BookingSystem = GetBookingSystem(ServerConfiguration);
+                //BookingSystem = GetBookingSystem(ServerConfiguration);
+                BookingSystem = BookingSystemFactory.Create(ServerConfiguration);
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();
 
@@ -61,10 +64,10 @@ namespace Nt.Booking
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="args"></param>
-        /// 
+        ///
         /// <returns></returns>
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
@@ -97,20 +100,22 @@ namespace Nt.Booking
             Nt.Logging.Log.Server.Info("ServerConfiguration : " + ServerConfiguration.ToString());
         }
 
-        private static BookingSystemBase GetBookingSystem(ServerConfiguration serverConfig)
-        {
-            Nt.Logging.Log.Server.Info("creating booking system " + serverConfig.BookingSystem);
-            switch (serverConfig.BookingSystem)
-            {
-                case BookingSystemType.ExSI:
-                    return new Systems.Access.ExSI.ExSI(); 
-                case BookingSystemType.Gantner:
-                    throw new NotImplementedException("booking system Gantner is not yet implemented");
-                case BookingSystemType.SVS:
-                    return new Systems.Voucher.SVS.SVS(serverConfig.Address, serverConfig.Username, serverConfig.Password, serverConfig.Timeout);
-                default:
-                    throw new Exception("couldn't find a corresponding booking system for " + serverConfig.BookingSystem);
-            }
-        }
+        //private static BookingSystemBase GetBookingSystem(ServerConfiguration serverConfig)
+        //{
+        //    Nt.Logging.Log.Server.Info("creating booking system " + serverConfig.BookingSystem);
+        //    switch (serverConfig.BookingSystem)
+        //    {
+        //        case BookingSystemType.ExSI:
+        //            return new Systems.Access.ExSI.ExSI();
+
+        //        case BookingSystemType.Gantner:
+        //            throw new NotImplementedException("booking system Gantner is not yet implemented");
+        //        case BookingSystemType.SVS:
+        //            return new Systems.Voucher.SVS.SVS(serverConfig.Address, serverConfig.Username, serverConfig.Password, serverConfig.Timeout);
+
+        //        default:
+        //            throw new Exception("couldn't find a corresponding booking system for " + serverConfig.BookingSystem);
+        //    }
+        //}
     }
 }
