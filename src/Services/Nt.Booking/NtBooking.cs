@@ -40,7 +40,6 @@ namespace Nt.Booking
                 ServerConfiguration.Password = "secretPassword";
                 ServerConfiguration.Timeout = 10;
                 //TODO: delete stop
-                //BookingSystem = GetBookingSystem(ServerConfiguration);
                 BookingSystem = BookingSystemFactory.Create(ServerConfiguration);
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();
@@ -99,23 +98,5 @@ namespace Nt.Booking
             ServerConfiguration = System.Text.Json.JsonSerializer.Deserialize<ServerConfiguration>(json);
             Nt.Logging.Log.Server.Info("ServerConfiguration : " + ServerConfiguration.ToString());
         }
-
-        //private static BookingSystemBase GetBookingSystem(ServerConfiguration serverConfig)
-        //{
-        //    Nt.Logging.Log.Server.Info("creating booking system " + serverConfig.BookingSystem);
-        //    switch (serverConfig.BookingSystem)
-        //    {
-        //        case BookingSystemType.ExSI:
-        //            return new Systems.Access.ExSI.ExSI();
-
-        //        case BookingSystemType.Gantner:
-        //            throw new NotImplementedException("booking system Gantner is not yet implemented");
-        //        case BookingSystemType.SVS:
-        //            return new Systems.Voucher.SVS.SVS(serverConfig.Address, serverConfig.Username, serverConfig.Password, serverConfig.Timeout);
-
-        //        default:
-        //            throw new Exception("couldn't find a corresponding booking system for " + serverConfig.BookingSystem);
-        //    }
-        //}
     }
 }
