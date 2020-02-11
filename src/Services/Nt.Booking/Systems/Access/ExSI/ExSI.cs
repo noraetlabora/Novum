@@ -29,7 +29,7 @@ namespace Nt.Booking.Systems.Access
 
             var information = new InformationResponse();
             var owner = new Owner();
-            owner.Name = resp;
+            owner.Name = "Norbert Rastl"; // resp;
             var credit = new Credit();
             credit.Amount = 1499;
             credit.OpeningAmount = 2000;
