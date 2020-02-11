@@ -29,7 +29,7 @@ namespace Nt.Booking
             {
                 Nt.Logging.Log.Server.Info("================================================================== Nt.Booking  ==================================================================");
                 //TODO: GetConfig();
-                //TODO: delete start
+                //TODO: delete static server configuration
                 ServerConfiguration = new ServerConfiguration();
                 ServerConfiguration.BookingSystem = BookingSystemType.SVS;
                 ServerConfiguration.Port = 5000;
@@ -37,7 +37,7 @@ namespace Nt.Booking
                 ServerConfiguration.Username = "Testuser";
                 ServerConfiguration.Password = "secretPassword";
                 ServerConfiguration.Timeout = 10;
-                //TODO: delete stop
+
                 BookingSystem = BookingSystemFactory.Create(ServerConfiguration);
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();

@@ -71,10 +71,6 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.routingID = "301";
             svsRequest.stan = "123456"; //(HHMMSS)
 
-            //ToDo
-            System.Diagnostics.Debug.WriteLine("GetMediumInformation Background" + System.Threading.Thread.CurrentThread.IsBackground);
-            System.Diagnostics.Debug.WriteLine("GetMediumInformation Pool" + System.Threading.Thread.CurrentThread.IsThreadPoolThread);
-            System.Diagnostics.Debug.WriteLine("GetMediumInformation ThreadId" + System.Threading.Thread.CurrentThread.ManagedThreadId);
             response.Currency = "EUR";
 
             try

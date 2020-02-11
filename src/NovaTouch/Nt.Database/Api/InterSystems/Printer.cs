@@ -18,13 +18,6 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public async Task<Dictionary<string, Nt.Data.Printer>> GetInvoicePrinters()
         {
-            //Todo delete Thread diagnostics
-            int workerThreads = 0;
-            int completionPortThreads = 0;
-            int threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
-            System.Threading.ThreadPool.GetAvailableThreads(out workerThreads, out completionPortThreads);
-            System.Diagnostics.Debug.WriteLine(string.Format("Thread: {0} ({1}/{2})  -  Intersystems.Printers.GetInvoicePrinters ", threadId, workerThreads, completionPortThreads));
-
             var printers = new Dictionary<string, Nt.Data.Printer>();
             var sql = new StringBuilder();
             sql.Append(" SELECT DEV, beschreibung, devtype, device ");

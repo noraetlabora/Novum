@@ -29,20 +29,10 @@ namespace Nt.Database.Api.InterSystems
 
         internal static async Task<DataTable> GetDataTable(string sql)
         {
-            //Todo delete Thread diagnostics
-            int workerThreads = 0;
-            int completionPortThreads = 0;
-            int threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
-            System.Threading.ThreadPool.GetAvailableThreads(out workerThreads, out completionPortThreads);
-            System.Diagnostics.Debug.WriteLine(string.Format("Thread: {0} ({1}/{2})  -  Intersystems.Interaction.GetDataTable ", threadId, workerThreads, completionPortThreads));
-
             var dataTable = new DataTable();
             var stackTrace = new System.Diagnostics.StackTrace();
             var traceIdCaller = (uint)DateTime.Now.Ticks.GetHashCode() + "|" + stackTrace.GetFrame(1).GetMethod().Name;
             Logging.Log.Database.Debug(traceIdCaller + "|SQL|" + sql);
-
-            //Todo
-            System.Diagnostics.Debug.WriteLine("GetDataTable ThreadId: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
 
             try
             {
@@ -191,9 +181,6 @@ namespace Nt.Database.Api.InterSystems
             var classMethod = string.Format("##class({0}).{1}({2})", className, methodName, string.Join(",", args));
             Logging.Log.Database.Debug(traceIdCaller + "|ClassMethod|" + classMethod);
 
-            //Todo
-            System.Diagnostics.Debug.WriteLine("CallClassMethod ThreadId: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
-
             try
             {
                 Object returnValue = await Task.Run(()=> DB.Xep.CallClassMethod(className, methodName, args));
@@ -284,9 +271,6 @@ namespace Nt.Database.Api.InterSystems
             var traceIdCaller = (uint)DateTime.Now.Ticks.GetHashCode() + "|" + stackTrace.GetFrame(2).GetMethod().Name;
             var classMethod = string.Format("##class({0}).{1}({2})", className, methodName, string.Join(",", args));
             Logging.Log.Database.Debug(traceIdCaller + "|VoidClassMethod|" + classMethod);
-
-            //Todo
-            System.Diagnostics.Debug.WriteLine("CallVoidClassMethod ThreadId: " + System.Threading.Thread.CurrentThread.ManagedThreadId);
 
             try
             {

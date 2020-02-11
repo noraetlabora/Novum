@@ -41,18 +41,6 @@ namespace Os.Server
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();
 
-                //TODO
-                int workerThreads = 0;
-                int completionPortThreads = 0;
-                System.Diagnostics.Debug.WriteLine("processor count " + System.Environment.ProcessorCount);
-                System.Threading.ThreadPool.GetAvailableThreads(out workerThreads, out completionPortThreads);
-                System.Diagnostics.Debug.WriteLine("avl threads " + workerThreads + " / " + completionPortThreads);
-                System.Threading.ThreadPool.GetMaxThreads(out workerThreads, out completionPortThreads);
-                System.Diagnostics.Debug.WriteLine("max threads " + workerThreads + " / " + completionPortThreads);
-                System.Threading.ThreadPool.SetMaxThreads(workerThreads, completionPortThreads);
-                System.Threading.ThreadPool.GetAvailableThreads(out workerThreads, out completionPortThreads);
-                System.Diagnostics.Debug.WriteLine("avl threads " + workerThreads + " / " + completionPortThreads);
-
                 if (Console.IsOutputRedirected)
                 {
                     Nt.Logging.Log.Server.Info("starting as service");

@@ -163,12 +163,6 @@ namespace Os.Server.Controllers
         {
             try
             {
-                //Todo delete Thread diagnostics
-                int workerThreads = 0;
-                int completionPortThreads = 0;
-                int threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
-                System.Threading.ThreadPool.GetAvailableThreads(out workerThreads, out completionPortThreads);
-                System.Diagnostics.Debug.WriteLine(string.Format("Thread: {0} ({1}/{2})  -  /api/v2/data/printers", threadId, workerThreads, completionPortThreads));
                 var printers = Logic.Printer.GetPrinters();
                 return new ObjectResult(printers);
             }
