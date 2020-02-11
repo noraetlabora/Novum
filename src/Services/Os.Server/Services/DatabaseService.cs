@@ -62,7 +62,7 @@ namespace Os.Server.Services
                         Nt.Logging.Log.Database.Info("DatabaseService: connection is fetching");
                         break;
                 }
-                Os.Server.Logic.Data.CheckStaticData();
+                _ = Os.Server.Logic.Data.CheckStaticData();
             }
             catch (Exception ex)
             {

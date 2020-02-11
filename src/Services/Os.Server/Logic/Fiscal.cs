@@ -1,4 +1,6 @@
-﻿namespace Os.Server.Logic
+﻿using System.Threading.Tasks;
+
+namespace Os.Server.Logic
 {
     /// <summary>
     /// 
@@ -14,7 +16,7 @@
         /// <returns></returns>
         public static object GetProvider(Nt.Data.Session session)
         {
-            var fiscalProvider = Nt.Database.DB.Api.Fiscal.GetProvider(session);
+            var fiscalProvider = Task.Run(async () => await Nt.Database.DB.Api.Fiscal.GetProvider(session)).Result;
             if (fiscalProvider == null)
                 Nt.Logging.Log.Server.Error(string.Format("no fiscal provider found for {0}, {1}, {2}", session.ClientId, session.PosId, session.SerialNumber));
             else
@@ -29,7 +31,7 @@
         /// <param name="session"></param>
         public static void CheckSystem(Nt.Data.Session session)
         {
-            var statusString = Nt.Database.DB.Api.Fiscal.CheckSystem(session);
+            var statusString = Task.Run(async () => await Nt.Database.DB.Api.Fiscal.CheckSystem(session)).Result;
 
             if (!string.IsNullOrEmpty(statusString))
                 Nt.Logging.Log.Server.Info(statusString);

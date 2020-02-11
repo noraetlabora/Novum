@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Os.Server.Logic
 {
@@ -20,7 +21,7 @@ namespace Os.Server.Logic
         public static List<Models.OrderLine> GetOrderLines(Nt.Data.Session session, string subTableId)
         {
             var osOrderLines = new List<Models.OrderLine>();
-            var ntOrders = Nt.Database.DB.Api.Order.GetOrders(subTableId);
+            var ntOrders = Task.Run(async () => await Nt.Database.DB.Api.Order.GetOrders(subTableId)).Result;
             //committed
             foreach (var ntOrder in ntOrders.Values)
             {
@@ -55,9 +56,9 @@ namespace Os.Server.Logic
             var osOrderLineResult = new Models.OrderLineResult();
 
             if (data.EnteredPrice != null)
-                Nt.Database.DB.Api.Article.CheckEnteredPrice(session, data.ArticleId, decimal.Divide((decimal)data.EnteredPrice, 100.0m));
+                Task.Run(async () => await Nt.Database.DB.Api.Article.CheckEnteredPrice(session, data.ArticleId, decimal.Divide((decimal)data.EnteredPrice, 100.0m)));
 
-            var ntOrder = Nt.Database.DB.Api.Order.GetNewOrder(session, data.ArticleId);
+            var ntOrder = Task.Run(async () => await Nt.Database.DB.Api.Order.GetNewOrder(session, data.ArticleId)).Result;
             ntOrder.Quantity = (decimal)data.Quantity;
 
             if (data.EnteredPrice != null)
@@ -89,7 +90,7 @@ namespace Os.Server.Logic
             var ntOrder = session.GetOrder(orderLineId);
             if (ntOrder == null)
             {
-                var ntOrders = Nt.Database.DB.Api.Order.GetOrders(session.CurrentTable.Id);
+                var ntOrders = Task.Run(async () => await Nt.Database.DB.Api.Order.GetOrders(session.CurrentTable.Id)).Result;
                 if (!ntOrders.ContainsKey(orderLineId))
                     throw new Exception(Resources.Dictionary.GetString("Order_NotFound"));
                 ntOrder = ntOrders[orderLineId];
@@ -317,7 +318,7 @@ namespace Os.Server.Logic
 
                     foreach (var osOrderLineModifierChoice in osOrderLineModifier.Choices)
                     {
-                        var ntModifier = Nt.Database.DB.Api.Modifier.GetModifier(session, osOrderLineModifierChoice.ModifierChoiceId, 1.0m);
+                        var ntModifier = Task.Run(async () => await Nt.Database.DB.Api.Modifier.GetModifier(session, osOrderLineModifierChoice.ModifierChoiceId, 1.0m)).Result;
                         ntModifier.MenuId = osOrderLineModifier.ModifierGroupId;
                         ntOrder.AddModifier(ntModifier);
 

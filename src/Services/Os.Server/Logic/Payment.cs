@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Nt.Data;
 
 namespace Os.Server.Logic
@@ -31,7 +32,7 @@ namespace Os.Server.Logic
 
             //order lines
             var tableId = data.SubTableIds[0];
-            var ntOrders = Nt.Database.DB.Api.Order.GetOrders(tableId);
+            var ntOrders = Task.Run(async () => await Nt.Database.DB.Api.Order.GetOrders(tableId)).Result;
             //payment information
             var ntPaymentInformation = new Nt.Data.PaymentInformation();
             ntPaymentInformation.PrinterId = data.Printer;
@@ -39,7 +40,7 @@ namespace Os.Server.Logic
             List<PaymentMethod> ntPaymentMethods = GetNtPaymentMethods(data.Payments, data.Tip);
 
             //pay
-            var ntPaymentResult = Nt.Database.DB.Api.Payment.Pay(session, tableId, ntOrders.Values.ToList(), ntPaymentMethods, ntPaymentInformation);
+            var ntPaymentResult = Task.Run(async () => await Nt.Database.DB.Api.Payment.Pay(session, tableId, ntOrders.Values.ToList(), ntPaymentMethods, ntPaymentInformation));
         }
 
         /// <summary>
@@ -82,7 +83,7 @@ namespace Os.Server.Logic
         private static List<Nt.Data.Order> GetNtOrders(Models.PayOrderLines data, string tableId)
         {
             //orderlines
-            var ntAllOrders = Nt.Database.DB.Api.Order.GetOrders(tableId);
+            var ntAllOrders = Task.Run(async () => await Nt.Database.DB.Api.Order.GetOrders(tableId)).Result;
             var ntOrders = new List<Nt.Data.Order>();
             foreach (var orderLineQuantity in data.PaidLines)
             {
@@ -121,7 +122,7 @@ namespace Os.Server.Logic
                 {
                     switch (line.Key) {
                         case "ROOM":
-                            var room = Nt.Database.DB.Api.Hotel.GetRoom(session, paymentType.PartnerId, line.Value);
+                            var room = Task.Run(async () => await Nt.Database.DB.Api.Hotel.GetRoom(session, paymentType.PartnerId, line.Value)).Result;
                             if (room == null)
                                 throw new Exception("Zimmer " + line.Value + " nicht gefunden");
                             //set up dialog

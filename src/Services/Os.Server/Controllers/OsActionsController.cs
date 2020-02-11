@@ -73,7 +73,7 @@ namespace Os.Server.Controllers
                     Logic.Registration.CheckDevice(clientInfo.Id);
                     session = new Nt.Data.Session();
                     session.SerialNumber = clientInfo.Id;
-                    session.ClientId = Logic.Data.GetClientId();
+                    session.ClientId = 
                     session.PosId = Logic.Data.GetPosId(clientInfo.Id);
                     session.ServiceAreaId = Logic.Data.GetServiceAreaId(session.PosId);
                     session.PriceLevel = Logic.Data.GetPriceLevel(session.ServiceAreaId);
