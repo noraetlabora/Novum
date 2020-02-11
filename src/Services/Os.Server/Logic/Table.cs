@@ -1,6 +1,7 @@
 using Nt.Database;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Os.Server.Logic
 {
@@ -20,7 +21,7 @@ namespace Os.Server.Logic
         public static List<Models.TableResult> GetTables(Nt.Data.Session session)
         {
             var osTables = new Dictionary<string, Models.TableResult>();
-            var ntTables = DB.Api.Table.GetTables(session);
+            var ntTables = Task.Run(async () => await DB.Api.Table.GetTables(session)).Result;
 
             // create main tables
             foreach (var ntTable in ntTables.Values)
@@ -81,9 +82,9 @@ namespace Os.Server.Logic
                 var sourceTableMainId = GetMainTable(sourceTableId);
                 var tablePostfix = sourceTableId.Replace(sourceTableMainId, "");
                 var targetTableId = data.TargetTableId + tablePostfix;
-                DB.Api.Table.SplitStart(session, sourceTableId, targetTableId);
+                Task.Run(async () => await DB.Api.Table.SplitStart(session, sourceTableId, targetTableId));
                 //
-                var ntOrders = DB.Api.Order.GetOrders(sourceTableId);
+                var ntOrders = Task.Run(async () => await DB.Api.Order.GetOrders(sourceTableId)).Result;
                 foreach (var ntOrder in ntOrders)
                 {
                     DB.Api.Table.SplitOrder(session, sourceTableId, targetTableId, ntOrder.Value, ntOrder.Value.Quantity);
@@ -92,7 +93,7 @@ namespace Os.Server.Logic
                 DB.Api.Table.SplitDone(session);
             }
             // get data from target table
-            var targetTableName = DB.Api.Table.GetTableName(session, data.TargetTableId);
+            var targetTableName = Task.Run(async () => await DB.Api.Table.GetTableName(session, data.TargetTableId)).Result;
             var tableResult = GetTableResult(session, targetTableName);
             return tableResult;
         }
@@ -123,14 +124,14 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static Models.SubTable CreateSubTable(Nt.Data.Session session, string tableId)
         {
-            var subTableId = DB.Api.Table.GetNewSubTableId(session, session.CurrentTable.Id);
+            var subTableId = Task.Run(async () => await DB.Api.Table.GetNewSubTableId(session, session.CurrentTable.Id)).Result;
             if (session.TableIdIsOpen(subTableId))
                 subTableId = session.GetNewTableId(session.CurrentTable.Id);
             Table.SetCurrentTable(session, subTableId);
             //
             var subTable = new Models.SubTable();
             subTable.Id = subTableId;
-            subTable.Name = DB.Api.Table.GetTableName(session, subTableId);
+            subTable.Name = Task.Run(async () => await DB.Api.Table.GetTableName(session, subTableId)).Result;
             subTable.IsSelected = false;
             //
             return subTable;
@@ -184,7 +185,7 @@ namespace Os.Server.Logic
         private static Models.TableResultEx GetTableResult(Nt.Data.Session session, string tableName)
         {
             var osTableResult = new Models.TableResultEx();
-            var ntTables = DB.Api.Table.GetTables(session);
+            var ntTables = Task.Run(async () => await DB.Api.Table.GetTables(session)).Result; 
             var ntMainTableName = "";
 
             //search maintable
@@ -227,7 +228,7 @@ namespace Os.Server.Logic
             //table is not in list, create new maintable with one subtable
             if (string.IsNullOrEmpty(osTableResult.Name))
             {
-                osTableResult.Id = DB.Api.Table.GetTableId(session, tableName);
+                osTableResult.Id = Task.Run(async () => await DB.Api.Table.GetTableId(session, tableName)).Result;
                 osTableResult.Name = tableName;
                 osTableResult.BookedAmount = 0;
                 osTableResult.LastActivityTime = (int)Nt.Data.Utils.Unix.Timestamp(DateTime.Now);

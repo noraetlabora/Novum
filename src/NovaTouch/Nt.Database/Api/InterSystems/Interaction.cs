@@ -29,6 +29,13 @@ namespace Nt.Database.Api.InterSystems
 
         internal static async Task<DataTable> GetDataTable(string sql)
         {
+            //Todo delete Thread diagnostics
+            int workerThreads = 0;
+            int completionPortThreads = 0;
+            int threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
+            System.Threading.ThreadPool.GetAvailableThreads(out workerThreads, out completionPortThreads);
+            System.Diagnostics.Debug.WriteLine(string.Format("Thread: {0} ({1}/{2})  -  Intersystems.Interaction.GetDataTable ", threadId, workerThreads, completionPortThreads));
+
             var dataTable = new DataTable();
             var stackTrace = new System.Diagnostics.StackTrace();
             var traceIdCaller = (uint)DateTime.Now.Ticks.GetHashCode() + "|" + stackTrace.GetFrame(1).GetMethod().Name;
@@ -39,7 +46,6 @@ namespace Nt.Database.Api.InterSystems
 
             try
             {
-                //System.Threading.Monitor.Enter(DB.Connection);
                 var dataAdapter = new IRISDataAdapter(sql, DB.Connection);
                 dataTable = new DataTable();
                 await Task.Run(() => dataAdapter.Fill(dataTable));
@@ -55,10 +61,6 @@ namespace Nt.Database.Api.InterSystems
                 }
                 Logging.Log.Database.Error(ex, traceIdCaller + "|SQL|" + sql);
                 throw ex;
-            }
-            finally
-            {
-                //System.Threading.Monitor.Exit(DB.Connection);
             }
 
             return dataTable;
@@ -194,7 +196,6 @@ namespace Nt.Database.Api.InterSystems
 
             try
             {
-                System.Threading.Monitor.Enter(DB.Xep);
                 Object returnValue = await Task.Run(()=> DB.Xep.CallClassMethod(className, methodName, args));
                 Logging.Log.Database.Debug(traceIdCaller + "|ClassMethodReturnValue|" + returnValue.ToString());
                 return returnValue.ToString();
@@ -210,10 +211,6 @@ namespace Nt.Database.Api.InterSystems
 
                 Logging.Log.Database.Error(ex, traceIdCaller + "|ClassMethod|" + classMethod);
                 throw ex;
-            }
-            finally
-            {
-                System.Threading.Monitor.Exit(DB.Xep);
             }
         }
 
@@ -293,7 +290,6 @@ namespace Nt.Database.Api.InterSystems
 
             try
             {
-                //System.Threading.Monitor.Enter(DB.Xep);
                 await Task.Run(() => DB.Xep.CallVoidClassMethod(className, methodName, args));
                 Logging.Log.Database.Debug(traceIdCaller + "|VoidClassMethod|success");
             }
@@ -307,10 +303,6 @@ namespace Nt.Database.Api.InterSystems
                 }
                 Logging.Log.Database.Error(ex, traceIdCaller + "|VoidClassMethod|" + classMethod);
                 throw ex;
-            }
-            finally
-            {
-                //System.Threading.Monitor.Exit(DB.Xep);
             }
         }
 

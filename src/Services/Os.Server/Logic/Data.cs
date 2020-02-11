@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Os.Server.Logic
 {
@@ -25,22 +26,25 @@ namespace Os.Server.Logic
         /// <summary>
         /// 
         /// </summary>
-        public static void CheckStaticData()
+        public static async Task CheckStaticData()
         {
             // snapshot time exists, data is up to date
-            if (Nt.Database.DB.Api.Misc.HasSnapshotTime(Controllers.OsHostController.PosStatus.SessionId))
+            var snapshotTimeExists = Task.Run(async () => await Nt.Database.DB.Api.Misc.HasSnapshotTime(Controllers.OsHostController.PosStatus.SessionId)).Result;
+            if (snapshotTimeExists)
                 return;
 
             Nt.Logging.Log.Server.Info("new static data available");
+            var tasks = new List<Task>();
+            tasks.Add(new Task(() => Logic.Data.GetArticles()));
+            tasks.Add(new Task(() => Logic.Data.GetCategories()));
+            tasks.Add(new Task(() => Logic.Data.GetModifierGroups()));
+            tasks.Add(new Task(() => Logic.Data.GetPaymentMedia()));
+            tasks.Add(new Task(() => Logic.Printer.GetPrinters()));
+            tasks.Add(new Task(() => Logic.Data.GetUsers()));
+            tasks.Add(Nt.Database.DB.Api.Misc.GetArticleGroups());
+            tasks.Add(Nt.Database.DB.Api.Misc.GetTaxGroups());
 
-            Logic.Data.GetArticles();
-            Logic.Data.GetCategories();
-            Logic.Data.GetModifierGroups();
-            Logic.Data.GetPaymentMedia();
-            Logic.Data.GetPrinters();
-            Logic.Data.GetUsers();
-            Nt.Database.DB.Api.Misc.GetArticleGroups();
-            Nt.Database.DB.Api.Misc.GetTaxGroups();
+            await Task.WhenAll(tasks);
 
             Nt.Logging.Log.Server.Info("new static data cached");
 
@@ -51,7 +55,7 @@ namespace Os.Server.Logic
             Client.ClientApi.Subscribe.PubsubTopicsPost("host_staticDataChanged", pubSubMessages);
 
             // set snapshot time
-            Nt.Database.DB.Api.Misc.SetSnapshotTime(Controllers.OsHostController.PosStatus.SessionId);
+            await Nt.Database.DB.Api.Misc.SetSnapshotTime(Controllers.OsHostController.PosStatus.SessionId);
         }
 
         #region Cancellation Reasons
@@ -63,7 +67,7 @@ namespace Os.Server.Logic
         public static List<Models.CancellationReason> GetCancellationReasons()
         {
             var osCancellationReasons = new List<Models.CancellationReason>();
-            var ntCancellationReasons = Nt.Database.DB.Api.Misc.GetCancellationReason();
+            var ntCancellationReasons = Task.Run(async () => await Nt.Database.DB.Api.Misc.GetCancellationReason()).Result;
             foreach (var ntCancellationReason in ntCancellationReasons.Values)
             {
                 var osCancellationReason = new Models.CancellationReason();
@@ -81,7 +85,7 @@ namespace Os.Server.Logic
         public static List<Models.Course> GetCourses()
         {
             var osCourses = new List<Models.Course>();
-            var ntCourses = Nt.Database.DB.Api.Misc.GetCourses();
+            var ntCourses = Task.Run(async () => await Nt.Database.DB.Api.Misc.GetCourses()).Result;
             foreach (var ntCourse in ntCourses.Values)
             {
                 var osCourse = new Models.Course();
@@ -102,14 +106,14 @@ namespace Os.Server.Logic
         public static List<Models.PaymentMedium> GetPaymentMedia()
         {
             var osPaymentMedia = new List<Models.PaymentMedium>();
-            ntCachedPaymentTypes = Nt.Database.DB.Api.Payment.GetPaymentTypes();
+            ntCachedPaymentTypes = Task.Run(async () => await Nt.Database.DB.Api.Payment.GetPaymentTypes()).Result;
             foreach (var ntPaymentType in ntCachedPaymentTypes.Values)
             {
                 var osPaymentMedium = GetPaymentMedium(ntPaymentType);
                 osPaymentMedia.Add(osPaymentMedium);
             }
 
-            ntCachedAssignmentTypes = Nt.Database.DB.Api.Payment.GetAssignmentTypes();
+            ntCachedAssignmentTypes = Task.Run(async () => await Nt.Database.DB.Api.Payment.GetAssignmentTypes()).Result;
             foreach (var ntAssignmentType in ntCachedAssignmentTypes.Values)
             {
                 var osPaymentMedium = new Models.PaymentMedium();
@@ -177,30 +181,6 @@ namespace Os.Server.Logic
 
         #endregion
 
-        #region Printers
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public static List<Models.Printer> GetPrinters()
-        {
-            var osPrinters = new List<Models.Printer>();
-            var ntPrinters = Nt.Database.DB.Api.Printer.GetInvoicePrinters();
-
-            foreach (var ntPrinter in ntPrinters.Values)
-            {
-                var osPrinter = new Models.Printer();
-                osPrinter.Name = ntPrinter.Name;
-                osPrinter.Path = ntPrinter.Id;
-                osPrinters.Add(osPrinter);
-            }
-
-            return osPrinters;
-        }
-
-        #endregion  //Printers
-
         #region Articles
         /// <summary>
         /// 
@@ -218,8 +198,8 @@ namespace Os.Server.Logic
         public static List<Models.Article> GetArticles()
         {
             var osArticles = new Dictionary<string, Models.Article>();
-            var ntArticles = Nt.Database.DB.Api.Article.GetArticles();
-            var ntModifierMenus = Nt.Database.DB.Api.Modifier.GetModifierMenus();
+            var ntArticles = Task.Run(async () => await Nt.Database.DB.Api.Article.GetArticles()).Result;
+            var ntModifierMenus = Task.Run(async () => await Nt.Database.DB.Api.Modifier.GetModifierMenus()).Result;
             var osArticleModifierGroups = GetArticleModifierGroups();
 
             foreach (var ntArticle in ntArticles.Values)
@@ -271,8 +251,8 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static List<Models.Category> GetCategories()
         {
-            var posId = Nt.Database.DB.Api.Pos.GetPosId();
-            var menuId = Nt.Database.DB.Api.Menu.GetMenuId(posId);
+            var posId = Task.Run(async () => await Nt.Database.DB.Api.Pos.GetPosId()).Result;
+            var menuId = Task.Run(async () => await Nt.Database.DB.Api.Menu.GetMenuId(posId)).Result;
             return GetCategories(menuId);
         }
 
@@ -284,9 +264,9 @@ namespace Os.Server.Logic
         public static List<Models.Category> GetCategories(string menuId)
         {
             var osCategories = new List<Models.Category>();
-            var ntMainMenus = Nt.Database.DB.Api.Menu.GetMainMenus(menuId);
-            var ntMenus = Nt.Database.DB.Api.Menu.GetMenus();
-            var ntMenuItems = Nt.Database.DB.Api.Menu.GetMenuItems();
+            var ntMainMenus = Task.Run(async () => await Nt.Database.DB.Api.Menu.GetMainMenus(menuId)).Result;
+            var ntMenus = Task.Run(async () => await Nt.Database.DB.Api.Menu.GetMenus()).Result;
+            var ntMenuItems = Task.Run(async () => await Nt.Database.DB.Api.Menu.GetMenuItems()).Result;
 
             foreach (var ntMainMenu in ntMainMenus.Values)
             {
@@ -312,7 +292,7 @@ namespace Os.Server.Logic
         public static List<Models.ModifierGroup> GetModifierGroups()
         {
             var osModifierGroups = new List<Models.ModifierGroup>();
-            var ntModifierMenus = Nt.Database.DB.Api.Modifier.GetModifierMenus();
+            var ntModifierMenus = Task.Run(async () => await Nt.Database.DB.Api.Modifier.GetModifierMenus()).Result;
             Models.ModifierGroup osModifierGroup;
 
             //////////////////////////////////////
@@ -333,7 +313,7 @@ namespace Os.Server.Logic
                     osModifierGroup.Type = Models.ModifierGroup.ModifierType.PickMultipleEnum;
 
                 osModifierGroup.Choices = new List<Models.ModifierChoice>();
-                var ntModifierItems = Nt.Database.DB.Api.Modifier.GetModifierItems(ntModifierMenu.Id);
+                var ntModifierItems = Task.Run(async () => await Nt.Database.DB.Api.Modifier.GetModifierItems(ntModifierMenu.Id)).Result;
                 var lastModifierItemId = "";
 
                 //////////////////////////////////////
@@ -395,22 +375,22 @@ namespace Os.Server.Logic
         public static List<Models.ServiceArea> GetServiceAreas()
         {
             var osServiceAreas = new List<Models.ServiceArea>();
-            var currentPosId = Nt.Database.DB.Api.Pos.GetPosId();
-            var posIds = Nt.Database.DB.Api.Pos.GetAlternativePosIds(currentPosId);
+            var currentPosId = Task.Run(async () => await Nt.Database.DB.Api.Pos.GetPosId()).Result;
+            var posIds = Task.Run(async () => await Nt.Database.DB.Api.Pos.GetAlternativePosIds(currentPosId)).Result;
             var serviceAreas = new Dictionary<string, string>();
 
-            var pos = Nt.Database.DB.Api.Pos.GetPos(currentPosId);
+            var pos = Task.Run(async () => await Nt.Database.DB.Api.Pos.GetPos(currentPosId)).Result;
             var osServiceArea = new Models.ServiceArea();
             osServiceArea.Id = pos.Id;
-            osServiceArea.Name = Nt.Database.DB.Api.Pos.GetServiceAreaName(pos.ServiceAreaId);
+            osServiceArea.Name = Task.Run(async () => await Nt.Database.DB.Api.Pos.GetServiceAreaName(pos.ServiceAreaId)).Result;
             serviceAreas.Add(pos.ServiceAreaId, osServiceArea.Name);
 
             foreach (var posId in posIds)
             {
-                pos = Nt.Database.DB.Api.Pos.GetPos(posId);
+                pos = Task.Run(async () => await Nt.Database.DB.Api.Pos.GetPos(posId)).Result;
                 osServiceArea = new Models.ServiceArea();
                 osServiceArea.Id = pos.Id;
-                osServiceArea.Name = Nt.Database.DB.Api.Pos.GetServiceAreaName(pos.ServiceAreaId);
+                osServiceArea.Name = Task.Run(async () => await Nt.Database.DB.Api.Pos.GetServiceAreaName(pos.ServiceAreaId)).Result;
                 if (!serviceAreas.ContainsKey(pos.ServiceAreaId))
                     osServiceAreas.Add(osServiceArea);
             }
@@ -425,7 +405,7 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static string GetServiceAreaId(string posId)
         {
-            return Nt.Database.DB.Api.Pos.GetServiceAreaId(posId);
+            return Task.Run(async () => await Nt.Database.DB.Api.Pos.GetServiceAreaId(posId)).Result;
         }
 
         #endregion
@@ -439,7 +419,7 @@ namespace Os.Server.Logic
         public static List<Models.User> GetUsers()
         {
             var osUsers = new List<Models.User>();
-            var ntWaiters = Nt.Database.DB.Api.Waiter.GetWaiters();
+            var ntWaiters = Task.Run(async () => await Nt.Database.DB.Api.Waiter.GetWaiters()).Result;
             foreach (var ntWaiter in ntWaiters.Values)
             {
                 var osUser = new Models.User();
@@ -457,20 +437,11 @@ namespace Os.Server.Logic
         /// <summary>
         /// 
         /// </summary>
-        /// <returns></returns>
-        public static string GetClientId()
-        {
-            return Nt.Database.DB.Api.Pos.GetClientId();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="deviceId"></param>
         /// <returns></returns>
         public static string GetPosId(string deviceId)
         {
-            return Nt.Database.DB.Api.Pos.GetPosId(deviceId);
+            return Task.Run(async () => await Nt.Database.DB.Api.Pos.GetPosId(deviceId)).Result;
         }
 
         /// <summary>
@@ -480,7 +451,7 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static string GetPriceLevel(string serviceAreaId)
         {
-            return Nt.Database.DB.Api.Pos.GetPriceLevel(serviceAreaId);
+            return Task.Run(async () => await Nt.Database.DB.Api.Pos.GetPriceLevel(serviceAreaId)).Result;
         }
 
         #endregion  //POS
@@ -496,8 +467,8 @@ namespace Os.Server.Logic
         private static Dictionary<string, Dictionary<string, Models.ArticleModifierGroup>> GetArticleModifierGroups()
         {
             var osModifierDictionary = new Dictionary<string, Dictionary<string, Models.ArticleModifierGroup>>();
-            var ntMenuItems = Nt.Database.DB.Api.Menu.GetMenuItems();
-            var ntMenuItemsModifierMenus = Nt.Database.DB.Api.Modifier.GetMenuItemModifierMenus();
+            var ntMenuItems = Task.Run(async () => await Nt.Database.DB.Api.Menu.GetMenuItems()).Result;
+            var ntMenuItemsModifierMenus = Task.Run(async () => await Nt.Database.DB.Api.Modifier.GetMenuItemModifierMenus()).Result;
 
             // loop through all ntMenuItems again and tne modifierMenus
             foreach (var ntMenuItem in ntMenuItems)

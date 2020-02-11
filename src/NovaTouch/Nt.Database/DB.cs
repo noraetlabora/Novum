@@ -2,6 +2,7 @@ using InterSystems.Data.IRISClient;
 using InterSystems.XEP;
 using System;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace Nt.Database
 {
@@ -75,13 +76,13 @@ namespace Nt.Database
                 dbConnection = new IRISConnection(connectionString);
                 dbConnection.Open();
                 Logging.Log.Database.Info("database connection is open");
-                api.Initialize();
             }
             catch (Exception ex)
             {
                 Logging.Log.Database.Fatal(ex, "could not open database connection");
                 throw ex;
             }
+            api.Initialize();
         }
 
         /// <summary>

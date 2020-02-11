@@ -1,3 +1,4 @@
+
 using System.Threading.Tasks;
 
 namespace Nt.Database.Api
@@ -88,6 +89,6 @@ namespace Nt.Database.Api
         /// <summary>
         /// 
         /// </summary>
-        Task Initialize();
+        void Initialize();
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Os.Server.Logic
 {
@@ -27,7 +28,7 @@ namespace Os.Server.Logic
 
         public static void CheckDevice(string serialNumber)
         {
-            var posId = Nt.Database.DB.Api.Pos.GetPosId(serialNumber);
+            var posId = Task.Run(async () => await Nt.Database.DB.Api.Pos.GetPosId(serialNumber)).Result;
             if (string.IsNullOrEmpty(posId))
                 throw new Exception(string.Format(Resources.Dictionary.GetString("Device_NotValid"), serialNumber));
         }
@@ -42,7 +43,7 @@ namespace Os.Server.Logic
             // login over pin
             if (string.IsNullOrEmpty(loginUser.Password))
             {
-                var waiterId = Nt.Database.DB.Api.Waiter.GetWaiterId(loginUser.Id);
+                var waiterId = Task.Run(async () => await Nt.Database.DB.Api.Waiter.GetWaiterId(loginUser.Id)).Result;
                 if (string.IsNullOrEmpty(waiterId))
                     throw new Exception(Resources.Dictionary.GetString("Waiter_PinNotValid"));
 
@@ -51,7 +52,7 @@ namespace Os.Server.Logic
             // login over waiter selection
             else
             {
-                var validWaiter = Nt.Database.DB.Api.Waiter.ValidWaiter(loginUser.Id, loginUser.Password);
+                var validWaiter = Task.Run(async () => await Nt.Database.DB.Api.Waiter.ValidWaiter(loginUser.Id, loginUser.Password)).Result;
                 if (!validWaiter)
                     throw new Exception(Resources.Dictionary.GetString("Waiter_IdPasswordNotValid"));
 
@@ -59,7 +60,7 @@ namespace Os.Server.Logic
             }
 
             Nt.Database.DB.Api.Waiter.Login(session);
-            var permissions = Nt.Database.DB.Api.Waiter.GetPermissions(loginUser.Id);
+            var permissions = Task.Run(async () => await Nt.Database.DB.Api.Waiter.GetPermissions(loginUser.Id)).Result;
             session.SetPermissions(permissions);
             Image.RemoveImages(session);
             Fiscal.CheckSystem(session);
