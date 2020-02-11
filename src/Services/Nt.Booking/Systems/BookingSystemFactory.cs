@@ -18,7 +18,7 @@ namespace Nt.Booking.Systems
                     var SVSTimeOut = 5;
                     var SVSUsername = "Username";
                     var SVSPassword = "secretPassword";
-                    return new SVS_viaFactory(SVSLocation, SVSUsername, SVSPassword, SVSTimeOut);
+                    return new SVS(SVSLocation, SVSUsername, SVSPassword, SVSTimeOut);
                 default:
                     throw new Exception("couldn't find a corresponding booking system for " + configuration.BookingSystem);
             }

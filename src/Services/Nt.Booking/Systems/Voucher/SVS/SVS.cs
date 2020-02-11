@@ -1,25 +1,18 @@
-﻿using System;
+﻿using Nt.Booking.Models;
+using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
-using Nt.Booking.Models;
 
 namespace Nt.Booking.Systems.Voucher.SVS
 {
-    public class SVS : BookingSystemBase
+    public class SVS : IBookingSystem
     {
         private SvsSoapClient svsSoapClient;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="uri">uri of the svs endpoint eg. https://webservices-cert.storedvalue.com/svsxml/v1/services/SVSXMLWay </param>
-        /// <param name="username">username for the svs service</param>
-        /// <param name="password">password for the svs service</param>
-        /// <param name="timeout">timeout in seconds for opening or closing a connection, sending request, receiving a response</param>
+        public NtBooking.BookingSystemType Type { get => NtBooking.BookingSystemType.SVS; }
+
         public SVS(string uri, string username, string password, int timeout)
         {
-            Type = NtBooking.BookingSystemType.SVS;
             var timespan = new TimeSpan(0, 0, timeout);
             //
             var binding = new System.ServiceModel.BasicHttpBinding(System.ServiceModel.BasicHttpSecurityMode.Transport);
@@ -37,7 +30,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             //
         }
 
-        public override async Task<BookingResponse> Cancel(CancellationRequest cancellationRequest)
+        public async Task<BookingResponse> Cancel(CancellationRequest cancellationRequest)
         {
             var response = new BookingResponse();
 
@@ -64,7 +57,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             return response;
         }
 
-        public override async Task<InformationResponse> GetMediumInformation(string mediumId)
+        public async Task<InformationResponse> GetMediumInformation(string mediumId)
         {
             var response = new InformationResponse();
 
@@ -88,7 +81,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             {
                 //var svsResponse = await svsSoapClient.networkAsync(svsRequest);
             }
-            catch(System.ServiceModel.FaultException ex)
+            catch (System.ServiceModel.FaultException ex)
             {
                 ThrowSvsException(ex);
             }
@@ -96,12 +89,12 @@ namespace Nt.Booking.Systems.Voucher.SVS
             return response;
         }
 
-        public override async Task<List<InformationResponse>> GetMediumInformation()
+        public Task<List<InformationResponse>> GetMediumInformation()
         {
             throw new NotImplementedException();
         }
 
-        public override async Task<Models.BookingResponse> Pay(Models.PaymentRequest paymentRequest)
+        public async Task<BookingResponse> Pay(PaymentRequest paymentRequest)
         {
             var response = new BookingResponse();
 
@@ -132,7 +125,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             switch (ex.Code.Name)
             {
                 case "InvalidSecurityToken":
-                    throw new BookingException(ex.Message, StatusCodes.Status401Unauthorized, Type, ex.Message, ex.Code.Name, null);
+                    throw new BookingException(ex.Message, Microsoft.AspNetCore.Http.StatusCodes.Status401Unauthorized, Type, ex.Message, ex.Code.Name, null);
             }
 
             //throw fault exception

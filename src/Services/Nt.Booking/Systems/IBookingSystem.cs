@@ -5,7 +5,7 @@ namespace Nt.Booking.Systems
 {
     public interface IBookingSystem
     {
-        public NtBooking.BookingSystemType Type { get; set; }
+        public NtBooking.BookingSystemType Type { get; }
 
         public Task<Models.InformationResponse> GetMediumInformation(string mediumId);
 

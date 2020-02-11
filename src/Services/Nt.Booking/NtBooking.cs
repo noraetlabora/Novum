@@ -19,8 +19,6 @@ namespace Nt.Booking
         }
 
         public static ServerConfiguration ServerConfiguration { get; private set; }
-
-        //public static Systems.BookingSystemBase BookingSystem { get; private set; }
         public static IBookingSystem BookingSystem;
 
         private static string serverConfigFile = AppDomain.CurrentDomain.BaseDirectory + @"\Nt.Booking.config.json";
@@ -33,7 +31,7 @@ namespace Nt.Booking
                 //TODO: GetConfig();
                 //TODO: delete start
                 ServerConfiguration = new ServerConfiguration();
-                ServerConfiguration.BookingSystem = BookingSystemType.ExSI;
+                ServerConfiguration.BookingSystem = BookingSystemType.SVS;
                 ServerConfiguration.Port = 5000;
                 ServerConfiguration.Address = "https://webservices-cert.storedvalue.com/svsxml/v1/services/SVSXMLWay";
                 ServerConfiguration.Username = "Testuser";

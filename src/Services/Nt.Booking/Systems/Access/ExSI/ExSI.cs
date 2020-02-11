@@ -12,7 +12,7 @@ namespace Nt.Booking.Systems.Access
         {
         }
 
-        public NtBooking.BookingSystemType Type { get => NtBooking.BookingSystemType.ExSI; set => throw new NotImplementedException(); }
+        public NtBooking.BookingSystemType Type { get => NtBooking.BookingSystemType.ExSI; }
 
         Task<BookingResponse> IBookingSystem.Cancel(CancellationRequest cancellationRequest)
         {
