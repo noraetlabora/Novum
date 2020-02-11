@@ -106,7 +106,7 @@ namespace Os.Server
             var sb = new StringBuilder();
             sb.Append("Client Request ").Append("|");
             sb.Append(serialNumber).Append("|");
-            sb.Append(request.HttpContext.Connection.Id).Append("|");
+            sb.Append(request.HttpContext.TraceIdentifier).Append("|");
             sb.Append(request.Method.Substring(0, 3)).Append("|");
             sb.Append(request.Path.Value).Append(request.QueryString).Append("|");
             sb.Append(json);
@@ -128,7 +128,7 @@ namespace Os.Server
             var sb = new StringBuilder();
             sb.Append("Server Response").Append("|");
             sb.Append(serialNumber).Append("|");
-            sb.Append(response.HttpContext.Connection.Id).Append("|");
+            sb.Append(response.HttpContext.TraceIdentifier).Append("|");
             sb.Append(response.StatusCode).Append("|");
             sb.Append(response.HttpContext.Request.Path.Value).Append("|");
             if (json.Length > 500)
