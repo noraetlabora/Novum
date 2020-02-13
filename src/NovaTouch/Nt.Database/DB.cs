@@ -75,6 +75,9 @@ namespace Nt.Database
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void CheckConnection()
         {
             foreach (var xepEventPersister in xepEventPersisters)
@@ -130,6 +133,7 @@ namespace Nt.Database
                         break;
                 }
             }
+            Logging.Log.Database.Debug(string.Format("connections active {0}, idle {1}, inUse {2}", IRISPoolManager.ActiveConnectionCount, IRISPoolManager.IdleCount(), IRISPoolManager.InUseCount()));
         }
 
         /// <summary>
@@ -181,8 +185,7 @@ namespace Nt.Database
             try
             {
                 Logging.Log.Database.Info("opening database connection");
-                Logging.Log.Database.Info(string.Format("open {0}/{1}/{2}", IRISPoolManager.ActiveConnectionCount, IRISPoolManager.IdleCount(), IRISPoolManager.InUseCount()));
-
+                
                 foreach (var xepEventPersister in xepEventPersisters)
                 {
                     xepEventPersister.Connect(connectionString);}
@@ -194,7 +197,6 @@ namespace Nt.Database
 
                 Logging.Log.Database.Info("database connection are open");
                 Logging.Log.Database.Info("active connection count = " + IRISPoolManager.ActiveConnectionCount);
-                Logging.Log.Database.Info("idle   connection count = " + IRISPoolManager.IdleCount());
                 Logging.Log.Database.Info("in use connection count = " + IRISPoolManager.InUseCount());
             }
             catch (Exception ex)
