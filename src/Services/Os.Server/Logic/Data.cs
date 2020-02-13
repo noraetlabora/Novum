@@ -78,6 +78,11 @@ namespace Os.Server.Logic
             return osCancellationReasons;
         }
 
+        internal static string GetClientId()
+        {
+            return Nt.Database.DB.Api.Pos.GetClientId();
+        }
+
         #endregion
 
         #region Course

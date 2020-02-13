@@ -20,8 +20,8 @@ namespace Nt.Services.UserControls
     public partial class OrderSolutions : UserControl
     {
         private const string novOsServiceName = "Novacom OrderSolution Server";
-        private string osServerConfigurationFile = AppDomain.CurrentDomain.BaseDirectory + @"\OrderSolution\Os.Server.config.json";
-        private string osClientConfigurationFile = AppDomain.CurrentDomain.BaseDirectory + @"\OrderSolution\Os.Client.config.json";
+        private string osServerConfigurationFile = AppDomain.CurrentDomain.BaseDirectory + @"OrderSolution\Os.Server.config.json";
+        private string osClientConfigurationFile = AppDomain.CurrentDomain.BaseDirectory + @"OrderSolution\Os.Client.config.json";
 
         public OrderSolutions()
         {
@@ -163,6 +163,7 @@ namespace Nt.Services.UserControls
             txtDbNamespace.IsEnabled = true;
             txtDbUser.IsEnabled = true;
             txtDbPassword.IsEnabled = true;
+            cmbDbConnections.IsEnabled = true;
             txtOsServerPort.IsEnabled = true;
             txtOsClientIp.IsEnabled = true;
             txtOsClientPort.IsEnabled = true;
@@ -182,6 +183,7 @@ namespace Nt.Services.UserControls
             txtDbNamespace.IsEnabled = false;
             txtDbUser.IsEnabled = false;
             txtDbPassword.IsEnabled = false;
+            cmbDbConnections.IsEnabled = false;
             txtOsServerPort.IsEnabled = false;
             txtOsClientIp.IsEnabled = false;
             txtOsClientPort.IsEnabled = false;
@@ -204,6 +206,7 @@ namespace Nt.Services.UserControls
                 osServerConfiguration.DatabaseNamespace = txtDbNamespace.Text;
                 osServerConfiguration.DatabaseUser = txtDbUser.Text;
                 osServerConfiguration.DatabasePassword = Nt.Util.Encryption.EncryptString(txtDbPassword.Password);
+                osServerConfiguration.DatabaseConnections = uint.Parse(cmbDbConnections.Text);
 
                 osServerConfiguration.OsServerPort = uint.Parse(txtOsServerPort.Text);
                 osServerConfiguration.OsClientIp = txtOsClientIp.Text;
@@ -305,6 +308,8 @@ namespace Nt.Services.UserControls
                 txtDbNamespace.Text = osServerConfiguration.DatabaseNamespace;
                 txtDbUser.Text = osServerConfiguration.DatabaseUser;
                 txtDbPassword.Password = Nt.Util.Encryption.DecryptString(osServerConfiguration.DatabasePassword);
+                cmbDbConnections.Text = osServerConfiguration.DatabaseConnections.ToString();
+                cmbAuthenticationMode.Text = osServerConfiguration.DatabaseConnections.ToString();
                 txtOsServerPort.Text = osServerConfiguration.OsServerPort.ToString();
                 txtOsClientIp.Text = osServerConfiguration.OsClientIp;
                 txtOsClientPort.Text = osServerConfiguration.OsClientPort.ToString();

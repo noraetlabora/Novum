@@ -29,6 +29,8 @@ namespace Nt.Database.Api.InterSystems
 
         internal static async Task<DataTable> GetDataTable(string sql)
         {
+            var startTicks = DateTime.Now.Ticks;
+
             var dataTable = new DataTable();
             var stackTrace = new System.Diagnostics.StackTrace();
             var traceIdCaller = (uint)DateTime.Now.Ticks.GetHashCode() + "|" + stackTrace.GetFrame(1).GetMethod().Name;
@@ -43,12 +45,6 @@ namespace Nt.Database.Api.InterSystems
             }
             catch (Exception ex)
             {
-                if (DB.Connection.State == ConnectionState.Closed ||
-                    DB.Connection.State == ConnectionState.Broken)
-                {
-                    Logging.Log.Database.Error(ex, traceIdCaller + "|SQL|no connection to database");
-                    throw new Exception(Resources.Dictionary.GetString("DB_NoConnection"));
-                }
                 Logging.Log.Database.Error(ex, traceIdCaller + "|SQL|" + sql);
                 throw ex;
             }
@@ -183,19 +179,12 @@ namespace Nt.Database.Api.InterSystems
 
             try
             {
-                Object returnValue = await Task.Run(()=> DB.Xep.CallClassMethod(className, methodName, args));
+                Object returnValue = await Task.Run(()=> DB.XepEventPersister.CallClassMethod(className, methodName, args));
                 Logging.Log.Database.Debug(traceIdCaller + "|ClassMethodReturnValue|" + returnValue.ToString());
                 return returnValue.ToString();
             }
             catch (Exception ex)
             {
-                if (DB.Connection.State == ConnectionState.Closed ||
-                    DB.Connection.State == ConnectionState.Broken)
-                {
-                    Logging.Log.Database.Error(ex, traceIdCaller + "|ClassMethod|no connection to database");
-                    throw new Exception(Resources.Dictionary.GetString("DB_NoConnection"));
-                }
-
                 Logging.Log.Database.Error(ex, traceIdCaller + "|ClassMethod|" + classMethod);
                 throw ex;
             }
@@ -274,17 +263,11 @@ namespace Nt.Database.Api.InterSystems
 
             try
             {
-                await Task.Run(() => DB.Xep.CallVoidClassMethod(className, methodName, args));
+                await Task.Run(() => DB.XepEventPersister.CallVoidClassMethod(className, methodName, args));
                 Logging.Log.Database.Debug(traceIdCaller + "|VoidClassMethod|success");
             }
             catch (Exception ex)
             {
-                if (DB.Connection.State == ConnectionState.Closed ||
-                    DB.Connection.State == ConnectionState.Broken)
-                {
-                    Logging.Log.Database.Error(ex, traceIdCaller + "|VoidClassMethod|no connection to database");
-                    throw new Exception(Resources.Dictionary.GetString("DB_NoConnection"));
-                }
                 Logging.Log.Database.Error(ex, traceIdCaller + "|VoidClassMethod|" + classMethod);
                 throw ex;
             }

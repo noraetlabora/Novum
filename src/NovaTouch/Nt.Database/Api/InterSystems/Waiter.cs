@@ -94,7 +94,7 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="session"></param>
         public async Task Login(Nt.Data.Session session)
         {
-            var posId = DB.Api.Pos.GetPosId(session.SerialNumber);
+            var posId = await DB.Api.Pos.GetPosId(session.SerialNumber);
             await Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogin", session.ClientId, posId, session.WaiterId);
             await Interaction.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", Api.ClientId, posId, session.WaiterId, session.SerialNumber, "1");
         }
@@ -105,7 +105,7 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="session"></param>
         public async Task Logout(Nt.Data.Session session)
         {
-            var posId = DB.Api.Pos.GetPosId(session.SerialNumber);
+            var posId = await DB.Api.Pos.GetPosId(session.SerialNumber);
             await Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogout", session.ClientId, posId, session.WaiterId);
         }
 

@@ -12,7 +12,7 @@ namespace Nt.Database.Api
         /// 
         /// </summary>
         /// <returns></returns>
-        Task <string> GetClientId();
+        string GetClientId();
 
         /// <summary>
         /// 

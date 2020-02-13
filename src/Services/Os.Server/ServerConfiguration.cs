@@ -31,6 +31,10 @@
         /// <value></value>
         public string DatabasePassword { get; set; }
         /// <summary>
+        /// 
+        /// </summary>
+        public uint DatabaseConnections { get; set; }
+        /// <summary>
         /// port in default.json flag "posAdapterUrl"
         /// </summary>
         public uint OsServerPort { get; set; }
@@ -56,9 +60,11 @@
             DatabaseNamespace = "";
             DatabaseUser = "";
             DatabasePassword = "";
+            DatabaseConnections = 1;
             OsServerPort = 5000;
             OsClientIp = "localhost";
             OsClientPort = 5001;
+
         }
 
         public ServerConfiguration(string json)
@@ -82,6 +88,7 @@
                 builder.Append("<not set>");
             else
                 builder.Append("<set>");
+            builder.Append(", dbConn=").Append(DatabaseConnections);
             builder.Append(", osSPrt=").Append(OsServerPort);
             builder.Append(", osCIp=").Append(OsClientIp);
             builder.Append(", osCPrt=").Append(OsClientPort);

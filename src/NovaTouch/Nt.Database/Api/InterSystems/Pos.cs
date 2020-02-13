@@ -16,9 +16,9 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public async Task<string> GetClientId()
+        public string GetClientId()
         {
-            return await Interaction.CallClassMethod("cmNT.Kassa", "GetOmanFirma");
+            return Api.ClientId;
         }
 
         /// <summary>
