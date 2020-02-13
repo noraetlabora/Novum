@@ -27,31 +27,8 @@ namespace Nt.Database
         }
 
         private static string connectionString;
-        private static List<IRISConnection> dbConnections;
         private static List<EventPersister> xepEventPersisters;
         private static Api.InterSystems.Api api;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        internal static IRISConnection Connection
-        {
-            get
-            {
-                while (true)
-                {
-                    foreach (var dbConnection in dbConnections)
-                    {
-                        if (dbConnection.State == ConnectionState.Open)
-                        {
-                            return dbConnection;
-                        }
-                    }
-                    Logging.Log.Database.Debug("no free dbConnection available - retrying");
-                }
-            }
-        }
 
         /// <summary>
         /// 
@@ -70,7 +47,7 @@ namespace Nt.Database
                             return xepEventPersister;
                         }
                     }
-                    Logging.Log.Database.Debug("no free xepEventPersister available - retrying");
+                    Logging.Log.Database.Info("no free xepEventPersister available - retrying");
                 }
             }
         }
@@ -105,35 +82,8 @@ namespace Nt.Database
                         break;
                 }
             }
-
-            foreach (var dbConnection in dbConnections)
-            {
-                switch (dbConnection.State)
-                {
-                    case System.Data.ConnectionState.Closed:
-                        Nt.Logging.Log.Database.Warn("DatabaseService: connection is closed");
-                        dbConnection.Close();
-                        dbConnection.ConnectionString = connectionString;
-                        dbConnection.Open();
-                        break;
-                    case System.Data.ConnectionState.Broken:
-                        Nt.Logging.Log.Database.Warn("DatabaseService: connection is broken");
-                        dbConnection.Close();
-                        dbConnection.ConnectionString = connectionString;
-                        dbConnection.Open();
-                        break;
-                    case System.Data.ConnectionState.Connecting:
-                        Nt.Logging.Log.Database.Info("DatabaseService: connection is connecting");
-                        break;
-                    case System.Data.ConnectionState.Executing:
-                        Nt.Logging.Log.Database.Info("DatabaseService: connection is executing");
-                        break;
-                    case System.Data.ConnectionState.Fetching:
-                        Nt.Logging.Log.Database.Info("DatabaseService: connection is fetching");
-                        break;
-                }
-            }
-            Logging.Log.Database.Debug(string.Format("connections active {0}, idle {1}, inUse {2}", IRISPoolManager.ActiveConnectionCount, IRISPoolManager.IdleCount(), IRISPoolManager.InUseCount()));
+            
+            Logging.Log.Database.Info(string.Format("connections active {0}, idle {1}, inUse {2}", IRISPoolManager.ActiveConnectionCount, IRISPoolManager.IdleCount(), IRISPoolManager.InUseCount()));
         }
 
         /// <summary>
@@ -163,13 +113,6 @@ namespace Nt.Database
             {
                 xepEventPersisters.Add(PersisterFactory.CreatePersister());
             }
-
-            Logging.Log.Database.Info("creating InterSystems IRISConnection");
-            dbConnections = new List<IRISConnection>();
-            for (int i = 0; i < connectionCount; i++)
-            {
-                dbConnections.Add(new IRISConnection());
-            }
         }
 
         /*******************************************************/
@@ -188,11 +131,7 @@ namespace Nt.Database
                 
                 foreach (var xepEventPersister in xepEventPersisters)
                 {
-                    xepEventPersister.Connect(connectionString);}
-                foreach (var dbConnection in dbConnections)
-                {
-                    dbConnection.ConnectionString = connectionString;
-                    dbConnection.Open();
+                    xepEventPersister.Connect(connectionString);
                 }
 
                 Logging.Log.Database.Info("database connection are open");
@@ -210,54 +149,24 @@ namespace Nt.Database
         /// <summary>
         /// 
         /// </summary>
-        public ConnectionState State
-        {
-            get { return dbConnections[0].State; }
-        }
-        /// <summary>
-        /// 
-        /// </summary>
         public void Close()
         {
             try
             {
                 Logging.Log.Database.Info("closing database connection");
+
                 foreach (var xepEventPersister in xepEventPersisters)
                 {
                     xepEventPersister.Close();
                 }
-                foreach (var dbConnection in dbConnections)
-                {
-                    dbConnection.Close();
-                }
+
                 Logging.Log.Database.Info("database connection is closed");
             }
             catch (Exception ex)
             {
                 Logging.Log.Database.Error(ex, "could not close database connection");
             }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public IDbTransaction BeginTransaction(int index)
-        {
-            return dbConnections[index].BeginTransaction();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="isolevel"></param>
-        /// <returns></returns>
-        public IDbTransaction BeginTransaction(int index, IsolationLevel isolevel)
-        {
-            return dbConnections[index].BeginTransaction(isolevel);
-        }
+        }       
 
         /// <summary>
         /// 
@@ -279,7 +188,7 @@ namespace Nt.Database
         /// <value></value>
         public int ConnectionTimeout
         {
-            get { return dbConnections[0].ConnectionTimeout; }
+            get { return 0;  }
         }
 
         /// <summary>
@@ -287,7 +196,15 @@ namespace Nt.Database
         /// </summary>
         public string Database
         {
-            get { return dbConnections[0].Database; }
+            get { return "";  }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ConnectionState State
+        {
+            get { return ConnectionState.Open; }
         }
 
         /// <summary>
@@ -315,6 +232,27 @@ namespace Nt.Database
         /// <param name="isolationLevel"></param>
         /// <returns></returns>
         public IDbTransaction BeginTransaction(IsolationLevel isolationLevel)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public IDbTransaction BeginTransaction(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="isolevel"></param>
+        /// <returns></returns>
+        public IDbTransaction BeginTransaction(int index, IsolationLevel isolevel)
         {
             throw new NotImplementedException();
         }

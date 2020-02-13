@@ -38,7 +38,8 @@ namespace Nt.Database.Api.InterSystems
 
             try
             {
-                var dataAdapter = new IRISDataAdapter(sql, DB.Connection);
+                var adoConnection = (IRISADOConnection)DB.XepEventPersister.GetAdoNetConnection();
+                var dataAdapter = new IRISDataAdapter(sql, adoConnection);
                 dataTable = new DataTable();
                 await Task.Run(() => dataAdapter.Fill(dataTable));
                 Logging.Log.Database.Debug(traceIdCaller + "|SQLRowCount|" + dataTable.Rows.Count);

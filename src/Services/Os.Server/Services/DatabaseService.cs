@@ -30,9 +30,6 @@ namespace Os.Server.Services
 
             Nt.Logging.Log.Server.Info("database connection is open");
 
-            if (Nt.Database.DB.Instance.State != System.Data.ConnectionState.Open)
-                throw new Exception("database connection is not open");
-
             _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(20));
             return Task.CompletedTask;
         }
