@@ -14,9 +14,9 @@ namespace Os.Server.Logic
         /// <param name="posId"></param>
         /// <param name="serialNumber"></param>
         /// <returns></returns>
-        public static object GetProvider(Nt.Data.Session session)
+        public static async Task<object> GetProvider(Nt.Data.Session session)
         {
-            var fiscalProvider = Task.Run(async () => await Nt.Database.DB.Api.Fiscal.GetProvider(session)).Result;
+            var fiscalProvider = await Nt.Database.DB.Api.Fiscal.GetProvider(session);
             if (fiscalProvider == null)
                 Nt.Logging.Log.Server.Error(string.Format("no fiscal provider found for {0}, {1}, {2}", session.ClientId, session.PosId, session.SerialNumber));
             else
@@ -29,9 +29,9 @@ namespace Os.Server.Logic
         /// 
         /// </summary>
         /// <param name="session"></param>
-        public static void CheckSystem(Nt.Data.Session session)
+        public static async Task CheckSystem(Nt.Data.Session session)
         {
-            var statusString = Task.Run(async () => await Nt.Database.DB.Api.Fiscal.CheckSystem(session)).Result;
+            var statusString = await Nt.Database.DB.Api.Fiscal.CheckSystem(session);
 
             if (!string.IsNullOrEmpty(statusString))
                 Nt.Logging.Log.Server.Info(statusString);

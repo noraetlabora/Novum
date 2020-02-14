@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Os.Server.Controllers
 {
@@ -18,12 +19,12 @@ namespace Os.Server.Controllers
         /// <response code="201"></response>
         [HttpPost]
         [Route("/api/v2/actions/orderLines/add/{subTableId}")]
-        public IActionResult AddOrderLines([FromRoute][Required] string subTableId, [FromBody][Required] Models.OrderLineAdd data)
+        public async Task<IActionResult> AddOrderLines([FromRoute][Required] string subTableId, [FromBody][Required] Models.OrderLineAdd data)
         {
             try
             {
                 var session = Sessions.GetSession(Request);
-                var orderLineResult = Logic.Order.Add(session, subTableId, data);
+                var orderLineResult = await Logic.Order.Add(session, subTableId, data);
                 //201 - Created
                 return new CreatedResult("/api/v2/actions/orderLines/add/", orderLineResult);
             }
@@ -42,12 +43,12 @@ namespace Os.Server.Controllers
         /// <response code="201">OrderLineResult informing about the new ids / prices of the modified orderline.</response>
         [HttpPost]
         [Route("/api/v2/actions/orderLines/modifyUncommitted/{orderLineId}")]
-        public IActionResult ModifyOrderLinesUncommitted([FromRoute][Required] string orderLineId, [FromBody][Required] Models.OrderLineModify data)
+        public async Task<IActionResult> ModifyOrderLinesUncommitted([FromRoute][Required] string orderLineId, [FromBody][Required] Models.OrderLineModify data)
         {
             try
             {
                 var session = Sessions.GetSession(Request);
-                var orderLineResult = Logic.Order.Modify(session, orderLineId, data);
+                var orderLineResult = await Logic.Order.Modify(session, orderLineId, data);
                 //201 - Created
                 return new CreatedResult("/api/v2/actions/orderLines/modifyUncommitted/" + orderLineResult.Id, orderLineResult);
             }
@@ -66,7 +67,7 @@ namespace Os.Server.Controllers
         /// <response code="201"></response>
         [HttpPost]
         [Route("/api/v2/actions/orderLines/split/{orderLineId}")]
-        public virtual IActionResult OrderLinesSplit([FromRoute][Required]string orderLineId, [FromBody]Models.OrderLineSplit data)
+        public async Task<IActionResult> OrderLinesSplit([FromRoute][Required]string orderLineId, [FromBody]Models.OrderLineSplit data)
         {
             try
             {
@@ -90,12 +91,12 @@ namespace Os.Server.Controllers
         /// <response code="201">OrderLineResult informing about the new ids / prices of the modified orderline.</response>
         [HttpPost]
         [Route("/api/v2/actions/orderLines/void/{orderLineId}")]
-        public virtual IActionResult VoidOrderLines([FromRoute][Required] string orderLineId, [FromBody][Required] Models.OrderLineVoid data)
+        public async Task<IActionResult> VoidOrderLinesAsync([FromRoute][Required] string orderLineId, [FromBody][Required] Models.OrderLineVoid data)
         {
             try
             {
                 var session = Sessions.GetSession(Request);
-                var voidResult = Logic.Order.Void(session, orderLineId, data);
+                var voidResult = await Logic.Order.Void(session, orderLineId, data);
                 // 204 - No Content - delete Orderline
                 if (voidResult.Quantity <= 0)
                     return new NoContentResult();

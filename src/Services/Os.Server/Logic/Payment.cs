@@ -19,7 +19,7 @@ namespace Os.Server.Logic
         /// </summary>
         /// <param name="session"></param>
         /// <param name="data"></param>
-        public static void PaySubTables(Nt.Data.Session session, Models.PaySubTables data)
+        public static async Task PaySubTables(Nt.Data.Session session, Models.PaySubTables data)
         {
             if (data.SubTableIds == null || data.SubTableIds.Count < 1)
                 throw new Exception("no sub tables");
@@ -32,15 +32,15 @@ namespace Os.Server.Logic
 
             //order lines
             var tableId = data.SubTableIds[0];
-            var ntOrders = Task.Run(async () => await Nt.Database.DB.Api.Order.GetOrders(tableId)).Result;
+            var ntOrders = await Nt.Database.DB.Api.Order.GetOrders(tableId);
             //payment information
             var ntPaymentInformation = new Nt.Data.PaymentInformation();
             ntPaymentInformation.PrinterId = data.Printer;
             //payment methods
-            List<PaymentMethod> ntPaymentMethods = GetNtPaymentMethods(data.Payments, data.Tip);
+            List<PaymentMethod> ntPaymentMethods = await GetNtPaymentMethods(data.Payments, data.Tip);
 
             //pay
-            var ntPaymentResult = Task.Run(async () => await Nt.Database.DB.Api.Payment.Pay(session, tableId, ntOrders.Values.ToList(), ntPaymentMethods, ntPaymentInformation));
+            var ntPaymentResult = await Nt.Database.DB.Api.Payment.Pay(session, tableId, ntOrders.Values.ToList(), ntPaymentMethods, ntPaymentInformation);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Os.Server.Logic
         /// </summary>
         /// <param name="session"></param>
         /// <param name="data"></param>
-        public static void PayOrderLines(Nt.Data.Session session, Models.PayOrderLines data)
+        public static async Task PayOrderLines(Nt.Data.Session session, Models.PayOrderLines data)
         {
             if (data.Payments == null || data.Payments.Count < 1)
                 throw new Exception("no payments");
@@ -73,17 +73,17 @@ namespace Os.Server.Logic
             var ntPaymentInformation = new Nt.Data.PaymentInformation();
             ntPaymentInformation.PrinterId = data.Printer;
             //payment methods
-            List<PaymentMethod> ntPaymentMethods = GetNtPaymentMethods(data.Payments, data.Tip);
+            List<PaymentMethod> ntPaymentMethods = await GetNtPaymentMethods(data.Payments, data.Tip);
             //orders
-            List<Nt.Data.Order> ntOrders = GetNtOrders(data, tableId);
+            List<Nt.Data.Order> ntOrders = await GetNtOrders(data, tableId);
             //pay
             var ntPaymentResult = Nt.Database.DB.Api.Payment.Pay(session, tableId, ntOrders, ntPaymentMethods, ntPaymentInformation);
         }
 
-        private static List<Nt.Data.Order> GetNtOrders(Models.PayOrderLines data, string tableId)
+        private static async Task<List<Nt.Data.Order>> GetNtOrders(Models.PayOrderLines data, string tableId)
         {
             //orderlines
-            var ntAllOrders = Task.Run(async () => await Nt.Database.DB.Api.Order.GetOrders(tableId)).Result;
+            var ntAllOrders = await Nt.Database.DB.Api.Order.GetOrders(tableId);
             var ntOrders = new List<Nt.Data.Order>();
             foreach (var orderLineQuantity in data.PaidLines)
             {
@@ -107,9 +107,8 @@ namespace Os.Server.Logic
         /// <param name="session"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static Models.PreAuthResult PreAuthorize(Session session, Models.PreAuthData data)
+        public static async Task<Models.PreAuthResult> PreAuthorize(Session session, Models.PreAuthData data)
         {
-
             var preAuthResult = new Models.PreAuthResult();
             var preAuthMedium = new Models.PreAuthMedium();
             var paymentMethod = new Nt.Data.PaymentMethod();
@@ -122,7 +121,7 @@ namespace Os.Server.Logic
                 {
                     switch (line.Key) {
                         case "ROOM":
-                            var room = Task.Run(async () => await Nt.Database.DB.Api.Hotel.GetRoom(session, paymentType.PartnerId, line.Value)).Result;
+                            var room = await Nt.Database.DB.Api.Hotel.GetRoom(session, paymentType.PartnerId, line.Value);
                             if (room == null)
                                 throw new Exception("Zimmer " + line.Value + " nicht gefunden");
                             //set up dialog
@@ -204,7 +203,7 @@ namespace Os.Server.Logic
             throw new Exception("payment method must be a payment type or an assignment type: " + paymentMediumId.ToString());
         }
 
-        private static List<PaymentMethod> GetNtPaymentMethods(List<Models.Payment> osPayments, int? tip)
+        private static async Task<List<PaymentMethod>> GetNtPaymentMethods(List<Models.Payment> osPayments, int? tip)
         {
             var ntPaymentMethods = new List<Nt.Data.PaymentMethod>();
 

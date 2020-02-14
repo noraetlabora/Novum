@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Os.Server.Controllers
 {
@@ -17,7 +18,7 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/images/fax/{id}")]
-        public IActionResult GetFaxImage([FromRoute][Required] string id)
+        public async Task<IActionResult> GetFaxImage([FromRoute][Required] string id)
         {
             try
             {
@@ -40,7 +41,7 @@ namespace Os.Server.Controllers
         [HttpPut]
         [Route("/api/v2/images/fax/{id}")]
         [ObsoleteAttribute("PUT /api/v2/images/fax/{id} is obsolete, use POST instead", true)]
-        public IActionResult PutFaxImage([FromRoute][Required] string id)
+        public async Task<IActionResult> PutFaxImage([FromRoute][Required] string id)
         {
             Nt.Logging.Log.Server.Error("PUT /api/v2/images/fax/{id} is obsolete, use POST instead");
             //400 - Not Found
@@ -56,7 +57,7 @@ namespace Os.Server.Controllers
         /// <response code="403"></response>
         [HttpPost]
         [Route("/api/v2/images/fax")]
-        public IActionResult PostFaxImage([FromQuery] string subTableId)
+        public async Task<IActionResult> PostFaxImage([FromQuery] string subTableId)
         {
             try
             {

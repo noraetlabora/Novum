@@ -38,7 +38,7 @@ namespace Nt.Booking.Controllers
         /// <response code="400"></response>
         [HttpGet]
         [Route("/api/v1/mediums/{mediumId}")]
-        public virtual async Task<IActionResult> GetMediumAsync([FromRoute][Required]string mediumId)
+        public async Task<IActionResult> GetMediumAsync([FromRoute][Required]string mediumId)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Nt.Booking.Controllers
         /// <response code="400"></response>
         [HttpGet]
         [Route("/api/v1/mediums/")]
-        public virtual IActionResult GetMediums()
+        public async Task<IActionResult> GetMediums()
         {
             try
             {
@@ -92,11 +92,11 @@ namespace Nt.Booking.Controllers
         /// <response code="200"></response>
         [HttpPost]
         [Route("/api/v1/mediums/{mediumId}/payments")]
-        public virtual IActionResult MediumPayment([FromRoute][Required]string mediumId, [FromBody]Models.PaymentRequest paymentRequest)
+        public async Task<IActionResult> MediumPayment([FromRoute][Required]string mediumId, [FromBody]Models.PaymentRequest paymentRequest)
         {
             try
             {
-                var booking = NtBooking.BookingSystem.Pay(paymentRequest);
+                var booking = await NtBooking.BookingSystem.Pay(paymentRequest);
                 return new ObjectResult(booking);
             }
             catch (BookingException ex)
@@ -117,11 +117,11 @@ namespace Nt.Booking.Controllers
         /// <response code="200"></response>
         [HttpPost]
         [Route("/api/v1/mediums/{mediumId}/cancellations")]
-        public virtual IActionResult MediumCancellation([FromRoute][Required]string mediumId, [FromBody]Models.CancellationRequest cancellationRequest)
+        public async Task<IActionResult> MediumCancellation([FromRoute][Required]string mediumId, [FromBody]Models.CancellationRequest cancellationRequest)
         {
             try
             {
-                var booking = NtBooking.BookingSystem.Cancel(cancellationRequest);
+                var booking = await NtBooking.BookingSystem.Cancel(cancellationRequest);
                 return new ObjectResult(booking);
             }
             catch (BookingException ex)

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Os.Server.Controllers
 {
@@ -18,12 +19,12 @@ namespace Os.Server.Controllers
         /// <response code="401"></response>
         [HttpPost]
         [Route("/api/v2/actions/auth/login")]
-        public IActionResult AuthLogin([FromBody][Required] Models.LoginUser loginUser)
+        public async Task<IActionResult> AuthLogin([FromBody][Required] Models.LoginUser loginUser)
         {
             var session = Sessions.GetSession(Request);
             try
             {
-                Logic.Registration.Login(session, loginUser);
+                await Logic.Registration.Login(session, loginUser);
                 //204 - No Content
                 return new NoContentResult();
             }
@@ -39,7 +40,7 @@ namespace Os.Server.Controllers
         /// <response code="204"></response>
         [HttpPost]
         [Route("/api/v2/actions/auth/logout")]
-        public IActionResult AuthLogout()
+        public async Task<IActionResult> AuthLogout()
         {
             try
             {
@@ -63,22 +64,22 @@ namespace Os.Server.Controllers
         /// <response code="412"></response>
         [HttpPost]
         [Route("/api/v2/actions/init/registerClient")]
-        public IActionResult InitRegisterClient([FromBody][Required] Models.ClientInfo clientInfo)
+        public async Task<IActionResult> InitRegisterClient([FromBody][Required] Models.ClientInfo clientInfo)
         {
             try
             {
                 var session = Sessions.GetSession(Request);
                 if (session == null)
                 {
-                    Logic.Registration.CheckDevice(clientInfo.Id);
+                    await Logic.Registration.CheckDevice(clientInfo.Id);
                     session = new Nt.Data.Session();
                     session.SerialNumber = clientInfo.Id;
                     session.ClientId = Logic.Data.GetClientId();
-                    session.PosId = Logic.Data.GetPosId(clientInfo.Id);
-                    session.ServiceAreaId = Logic.Data.GetServiceAreaId(session.PosId);
-                    session.PriceLevel = Logic.Data.GetPriceLevel(session.ServiceAreaId);
+                    session.PosId = await Logic.Data.GetPosId(clientInfo.Id);
+                    session.ServiceAreaId = await Logic.Data.GetServiceAreaId(session.PosId);
+                    session.PriceLevel = await Logic.Data.GetPriceLevel(session.ServiceAreaId);
                     session.Printer = clientInfo.PrinterPath;
-                    session.FiscalProvider = Logic.Fiscal.GetProvider(session);
+                    session.FiscalProvider = await Logic.Fiscal.GetProvider(session);
                     Sessions.SetSession(session);
                 }
                 session.WaiterId = "";
@@ -104,7 +105,7 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpPost]
         [Route("/api/v2/actions/init/registerGateway")]
-        public IActionResult InitRegisterGateway([FromBody][Required] Models.GatewayInfo gatewayInfo)
+        public async Task<IActionResult> InitRegisterGateway([FromBody][Required] Models.GatewayInfo gatewayInfo)
         {
             try
             {
@@ -132,7 +133,7 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpPost]
         [Route("/api/v2/actionButtonHandler/refresh")]
-        public virtual IActionResult ActionButtonHandlerRefresh([FromBody]Models.ActionButtonRequestData data)
+        public async Task<IActionResult> ActionButtonHandlerRefresh([FromBody]Models.ActionButtonRequestData data)
         {
             throw new NotImplementedException("/api/v2/actionButtonHandler/refresh is not yet implemented");
         }

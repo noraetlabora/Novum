@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 
 namespace Os.Server.Controllers
 {
@@ -22,7 +23,7 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/hostStatus")]
-        public IActionResult GetHostStatus()
+        public async Task<IActionResult> GetHostStatus()
         {
             try
             {

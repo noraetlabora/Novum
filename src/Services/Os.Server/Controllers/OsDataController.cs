@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Os.Server.Controllers
 {
@@ -17,7 +18,7 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/data/articles")]
-        public IActionResult GetArticles()
+        public async Task<IActionResult> GetArticles()
         {
             try
             {
@@ -37,11 +38,11 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/data/cancellationReasons")]
-        public IActionResult GetCancellationReasons()
+        public async Task<IActionResult> GetCancellationReasons()
         {
             try
             {
-                var osCReasons = Logic.Data.GetCancellationReasons();
+                var osCReasons = await Logic.Data.GetCancellationReasons();
                 return new ObjectResult(osCReasons);
             }
             catch (Exception ex)
@@ -56,7 +57,7 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/data/categories")]
-        public IActionResult GetCategories()
+        public async Task<IActionResult> GetCategories()
         {
             try
             {
@@ -76,11 +77,11 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/data/modifierGroups")]
-        public IActionResult GetModifierGroups()
+        public async Task<IActionResult> GetModifierGroups()
         {
             try
             {
-                var modifierGroups = Logic.Data.GetModifierGroups();
+                var modifierGroups = await Logic.Data.GetModifierGroups();
                 return new ObjectResult(modifierGroups);
             }
             catch (Exception ex)
@@ -95,7 +96,7 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/data/osConfiguration")]
-        public IActionResult GetOsConfiguration()
+        public async Task<IActionResult> GetOsConfiguration()
         {
             try
             {
@@ -139,12 +140,12 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/data/paymentMedia")]
-        public IActionResult GetPaymentMedia()
+        public async Task<IActionResult> GetPaymentMedia()
         {
             try
             {
-                var paymentMedia = Logic.Data.GetPaymentMedia();
-                Nt.Database.DB.Api.Misc.SetSnapshotTime(Controllers.OsHostController.PosStatus.SessionId);
+                var paymentMedia = await Logic.Data.GetPaymentMedia();
+                await Nt.Database.DB.Api.Misc.SetSnapshotTime(Controllers.OsHostController.PosStatus.SessionId);
                 return new ObjectResult(paymentMedia);
             }
             catch (Exception ex)
@@ -159,11 +160,11 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/data/printers")]
-        public IActionResult GetPrinters()
+        public async Task<IActionResult> GetPrinters()
         {
             try
             {
-                var printers = Logic.Printer.GetPrinters();
+                var printers = await Logic.Printer.GetPrinters();
                 return new ObjectResult(printers);
             }
             catch (Exception ex)
@@ -178,11 +179,11 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/data/serviceAreas")]
-        public IActionResult GetServiceAreas()
+        public async Task<IActionResult> GetServiceAreas()
         {
             try
             {
-                var serviceAreas = Logic.Data.GetServiceAreas();
+                var serviceAreas = await Logic.Data.GetServiceAreas();
                 return new OkObjectResult(serviceAreas);
             }
             catch (Exception ex)
@@ -197,11 +198,11 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/data/users")]
-        public IActionResult GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
             try
             {
-                var users = Logic.Data.GetUsers();
+                var users = await Logic.Data.GetUsers();
                 return new ObjectResult(users);
             }
             catch (Exception ex)
@@ -218,12 +219,12 @@ namespace Os.Server.Controllers
         /// <response code="200">Orderlines with their unpaid quantity/price</response>
         [HttpGet]
         [Route("/api/v2/data/orderLines")]
-        public IActionResult GetOrderLines([FromQuery] string subTableId, [FromQuery] string status)
+        public async Task<IActionResult> GetOrderLines([FromQuery] string subTableId, [FromQuery] string status)
         {
             try
             {
                 var session = Sessions.GetSession(Request);
-                var orderLines = Logic.Order.GetOrderLines(session, subTableId);
+                var orderLines = await Logic.Order.GetOrderLines(session, subTableId);
                 return new ObjectResult(orderLines);
             }
             catch (Exception ex)
@@ -239,12 +240,12 @@ namespace Os.Server.Controllers
         /// <response code="200">open tables array</response>
         [HttpGet]
         [Route("/api/v2/data/tables")]
-        public IActionResult GetTables([FromQuery] string serviceAreaId)
+        public async Task<IActionResult> GetTables([FromQuery] string serviceAreaId)
         {
             try
             {
                 var session = Sessions.GetSession(Request);
-                var tables = Logic.Table.GetTables(session);
+                var tables = await Logic.Table.GetTables(session);
                 return new ObjectResult(tables);
             }
             catch (Exception ex)
@@ -259,11 +260,11 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/data/courses")]
-        public virtual IActionResult CoursesGet()
+        public async Task<IActionResult>CoursesGet()
         {
             try
             {
-                var courses = Logic.Data.GetCourses();
+                var courses = await Logic.Data.GetCourses();
                 return new ObjectResult(courses);
             }
             catch (Exception ex)
@@ -278,7 +279,7 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/data/guestTypes")]
-        public virtual IActionResult GuestTypesGet()
+        public async Task<IActionResult>GuestTypesGet()
         {
             try
             {

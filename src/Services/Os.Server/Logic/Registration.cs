@@ -17,7 +17,7 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static Models.RegisterClientResponse RegisterClient(Nt.Data.Session session, Models.ClientInfo clientData)
         {
-            CheckDevice(clientData.Id);
+            _ =  CheckDevice(clientData.Id);
 
             var registerClientResponse = new Models.RegisterClientResponse();
             registerClientResponse.ClientName = "Orderman";
@@ -26,9 +26,9 @@ namespace Os.Server.Logic
             return registerClientResponse;
         }
 
-        public static void CheckDevice(string serialNumber)
+        public static async Task CheckDevice(string serialNumber)
         {
-            var posId = Task.Run(async () => await Nt.Database.DB.Api.Pos.GetPosId(serialNumber)).Result;
+            var posId = await Nt.Database.DB.Api.Pos.GetPosId(serialNumber);
             if (string.IsNullOrEmpty(posId))
                 throw new Exception(string.Format(Resources.Dictionary.GetString("Device_NotValid"), serialNumber));
         }
@@ -38,12 +38,12 @@ namespace Os.Server.Logic
         /// </summary>
         /// <param name="session"></param>
         /// <param name="loginUser"></param>
-        public static void Login(Nt.Data.Session session, Models.LoginUser loginUser)
+        public static async Task Login(Nt.Data.Session session, Models.LoginUser loginUser)
         {
             // login over pin
             if (string.IsNullOrEmpty(loginUser.Password))
             {
-                var waiterId = Task.Run(async () => await Nt.Database.DB.Api.Waiter.GetWaiterId(loginUser.Id)).Result;
+                var waiterId = await Nt.Database.DB.Api.Waiter.GetWaiterId(loginUser.Id);
                 if (string.IsNullOrEmpty(waiterId))
                     throw new Exception(Resources.Dictionary.GetString("Waiter_PinNotValid"));
 
@@ -52,27 +52,27 @@ namespace Os.Server.Logic
             // login over waiter selection
             else
             {
-                var validWaiter = Task.Run(async () => await Nt.Database.DB.Api.Waiter.ValidWaiter(loginUser.Id, loginUser.Password)).Result;
+                var validWaiter = await Nt.Database.DB.Api.Waiter.ValidWaiter(loginUser.Id, loginUser.Password);
                 if (!validWaiter)
                     throw new Exception(Resources.Dictionary.GetString("Waiter_IdPasswordNotValid"));
 
                 session.WaiterId = loginUser.Id;
             }
 
-            Nt.Database.DB.Api.Waiter.Login(session);
-            var permissions = Task.Run(async () => await Nt.Database.DB.Api.Waiter.GetPermissions(loginUser.Id)).Result;
+            await Nt.Database.DB.Api.Waiter.Login(session);
+            var permissions = await Nt.Database.DB.Api.Waiter.GetPermissions(loginUser.Id);
             session.SetPermissions(permissions);
             Image.RemoveImages(session);
-            Fiscal.CheckSystem(session);
+            await Fiscal.CheckSystem(session);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
-        public static void Logout(Nt.Data.Session session)
+        public static async Task Logout(Nt.Data.Session session)
         {
-            Nt.Database.DB.Api.Waiter.Logout(session);
+            await Nt.Database.DB.Api.Waiter.Logout(session);
             Image.RemoveImages(session);
         }
     }

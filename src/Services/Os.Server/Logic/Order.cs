@@ -18,10 +18,10 @@ namespace Os.Server.Logic
         /// <param name="session"></param>
         /// <param name="subTableId"></param>
         /// <returns></returns>
-        public static List<Models.OrderLine> GetOrderLines(Nt.Data.Session session, string subTableId)
+        public static async Task<List<Models.OrderLine>> GetOrderLines(Nt.Data.Session session, string subTableId)
         {
             var osOrderLines = new List<Models.OrderLine>();
-            var ntOrders = Task.Run(async () => await Nt.Database.DB.Api.Order.GetOrders(subTableId)).Result;
+            var ntOrders = await Nt.Database.DB.Api.Order.GetOrders(subTableId);
             //committed
             foreach (var ntOrder in ntOrders.Values)
             {
@@ -48,7 +48,7 @@ namespace Os.Server.Logic
         /// <param name="subTableId"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static Models.OrderLineResult Add(Nt.Data.Session session, string subTableId, Models.OrderLineAdd data)
+        public static async Task<Models.OrderLineResult> Add(Nt.Data.Session session, string subTableId, Models.OrderLineAdd data)
         {
             if (session.CurrentTable == null)
                 throw new Exception(Resources.Dictionary.GetString("Table_NotFound"));
@@ -56,16 +56,16 @@ namespace Os.Server.Logic
             var osOrderLineResult = new Models.OrderLineResult();
 
             if (data.EnteredPrice != null)
-                Task.Run(async () => await Nt.Database.DB.Api.Article.CheckEnteredPrice(session, data.ArticleId, decimal.Divide((decimal)data.EnteredPrice, 100.0m)));
+                await Nt.Database.DB.Api.Article.CheckEnteredPrice(session, data.ArticleId, decimal.Divide((decimal)data.EnteredPrice, 100.0m));
 
-            var ntOrder = Task.Run(async () => await Nt.Database.DB.Api.Order.GetNewOrder(session, data.ArticleId)).Result;
+            var ntOrder = await Nt.Database.DB.Api.Order.GetNewOrder(session, data.ArticleId);
             ntOrder.Quantity = (decimal)data.Quantity;
 
             if (data.EnteredPrice != null)
                 ntOrder.UnitPrice = decimal.Divide((decimal)data.EnteredPrice, 100.0m);
 
             if (data.Modifiers != null)
-                SetModifiers(session, ntOrder, data.Modifiers);
+                await SetModifiers(session, ntOrder, data.Modifiers);
 
             session.AddOrder(ntOrder);
             osOrderLineResult.Id = ntOrder.Id;
@@ -81,7 +81,7 @@ namespace Os.Server.Logic
         /// <param name="orderLineId"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static Models.OrderLineVoidResult Void(Nt.Data.Session session, string orderLineId, Models.OrderLineVoid data)
+        public static async Task<Models.OrderLineVoidResult> Void(Nt.Data.Session session, string orderLineId, Models.OrderLineVoid data)
         {
             if (session.CurrentTable == null)
                 throw new Exception(Resources.Dictionary.GetString("Table_NotOpen"));
@@ -90,7 +90,7 @@ namespace Os.Server.Logic
             var ntOrder = session.GetOrder(orderLineId);
             if (ntOrder == null)
             {
-                var ntOrders = Task.Run(async () => await Nt.Database.DB.Api.Order.GetOrders(session.CurrentTable.Id)).Result;
+                var ntOrders = await Nt.Database.DB.Api.Order.GetOrders(session.CurrentTable.Id);
                 if (!ntOrders.ContainsKey(orderLineId))
                     throw new Exception(Resources.Dictionary.GetString("Order_NotFound"));
                 ntOrder = ntOrders[orderLineId];
@@ -106,7 +106,7 @@ namespace Os.Server.Logic
                     }
                         
                     var price = decimal.Multiply((decimal)data.Quantity, ntOrder.UnitPrice);
-                    Nt.Database.DB.Api.Order.VoidNewOrder(session, session.CurrentTable.Id, ntOrder.ArticleId, (decimal)data.Quantity, price, ntOrder.AssignmentTypeId, "");
+                    await Nt.Database.DB.Api.Order.VoidNewOrder(session, session.CurrentTable.Id, ntOrder.ArticleId, (decimal)data.Quantity, price, ntOrder.AssignmentTypeId, "");
                     session.VoidOrder(orderLineId, (decimal)data.Quantity);
                     break;
                 case Nt.Data.Order.OrderStatus.Prebooked:
@@ -116,7 +116,7 @@ namespace Os.Server.Logic
                         throw new Exception(Resources.Dictionary.GetString("Order_VoidNotAllowed"));
                     }
 
-                    Nt.Database.DB.Api.Order.VoidPrebookedOrder(session, session.CurrentTable.Id, (decimal)data.Quantity, ntOrder.SequenceNumber, "");
+                    await Nt.Database.DB.Api.Order.VoidPrebookedOrder(session, session.CurrentTable.Id, (decimal)data.Quantity, ntOrder.SequenceNumber, "");
                     break;
                 case Nt.Data.Order.OrderStatus.Ordered:
                     if (session.NotPermitted(Nt.Data.Permission.PermissionType.CancelConfirmedOrder))
@@ -125,7 +125,7 @@ namespace Os.Server.Logic
                         throw new Exception(Resources.Dictionary.GetString("Order_VoidNotAllowed"));
                     }
 
-                    Nt.Database.DB.Api.Order.VoidOrderedOrder(session, session.CurrentTable.Id, ntOrder, (decimal)data.Quantity, data.CancellationReasonId, "");
+                    await Nt.Database.DB.Api.Order.VoidOrderedOrder(session, session.CurrentTable.Id, ntOrder, (decimal)data.Quantity, data.CancellationReasonId, "");
                     break;
             }
 
@@ -147,7 +147,7 @@ namespace Os.Server.Logic
         /// <param name="orderLineId"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static Models.OrderLineResult Modify(Nt.Data.Session session, string orderLineId, Models.OrderLineModify data)
+        public static async Task<Models.OrderLineResult> Modify(Nt.Data.Session session, string orderLineId, Models.OrderLineModify data)
         {
             if (session.CurrentTable == null)
                 throw new Exception(Resources.Dictionary.GetString("Table_NotOpen"));
@@ -158,7 +158,7 @@ namespace Os.Server.Logic
             var ntOrder = session.GetOrder(orderLineId);
 
             var osOrderLineResult = new Models.OrderLineResult();
-            osOrderLineResult.Modifiers = SetModifiers(session, ntOrder, data.Modifiers);
+            osOrderLineResult.Modifiers = await SetModifiers(session, ntOrder, data.Modifiers);
             osOrderLineResult.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100.0m);
             osOrderLineResult.Id = ntOrder.Id;
 
@@ -170,12 +170,12 @@ namespace Os.Server.Logic
         /// </summary>
         /// <param name="session"></param>
         /// <param name="tableId"></param>
-        public static void CancelOrder(Nt.Data.Session session, string tableId)
+        public static async Task CancelOrder(Nt.Data.Session session, string tableId)
         {
             if (session.CurrentTable == null)
                 throw new Exception(Resources.Dictionary.GetString("Table_NotOpen"));
 
-            Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);
+            await Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);
             session.ClearOrders();
         }
 
@@ -184,7 +184,7 @@ namespace Os.Server.Logic
         /// </summary>
         /// <param name="session"></param>
         /// <param name="tableId"></param>
-        public static void FinalizeOrder(Nt.Data.Session session, string tableId)
+        public static async Task FinalizeOrder(Nt.Data.Session session, string tableId)
         {
             var subTableOrders = new List<Nt.Data.Order>();
             var lastSubTableId = "";
@@ -193,7 +193,7 @@ namespace Os.Server.Logic
             {
                 if (order.TableId != lastSubTableId)
                 {
-                    Nt.Database.DB.Api.Order.FinalizeOrder(session, subTableOrders, lastSubTableId);
+                    await Nt.Database.DB.Api.Order.FinalizeOrder(session, subTableOrders, lastSubTableId);
                     subTableOrders = new List<Nt.Data.Order>();
                 }
 
@@ -201,8 +201,8 @@ namespace Os.Server.Logic
                 lastSubTableId = order.TableId;
             }
             //
-            Nt.Database.DB.Api.Order.FinalizeOrder(session, subTableOrders, lastSubTableId);
-            Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);
+            await Nt.Database.DB.Api.Order.FinalizeOrder(session, subTableOrders, lastSubTableId);
+            await Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);
             session.ClearOrders();
             Image.RemoveImages(session);
         }
@@ -301,7 +301,7 @@ namespace Os.Server.Logic
             return osOrderLine;
         }
 
-        private static List<Models.OrderLineResultModifier> SetModifiers(Nt.Data.Session session, Nt.Data.Order ntOrder, List<Models.OrderLineModifier> osOrderLineModifiers)
+        private static async Task<List<Models.OrderLineResultModifier>> SetModifiers(Nt.Data.Session session, Nt.Data.Order ntOrder, List<Models.OrderLineModifier> osOrderLineModifiers)
         {
             var osOrderLineResultModifiers = new List<Models.OrderLineResultModifier>();
             ntOrder.ClearModifiers();
@@ -318,7 +318,7 @@ namespace Os.Server.Logic
 
                     foreach (var osOrderLineModifierChoice in osOrderLineModifier.Choices)
                     {
-                        var ntModifier = Task.Run(async () => await Nt.Database.DB.Api.Modifier.GetModifier(session, osOrderLineModifierChoice.ModifierChoiceId, 1.0m)).Result;
+                        var ntModifier = await Nt.Database.DB.Api.Modifier.GetModifier(session, osOrderLineModifierChoice.ModifierChoiceId, 1.0m);
                         ntModifier.MenuId = osOrderLineModifier.ModifierGroupId;
                         ntOrder.AddModifier(ntModifier);
 

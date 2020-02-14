@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Os.Server.Controllers
 {
@@ -17,13 +18,13 @@ namespace Os.Server.Controllers
         /// <response code="201"></response>
         [HttpPost]
         [Route("/api/v2/actions/subTables/create")]
-        public virtual IActionResult CreateSubTable([FromQuery] string tableId)
+        public async Task<IActionResult> CreateSubTable([FromQuery] string tableId)
         {
             try
             {
                 var session = Sessions.GetSession(Request);
                 //register client
-                var subTable = Logic.Table.CreateSubTable(session, tableId);
+                var subTable = await Logic.Table.CreateSubTable(session, tableId);
                 //201 - Created
                 return new CreatedResult("/api/v2/actions/subTables/create", subTable);
             }
@@ -40,12 +41,12 @@ namespace Os.Server.Controllers
         /// <response code="200">On success the new/updated data of the target table. This is the same result as from a call to tables/openByName.</response>
         [HttpPost]
         [Route("/api/v2/actions/subTables/move")]
-        public virtual IActionResult SubTablesMove([FromBody]Models.MoveSubtables data)
+        public async Task<IActionResult>SubTablesMove([FromBody]Models.MoveSubtables data)
         {
             try
             {
                 var session = Sessions.GetSession(Request);
-                var moveResult = Logic.Table.MoveSubTable(session, data);
+                var moveResult = await Logic.Table.MoveSubTable(session, data);
                 //200 - Ok
                 return new OkObjectResult(moveResult);
             }
@@ -65,7 +66,7 @@ namespace Os.Server.Controllers
         /// <response code="201">New table opened.</response>
         [HttpPost]
         [Route("/api/v2/actions/tables/openByName/{name}")]
-        public IActionResult OpenTableByName([FromRoute][Required] string name, [FromQuery] string serviceAreaId, [FromQuery] bool? prePayment)
+        public async Task<IActionResult> OpenTableByName([FromRoute][Required] string name, [FromQuery] string serviceAreaId, [FromQuery] bool? prePayment)
         {
             try
             {
@@ -73,7 +74,7 @@ namespace Os.Server.Controllers
 
                 if (prePayment == null)
                     prePayment = false;
-                var tableResult = Logic.Table.OpenByName(session, name, serviceAreaId, (bool)prePayment);
+                var tableResult = await Logic.Table.OpenByName(session, name, serviceAreaId, (bool)prePayment);
                 //201 - Created
                 //return new CreatedResult("Tables/OpenByName", tableResult);
                 //200 - Ok
@@ -95,12 +96,12 @@ namespace Os.Server.Controllers
         /// <response code="409">Conflict</response>
         [HttpPost]
         [Route("/api/v2/actions/tables/finalizeOrder/{tableId}")]
-        public virtual IActionResult FinalizeTableOrder([FromRoute][Required] string tableId)
+        public async Task<IActionResult> FinalizeTableOrder([FromRoute][Required] string tableId)
         {
             try
             {
                 var session = Sessions.GetSession(Request);
-                Logic.Order.FinalizeOrder(session, tableId);
+                await Logic.Order.FinalizeOrder(session, tableId);
                 //204 - No Content
                 return new NoContentResult();
                 //401 - Unauthorized
@@ -124,12 +125,12 @@ namespace Os.Server.Controllers
         /// <response code="409">Conflict</response>
         [HttpPost]
         [Route("/api/v2/actions/tables/cancelOrder/{tableId}")]
-        public virtual IActionResult CancelOrder([FromRoute][Required] string tableId)
+        public async Task<IActionResult> CancelOrder([FromRoute][Required] string tableId)
         {
             try
             {
                 var session = Sessions.GetSession(Request);
-                Logic.Order.CancelOrder(session, tableId);
+                await Logic.Order.CancelOrder(session, tableId);
                 //204 - No Content
                 return new NoContentResult();
                 //401 - Unauthorized
@@ -155,7 +156,7 @@ namespace Os.Server.Controllers
         /// <response code="409"></response>
         [HttpPatch]
         [Route("/api/v2/actions/tables/modifyProperties/{tableId}")]
-        public virtual IActionResult TablesModifyProperties([FromRoute][Required]string tableId, [FromBody]Models.TableProperties newProperties)
+        public async Task<IActionResult> TablesModifyProperties([FromRoute][Required]string tableId, [FromBody]Models.TableProperties newProperties)
         {
             try
             {
@@ -181,7 +182,7 @@ namespace Os.Server.Controllers
         /// <response code="200">New course added</response>
         [HttpPost]
         [Route("/api/v2/actions/tables/addCourse/{tableId}")]
-        public virtual IActionResult TablesAddCourse([FromRoute][Required]string tableId, [FromBody]Models.AddCourseData data)
+        public async Task<IActionResult> TablesAddCourse([FromRoute][Required]string tableId, [FromBody]Models.AddCourseData data)
         {
             try
             {

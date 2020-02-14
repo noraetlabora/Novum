@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Os.Server.Controllers
 {
@@ -17,13 +18,13 @@ namespace Os.Server.Controllers
         /// <response code="204">OK in case the payment was successfull and the receipt is moved to the printer queue.</response>
         [HttpPost]
         [Route("/api/v2/actions/pay/subTables")]
-        public virtual IActionResult PaySubTables([FromBody][Required] Models.PaySubTables data)
+        public async Task<IActionResult> PaySubTables([FromBody][Required] Models.PaySubTables data)
         {
             try
             {
                 var session = Sessions.GetSession(Request);
-                Logic.Payment.PaySubTables(session, data);
-                Logic.Printer.Print(session);
+                await Logic.Payment.PaySubTables(session, data);
+                await Logic.Printer.Print(session);
                 // 204 - No Content 
                 return new NoContentResult();
             }
@@ -43,12 +44,12 @@ namespace Os.Server.Controllers
         /// <response code="409"></response>
         [HttpPost]
         [Route("/api/v2/actions/pay/preAuthorize")]
-        public virtual IActionResult PayPreAuthorize([FromBody]Models.PreAuthData data)
+        public async Task<IActionResult> PayPreAuthorize([FromBody]Models.PreAuthData data)
         {
             try
             {
                 var session = Sessions.GetSession(Request);
-                var authorizationResult = Logic.Payment.PreAuthorize(session, data);
+                var authorizationResult = await Logic.Payment.PreAuthorize(session, data);
                 // 204 - No Content 
                 return new ObjectResult(authorizationResult);
             }
@@ -65,13 +66,13 @@ namespace Os.Server.Controllers
         /// <response code="204"></response>
         [HttpPost]
         [Route("/api/v2/actions/pay/orderLines")]
-        public IActionResult PayOrderLines([FromBody] Models.PayOrderLines data)
+        public async Task<IActionResult> PayOrderLines([FromBody] Models.PayOrderLines data)
         {
             try
             {
                 var session = Sessions.GetSession(Request);
-                Logic.Payment.PayOrderLines(session, data);
-                Logic.Printer.Print(session);
+                await Logic.Payment.PayOrderLines(session, data);
+                await Logic.Printer.Print(session);
                 // 204 - No Content 
                 return new NoContentResult();
             }
