@@ -26,7 +26,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT UMENU, bez, spalten ");
             sql.Append(" FROM NT.TouchUmenu ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            var dataTable = await Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -49,7 +49,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public async Task<string> GetMenuId(string posId)
         {
-            return await Interaction.CallClassMethod("cmNT.Kassa", "GetTouchMenu", Api.ClientId, posId, "0");
+            return await Intersystems.Instance.CallClassMethod("cmNT.Kassa", "GetTouchMenu", Api.ClientId, posId, "0");
         }
 
         /// <summary>
@@ -65,8 +65,8 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" FROM  NT.TouchMenuZeile M ");
             sql.Append(" INNER JOIN NT.TouchUmenu UM ON UM.FA = M.FA AND UM.UMENU = M.UMENU ");
             sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
-            sql.Append(" AND M.MENU = ").Append(Interaction.SqlQuote(menuId));
-            var dataTable = await Interaction.GetDataTable(sql.ToString());
+            sql.Append(" AND M.MENU = ").Append(Intersystems.SqlQuote(menuId));
+            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -99,7 +99,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" , cmNT.BonTouch_GetArtikelTouchBezeichnung(A.FA,'RK',A.UMENU,A.ROW, A.COL,0,1) As name");
             sql.Append(" FROM NT.TouchUMenuZeilen A ");
             sql.Append(" WHERE A.FA = ").Append(Api.ClientId);
-            var dataTable = await Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {

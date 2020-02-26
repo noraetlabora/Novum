@@ -25,7 +25,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns>Returns the mode (fiscalization = 0, no fiscalization = 1,2) as string.</returns>
         public Task<string> GetMode(Data.Session session)
         {
-            return Interaction.CallClassMethod("cmNT.Fiskal", "GetFiskalModus", session.ClientId, session.PosId);
+            return Intersystems.Instance.CallClassMethod("cmNT.Fiskal", "GetFiskalModus", session.ClientId, session.PosId);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns>Returns the modul version (VB6 = 1, .NET = 2).</returns>
         public Task<string> GetModulVersion(Data.Session session)
         {
-            return Interaction.CallClassMethod("cmNT.Fiskal", "GetFiskalModulV", session.ClientId);
+            return Intersystems.Instance.CallClassMethod("cmNT.Fiskal", "GetFiskalModulV", session.ClientId);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public async Task<string> GetServiceType(Data.Session session)
         {
-            return await Interaction.CallClassMethod("cmNT.Fiskal", "GetProvider", session.ClientId);
+            return await Intersystems.Instance.CallClassMethod("cmNT.Fiskal", "GetProvider", session.ClientId);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public async Task<string> GetConfiguration(Data.Session session)
         {
-            return await Interaction.CallClassMethod("cmNT.Fiskal", "GetConfig", session.ClientId, session.PosId, string.Empty);
+            return await Intersystems.Instance.CallClassMethod("cmNT.Fiskal", "GetConfig", session.ClientId, session.PosId, string.Empty);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public Task<string> GetClient(Data.Session session)
         {
-            return Interaction.CallClassMethod("cmNT.Fiskal", "GetMandant", session.ClientId);
+            return Intersystems.Instance.CallClassMethod("cmNT.Fiskal", "GetMandant", session.ClientId);
         }
 
 
@@ -78,7 +78,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public async Task<string> GetUser(Data.Session session)
         {
-            return await Interaction.CallClassMethod("cmNT.Fiskal", "GetBediener", session.ClientId, session.PosId, session.WaiterId);
+            return await Intersystems.Instance.CallClassMethod("cmNT.Fiskal", "GetBediener", session.ClientId, session.PosId, session.WaiterId);
         }
 
         /// <summary>
@@ -235,7 +235,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         private Task<string> GetData(Session session, string ordersDataString, string paymentMethodsDataString, string paymentBillDataString)
         {
-            return Interaction.CallClassMethod("cmNT.AbrOman2", "GetFiskalDaten", session.ClientId, session.PosId, session.WaiterId, session.CurrentTable.Id, ordersDataString, session.PriceLevel, paymentBillDataString, paymentMethodsDataString, "", "1");
+            return Intersystems.Instance.CallClassMethod("cmNT.AbrOman2", "GetFiskalDaten", session.ClientId, session.PosId, session.WaiterId, session.CurrentTable.Id, ordersDataString, session.PriceLevel, paymentBillDataString, paymentMethodsDataString, "", "1");
         }
 
         private string GetReceiptNumber(string data)
@@ -255,7 +255,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         private Task<string> RollbackData(Nt.Data.Session session, string tableId, string ordersStringData, string paymentMethodsStringData, string paymentBillStringData, string paymentOptionStringData)
         {
-            return Interaction.CallClassMethod("cmNT.AbrOman2", "RollbackFiskalDaten", session.ClientId, session.PosId, session.WaiterId, tableId, ordersStringData, session.PriceLevel, paymentBillStringData, paymentMethodsStringData, paymentOptionStringData);
+            return Intersystems.Instance.CallClassMethod("cmNT.AbrOman2", "RollbackFiskalDaten", session.ClientId, session.PosId, session.WaiterId, tableId, ordersStringData, session.PriceLevel, paymentBillStringData, paymentMethodsStringData, paymentOptionStringData);
         }
 
         #endregion

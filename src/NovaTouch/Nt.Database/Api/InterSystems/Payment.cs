@@ -26,8 +26,8 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT IKA, bez, prg, druanz, unterschrift, Copa ");
             sql.Append(" FROM NT.Zahlart ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
-            var dataTable = await Interaction.GetDataTable(sql.ToString());
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -65,7 +65,7 @@ namespace Nt.Database.Api.InterSystems
                 fiscalResultString = fiscalResult.ToDtoString();
             
             //actual payment in database
-            var dbString = await Interaction.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersDataString, paymentBillDataString, paymentMethodsDataString, paymentOptionDataString, "", "", "", "", "", fiscalResultString);
+            var dbString = await Intersystems.Instance.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersDataString, paymentBillDataString, paymentMethodsDataString, paymentOptionDataString, "", "", "", "", "", fiscalResultString);
 
             if (dbString.StartsWith("FM"))
             {
@@ -94,8 +94,8 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT VA, bez, unterschrift ");
             sql.Append(" FROM WW.VA ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
-            var dataTable = await Interaction.GetDataTable(sql.ToString());
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {

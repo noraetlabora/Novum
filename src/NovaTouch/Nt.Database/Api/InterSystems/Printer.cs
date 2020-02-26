@@ -25,7 +25,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND DEV LIKE 'RD%' ");
             sql.Append(" AND pas = 0");
-            var dataTable = await Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -39,6 +39,7 @@ namespace Nt.Database.Api.InterSystems
                     printers.Add(printer.Id, printer);
             }
 
+            dataTable.Dispose();
             return printers;
         }
 
@@ -49,7 +50,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public async Task<string> GetPrintJobId(Nt.Data.Session session)
         {
-            return await Interaction.CallClassMethod("cmNT.OmPrint", "GetNextAuftrag", session.ClientId, session.SerialNumber);
+            return await Intersystems.Instance.CallClassMethod("cmNT.OmPrint", "GetNextAuftrag", session.ClientId, session.SerialNumber);
         }
 
 
@@ -61,7 +62,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public async Task<List<string>> GetPrintData(Nt.Data.Session session, string printJobId)
         {
-            var printData = await Interaction.CallClassMethod("cmNT.OmPrint", "GetAuftrag", session.ClientId, session.SerialNumber, printJobId);
+            var printData = await Intersystems.Instance.CallClassMethod("cmNT.OmPrint", "GetAuftrag", session.ClientId, session.SerialNumber, printJobId);
             var printDataString = new DataString(printData);
             return new List<string>(printDataString.SplitByCRLF());
         }
@@ -73,7 +74,7 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="printJobId"></param>
         public async Task DeletePrintJobId(Nt.Data.Session session, string printJobId)
         {
-            await Interaction.CallVoidClassMethod("cmNT.OmPrint", "SetAuftragFertig", session.ClientId, session.SerialNumber, printJobId);
+            await Intersystems.Instance.CallVoidClassMethod("cmNT.OmPrint", "SetAuftragFertig", session.ClientId, session.SerialNumber, printJobId);
         }
     }
 }

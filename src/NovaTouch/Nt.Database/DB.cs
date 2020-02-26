@@ -12,79 +12,34 @@ namespace Nt.Database
     /// </summary>
     public class DB : IDbConnection
     {
-        private static readonly Lazy<DB> lazy = new Lazy<DB>(() => new DB());
-
+        //private static readonly Lazy<DB> lazy = new Lazy<DB>(() => new DB()); 
         /// <summary>
         /// Singelton Design Pattern (http://csharpindepth.com/Articles/Singleton#lazy)
         /// </summary>
         /// <value></value>
-        public static DB Instance { get { return lazy.Value; } }
+        //public static DB Instance { get { return lazy.Value; } }
+        public static DB Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new DB();
+                return _instance;
+            }
+        }
+
+        private static DB _instance = null;
+        private Api.InterSystems.Intersystems database;
+
         private DB()
         {
             Resources.Dictionary.Initialize("de-AT");
             Logging.Log.Database.Info("creating InterSystems API");
+            database = Nt.Database.Api.InterSystems.Intersystems.Instance;
             api = new Api.InterSystems.Api();
         }
 
-        private static string connectionString;
-        private static List<EventPersister> xepEventPersisters;
         private static Api.InterSystems.Api api;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        internal static EventPersister XepEventPersister
-        {
-            get
-            {
-                while (true)
-                {
-                    foreach (var xepEventPersister in xepEventPersisters)
-                    {
-                        if (xepEventPersister.GetAdoNetConnection().State == ConnectionState.Open)
-                        {
-                            return xepEventPersister;
-                        }
-                    }
-                    Logging.Log.Database.Info("no free xepEventPersister available - retrying");
-                }
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void CheckConnection()
-        {
-            foreach (var xepEventPersister in xepEventPersisters)
-            {
-                switch (xepEventPersister.GetAdoNetConnection().State)
-                {
-                    case System.Data.ConnectionState.Closed:
-                        Nt.Logging.Log.Database.Warn("DatabaseService: connection is closed");
-                        xepEventPersister.Close();
-                        xepEventPersister.Connect(connectionString);
-                        break;
-                    case System.Data.ConnectionState.Broken:
-                        Nt.Logging.Log.Database.Warn("DatabaseService: connection is broken");
-                        xepEventPersister.Close();
-                        xepEventPersister.Connect(connectionString);
-                        break;
-                    case System.Data.ConnectionState.Connecting:
-                        Nt.Logging.Log.Database.Info("DatabaseService: connection is connecting");
-                        break;
-                    case System.Data.ConnectionState.Executing:
-                        Nt.Logging.Log.Database.Info("DatabaseService: connection is executing");
-                        break;
-                    case System.Data.ConnectionState.Fetching:
-                        Nt.Logging.Log.Database.Info("DatabaseService: connection is fetching");
-                        break;
-                }
-            }
-            
-            Logging.Log.Database.Info(string.Format("connections active {0}, idle {1}, inUse {2}", IRISPoolManager.ActiveConnectionCount, IRISPoolManager.IdleCount(), IRISPoolManager.InUseCount()));
-        }
 
         /// <summary>
         /// 
@@ -101,18 +56,15 @@ namespace Nt.Database
         /// <param name="connectionCount"></param>
         public void Initialize(uint connectionCount = 1)
         {
-            if (connectionCount < 1)
-            {
-                Logging.Log.Database.Error("database needs at least one connection");
-                throw new Exception("database needs at least one connection");
-            }
+            database.Initialize(connectionCount);
+        }
 
-            Logging.Log.Database.Info("creating InterSystems XepEventPersister");
-            xepEventPersisters = new List<EventPersister>();
-            for (int i = 0; i < connectionCount; i++)
-            {
-                xepEventPersisters.Add(PersisterFactory.CreatePersister());
-            }
+        /// <summary>
+        /// 
+        /// </summary>
+        public void CheckConnection()
+        {
+            database.CheckConnection();
         }
 
         /*******************************************************/
@@ -125,24 +77,7 @@ namespace Nt.Database
         /// </summary>
         public void Open()
         {
-            try
-            {
-                Logging.Log.Database.Info("opening database connection");
-                
-                foreach (var xepEventPersister in xepEventPersisters)
-                {
-                    xepEventPersister.Connect(connectionString);
-                }
-
-                Logging.Log.Database.Info("database connection are open");
-                Logging.Log.Database.Info("active connection count = " + IRISPoolManager.ActiveConnectionCount);
-                Logging.Log.Database.Info("in use connection count = " + IRISPoolManager.InUseCount());
-            }
-            catch (Exception ex)
-            {
-                Logging.Log.Database.Fatal(ex, "could not open database connection");
-                throw ex;
-            }
+            database.Open();
             api.Initialize();
         }
 
@@ -151,21 +86,7 @@ namespace Nt.Database
         /// </summary>
         public void Close()
         {
-            try
-            {
-                Logging.Log.Database.Info("closing database connection");
-
-                foreach (var xepEventPersister in xepEventPersisters)
-                {
-                    xepEventPersister.Close();
-                }
-
-                Logging.Log.Database.Info("database connection is closed");
-            }
-            catch (Exception ex)
-            {
-                Logging.Log.Database.Error(ex, "could not close database connection");
-            }
+            database.Close();
         }       
 
         /// <summary>
@@ -174,47 +95,31 @@ namespace Nt.Database
         /// <value></value>
         public string ConnectionString
         {
-            get { return connectionString; }
-            set
-            {
-                Logging.Log.Database.Info("setting connection string to: " + value.Substring(0, 55) + "...");
-                connectionString = value;
-            }
+            get => database.ConnectionString;
+            set => database.ConnectionString = value;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public int ConnectionTimeout
-        {
-            get { return 0;  }
-        }
+        public int ConnectionTimeout { get => database.ConnectionTimeout; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string Database
-        {
-            get { return "";  }
-        }
-
+        public string Database { get => database.Database; }
         /// <summary>
         /// 
         /// </summary>
-        public ConnectionState State
-        {
-            get { return ConnectionState.Open; }
-        }
+        public ConnectionState State { get => database.State; }
 
         /// <summary>
         /// 
         /// </summary>
         public void Dispose()
         {
-            Logging.Log.Database.Info("disposing database connection");
-            Close();
-            Logging.Log.Database.Info("database connection disposed");
+            database.Dispose();
         }
 
         /// <summary>
@@ -223,7 +128,7 @@ namespace Nt.Database
         /// <returns></returns>
         public IDbTransaction BeginTransaction()
         {
-            throw new NotImplementedException();
+            return database.BeginTransaction();
         }
 
         /// <summary>
@@ -233,28 +138,7 @@ namespace Nt.Database
         /// <returns></returns>
         public IDbTransaction BeginTransaction(IsolationLevel isolationLevel)
         {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public IDbTransaction BeginTransaction(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="isolevel"></param>
-        /// <returns></returns>
-        public IDbTransaction BeginTransaction(int index, IsolationLevel isolevel)
-        {
-            throw new NotImplementedException();
+            return database.BeginTransaction(isolationLevel);
         }
 
         /// <summary>
@@ -263,7 +147,7 @@ namespace Nt.Database
         /// <param name="databaseName"></param>
         public void ChangeDatabase(string databaseName)
         {
-            throw new NotImplementedException();
+            database.ChangeDatabase(databaseName);
         }
 
         /// <summary>
@@ -272,7 +156,7 @@ namespace Nt.Database
         /// <returns></returns>
         public IDbCommand CreateCommand()
         {
-            throw new NotImplementedException();
+            return database.CreateCommand();
         }
 
         #endregion

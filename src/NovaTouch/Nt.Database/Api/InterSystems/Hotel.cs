@@ -33,7 +33,7 @@ namespace Nt.Database.Api.InterSystems
         public async Task<Nt.Data.Room> GetRoom(Nt.Data.Session session, string partnerId, string roomNumber)
         {
             Nt.Data.Room room = null;
-            var dbString = await Interaction.CallClassMethod("cmNT.AbrOmanHotelIFC", "GetZimmerDetail", session.ClientId, session.PosId, session.WaiterId, partnerId, roomNumber);
+            var dbString = await Intersystems.Instance.CallClassMethod("cmNT.AbrOmanHotelIFC", "GetZimmerDetail", session.ClientId, session.PosId, session.WaiterId, partnerId, roomNumber);
             var dataString = new DataString(dbString);
             var roomsString = dataString.SplitByChar96();
 
@@ -59,7 +59,7 @@ namespace Nt.Database.Api.InterSystems
         public async Task<Dictionary<string, Nt.Data.Room>> GetRooms(Nt.Data.Session session, string partnerId)
         {
             var rooms = new Dictionary<string, Nt.Data.Room>();
-            var dbString = await Interaction.CallClassMethod("cmNT.AbrOmanHotelIFC", "GetZimmerliste", session.ClientId, session.PosId, session.WaiterId, partnerId, "", "");
+            var dbString = await Intersystems.Instance.CallClassMethod("cmNT.AbrOmanHotelIFC", "GetZimmerliste", session.ClientId, session.PosId, session.WaiterId, partnerId, "", "");
             var dataString = new DataString(dbString);
             var dataList = new DataList(dataString.SplitByChar96());
 

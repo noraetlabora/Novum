@@ -27,8 +27,8 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT PNR, name ");
             sql.Append(" FROM NT.Pers ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
-            var dataTable = await Interaction.GetDataTable(sql.ToString());
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -54,9 +54,9 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT PNR, code, name");
             sql.Append(" FROM NT.Pers ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND code = ").Append(Interaction.SqlQuote(code));
-            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
-            var dataTable = await Interaction.GetDataTable(sql.ToString());
+            sql.Append(" AND code = ").Append(Intersystems.SqlQuote(code));
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
 
             if (dataTable.Rows.Count == 1)
                 return DataObject.GetString(dataTable.Rows[0], "PNR");
@@ -77,10 +77,10 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT PNR, code, name");
             sql.Append(" FROM NT.Pers ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND PNR = ").Append(Interaction.SqlQuote(waiterId));
-            sql.Append(" AND code = ").Append(Interaction.SqlQuote(code));
-            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
-            var dataTable = await Interaction.GetDataTable(sql.ToString());
+            sql.Append(" AND PNR = ").Append(Intersystems.SqlQuote(waiterId));
+            sql.Append(" AND code = ").Append(Intersystems.SqlQuote(code));
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
 
             if (dataTable.Rows.Count == 1)
                 return true;
@@ -95,8 +95,8 @@ namespace Nt.Database.Api.InterSystems
         public async Task Login(Nt.Data.Session session)
         {
             var posId = await DB.Api.Pos.GetPosId(session.SerialNumber);
-            await Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogin", session.ClientId, posId, session.WaiterId);
-            await Interaction.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", Api.ClientId, posId, session.WaiterId, session.SerialNumber, "1");
+            await Intersystems.Instance.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogin", session.ClientId, posId, session.WaiterId);
+            await Intersystems.Instance.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", Api.ClientId, posId, session.WaiterId, session.SerialNumber, "1");
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Nt.Database.Api.InterSystems
         public async Task Logout(Nt.Data.Session session)
         {
             var posId = await DB.Api.Pos.GetPosId(session.SerialNumber);
-            await Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogout", session.ClientId, posId, session.WaiterId);
+            await Intersystems.Instance.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogout", session.ClientId, posId, session.WaiterId);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" JOIN NT.PersSecProg P ON P.PRG = B.PRG AND P.obsolet = 0 ");
             sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
             sql.Append(" AND M.PNR = ").Append(waiterId);
-            var dataTable = await Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
