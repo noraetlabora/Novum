@@ -7,12 +7,9 @@ namespace Nt.Database
     /// </summary>
     public class DB : IDbConnection
     {
-        //private static readonly Lazy<DB> lazy = new Lazy<DB>(() => new DB()); 
         /// <summary>
-        /// Singelton Design Pattern (http://csharpindepth.com/Articles/Singleton#lazy)
+        /// 
         /// </summary>
-        /// <value></value>
-        //public static DB Instance { get { return lazy.Value; } }
         public static DB Instance
         {
             get
