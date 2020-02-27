@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Nt.Database.Api.InterSystems
@@ -37,7 +35,7 @@ namespace Nt.Database.Api.InterSystems
             var dataString = new DataString(dbString);
             var roomsString = dataString.SplitByChar96();
 
-            foreach(var roomString in roomsString)
+            foreach (var roomString in roomsString)
             {
                 room = new Data.Room();
                 var roomDataString = new DataString(roomString);

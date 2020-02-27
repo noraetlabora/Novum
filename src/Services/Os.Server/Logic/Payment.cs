@@ -1,8 +1,8 @@
+using Nt.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Nt.Data;
 
 namespace Os.Server.Logic
 {
@@ -119,7 +119,8 @@ namespace Os.Server.Logic
             {
                 foreach (var line in data.ManualData.Lines)
                 {
-                    switch (line.Key) {
+                    switch (line.Key)
+                    {
                         case "ROOM":
                             var room = await Nt.Database.DB.Api.Hotel.GetRoom(session, paymentType.PartnerId, line.Value);
                             if (room == null)

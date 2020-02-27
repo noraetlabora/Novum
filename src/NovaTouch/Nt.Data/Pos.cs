@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Nt.Data
+﻿namespace Nt.Data
 {
     /// <summary>
     /// 
@@ -33,7 +29,7 @@ namespace Nt.Data
         /// Type of the printer
         /// </summary>
         /// <value>"TM300", </value>
-        public string ServiceAreaName{ get; set; }
+        public string ServiceAreaName { get; set; }
 
         /// <summary>
         /// Device contains the information where the printerjob has to go

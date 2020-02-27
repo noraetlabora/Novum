@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
 
 namespace Nt.Data
@@ -174,13 +172,13 @@ namespace Nt.Data
         /// <summary>
         /// 
         /// </summary>
-        public decimal VatRate { get; set; } 
+        public decimal VatRate { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public List<Modifier> Modifiers 
+        public List<Modifier> Modifiers
         {
             get { return _modifiers; }
         }
@@ -219,12 +217,12 @@ namespace Nt.Data
         /// <summary>
         /// 
         /// </summary>
-        public void ClearModifiers() 
+        public void ClearModifiers()
         {
             if (_modifiers == null)
                 return;
 
-            foreach(var modifier in _modifiers) 
+            foreach (var modifier in _modifiers)
             {
                 this.UnitPrice -= GetModifierUnitPrice(modifier);
             }
@@ -236,7 +234,7 @@ namespace Nt.Data
 
         #region private methods
 
-                /// <summary>
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="modifier"></param>

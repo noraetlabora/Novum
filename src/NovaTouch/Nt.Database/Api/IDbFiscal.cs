@@ -30,7 +30,7 @@ namespace Nt.Database.Api
         /// <param name="session"></param>
         /// <returns></returns>
         Task<string> GetConfiguration(Data.Session session);
-       
+
         /// <summary>
         /// 
         /// </summary>

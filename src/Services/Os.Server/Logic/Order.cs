@@ -104,7 +104,7 @@ namespace Os.Server.Logic
                         Nt.Logging.Log.Server.Error("void new order is not allowed: " + orderLineId);
                         throw new Exception(Resources.Dictionary.GetString("Order_VoidNotAllowed"));
                     }
-                        
+
                     var price = decimal.Multiply((decimal)data.Quantity, ntOrder.UnitPrice);
                     await Nt.Database.DB.Api.Order.VoidNewOrder(session, session.CurrentTable.Id, ntOrder.ArticleId, (decimal)data.Quantity, price, ntOrder.AssignmentTypeId, "");
                     session.VoidOrder(orderLineId, (decimal)data.Quantity);
@@ -136,7 +136,7 @@ namespace Os.Server.Logic
                 voidResult.Quantity = 0;
             else
                 voidResult.Quantity = ((int)ntOrder.Quantity - data.Quantity);
-            
+
             return voidResult;
         }
 

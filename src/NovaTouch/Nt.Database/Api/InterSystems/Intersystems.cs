@@ -20,8 +20,9 @@ namespace Nt.Database.Api.InterSystems
         /// <value></value>
         //public static Intersystems Instance { get { return lazy.Value; } }
 
-         
-        public static Intersystems Instance {
+
+        public static Intersystems Instance
+        {
             get
             {
                 if (_instance == null)
@@ -31,8 +32,8 @@ namespace Nt.Database.Api.InterSystems
         }
 
         private static Intersystems _instance = null;
-        private string connectionString;
-        private List<EventPersister> xepEventPersisters;
+        private string _connectionString;
+        private List<EventPersister> _xepEventPersisters;
 
         internal void Initialize(uint connectionCount = 1)
         {
@@ -43,28 +44,28 @@ namespace Nt.Database.Api.InterSystems
             }
 
             Logging.Log.Database.Info("creating InterSystems XepEventPersister");
-            xepEventPersisters = new List<EventPersister>();
+            _xepEventPersisters = new List<EventPersister>();
             for (int i = 0; i < connectionCount; i++)
             {
-                xepEventPersisters.Add(PersisterFactory.CreatePersister());
+                _xepEventPersisters.Add(PersisterFactory.CreatePersister());
             }
         }
 
         internal void CheckConnection()
         {
-            foreach (var xepEventPersister in xepEventPersisters)
+            foreach (var xepEventPersister in _xepEventPersisters)
             {
                 switch (xepEventPersister.GetAdoNetConnection().State)
                 {
                     case System.Data.ConnectionState.Closed:
                         Nt.Logging.Log.Database.Warn("DatabaseService: connection is closed");
                         xepEventPersister.Close();
-                        xepEventPersister.Connect(connectionString);
+                        xepEventPersister.Connect(_connectionString);
                         break;
                     case System.Data.ConnectionState.Broken:
                         Nt.Logging.Log.Database.Warn("DatabaseService: connection is broken");
                         xepEventPersister.Close();
-                        xepEventPersister.Connect(connectionString);
+                        xepEventPersister.Connect(_connectionString);
                         break;
                     case System.Data.ConnectionState.Connecting:
                         Nt.Logging.Log.Database.Info("DatabaseService: connection is connecting");
@@ -117,6 +118,8 @@ namespace Nt.Database.Api.InterSystems
                 await Task.Run(() => dataAdapter.Fill(dataTable));
                 if (Logging.Log.Database.IsDebugEnabled)
                     Logging.Log.Database.Debug(ticks + "|" + memberName + "|SQLRowCount|" + dataTable.Rows.Count);
+
+                adoConnection.Dispose();
                 dataAdapter.Dispose();
             }
             catch (Exception ex)
@@ -364,7 +367,7 @@ namespace Nt.Database.Api.InterSystems
             {
                 while (true)
                 {
-                    foreach (var xepEventPersister in xepEventPersisters)
+                    foreach (var xepEventPersister in _xepEventPersisters)
                     {
                         if (xepEventPersister.GetAdoNetConnection().State == ConnectionState.Open)
                         {
@@ -415,7 +418,7 @@ namespace Nt.Database.Api.InterSystems
             {
                 Logging.Log.Database.Info("closing intersystems database connection");
 
-                foreach (var xepEventPersister in xepEventPersisters)
+                foreach (var xepEventPersister in _xepEventPersisters)
                 {
                     xepEventPersister.Close();
                 }
@@ -446,9 +449,9 @@ namespace Nt.Database.Api.InterSystems
             {
                 Logging.Log.Database.Info("opening intersystem database connection");
 
-                foreach (var xepEventPersister in xepEventPersisters)
+                foreach (var xepEventPersister in _xepEventPersisters)
                 {
-                    xepEventPersister.Connect(connectionString);
+                    xepEventPersister.Connect(_connectionString);
                 }
 
                 Logging.Log.Database.Info("intersystem database connection are open");
@@ -467,11 +470,11 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         public string ConnectionString
         {
-            get => connectionString;
+            get => _connectionString;
             set
             {
                 Logging.Log.Database.Info("setting connection string to: " + value.Substring(0, 55) + "...");
-                connectionString = value;
+                _connectionString = value;
             }
         }
 

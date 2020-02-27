@@ -63,7 +63,7 @@ namespace Nt.Database.Api.InterSystems
             var fiscalResultString = string.Empty;
             if (fiscalResult != null)
                 fiscalResultString = fiscalResult.ToDtoString();
-            
+
             //actual payment in database
             var dbString = await Intersystems.Instance.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersDataString, paymentBillDataString, paymentMethodsDataString, paymentOptionDataString, "", "", "", "", "", fiscalResultString);
 

@@ -34,25 +34,16 @@ namespace Os.Server.Logic
                 return;
 
             Nt.Logging.Log.Server.Info("new static data available");
-            await Logic.Data.GetArticles();
-            await Logic.Data.GetCategories();
-            await Logic.Data.GetModifierGroups();
-            await Logic.Data.GetPaymentMedia();
-            await Logic.Printer.GetPrinters();
-            await Logic.Data.GetUsers();
-            await Nt.Database.DB.Api.Misc.GetArticleGroups();
-            await Nt.Database.DB.Api.Misc.GetTaxGroups();
-            //var tasks = new List<Task>();
-            //tasks.Add(Logic.Data.GetArticles());
-            //tasks.Add(Logic.Data.GetCategories());
-            //tasks.Add(Logic.Data.GetModifierGroups());
-            //tasks.Add(Logic.Data.GetPaymentMedia());
-            //tasks.Add(Logic.Printer.GetPrinters());
-            //tasks.Add(Logic.Data.GetUsers());
-            //tasks.Add(Nt.Database.DB.Api.Misc.GetArticleGroups());
-            //tasks.Add(Nt.Database.DB.Api.Misc.GetTaxGroups());
-
-            //await Task.WhenAll(tasks);
+            var tasks = new List<Task>();
+            tasks.Add(Logic.Data.GetArticles());
+            tasks.Add(Logic.Data.GetCategories());
+            tasks.Add(Logic.Data.GetModifierGroups());
+            tasks.Add(Logic.Data.GetPaymentMedia());
+            tasks.Add(Logic.Printer.GetPrinters());
+            tasks.Add(Logic.Data.GetUsers());
+            tasks.Add(Nt.Database.DB.Api.Misc.GetArticleGroups());
+            tasks.Add(Nt.Database.DB.Api.Misc.GetTaxGroups());
+            await Task.WhenAll(tasks);
 
             Nt.Logging.Log.Server.Info("new static data cached");
 
@@ -144,11 +135,11 @@ namespace Os.Server.Logic
             osPaymentMedium.Id = ntPaymentType.Id;
             osPaymentMedium.Name = ntPaymentType.Name;
 
-            switch(ntPaymentType.Program)
+            switch (ntPaymentType.Program)
             {
                 // payment room number
                 case "^WKG2K7E":
-                    osPaymentMedium.FullPaymentOnly = true;               
+                    osPaymentMedium.FullPaymentOnly = true;
                     osPaymentMedium.RequestInput = new Models.InputQueryPrompt();
                     osPaymentMedium.RequestInput.MethodManual = new Models.ManualInput();
                     osPaymentMedium.RequestInput.MethodManual.Lines = new List<Models.ManualInputLine>();
@@ -211,17 +202,14 @@ namespace Os.Server.Logic
         public static async Task<List<Models.Article>> GetArticles()
         {
             var osArticles = new Dictionary<string, Models.Article>();
-            var ntArticles = await Nt.Database.DB.Api.Article.GetArticles();
-            var ntModifierMenus = await Nt.Database.DB.Api.Modifier.GetModifierMenus();
-            var osArticleModifierGroups = await GetArticleModifierGroups();
-            //Todo Task.WhenAll
-            //var taskGetArticles = Nt.Database.DB.Api.Article.GetArticles();
-            //var taskGetModifierMenus = Nt.Database.DB.Api.Modifier.GetModifierMenus();
-            //var taskGetArticleModifierGroups = GetArticleModifierGroups();
-            //await Task.WhenAll(taskGetArticles, taskGetModifierMenus, taskGetArticleModifierGroups);
-            //var ntArticles = taskGetArticles.Result;
-            //var ntModifierMenus = taskGetModifierMenus.Result;
-            //var osArticleModifierGroups = taskGetArticleModifierGroups.Result;
+
+            var taskGetArticles = Nt.Database.DB.Api.Article.GetArticles();
+            var taskGetModifierMenus = Nt.Database.DB.Api.Modifier.GetModifierMenus();
+            var taskGetArticleModifierGroups = GetArticleModifierGroups();
+            await Task.WhenAll(taskGetArticles, taskGetModifierMenus, taskGetArticleModifierGroups);
+            var ntArticles = taskGetArticles.Result;
+            var ntModifierMenus = taskGetModifierMenus.Result;
+            var osArticleModifierGroups = taskGetArticleModifierGroups.Result;
 
             foreach (var ntArticle in ntArticles.Values)
             {
@@ -285,17 +273,14 @@ namespace Os.Server.Logic
         public static async Task<List<Models.Category>> GetCategories(string menuId)
         {
             var osCategories = new List<Models.Category>();
-            var ntMainMenus = await Nt.Database.DB.Api.Menu.GetMainMenus(menuId);
-            var ntMenus = await Nt.Database.DB.Api.Menu.GetMenus();
-            var ntMenuItems = await Nt.Database.DB.Api.Menu.GetMenuItems();
-            //Todo: Task.WhenAll
-            //var taskGetMainMenus = Nt.Database.DB.Api.Menu.GetMainMenus(menuId);
-            //var taskGetMenus = Nt.Database.DB.Api.Menu.GetMenus();
-            //var taskGetMenuItems = Nt.Database.DB.Api.Menu.GetMenuItems();
-            //await Task.WhenAll(taskGetMainMenus, taskGetMenus, taskGetMenuItems);
-            //var ntMainMenus = taskGetMainMenus.Result;
-            //var ntMenus = taskGetMenus.Result;
-            //var ntMenuItems = taskGetMenuItems.Result;
+
+            var taskGetMainMenus = Nt.Database.DB.Api.Menu.GetMainMenus(menuId);
+            var taskGetMenus = Nt.Database.DB.Api.Menu.GetMenus();
+            var taskGetMenuItems = Nt.Database.DB.Api.Menu.GetMenuItems();
+            await Task.WhenAll(taskGetMainMenus, taskGetMenus, taskGetMenuItems);
+            var ntMainMenus = taskGetMainMenus.Result;
+            var ntMenus = taskGetMenus.Result;
+            var ntMenuItems = taskGetMenuItems.Result;
 
             foreach (var ntMainMenu in ntMainMenus.Values)
             {
@@ -504,14 +489,11 @@ namespace Os.Server.Logic
         {
             var osModifierDictionary = new Dictionary<string, Dictionary<string, Models.ArticleModifierGroup>>();
 
-            var ntMenuItems = await Nt.Database.DB.Api.Menu.GetMenuItems();
-            var ntMenuItemsModifierMenus = await Nt.Database.DB.Api.Modifier.GetMenuItemModifierMenus();
-            //Todo: Task.WhenAll
-            //var taskGetMenuItems = Nt.Database.DB.Api.Menu.GetMenuItems();
-            //var taskGetMenuItemModifierMenus = Nt.Database.DB.Api.Modifier.GetMenuItemModifierMenus();
-            //await Task.WhenAll(taskGetMenuItems, taskGetMenuItemModifierMenus);
-            //var ntMenuItems = taskGetMenuItems.Result;
-            //var ntMenuItemsModifierMenus = taskGetMenuItemModifierMenus.Result;
+            var taskGetMenuItems = Nt.Database.DB.Api.Menu.GetMenuItems();
+            var taskGetMenuItemModifierMenus = Nt.Database.DB.Api.Modifier.GetMenuItemModifierMenus();
+            await Task.WhenAll(taskGetMenuItems, taskGetMenuItemModifierMenus);
+            var ntMenuItems = taskGetMenuItems.Result;
+            var ntMenuItemsModifierMenus = taskGetMenuItemModifierMenus.Result;
 
             // loop through all ntMenuItems again and tne modifierMenus
             foreach (var ntMenuItem in ntMenuItems)

@@ -1,7 +1,7 @@
+using Nt.Data;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Nt.Data;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -113,7 +113,7 @@ namespace Nt.Database.Api.InterSystems
                     case "2":
                         throw new Exception(string.Format(Resources.Dictionary.GetString("Table_NotDefined"), tableName));
                     case "5":
-                        throw new Exception(string.Format(Resources.Dictionary.GetString("Table_NoOpenPermission"),tableName));
+                        throw new Exception(string.Format(Resources.Dictionary.GetString("Table_NoOpenPermission"), tableName));
                     case "6":
                         throw new Exception(string.Format(Resources.Dictionary.GetString("Tabe_AlreadyOpen"), tableName));
                     default:

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Nt.Data
+﻿namespace Nt.Data
 {
 
     /// <summary>
@@ -15,11 +13,11 @@ namespace Nt.Data
         /// 
         /// </summary>
         /// <value></value>
-        public string Id 
-        { 
+        public string Id
+        {
             get
             {
-                return GetId();   
+                return GetId();
             }
         }
 

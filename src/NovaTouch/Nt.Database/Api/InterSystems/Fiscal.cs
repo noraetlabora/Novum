@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Nt.Data;
+using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-using System.Xml;
-using Nt.Data;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -124,7 +122,7 @@ namespace Nt.Database.Api.InterSystems
             var fiscalClient = new Nov.NT.POS.Data.DTO.FiscalParameterMandantDTO(fiscalClientString);
             var fiscalUserString = await GetUser(session);
             var fiscalUser = new Nov.NT.POS.Data.DTO.FiscalParameterBedienerDTO(fiscalUserString);
-            
+
             try
             {
                 var fiscalResult = fiscalProvider.CheckFiscalSystem(fiscalClient, fiscalUser);
@@ -133,7 +131,7 @@ namespace Nt.Database.Api.InterSystems
                 else
                     return fiscalResult.StatusHeader + " " + fiscalResult.StatusText;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -161,7 +159,8 @@ namespace Nt.Database.Api.InterSystems
             var fiscalClientString = await GetClient(session);
             var fiscalUserString = await GetUser(session);
             var fiscalData = await GetData(session, ordersDataString, paymentMethodsDataString, paymentBillDataString);
-            if (fiscalData.StartsWith("FM")) {
+            if (fiscalData.StartsWith("FM"))
+            {
                 var fiscalDataString = new DataString(fiscalData);
                 var fiscalDataList = fiscalDataString.SplitByChar96();
                 throw new Exception(fiscalDataList[1]);

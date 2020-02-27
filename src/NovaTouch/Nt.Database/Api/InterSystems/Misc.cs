@@ -1,8 +1,8 @@
+using Nt.Data;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using System.Threading.Tasks;
-using Nt.Data;
 
 namespace Nt.Database.Api.InterSystems
 {
@@ -44,7 +44,7 @@ namespace Nt.Database.Api.InterSystems
             cachedArticleGroups = articleGroups;
             return articleGroups;
         }
-        
+
 
         /// <summary>
         /// 

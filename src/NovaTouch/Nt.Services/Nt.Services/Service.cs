@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration.Install;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.ServiceProcess;
 using System.Text;
 
@@ -69,7 +66,7 @@ namespace Nt.Services
 
         public static void Start(string serviceName)
         {
-           Logging.Log.Service.Info("start service \n" + serviceName + "\"");
+            Logging.Log.Service.Info("start service \n" + serviceName + "\"");
             //var serviceController = new ServiceController(serviceName);
             //serviceController.Start();
             var builder = new StringBuilder();

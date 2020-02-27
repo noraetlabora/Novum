@@ -13,7 +13,7 @@ namespace Nt.Data.Utils
         /// <param name="value">decimal value which should be rounded</param>
         /// <param name="rounding">rounding (0.05 or 0.1 or 0.01 or 1.00)</param>
         /// <returns></returns>
-         public static decimal Round(decimal value, decimal rounding)
+        public static decimal Round(decimal value, decimal rounding)
         {
             if (rounding.Equals(decimal.Zero))
                 rounding = 0.01m;

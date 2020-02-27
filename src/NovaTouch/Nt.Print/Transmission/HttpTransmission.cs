@@ -4,14 +4,14 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nt.Printer.Transmission
-{	
+{
     public class HttpTransmission : ITransmission
     {
-            
+
         private Uri _printerUrl;
 
         #region properties
-        
+
         public HttpResponseMessage Response { get; private set; }
         public Task RequestTask { get; private set; }
 
@@ -26,7 +26,7 @@ namespace Nt.Printer.Transmission
                 _printerUrl = resultUri;
             else
                 //return null;
-                throw new ArgumentException("Printer URL could not be parsed. printerUrl was " + printerUrl);    
+                throw new ArgumentException("Printer URL could not be parsed. printerUrl was " + printerUrl);
         }
 
         public HttpTransmission(Uri printerUrl)

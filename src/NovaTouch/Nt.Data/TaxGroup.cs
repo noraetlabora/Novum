@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Nt.Data
 {
@@ -27,7 +25,7 @@ namespace Nt.Data
         /// 
         /// </summary>
         /// <value></value>
-        public UInt32 TaxRate{ get; set; }
+        public UInt32 TaxRate { get; set; }
 
         /// <summary>
         /// 

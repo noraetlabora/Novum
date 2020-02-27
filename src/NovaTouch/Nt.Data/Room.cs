@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Nt.Data
+﻿namespace Nt.Data
 {
 
     /// <summary>
@@ -27,7 +25,7 @@ namespace Nt.Data
         /// </summary>
         /// <value>20191718-0</value>
         public string BookingNumber { get; set; }
-        
+
 
         #endregion
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Nt.Data
@@ -19,14 +18,14 @@ namespace Nt.Data
         /// 
         /// </summary>
         /// <value></value>
-        public string Name {get; set;}
+        public string Name { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public string ArticleId {get; set;}
-        
+        public string ArticleId { get; set; }
+
         /// <summary>
         /// id of the menu
         /// </summary>

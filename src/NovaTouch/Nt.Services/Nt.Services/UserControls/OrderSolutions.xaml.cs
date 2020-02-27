@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Nt.Services.UserControls
 {
@@ -287,7 +278,7 @@ namespace Nt.Services.UserControls
                 chbTip.IsChecked = osClientConfiguration.FeatureTip;
                 chbCoursing.IsChecked = osClientConfiguration.Coursing;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logging.Log.Service.Error(ex, "exception while loading client configuration");
             }

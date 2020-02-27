@@ -1,6 +1,3 @@
-
-using System.Threading.Tasks;
-
 namespace Nt.Database.Api
 {
     /// <summary>

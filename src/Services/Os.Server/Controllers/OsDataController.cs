@@ -260,7 +260,7 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/data/courses")]
-        public async Task<IActionResult>CoursesGet()
+        public async Task<IActionResult> CoursesGet()
         {
             try
             {
@@ -279,7 +279,7 @@ namespace Os.Server.Controllers
         /// <response code="200"></response>
         [HttpGet]
         [Route("/api/v2/data/guestTypes")]
-        public async Task<IActionResult>GuestTypesGet()
+        public async Task<IActionResult> GuestTypesGet()
         {
             try
             {

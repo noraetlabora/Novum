@@ -17,7 +17,7 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static Models.RegisterClientResponse RegisterClient(Nt.Data.Session session, Models.ClientInfo clientData)
         {
-            _ =  CheckDevice(clientData.Id);
+            _ = CheckDevice(clientData.Id);
 
             var registerClientResponse = new Models.RegisterClientResponse();
             registerClientResponse.ClientName = "Orderman";

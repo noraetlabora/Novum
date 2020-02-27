@@ -41,7 +41,7 @@ namespace Os.Server.Controllers
         /// <response code="200">On success the new/updated data of the target table. This is the same result as from a call to tables/openByName.</response>
         [HttpPost]
         [Route("/api/v2/actions/subTables/move")]
-        public async Task<IActionResult>SubTablesMove([FromBody]Models.MoveSubtables data)
+        public async Task<IActionResult> SubTablesMove([FromBody]Models.MoveSubtables data)
         {
             try
             {

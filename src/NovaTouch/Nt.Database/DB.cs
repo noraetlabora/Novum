@@ -1,9 +1,4 @@
-using InterSystems.Data.IRISClient;
-using InterSystems.XEP;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Threading.Tasks;
 
 namespace Nt.Database
 {
@@ -29,13 +24,13 @@ namespace Nt.Database
         }
 
         private static DB _instance = null;
-        private Api.InterSystems.Intersystems database;
+        private Api.InterSystems.Intersystems _database;
 
         private DB()
         {
             Resources.Dictionary.Initialize("de-AT");
             Logging.Log.Database.Info("creating InterSystems API");
-            database = Nt.Database.Api.InterSystems.Intersystems.Instance;
+            _database = Nt.Database.Api.InterSystems.Intersystems.Instance;
             api = new Api.InterSystems.Api();
         }
 
@@ -56,7 +51,7 @@ namespace Nt.Database
         /// <param name="connectionCount"></param>
         public void Initialize(uint connectionCount = 1)
         {
-            database.Initialize(connectionCount);
+            _database.Initialize(connectionCount);
         }
 
         /// <summary>
@@ -64,7 +59,7 @@ namespace Nt.Database
         /// </summary>
         public void CheckConnection()
         {
-            database.CheckConnection();
+            _database.CheckConnection();
         }
 
         /*******************************************************/
@@ -77,7 +72,7 @@ namespace Nt.Database
         /// </summary>
         public void Open()
         {
-            database.Open();
+            _database.Open();
             api.Initialize();
         }
 
@@ -86,8 +81,8 @@ namespace Nt.Database
         /// </summary>
         public void Close()
         {
-            database.Close();
-        }       
+            _database.Close();
+        }
 
         /// <summary>
         /// 
@@ -95,31 +90,31 @@ namespace Nt.Database
         /// <value></value>
         public string ConnectionString
         {
-            get => database.ConnectionString;
-            set => database.ConnectionString = value;
+            get => _database.ConnectionString;
+            set => _database.ConnectionString = value;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public int ConnectionTimeout { get => database.ConnectionTimeout; }
+        public int ConnectionTimeout { get => _database.ConnectionTimeout; }
 
         /// <summary>
         /// 
         /// </summary>
-        public string Database { get => database.Database; }
+        public string Database { get => _database.Database; }
         /// <summary>
         /// 
         /// </summary>
-        public ConnectionState State { get => database.State; }
+        public ConnectionState State { get => _database.State; }
 
         /// <summary>
         /// 
         /// </summary>
         public void Dispose()
         {
-            database.Dispose();
+            _database.Dispose();
         }
 
         /// <summary>
@@ -128,7 +123,7 @@ namespace Nt.Database
         /// <returns></returns>
         public IDbTransaction BeginTransaction()
         {
-            return database.BeginTransaction();
+            return _database.BeginTransaction();
         }
 
         /// <summary>
@@ -138,7 +133,7 @@ namespace Nt.Database
         /// <returns></returns>
         public IDbTransaction BeginTransaction(IsolationLevel isolationLevel)
         {
-            return database.BeginTransaction(isolationLevel);
+            return _database.BeginTransaction(isolationLevel);
         }
 
         /// <summary>
@@ -147,7 +142,7 @@ namespace Nt.Database
         /// <param name="databaseName"></param>
         public void ChangeDatabase(string databaseName)
         {
-            database.ChangeDatabase(databaseName);
+            _database.ChangeDatabase(databaseName);
         }
 
         /// <summary>
@@ -156,7 +151,7 @@ namespace Nt.Database
         /// <returns></returns>
         public IDbCommand CreateCommand()
         {
-            return database.CreateCommand();
+            return _database.CreateCommand();
         }
 
         #endregion
