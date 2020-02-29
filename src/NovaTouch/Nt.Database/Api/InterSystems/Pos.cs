@@ -31,7 +31,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT Kassa ");
             sql.Append(" FROM NT.OMDevConfig ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
+            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             if (dataTable.Rows.Count == 0)
                 return "";
@@ -40,24 +40,24 @@ namespace Nt.Database.Api.InterSystems
             return DataObject.GetString(dataRow, "Kassa");
         }
 
-        public async Task<string> GetPosId(string deviceId)
+        public Task<string> GetPosId(string deviceId)
         {
-            return await Intersystems.Instance.CallClassMethod("cmNT.Kassa", "GetOmanKassa", Api.ClientId, deviceId);
+            return InterSystems.CallClassMethod("cmNT.Kassa", "GetOmanKassa", Api.ClientId, deviceId);
         }
 
-        public async Task<string> GetServiceAreaId(string posId)
+        public Task<string> GetServiceAreaId(string posId)
         {
-            return await Intersystems.Instance.CallClassMethod("cmNT.Kassa", "GetVerkaufsort", Api.ClientId, posId);
+            return InterSystems.CallClassMethod("cmNT.Kassa", "GetVerkaufsort", Api.ClientId, posId);
         }
 
-        public async Task<string> GetServiceAreaName(string sercieAreaId)
+        public Task<string> GetServiceAreaName(string sercieAreaId)
         {
-            return await Intersystems.Instance.CallClassMethod("cmWW.VKO", "GetVKOBez", Api.ClientId, sercieAreaId);
+            return InterSystems.CallClassMethod("cmWW.VKO", "GetVKOBez", Api.ClientId, sercieAreaId);
         }
 
-        public async Task<string> GetPriceLevel(string sercieAreaId)
+        public Task<string> GetPriceLevel(string sercieAreaId)
         {
-            return await Intersystems.Instance.CallClassMethod("cmWW.VKO", "GetVKPEbene", Api.ClientId, sercieAreaId);
+            return InterSystems.CallClassMethod("cmWW.VKO", "GetVKPEbene", Api.ClientId, sercieAreaId);
         }
 
         public async Task<Data.Pos> GetPos(string posId)
@@ -68,8 +68,8 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT KASSA, Vko, bez ");
             sql.Append(" FROM NT.KassenStamm ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND   KASSA = ").Append(Intersystems.SqlQuote(posId));
-            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
+            sql.Append(" AND   KASSA = ").Append(InterSystems.SqlQuote(posId));
+            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             if (dataTable.Rows.Count == 0)
                 return null;
@@ -85,7 +85,7 @@ namespace Nt.Database.Api.InterSystems
         public async Task<List<string>> GetAlternativePosIds(string posId)
         {
             var posIds = new List<string>();
-            var dbString = await Intersystems.Instance.CallClassMethod("cmNT.Kassa", "GetUmleitungsKassen", Api.ClientId, posId);
+            var dbString = await InterSystems.CallClassMethod("cmNT.Kassa", "GetUmleitungsKassen", Api.ClientId, posId).ConfigureAwait(false);
             var posDataString = new DataString(dbString);
             var posArray = posDataString.SplitByChar96();
 

@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 
 namespace Nt.Database
@@ -7,6 +8,9 @@ namespace Nt.Database
     /// </summary>
     public class DB : IDbConnection
     {
+        private static DB _instance = null;
+        private Api.InterSystems.InterSystems _database;
+
         /// <summary>
         /// 
         /// </summary>
@@ -20,14 +24,11 @@ namespace Nt.Database
             }
         }
 
-        private static DB _instance = null;
-        private Api.InterSystems.Intersystems _database;
-
         private DB()
         {
             Resources.Dictionary.Initialize("de-AT");
             Logging.Log.Database.Info("creating InterSystems API");
-            _database = Nt.Database.Api.InterSystems.Intersystems.Instance;
+            _database = Nt.Database.Api.InterSystems.InterSystems.Instance;
             api = new Api.InterSystems.Api();
         }
 

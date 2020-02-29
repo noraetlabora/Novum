@@ -59,7 +59,7 @@ namespace Os.Server
                 }
 
                 //read and log request body
-                var requestBodyContent = await ReadRequestBody(httpContext.Request, serialNumber);
+                var requestBodyContent = await ReadRequestBody(httpContext.Request, serialNumber).ConfigureAwait(false);
 
                 var originalBodyStream = httpContext.Response.Body;
                 using (var responseBody = new MemoryStream())
@@ -70,8 +70,8 @@ namespace Os.Server
 
                     //read and log response body
                     string responseBodyContent = null;
-                    responseBodyContent = await ReadResponseBody(httpContext.Response, serialNumber);
-                    await responseBody.CopyToAsync(originalBodyStream);
+                    responseBodyContent = await ReadResponseBody(httpContext.Response, serialNumber).ConfigureAwait(false);
+                    await responseBody.CopyToAsync(originalBodyStream).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
@@ -99,7 +99,7 @@ namespace Os.Server
         {
             request.EnableBuffering();
             var buffer = new byte[Convert.ToInt32(request.ContentLength)];
-            await request.Body.ReadAsync(buffer, 0, buffer.Length);
+            await request.Body.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
             var json = Encoding.UTF8.GetString(buffer).Replace("\n", string.Empty);
             request.Body.Seek(0, SeekOrigin.Begin);
 

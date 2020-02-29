@@ -26,8 +26,8 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT IKA, bez, prg, druanz, unterschrift, Copa ");
             sql.Append(" FROM NT.Zahlart ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
-            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
+            sql.Append(" AND passiv > ").Append(InterSystems.SqlToday);
+            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -59,17 +59,17 @@ namespace Nt.Database.Api.InterSystems
             var paymentOptionDataString = Payment.GetPaymentOptionDataString(paymentInformation);
 
             //send the Fiscal Transaction if there is a provider
-            var fiscalResult = (Nov.NT.POS.Fiscal.FiscalResult)await DB.Api.Fiscal.SendTransaction(session, orders, paymentMethods, paymentInformation);
+            var fiscalResult = (Nov.NT.POS.Fiscal.FiscalResult)await DB.Api.Fiscal.SendTransaction(session, orders, paymentMethods, paymentInformation).ConfigureAwait(false);
             var fiscalResultString = string.Empty;
             if (fiscalResult != null)
                 fiscalResultString = fiscalResult.ToDtoString();
 
             //actual payment in database
-            var dbString = await Intersystems.Instance.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersDataString, paymentBillDataString, paymentMethodsDataString, paymentOptionDataString, "", "", "", "", "", fiscalResultString);
+            var dbString = await InterSystems.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersDataString, paymentBillDataString, paymentMethodsDataString, paymentOptionDataString, "", "", "", "", "", fiscalResultString).ConfigureAwait(false);
 
             if (dbString.StartsWith("FM"))
             {
-                await DB.Api.Fiscal.RollbackTransaction(session, dbString);
+                await DB.Api.Fiscal.RollbackTransaction(session, dbString).ConfigureAwait(false);
                 throw new Exception(dbString);
             }
 
@@ -94,8 +94,8 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT VA, bez, unterschrift ");
             sql.Append(" FROM WW.VA ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
-            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
+            sql.Append(" AND passiv > ").Append(InterSystems.SqlToday);
+            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {

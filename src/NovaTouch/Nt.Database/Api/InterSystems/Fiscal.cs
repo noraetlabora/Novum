@@ -23,7 +23,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns>Returns the mode (fiscalization = 0, no fiscalization = 1,2) as string.</returns>
         public Task<string> GetMode(Data.Session session)
         {
-            return Intersystems.Instance.CallClassMethod("cmNT.Fiskal", "GetFiskalModus", session.ClientId, session.PosId);
+            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetFiskalModus", session.ClientId, session.PosId);
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns>Returns the modul version (VB6 = 1, .NET = 2).</returns>
         public Task<string> GetModulVersion(Data.Session session)
         {
-            return Intersystems.Instance.CallClassMethod("cmNT.Fiskal", "GetFiskalModulV", session.ClientId);
+            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetFiskalModulV", session.ClientId);
         }
 
         /// <summary>
@@ -42,9 +42,9 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        public async Task<string> GetServiceType(Data.Session session)
+        public Task<string> GetServiceType(Data.Session session)
         {
-            return await Intersystems.Instance.CallClassMethod("cmNT.Fiskal", "GetProvider", session.ClientId);
+            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetProvider", session.ClientId);
         }
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        public async Task<string> GetConfiguration(Data.Session session)
+        public Task<string> GetConfiguration(Data.Session session)
         {
-            return await Intersystems.Instance.CallClassMethod("cmNT.Fiskal", "GetConfig", session.ClientId, session.PosId, string.Empty);
+            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetConfig", session.ClientId, session.PosId, string.Empty);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public Task<string> GetClient(Data.Session session)
         {
-            return Intersystems.Instance.CallClassMethod("cmNT.Fiskal", "GetMandant", session.ClientId);
+            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetMandant", session.ClientId);
         }
 
 
@@ -74,9 +74,9 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        public async Task<string> GetUser(Data.Session session)
+        public Task<string> GetUser(Data.Session session)
         {
-            return await Intersystems.Instance.CallClassMethod("cmNT.Fiskal", "GetBediener", session.ClientId, session.PosId, session.WaiterId);
+            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetBediener", session.ClientId, session.PosId, session.WaiterId);
         }
 
         /// <summary>
@@ -90,8 +90,8 @@ namespace Nt.Database.Api.InterSystems
             if (!fiscalMode.Equals("0"))
                 return null;
 
-            var fiscalConfiguration = await GetConfiguration(session);
-            var fiscalServiceType = await GetServiceType(session);
+            var fiscalConfiguration = await GetConfiguration(session).ConfigureAwait(false);
+            var fiscalServiceType = await GetServiceType(session).ConfigureAwait(false);
 
             Nov.NT.POS.Fiscal.IFiscalProvider fiscalProvider;
             try
@@ -118,9 +118,9 @@ namespace Nt.Database.Api.InterSystems
                 return string.Empty;
 
             var fiscalProvider = (Nov.NT.POS.Fiscal.IFiscalProvider)session.FiscalProvider;
-            var fiscalClientString = await GetClient(session);
+            var fiscalClientString = await GetClient(session).ConfigureAwait(false);
             var fiscalClient = new Nov.NT.POS.Data.DTO.FiscalParameterMandantDTO(fiscalClientString);
-            var fiscalUserString = await GetUser(session);
+            var fiscalUserString = await GetUser(session).ConfigureAwait(false);
             var fiscalUser = new Nov.NT.POS.Data.DTO.FiscalParameterBedienerDTO(fiscalUserString);
 
             try
@@ -156,9 +156,9 @@ namespace Nt.Database.Api.InterSystems
 
             Nov.NT.POS.Fiscal.FiscalResult fiscalResult = null;
             var fiscalProvider = (Nov.NT.POS.Fiscal.IFiscalProvider)session.FiscalProvider;
-            var fiscalClientString = await GetClient(session);
-            var fiscalUserString = await GetUser(session);
-            var fiscalData = await GetData(session, ordersDataString, paymentMethodsDataString, paymentBillDataString);
+            var fiscalClientString = await GetClient(session).ConfigureAwait(false);
+            var fiscalUserString = await GetUser(session).ConfigureAwait(false);
+            var fiscalData = await GetData(session, ordersDataString, paymentMethodsDataString, paymentBillDataString).ConfigureAwait(false);
             if (fiscalData.StartsWith("FM"))
             {
                 var fiscalDataString = new DataString(fiscalData);
@@ -180,7 +180,7 @@ namespace Nt.Database.Api.InterSystems
 
             if (!fiscalResult.IsOK)
             {
-                await RollbackData(session, ordersDataString, paymentMethodsDataString, paymentMethodsDataString, paymentBillDataString, "");
+                await RollbackData(session, ordersDataString, paymentMethodsDataString, paymentMethodsDataString, paymentBillDataString, "").ConfigureAwait(false);
                 var message = string.Format("{0} {1}", fiscalResult.StatusHeader, fiscalResult.StatusText);
                 fiscalProvider.TransactionRollback(message);
                 throw new Exception(message);
@@ -194,13 +194,14 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="session"></param>
         /// <param name="reason"></param>
-        public async Task RollbackTransaction(Data.Session session, string reason)
+        public Task RollbackTransaction(Data.Session session, string reason)
         {
             if (session.FiscalProvider == null)
-                return;
+                return Task.CompletedTask;
 
             var fiscalProvider = (Nov.NT.POS.Fiscal.IFiscalProvider)session.FiscalProvider;
             fiscalProvider.TransactionRollback(reason);
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -234,7 +235,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         private Task<string> GetData(Session session, string ordersDataString, string paymentMethodsDataString, string paymentBillDataString)
         {
-            return Intersystems.Instance.CallClassMethod("cmNT.AbrOman2", "GetFiskalDaten", session.ClientId, session.PosId, session.WaiterId, session.CurrentTable.Id, ordersDataString, session.PriceLevel, paymentBillDataString, paymentMethodsDataString, "", "1");
+            return InterSystems.CallClassMethod("cmNT.AbrOman2", "GetFiskalDaten", session.ClientId, session.PosId, session.WaiterId, session.CurrentTable.Id, ordersDataString, session.PriceLevel, paymentBillDataString, paymentMethodsDataString, "", "1");
         }
 
         private string GetReceiptNumber(string data)
@@ -254,7 +255,7 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         private Task<string> RollbackData(Nt.Data.Session session, string tableId, string ordersStringData, string paymentMethodsStringData, string paymentBillStringData, string paymentOptionStringData)
         {
-            return Intersystems.Instance.CallClassMethod("cmNT.AbrOman2", "RollbackFiskalDaten", session.ClientId, session.PosId, session.WaiterId, tableId, ordersStringData, session.PriceLevel, paymentBillStringData, paymentMethodsStringData, paymentOptionStringData);
+            return InterSystems.CallClassMethod("cmNT.AbrOman2", "RollbackFiskalDaten", session.ClientId, session.PosId, session.WaiterId, tableId, ordersStringData, session.PriceLevel, paymentBillStringData, paymentMethodsStringData, paymentOptionStringData);
         }
 
         #endregion

@@ -27,7 +27,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" FROM NT.TouchUmenu ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND aend = 1");
-            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
+            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -59,7 +59,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
             sql.Append(" AND M.UMENU = ").Append(modifierMenuId);
             sql.Append(" AND M.ANR <> '' ");
-            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
+            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -91,7 +91,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT UMENU, ROW, COL, LFD, AendUMenu ");
             sql.Append(" FROM NT.TouchUmenuZeilenA ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            var dataTable = await Intersystems.Instance.GetDataTable(sql.ToString());
+            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -120,7 +120,7 @@ namespace Nt.Database.Api.InterSystems
         public async Task<Nt.Data.Modifier> GetModifier(Nt.Data.Session session, string articleId, decimal quantity)
         {
             var modifier = new Nt.Data.Modifier();
-            var dbString = await Intersystems.Instance.CallClassMethod("cmNT.BonOman", "GetArtikelDaten", session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", "", "", "", articleId, "", quantity);
+            var dbString = await InterSystems.CallClassMethod("cmNT.BonOman", "GetArtikelDaten", session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", "", "", "", articleId, "", quantity).ConfigureAwait(false);
             var dataString = new DataString(dbString);
             var dataList = new DataList(dataString.SplitByChar96());
 

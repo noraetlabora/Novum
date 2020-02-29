@@ -115,7 +115,7 @@ namespace Nt.Database.Api.InterSystems
 
         public void Initialize()
         {
-            _clientId = Intersystems.Instance.CallClassMethod("cmNT.Kassa", "GetOmanFirma").GetAwaiter().GetResult();
+            _clientId = InterSystems.CallClassMethod("cmNT.Kassa", "GetOmanFirma").GetAwaiter().GetResult();
             Logging.Log.Database.Info("ClientId = " + _clientId);
         }
     }
