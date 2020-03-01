@@ -120,7 +120,8 @@ namespace Nt.Database.Api.InterSystems
         public async Task<Nt.Data.Modifier> GetModifier(Nt.Data.Session session, string articleId, decimal quantity)
         {
             var modifier = new Nt.Data.Modifier();
-            var dbString = await InterSystems.CallClassMethod("cmNT.BonOman", "GetArtikelDaten", session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", "", "", "", articleId, "", quantity).ConfigureAwait(false);
+            var args = new object[12] { session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", "", "", "", articleId, "", quantity };
+            var dbString = await InterSystems.CallClassMethod("cmNT.BonOman", "GetArtikelDaten", args).ConfigureAwait(false);
             var dataString = new DataString(dbString);
             var dataList = new DataList(dataString.SplitByChar96());
 

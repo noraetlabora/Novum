@@ -53,7 +53,8 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="price"></param>
         public async Task CheckEnteredPrice(Nt.Data.Session session, string articleId, decimal price)
         {
-            var dbString = await InterSystems.CallClassMethod("cmNT.BonOman", "CheckArtikelpreis", session.ClientId, session.PosId, session.WaiterId, "tableId", articleId, price).ConfigureAwait(false);
+            var args = new object[6] { session.ClientId, session.PosId, session.WaiterId, "tableId", articleId, price };
+            var dbString = await InterSystems.CallClassMethod("cmNT.BonOman", "CheckArtikelpreis", args).ConfigureAwait(false);
             var checkPriceString = new DataString(dbString);
             var checkPriceArray = checkPriceString.SplitByChar96();
             var checkPriceList = new DataList(checkPriceArray);

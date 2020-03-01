@@ -47,9 +47,10 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="posId"></param>
         /// <returns></returns>
-        public async Task<string> GetMenuId(string posId)
+        public Task<string> GetMenuId(string posId)
         {
-            return await InterSystems.CallClassMethod("cmNT.Kassa", "GetTouchMenu", Api.ClientId, posId, "0").ConfigureAwait(false);
+            var args = new object[3] { Api.ClientId, posId, "0" };
+            return InterSystems.CallClassMethod("cmNT.Kassa", "GetTouchMenu", args);
         }
 
         /// <summary>

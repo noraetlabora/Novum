@@ -23,7 +23,8 @@ namespace Nt.Database.Api.InterSystems
         /// <returns>Returns the mode (fiscalization = 0, no fiscalization = 1,2) as string.</returns>
         public Task<string> GetMode(Data.Session session)
         {
-            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetFiskalModus", session.ClientId, session.PosId);
+            var args = new object[2] { session.ClientId, session.PosId };
+            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetFiskalModus", args);
         }
 
         /// <summary>
@@ -34,7 +35,8 @@ namespace Nt.Database.Api.InterSystems
         /// <returns>Returns the modul version (VB6 = 1, .NET = 2).</returns>
         public Task<string> GetModulVersion(Data.Session session)
         {
-            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetFiskalModulV", session.ClientId);
+            var args = new object[1] { session.ClientId };
+            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetFiskalModulV", args);
         }
 
         /// <summary>
@@ -44,7 +46,8 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public Task<string> GetServiceType(Data.Session session)
         {
-            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetProvider", session.ClientId);
+            var args = new object[1] { session.ClientId };
+            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetProvider", args);
         }
 
         /// <summary>
@@ -54,7 +57,8 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public Task<string> GetConfiguration(Data.Session session)
         {
-            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetConfig", session.ClientId, session.PosId, string.Empty);
+            var args = new object[3] { session.ClientId, session.PosId, string.Empty };
+            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetConfig", args);
         }
 
         /// <summary>
@@ -64,7 +68,8 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public Task<string> GetClient(Data.Session session)
         {
-            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetMandant", session.ClientId);
+            var args = new object[1] { session.ClientId };
+            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetMandant", args);
         }
 
 
@@ -76,7 +81,8 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public Task<string> GetUser(Data.Session session)
         {
-            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetBediener", session.ClientId, session.PosId, session.WaiterId);
+            var args = new object[3] { session.ClientId, session.PosId, session.WaiterId };
+            return InterSystems.CallClassMethod("cmNT.Fiskal", "GetBediener", args);
         }
 
         /// <summary>
@@ -235,7 +241,8 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         private Task<string> GetData(Session session, string ordersDataString, string paymentMethodsDataString, string paymentBillDataString)
         {
-            return InterSystems.CallClassMethod("cmNT.AbrOman2", "GetFiskalDaten", session.ClientId, session.PosId, session.WaiterId, session.CurrentTable.Id, ordersDataString, session.PriceLevel, paymentBillDataString, paymentMethodsDataString, "", "1");
+            var args = new object[10] { session.ClientId, session.PosId, session.WaiterId, session.CurrentTable.Id, ordersDataString, session.PriceLevel, paymentBillDataString, paymentMethodsDataString, "", "1" };
+            return InterSystems.CallClassMethod("cmNT.AbrOman2", "GetFiskalDaten", args);
         }
 
         private string GetReceiptNumber(string data)
@@ -255,7 +262,8 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         private Task<string> RollbackData(Nt.Data.Session session, string tableId, string ordersStringData, string paymentMethodsStringData, string paymentBillStringData, string paymentOptionStringData)
         {
-            return InterSystems.CallClassMethod("cmNT.AbrOman2", "RollbackFiskalDaten", session.ClientId, session.PosId, session.WaiterId, tableId, ordersStringData, session.PriceLevel, paymentBillStringData, paymentMethodsStringData, paymentOptionStringData);
+            var args = new object[9] { session.ClientId, session.PosId, session.WaiterId, tableId, ordersStringData, session.PriceLevel, paymentBillStringData, paymentMethodsStringData, paymentOptionStringData };
+            return InterSystems.CallClassMethod("cmNT.AbrOman2", "RollbackFiskalDaten", args);
         }
 
         #endregion

@@ -65,7 +65,8 @@ namespace Nt.Database.Api.InterSystems
                 fiscalResultString = fiscalResult.ToDtoString();
 
             //actual payment in database
-            var dbString = await InterSystems.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersDataString, paymentBillDataString, paymentMethodsDataString, paymentOptionDataString, "", "", "", "", "", fiscalResultString).ConfigureAwait(false);
+            var args = new object[15] { session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersDataString, paymentBillDataString, paymentMethodsDataString, paymentOptionDataString, "", "", "", "", "", fiscalResultString};
+            var dbString = await InterSystems.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", args).ConfigureAwait(false);
 
             if (dbString.StartsWith("FM"))
             {

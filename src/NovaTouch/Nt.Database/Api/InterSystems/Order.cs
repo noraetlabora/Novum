@@ -28,7 +28,8 @@ namespace Nt.Database.Api.InterSystems
         public async Task<Dictionary<string, Nt.Data.Order>> GetOrders(string tableId)
         {
             var orders = new Dictionary<string, Nt.Data.Order>();
-            var dbString = await InterSystems.CallClassMethod("cmNT.BonOman", "GetAllTischBonMitAenderer", Api.ClientId, "RK", tableId, "", "2").ConfigureAwait(false);
+            var args = new object[5] { Api.ClientId, "RK", tableId, "", "2" };
+            var dbString = await InterSystems.CallClassMethod("cmNT.BonOman", "GetAllTischBonMitAenderer", args).ConfigureAwait(false);
             var ordersString = new DataString(dbString);
             var ordersArray = ordersString.SplitByCRLF();
             var orderLine = 0;
@@ -123,7 +124,8 @@ namespace Nt.Database.Api.InterSystems
         public async Task<Nt.Data.Order> GetNewOrder(Nt.Data.Session session, string articleId)
         {
             var order = new Nt.Data.Order();
-            var dbString = await InterSystems.CallClassMethod("cmNT.BonOman", "GetPLUDaten", session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", articleId).ConfigureAwait(false);
+            var args = new object[7] { session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", articleId };
+            var dbString = await InterSystems.CallClassMethod("cmNT.BonOman", "GetPLUDaten", args).ConfigureAwait(false);
             var dataString = new DataString(dbString);
             var dataArray = dataString.SplitByChar96();
             var dataList = new DataList(dataArray);
@@ -156,10 +158,13 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="authorizingWaiterId"></param>
         public async Task VoidOrderedOrder(Nt.Data.Session session, string tableId, Nt.Data.Order order, decimal newQuantity, string cancellationReasonId, string authorizingWaiterId)
         {
-            await InterSystems.CallVoidClassMethod("cmNT.BonOman", "SetBonDaten", session.ClientId, session.PosId, session.WaiterId, tableId).ConfigureAwait(false);
+            var args = new object[4] { session.ClientId, session.PosId, session.WaiterId, tableId };
+            await InterSystems.CallVoidClassMethod("cmNT.BonOman", "SetBonDaten", args).ConfigureAwait(false);
             var orderDataString = GetVoidDataString(order);
-            await InterSystems.CallVoidClassMethod("cmNT.BonOman", "SetBonZeile", session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, orderDataString, newQuantity.ToString(), cancellationReasonId).ConfigureAwait(false);
-            await InterSystems.CallVoidClassMethod("cmNT.BonOman", "SetBonStornoOK", session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, authorizingWaiterId).ConfigureAwait(false);
+            args = new object[8] { session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, orderDataString, newQuantity.ToString(), cancellationReasonId };
+            await InterSystems.CallVoidClassMethod("cmNT.BonOman", "SetBonZeile", args).ConfigureAwait(false);
+            args = new object[6] { session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, authorizingWaiterId };
+            await InterSystems.CallVoidClassMethod("cmNT.BonOman", "SetBonStornoOK", args).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -172,9 +177,10 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="voidPrice"></param>
         /// <param name="assignmentTypeId"></param>
         /// <param name="authorizingWaiterId"></param>
-        public async Task VoidNewOrder(Nt.Data.Session session, string tableId, string articleId, decimal voidQuantity, decimal voidPrice, string assignmentTypeId, string authorizingWaiterId)
+        public Task VoidNewOrder(Nt.Data.Session session, string tableId, string articleId, decimal voidQuantity, decimal voidPrice, string assignmentTypeId, string authorizingWaiterId)
         {
-            await InterSystems.CallVoidClassMethod("cmNT.BonOman", "SetSofortStornoJournal", session.ClientId, session.PosId, session.WaiterId, tableId, articleId, voidQuantity.ToString(), voidPrice.ToString(), assignmentTypeId, authorizingWaiterId);
+            var args = new object[9] { session.ClientId, session.PosId, session.WaiterId, tableId, articleId, voidQuantity.ToString(), voidPrice.ToString(), assignmentTypeId, authorizingWaiterId  };
+            return InterSystems.CallVoidClassMethod("cmNT.BonOman", "SetSofortStornoJournal", args);
         }
 
         /// <summary>
@@ -185,9 +191,10 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="voidQuantity"></param>
         /// <param name="orderSequenceNumber"></param>
         /// <param name="authorizingWaiterId"></param>
-        public async Task VoidPrebookedOrder(Nt.Data.Session session, string tableId, decimal voidQuantity, string orderSequenceNumber, string authorizingWaiterId)
+        public Task VoidPrebookedOrder(Nt.Data.Session session, string tableId, decimal voidQuantity, string orderSequenceNumber, string authorizingWaiterId)
         {
-            await InterSystems.CallVoidClassMethod("cmNT.BonOmanVormerk", "SetVormerkStorno", session.ClientId, session.PosId, session.WaiterId, tableId, orderSequenceNumber, authorizingWaiterId, voidQuantity.ToString()).ConfigureAwait(false);
+            var args = new object[7] { session.ClientId, session.PosId, session.WaiterId, tableId, orderSequenceNumber, authorizingWaiterId, voidQuantity.ToString() };
+            return InterSystems.CallVoidClassMethod("cmNT.BonOmanVormerk", "SetVormerkStorno", args);
         }
 
         /// <summary>
@@ -207,21 +214,22 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="session"></param>
         /// <param name="orders"></param>
         /// <param name="tableId"></param>
-        public async Task FinalizeOrder(Nt.Data.Session session, List<Nt.Data.Order> orders, string tableId)
+        public Task FinalizeOrder(Nt.Data.Session session, List<Nt.Data.Order> orders, string tableId)
         {
             //
             if (orders == null || orders.Count == 0)
-                return;
+                return Task.CompletedTask;
             //
             if (string.IsNullOrEmpty(tableId))
-                return;
+                return Task.CompletedTask;
             //
             var newOrdersDataString = GetOrderDataString(orders);
             //
             if (string.IsNullOrEmpty(newOrdersDataString))
-                return;
+                return Task.CompletedTask;
             //
-            await InterSystems.CallVoidClassMethod("cmNT.BonOman", "SetAllBonDatenMitAenderer", session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, newOrdersDataString).ConfigureAwait(false);
+            var args = new object[6] { session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, newOrdersDataString };
+            return InterSystems.CallVoidClassMethod("cmNT.BonOman", "SetAllBonDatenMitAenderer", args);
         }
 
         #endregion

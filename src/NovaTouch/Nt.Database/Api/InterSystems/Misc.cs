@@ -162,7 +162,8 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public async Task<bool> HasSnapshotTime(string guid)
         {
-            var lastSnapshotTime = await InterSystems.CallClassMethod("cmNT.Kasse", "GetOrdermanSnapshot", Api.ClientId, guid).ConfigureAwait(false);
+            var args = new object[2] { Api.ClientId, guid };
+            var lastSnapshotTime = await InterSystems.CallClassMethod("cmNT.Kasse", "GetOrdermanSnapshot", args).ConfigureAwait(false);
             if (string.IsNullOrEmpty(lastSnapshotTime))
                 return false;
             return true;
@@ -175,7 +176,8 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public Task SetSnapshotTime(string guid)
         {
-            return InterSystems.CallClassMethod("cmNT.Kasse", "SetOrdermanSnapshot", Api.ClientId, guid);
+            var args = new object[2] { Api.ClientId, guid };
+            return InterSystems.CallClassMethod("cmNT.Kasse", "SetOrdermanSnapshot", args);
         }
 
         #endregion

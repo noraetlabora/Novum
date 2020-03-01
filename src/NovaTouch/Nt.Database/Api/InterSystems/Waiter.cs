@@ -95,8 +95,10 @@ namespace Nt.Database.Api.InterSystems
         public async Task Login(Nt.Data.Session session)
         {
             var posId = await DB.Api.Pos.GetPosId(session.SerialNumber).ConfigureAwait(false);
-            await InterSystems.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogin", session.ClientId, posId, session.WaiterId).ConfigureAwait(false);
-            await InterSystems.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", Api.ClientId, posId, session.WaiterId, session.SerialNumber, "1").ConfigureAwait(false);
+            var args = new object[3] { session.ClientId, posId, session.WaiterId };
+            await InterSystems.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogin", args).ConfigureAwait(false);
+            args = new object[5] { Api.ClientId, posId, session.WaiterId, session.SerialNumber, "1" };
+            await InterSystems.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", args).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -106,7 +108,8 @@ namespace Nt.Database.Api.InterSystems
         public async Task Logout(Nt.Data.Session session)
         {
             var posId = await DB.Api.Pos.GetPosId(session.SerialNumber).ConfigureAwait(false);
-            await InterSystems.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogout", session.ClientId, posId, session.WaiterId).ConfigureAwait(false);
+            var args = new object[3] { session.ClientId, posId, session.WaiterId };
+            await InterSystems.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogout", args).ConfigureAwait(false);
         }
 
         /// <summary>

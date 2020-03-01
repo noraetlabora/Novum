@@ -1,3 +1,5 @@
+using System;
+
 namespace Nt.Database.Api.InterSystems
 {
     /// <summary>
@@ -115,7 +117,8 @@ namespace Nt.Database.Api.InterSystems
 
         public void Initialize()
         {
-            _clientId = InterSystems.CallClassMethod("cmNT.Kassa", "GetOmanFirma").GetAwaiter().GetResult();
+            var args = Array.Empty<object>();
+            _clientId = InterSystems.CallClassMethod("cmNT.Kassa", "GetOmanFirma", args).GetAwaiter().GetResult();
             Logging.Log.Database.Info("ClientId = " + _clientId);
         }
     }

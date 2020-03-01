@@ -42,22 +42,26 @@ namespace Nt.Database.Api.InterSystems
 
         public Task<string> GetPosId(string deviceId)
         {
-            return InterSystems.CallClassMethod("cmNT.Kassa", "GetOmanKassa", Api.ClientId, deviceId);
+            var args = new object[2] { Api.ClientId, deviceId };
+            return InterSystems.CallClassMethod("cmNT.Kassa", "GetOmanKassa", args);
         }
 
         public Task<string> GetServiceAreaId(string posId)
         {
-            return InterSystems.CallClassMethod("cmNT.Kassa", "GetVerkaufsort", Api.ClientId, posId);
+            var args = new object[2] { Api.ClientId, posId };
+            return InterSystems.CallClassMethod("cmNT.Kassa", "GetVerkaufsort", args);
         }
 
         public Task<string> GetServiceAreaName(string sercieAreaId)
         {
-            return InterSystems.CallClassMethod("cmWW.VKO", "GetVKOBez", Api.ClientId, sercieAreaId);
+            var args = new object[2] { Api.ClientId, sercieAreaId };
+            return InterSystems.CallClassMethod("cmWW.VKO", "GetVKOBez", args);
         }
 
         public Task<string> GetPriceLevel(string sercieAreaId)
         {
-            return InterSystems.CallClassMethod("cmWW.VKO", "GetVKPEbene", Api.ClientId, sercieAreaId);
+            var args = new object[2] { Api.ClientId, sercieAreaId };
+            return InterSystems.CallClassMethod("cmWW.VKO", "GetVKPEbene", args);
         }
 
         public async Task<Data.Pos> GetPos(string posId)
@@ -85,7 +89,8 @@ namespace Nt.Database.Api.InterSystems
         public async Task<List<string>> GetAlternativePosIds(string posId)
         {
             var posIds = new List<string>();
-            var dbString = await InterSystems.CallClassMethod("cmNT.Kassa", "GetUmleitungsKassen", Api.ClientId, posId).ConfigureAwait(false);
+            var args = new object[2] { Api.ClientId, posId };
+            var dbString = await InterSystems.CallClassMethod("cmNT.Kassa", "GetUmleitungsKassen", args).ConfigureAwait(false);
             var posDataString = new DataString(dbString);
             var posArray = posDataString.SplitByChar96();
 

@@ -50,7 +50,8 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public Task<string> GetPrintJobId(Nt.Data.Session session)
         {
-            return InterSystems.CallClassMethod("cmNT.OmPrint", "GetNextAuftrag", session.ClientId, session.SerialNumber);
+            var args = new object[2] { session.ClientId, session.SerialNumber };
+            return InterSystems.CallClassMethod("cmNT.OmPrint", "GetNextAuftrag", args);
         }
 
 
@@ -62,7 +63,8 @@ namespace Nt.Database.Api.InterSystems
         /// <returns></returns>
         public async Task<List<string>> GetPrintData(Nt.Data.Session session, string printJobId)
         {
-            var printData = await InterSystems.CallClassMethod("cmNT.OmPrint", "GetAuftrag", session.ClientId, session.SerialNumber, printJobId).ConfigureAwait(false);
+            var args = new object[3] { session.ClientId, session.SerialNumber, printJobId };
+            var printData = await InterSystems.CallClassMethod("cmNT.OmPrint", "GetAuftrag", args).ConfigureAwait(false);
             var printDataString = new DataString(printData);
             return new List<string>(printDataString.SplitByCRLF());
         }
@@ -74,7 +76,8 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="printJobId"></param>
         public Task DeletePrintJobId(Nt.Data.Session session, string printJobId)
         {
-            return InterSystems.CallVoidClassMethod("cmNT.OmPrint", "SetAuftragFertig", session.ClientId, session.SerialNumber, printJobId);
+            var args = new object[3] { session.ClientId, session.SerialNumber, printJobId };
+            return InterSystems.CallVoidClassMethod("cmNT.OmPrint", "SetAuftragFertig", args);
         }
     }
 }
