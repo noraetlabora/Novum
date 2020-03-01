@@ -1,5 +1,9 @@
+using InterSystems.Data.IRISClient;
+using InterSystems.XEP;
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace Nt.Database
 {
@@ -8,31 +12,57 @@ namespace Nt.Database
     /// </summary>
     public class DB : IDbConnection
     {
-        private static DB _instance = null;
+        private static readonly Lazy<DB> lazy = new Lazy<DB>(() => new DB());
         private Api.InterSystems.InterSystems _database;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static DB Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    _instance = new DB();
-                return _instance;
-            }
-        }
+        private Api.InterSystems.Api _api;
 
         private DB()
         {
             Resources.Dictionary.Initialize("de-AT");
-            Logging.Log.Database.Info("creating InterSystems API");
-            _database = Nt.Database.Api.InterSystems.InterSystems.Instance;
-            api = new Api.InterSystems.Api();
+            Logging.Log.Database.Info("creating InterSystems database / api");
+            _database = new Api.InterSystems.InterSystems();
+            _api = new Api.InterSystems.Api();
         }
 
-        private static Api.InterSystems.Api api;
+        /// <summary>
+        /// Singelton Design Pattern (http://csharpindepth.com/Articles/Singleton#lazy)
+        /// </summary>
+        /// <value></value>
+        public static DB Instance { get { return lazy.Value; } }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void CheckConnection()
+        {
+            //foreach (var xepEventPersister in xepEventPersisters)
+            //{
+            //    switch (xepEventPersister.GetAdoNetConnection().State)
+            //    {
+            //        case System.Data.ConnectionState.Closed:
+            //            Nt.Logging.Log.Database.Warn("DatabaseService: connection is closed");
+            //            xepEventPersister.Close();
+            //            xepEventPersister.Connect(connectionString);
+            //            break;
+            //        case System.Data.ConnectionState.Broken:
+            //            Nt.Logging.Log.Database.Warn("DatabaseService: connection is broken");
+            //            xepEventPersister.Close();
+            //            xepEventPersister.Connect(connectionString);
+            //            break;
+            //        case System.Data.ConnectionState.Connecting:
+            //            Nt.Logging.Log.Database.Info("DatabaseService: connection is connecting");
+            //            break;
+            //        case System.Data.ConnectionState.Executing:
+            //            Nt.Logging.Log.Database.Info("DatabaseService: connection is executing");
+            //            break;
+            //        case System.Data.ConnectionState.Fetching:
+            //            Nt.Logging.Log.Database.Info("DatabaseService: connection is fetching");
+            //            break;
+            //    }
+            //}
+
+            Logging.Log.Database.Info(string.Format("connections active {0}, idle {1}, inUse {2}", IRISPoolManager.ActiveConnectionCount, IRISPoolManager.IdleCount(), IRISPoolManager.InUseCount()));
+        }
 
         /// <summary>
         /// 
@@ -40,7 +70,7 @@ namespace Nt.Database
         /// <value></value>
         public static Api.IDbApi Api
         {
-            get { return api; }
+            get { return Instance._api; }
         }
 
         /// <summary>
@@ -50,14 +80,6 @@ namespace Nt.Database
         public void Initialize(uint connectionCount = 1)
         {
             _database.Initialize(connectionCount);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void CheckConnection()
-        {
-            _database.CheckConnection();
         }
 
         /*******************************************************/
@@ -71,7 +93,7 @@ namespace Nt.Database
         public void Open()
         {
             _database.Open();
-            api.Initialize();
+            _api.Initialize();
         }
 
         /// <summary>
@@ -88,24 +110,25 @@ namespace Nt.Database
         /// <value></value>
         public string ConnectionString
         {
-            get => _database.ConnectionString;
-            set => _database.ConnectionString = value;
-        }
+            get { return _database.ConnectionString; }
+            set {_database.ConnectionString = value;   }
+        } 
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public int ConnectionTimeout { get => _database.ConnectionTimeout; }
+        public int ConnectionTimeout { get => _database.ConnectionTimeout;  }
 
         /// <summary>
         /// 
         /// </summary>
         public string Database { get => _database.Database; }
+
         /// <summary>
         /// 
         /// </summary>
-        public ConnectionState State { get => _database.State; }
+        public ConnectionState State { get => _database.State;  }
 
         /// <summary>
         /// 

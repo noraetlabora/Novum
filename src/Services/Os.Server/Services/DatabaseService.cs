@@ -24,11 +24,11 @@ namespace Os.Server.Services
             connectionString.Append("; User ID=").Append(OsServer.ServerConfiguration.DatabaseUser);
             connectionString.Append("; Password=").Append(OsServer.ServerConfiguration.DatabasePassword);
             //connectionString.Append("; Min Pool Size = 10;  Max Pool Size = 20; Connection Reset = true; Connection Lifetime = 5;");
+            Nt.Logging.Log.Database.Info("setting connection string to: " + connectionString.ToString().Substring(0, 55) + "...");
+
             Nt.Database.DB.Instance.ConnectionString = connectionString.ToString();
             Nt.Database.DB.Instance.Initialize(OsServer.ServerConfiguration.DatabaseConnections);
             Nt.Database.DB.Instance.Open();
-
-            Nt.Logging.Log.Server.Info("database connection is open");
 
             _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(20));
             return Task.CompletedTask;
