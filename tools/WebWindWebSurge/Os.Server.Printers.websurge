@@ -1,4 +1,4 @@
-GET http://localhost:25000/api/v2/data/printers HTTP/1.1
+GET http://localhost:25000/api/v2/data/tables HTTP/1.1
 Accept-Encoding: gzip,deflate
 
 ------------------------------------------------------------------

@@ -1,7 +1,7 @@
 using InterSystems.Data.IRISClient;
 using InterSystems.XEP;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Data;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -11,7 +11,7 @@ namespace Nt.Database.Api.InterSystems
 
     internal class InterSystems : IDbConnection
     {
-        private static List<EventPersister> xepEventPersisters;
+        private static ConcurrentQueue<EventPersister> xepEventPersisters;
 
         /// <summary>
         /// 
@@ -21,17 +21,19 @@ namespace Nt.Database.Api.InterSystems
         {
             get
             {
+                EventPersister xepEventPersister = null;
                 while (true)
                 {
-                    foreach (var xepEventPersister in xepEventPersisters)
-                    {
-                        if (xepEventPersister.GetAdoNetConnection().State == ConnectionState.Open)
-                        {
-                            return xepEventPersister;
-                        }
-                    }
+                    if (xepEventPersisters.TryDequeue(out xepEventPersister))
+                        return xepEventPersister;
+
+                    System.Threading.Thread.Sleep(10);
                     Logging.Log.Database.Info("no free xepEventPersister available - retrying");
                 }
+            }
+            set
+            {
+                xepEventPersisters.Enqueue(value);
             }
         }
 
@@ -48,10 +50,10 @@ namespace Nt.Database.Api.InterSystems
             }
 
             Logging.Log.Database.Info("creating InterSystems XepEventPersister");
-            xepEventPersisters = new List<EventPersister>();
+            xepEventPersisters = new ConcurrentQueue<EventPersister>();
             for (int i = 0; i < connectionCount; i++)
             {
-                xepEventPersisters.Add(PersisterFactory.CreatePersister());
+                XepEventPersister = PersisterFactory.CreatePersister();
             }
         }
 
@@ -162,9 +164,11 @@ namespace Nt.Database.Api.InterSystems
             if (Logging.Log.Database.IsDebugEnabled)
                 Logging.Log.Database.Debug(ticks + "|" + memberName + "|SQL|" + sql);
 
+            //get XepEventPersister from Queue
+            var xepEventPersister = XepEventPersister;
             try
             {
-                var adoConnection = (IRISADOConnection)XepEventPersister.GetAdoNetConnection();
+                var adoConnection = (IRISADOConnection)xepEventPersister.GetAdoNetConnection();
                 var dataAdapter = new IRISDataAdapter(sql, adoConnection);
                 dataTable = new DataTable();
                 await Task.Run(() => dataAdapter.Fill(dataTable));
@@ -175,6 +179,11 @@ namespace Nt.Database.Api.InterSystems
             {
                 Logging.Log.Database.Error(ex, ticks + "|" + memberName + "|SQL|" + sql);
                 throw ex;
+            }
+            finally
+            {
+                //return XepEventPersister to Queue
+                XepEventPersister = xepEventPersister;
             }
 
             return dataTable;
@@ -190,9 +199,11 @@ namespace Nt.Database.Api.InterSystems
             if (Logging.Log.Database.IsDebugEnabled)
                 Logging.Log.Database.Debug(ticks + "|" + memberName + "|ClassMethod|" + FormatClassMethod(className, methodName, args));
 
+            //get XepEventPersister from Queue
+            var xepEventPersister = XepEventPersister;
             try
             {
-                Object returnValue = await Task.Run(() => XepEventPersister.CallClassMethod(className, methodName, args));
+                Object returnValue = await Task.Run(() => xepEventPersister.CallClassMethod(className, methodName, args));
                 if (Logging.Log.Database.IsDebugEnabled)
                     Logging.Log.Database.Debug(ticks + "|" + memberName + "|ClassMethodResult|" + returnValue.ToString());
 
@@ -202,6 +213,11 @@ namespace Nt.Database.Api.InterSystems
             {
                 Logging.Log.Database.Error(ex, ticks + "|" + memberName + "|ClassMethod|" + FormatClassMethod(className, methodName, args));
                 throw ex;
+            }
+            finally
+            {
+                //return XepEventPersister to Queue
+                XepEventPersister = xepEventPersister;
             }
         }
 
@@ -215,9 +231,11 @@ namespace Nt.Database.Api.InterSystems
             if (Logging.Log.Database.IsDebugEnabled)
                 Logging.Log.Database.Debug(ticks + "|" + memberName + "|VoidClassMethod|" + FormatClassMethod(className, methodName, args));
 
+            //get XepEventPersister from Queue
+            var xepEventPersister = XepEventPersister;
             try
             {
-                await Task.Run(() => XepEventPersister.CallVoidClassMethod(className, methodName, args));
+                await Task.Run(() => xepEventPersister.CallVoidClassMethod(className, methodName, args));
                 if (Logging.Log.Database.IsDebugEnabled)
                     Logging.Log.Database.Debug(ticks + "|" + memberName + "|VoidClassMethod|success");
             }
@@ -225,6 +243,11 @@ namespace Nt.Database.Api.InterSystems
             {
                 Logging.Log.Database.Error(ex, ticks + "|" + memberName + "|VoidClassMethod|" + FormatClassMethod(className, methodName, args));
                 throw ex;
+            }
+            finally
+            {
+                //return XepEventPersister to Queue
+                XepEventPersister = xepEventPersister;
             }
         }
 

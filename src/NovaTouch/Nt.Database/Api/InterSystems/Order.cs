@@ -179,7 +179,7 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="authorizingWaiterId"></param>
         public Task VoidNewOrder(Nt.Data.Session session, string tableId, string articleId, decimal voidQuantity, decimal voidPrice, string assignmentTypeId, string authorizingWaiterId)
         {
-            var args = new object[9] { session.ClientId, session.PosId, session.WaiterId, tableId, articleId, voidQuantity.ToString(), voidPrice.ToString(), assignmentTypeId, authorizingWaiterId  };
+            var args = new object[9] { session.ClientId, session.PosId, session.WaiterId, tableId, articleId, voidQuantity.ToString(), voidPrice.ToString(), assignmentTypeId, authorizingWaiterId };
             return InterSystems.CallVoidClassMethod("cmNT.BonOman", "SetSofortStornoJournal", args);
         }
 

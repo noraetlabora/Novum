@@ -163,7 +163,7 @@ namespace Nt.Database.Api.InterSystems
         public async Task SplitOrder(Session session, string sourceTableId, string targetTableId, Data.Order order, decimal quantity)
         {
             var orderDataString = Order.GetOrderDataString(order);
-            var args = new object[9] { session.ClientId, session.PosId, session.SerialNumber, session.WaiterId, sourceTableId, targetTableId, orderDataString, orderDataString, quantity  };
+            var args = new object[9] { session.ClientId, session.PosId, session.SerialNumber, session.WaiterId, sourceTableId, targetTableId, orderDataString, orderDataString, quantity };
             var returnValue = await InterSystems.CallClassMethod("cmNT.SplittOman", "SetSplittZeile", args).ConfigureAwait(false);
         }
 
