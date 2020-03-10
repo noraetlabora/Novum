@@ -3,7 +3,7 @@ using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -27,8 +27,8 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT PNR, name ");
             sql.Append(" FROM NT.Pers ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND passiv > ").Append(InterSystems.SqlToday);
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -54,9 +54,9 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT PNR, code, name");
             sql.Append(" FROM NT.Pers ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND code = ").Append(InterSystems.SqlQuote(code));
-            sql.Append(" AND passiv > ").Append(InterSystems.SqlToday);
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            sql.Append(" AND code = ").Append(Intersystems.SqlQuote(code));
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             if (dataTable.Rows.Count == 1)
                 return DataObject.GetString(dataTable.Rows[0], "PNR");
@@ -77,10 +77,10 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT PNR, code, name");
             sql.Append(" FROM NT.Pers ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND PNR = ").Append(InterSystems.SqlQuote(waiterId));
-            sql.Append(" AND code = ").Append(InterSystems.SqlQuote(code));
-            sql.Append(" AND passiv > ").Append(InterSystems.SqlToday);
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            sql.Append(" AND PNR = ").Append(Intersystems.SqlQuote(waiterId));
+            sql.Append(" AND code = ").Append(Intersystems.SqlQuote(code));
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             if (dataTable.Rows.Count == 1)
                 return true;
@@ -96,9 +96,9 @@ namespace Nt.Database.Api.InterSystems
         {
             var posId = await DB.Api.Pos.GetPosId(session.SerialNumber).ConfigureAwait(false);
             var args = new object[3] { session.ClientId, posId, session.WaiterId };
-            await InterSystems.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogin", args).ConfigureAwait(false);
+            await Intersystems.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogin", args).ConfigureAwait(false);
             args = new object[5] { Api.ClientId, posId, session.WaiterId, session.SerialNumber, "1" };
-            await InterSystems.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", args).ConfigureAwait(false);
+            await Intersystems.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", args).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Nt.Database.Api.InterSystems
         {
             var posId = await DB.Api.Pos.GetPosId(session.SerialNumber).ConfigureAwait(false);
             var args = new object[3] { session.ClientId, posId, session.WaiterId };
-            await InterSystems.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogout", args).ConfigureAwait(false);
+            await Intersystems.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogout", args).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" JOIN NT.PersSecProg P ON P.PRG = B.PRG AND P.obsolet = 0 ");
             sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
             sql.Append(" AND M.PNR = ").Append(waiterId);
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {

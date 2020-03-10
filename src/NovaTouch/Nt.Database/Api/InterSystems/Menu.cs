@@ -3,7 +3,7 @@ using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -26,7 +26,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT UMENU, bez, spalten ");
             sql.Append(" FROM NT.TouchUmenu ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -50,7 +50,7 @@ namespace Nt.Database.Api.InterSystems
         public Task<string> GetMenuId(string posId)
         {
             var args = new object[3] { Api.ClientId, posId, "0" };
-            return InterSystems.CallClassMethod("cmNT.Kassa", "GetTouchMenu", args);
+            return Intersystems.CallClassMethod("cmNT.Kassa", "GetTouchMenu", args);
         }
 
         /// <summary>
@@ -66,8 +66,8 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" FROM  NT.TouchMenuZeile M ");
             sql.Append(" INNER JOIN NT.TouchUmenu UM ON UM.FA = M.FA AND UM.UMENU = M.UMENU ");
             sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
-            sql.Append(" AND M.MENU = ").Append(InterSystems.SqlQuote(menuId));
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            sql.Append(" AND M.MENU = ").Append(Intersystems.SqlQuote(menuId));
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -100,7 +100,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" , cmNT.BonTouch_GetArtikelTouchBezeichnung(A.FA,'RK',A.UMENU,A.ROW, A.COL,0,1) As name");
             sql.Append(" FROM NT.TouchUMenuZeilen A ");
             sql.Append(" WHERE A.FA = ").Append(Api.ClientId);
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {

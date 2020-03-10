@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -32,7 +32,7 @@ namespace Nt.Database.Api.InterSystems
         {
             Nt.Data.Room room = null;
             var args = new object[5] { session.ClientId, session.PosId, session.WaiterId, partnerId, roomNumber };
-            var dbString = await InterSystems.CallClassMethod("cmNT.AbrOmanHotelIFC", "GetZimmerDetail", args).ConfigureAwait(false);
+            var dbString = await Intersystems.CallClassMethod("cmNT.AbrOmanHotelIFC", "GetZimmerDetail", args).ConfigureAwait(false);
             var dataString = new DataString(dbString);
             var roomsString = dataString.SplitByChar96();
 
@@ -59,7 +59,7 @@ namespace Nt.Database.Api.InterSystems
         {
             var rooms = new Dictionary<string, Nt.Data.Room>();
             var args = new object[6] { session.ClientId, session.PosId, session.WaiterId, partnerId, "", "" };
-            var dbString = await InterSystems.CallClassMethod("cmNT.AbrOmanHotelIFC", "GetZimmerliste", args).ConfigureAwait(false); ;
+            var dbString = await Intersystems.CallClassMethod("cmNT.AbrOmanHotelIFC", "GetZimmerliste", args).ConfigureAwait(false); ;
             var dataString = new DataString(dbString);
             var dataList = new DataList(dataString.SplitByChar96());
 

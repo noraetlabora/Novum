@@ -21,7 +21,7 @@ namespace Os.Server.Logic
         public static async Task<List<Models.TableResult>> GetTables(Nt.Data.Session session)
         {
             var osTables = new Dictionary<string, Models.TableResult>();
-            var ntTables = await DB.Api.Table.GetTables(session);
+            var ntTables = await DB.Api.Table.GetTables(session).ConfigureAwait(false);
 
             // create main tables
             foreach (var ntTable in ntTables.Values)

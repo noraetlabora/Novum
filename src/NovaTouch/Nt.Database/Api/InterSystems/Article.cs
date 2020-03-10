@@ -4,7 +4,7 @@ using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -27,8 +27,8 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT A.ANR, A.vkbez, AK.vkaend, AK.nameaend ");
             sql.Append(" FROM WW.ANR A ");
             sql.Append(" LEFT JOIN WW.ANRKassa AK ON (AK.FA=A.FA AND AK.ANR=A.ANR) ");
-            sql.Append(" WHERE A.passiv > ").Append(InterSystems.SqlToday);
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            sql.Append(" WHERE A.passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -54,7 +54,7 @@ namespace Nt.Database.Api.InterSystems
         public async Task CheckEnteredPrice(Nt.Data.Session session, string articleId, decimal price)
         {
             var args = new object[6] { session.ClientId, session.PosId, session.WaiterId, "tableId", articleId, price };
-            var dbString = await InterSystems.CallClassMethod("cmNT.BonOman", "CheckArtikelpreis", args).ConfigureAwait(false);
+            var dbString = await Intersystems.CallClassMethod("cmNT.BonOman", "CheckArtikelpreis", args).ConfigureAwait(false);
             var checkPriceString = new DataString(dbString);
             var checkPriceArray = checkPriceString.SplitByChar96();
             var checkPriceList = new DataList(checkPriceArray);

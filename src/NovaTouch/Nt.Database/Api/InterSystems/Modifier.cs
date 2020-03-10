@@ -3,7 +3,7 @@ using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -27,7 +27,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" FROM NT.TouchUmenu ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND aend = 1");
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -59,7 +59,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
             sql.Append(" AND M.UMENU = ").Append(modifierMenuId);
             sql.Append(" AND M.ANR <> '' ");
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -91,7 +91,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT UMENU, ROW, COL, LFD, AendUMenu ");
             sql.Append(" FROM NT.TouchUmenuZeilenA ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -121,7 +121,7 @@ namespace Nt.Database.Api.InterSystems
         {
             var modifier = new Nt.Data.Modifier();
             var args = new object[12] { session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", "", "", "", articleId, "", quantity };
-            var dbString = await InterSystems.CallClassMethod("cmNT.BonOman", "GetArtikelDaten", args).ConfigureAwait(false);
+            var dbString = await Intersystems.CallClassMethod("cmNT.BonOman", "GetArtikelDaten", args).ConfigureAwait(false);
             var dataString = new DataString(dbString);
             var dataList = new DataList(dataString.SplitByChar96());
 

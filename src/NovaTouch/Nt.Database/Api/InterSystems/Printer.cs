@@ -3,7 +3,7 @@ using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -25,7 +25,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND DEV LIKE 'RD%' ");
             sql.Append(" AND pas = 0");
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -39,6 +39,7 @@ namespace Nt.Database.Api.InterSystems
                     printers.Add(printer.Id, printer);
             }
 
+            dataTable.Clear();
             dataTable.Dispose();
             return printers;
         }
@@ -51,7 +52,7 @@ namespace Nt.Database.Api.InterSystems
         public Task<string> GetPrintJobId(Nt.Data.Session session)
         {
             var args = new object[2] { session.ClientId, session.SerialNumber };
-            return InterSystems.CallClassMethod("cmNT.OmPrint", "GetNextAuftrag", args);
+            return Intersystems.CallClassMethod("cmNT.OmPrint", "GetNextAuftrag", args);
         }
 
 
@@ -64,7 +65,7 @@ namespace Nt.Database.Api.InterSystems
         public async Task<List<string>> GetPrintData(Nt.Data.Session session, string printJobId)
         {
             var args = new object[3] { session.ClientId, session.SerialNumber, printJobId };
-            var printData = await InterSystems.CallClassMethod("cmNT.OmPrint", "GetAuftrag", args).ConfigureAwait(false);
+            var printData = await Intersystems.CallClassMethod("cmNT.OmPrint", "GetAuftrag", args).ConfigureAwait(false);
             var printDataString = new DataString(printData);
             return new List<string>(printDataString.SplitByCRLF());
         }
@@ -77,7 +78,7 @@ namespace Nt.Database.Api.InterSystems
         public Task DeletePrintJobId(Nt.Data.Session session, string printJobId)
         {
             var args = new object[3] { session.ClientId, session.SerialNumber, printJobId };
-            return InterSystems.CallVoidClassMethod("cmNT.OmPrint", "SetAuftragFertig", args);
+            return Intersystems.CallVoidClassMethod("cmNT.OmPrint", "SetAuftragFertig", args);
         }
     }
 }

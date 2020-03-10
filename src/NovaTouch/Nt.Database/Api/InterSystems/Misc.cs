@@ -4,7 +4,7 @@ using System.Data;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -27,8 +27,8 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT AGR, bez, STGR  ");
             sql.Append(" FROM WW.AGR ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND passiv > ").Append(InterSystems.SqlToday);
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -57,8 +57,8 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT GRUND, bez ");
             sql.Append(" FROM NT.StornoGrund ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND passiv > ").Append(InterSystems.SqlToday);
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -80,8 +80,8 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT GANGMENU, GANG, bez ");
             sql.Append(" FROM WW.Speisenfolge ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND  passiv > ").Append(InterSystems.SqlToday);
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            sql.Append(" AND  passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -107,8 +107,8 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" SELECT VKO, bez, vkebene ");
             sql.Append(" FROM WW.VKO ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND  passiv > ").Append(InterSystems.SqlToday);
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            sql.Append(" AND  passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -132,10 +132,10 @@ namespace Nt.Database.Api.InterSystems
             var sql = new StringBuilder();
             sql.Append(" SELECT A.STGR, A.bez, B.uproz, B.uproz2  ");
             sql.Append(" FROM WW.STGR A ");
-            sql.Append(" INNER JOIN WW.STGRSteuer B ON (B.FA = A.FA AND B.STGR = A.STGR AND B.GILT <= ").Append(InterSystems.SqlToday).Append(")");
+            sql.Append(" INNER JOIN WW.STGRSteuer B ON (B.FA = A.FA AND B.STGR = A.STGR AND B.GILT <= ").Append(Intersystems.SqlToday).Append(")");
             sql.Append(" WHERE A.FA = ").Append(Api.ClientId);
-            sql.Append(" AND A.passiv > ").Append(InterSystems.SqlToday);
-            var dataTable = await InterSystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+            sql.Append(" AND A.passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -163,7 +163,7 @@ namespace Nt.Database.Api.InterSystems
         public async Task<bool> HasSnapshotTime(string guid)
         {
             var args = new object[2] { Api.ClientId, guid };
-            var lastSnapshotTime = await InterSystems.CallClassMethod("cmNT.Kasse", "GetOrdermanSnapshot", args).ConfigureAwait(false);
+            var lastSnapshotTime = await Intersystems.CallClassMethod("cmNT.Kasse", "GetOrdermanSnapshot", args).ConfigureAwait(false);
             if (string.IsNullOrEmpty(lastSnapshotTime))
                 return false;
             return true;
@@ -177,7 +177,7 @@ namespace Nt.Database.Api.InterSystems
         public Task SetSnapshotTime(string guid)
         {
             var args = new object[2] { Api.ClientId, guid };
-            return InterSystems.CallClassMethod("cmNT.Kasse", "SetOrdermanSnapshot", args);
+            return Intersystems.CallClassMethod("cmNT.Kasse", "SetOrdermanSnapshot", args);
         }
 
         #endregion

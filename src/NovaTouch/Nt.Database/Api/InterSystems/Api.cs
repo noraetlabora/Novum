@@ -1,6 +1,6 @@
 using System;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -118,7 +118,7 @@ namespace Nt.Database.Api.InterSystems
         public void Initialize()
         {
             var args = Array.Empty<object>();
-            _clientId = InterSystems.CallClassMethod("cmNT.Kassa", "GetOmanFirma", args).GetAwaiter().GetResult();
+            _clientId = Intersystems.CallClassMethod("cmNT.Kassa", "GetOmanFirma", args).GetAwaiter().GetResult();
             Logging.Log.Database.Info("ClientId = " + _clientId);
         }
     }

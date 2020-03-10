@@ -10,15 +10,15 @@ namespace Nt.Database
     public class DB : IDbConnection
     {
         private static readonly Lazy<DB> lazy = new Lazy<DB>(() => new DB());
-        private Api.InterSystems.InterSystems _database;
-        private Api.InterSystems.Api _api;
+        private Api.Intersystems.Intersystems _database;
+        private Api.Intersystems.Api _api;
 
         private DB()
         {
             Resources.Dictionary.Initialize("de-AT");
             Logging.Log.Database.Info("creating InterSystems database / api");
-            _database = new Api.InterSystems.InterSystems();
-            _api = new Api.InterSystems.Api();
+            _database = new Api.Intersystems.Intersystems();
+            _api = new Api.Intersystems.Api();
         }
 
         /// <summary>
