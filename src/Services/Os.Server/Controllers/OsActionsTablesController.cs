@@ -24,7 +24,7 @@ namespace Os.Server.Controllers
             {
                 var session = Sessions.GetSession(Request);
                 //register client
-                var subTable = await Logic.Table.CreateSubTable(session, tableId);
+                var subTable = await Logic.Table.CreateSubTable(session, tableId).ConfigureAwait(false);
                 //201 - Created
                 return new CreatedResult("/api/v2/actions/subTables/create", subTable);
             }
@@ -46,7 +46,7 @@ namespace Os.Server.Controllers
             try
             {
                 var session = Sessions.GetSession(Request);
-                var moveResult = await Logic.Table.MoveSubTable(session, data);
+                var moveResult = await Logic.Table.MoveSubTable(session, data).ConfigureAwait(false);
                 //200 - Ok
                 return new OkObjectResult(moveResult);
             }
@@ -74,7 +74,7 @@ namespace Os.Server.Controllers
 
                 if (prePayment == null)
                     prePayment = false;
-                var tableResult = await Logic.Table.OpenByName(session, name, serviceAreaId, (bool)prePayment);
+                var tableResult = await Logic.Table.OpenByName(session, name, serviceAreaId, (bool)prePayment).ConfigureAwait(false);
                 //201 - Created
                 //return new CreatedResult("Tables/OpenByName", tableResult);
                 //200 - Ok
@@ -101,7 +101,7 @@ namespace Os.Server.Controllers
             try
             {
                 var session = Sessions.GetSession(Request);
-                await Logic.Order.FinalizeOrder(session, tableId);
+                await Logic.Order.FinalizeOrder(session, tableId).ConfigureAwait(false);
                 //204 - No Content
                 return new NoContentResult();
                 //401 - Unauthorized
@@ -130,7 +130,7 @@ namespace Os.Server.Controllers
             try
             {
                 var session = Sessions.GetSession(Request);
-                await Logic.Order.CancelOrder(session, tableId);
+                await Logic.Order.CancelOrder(session, tableId).ConfigureAwait(false);
                 //204 - No Content
                 return new NoContentResult();
                 //401 - Unauthorized

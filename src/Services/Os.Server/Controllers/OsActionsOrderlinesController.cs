@@ -24,7 +24,7 @@ namespace Os.Server.Controllers
             try
             {
                 var session = Sessions.GetSession(Request);
-                var orderLineResult = await Logic.Order.Add(session, subTableId, data);
+                var orderLineResult = await Logic.Order.Add(session, subTableId, data).ConfigureAwait(false);
                 //201 - Created
                 return new CreatedResult("/api/v2/actions/orderLines/add/", orderLineResult);
             }
@@ -48,7 +48,7 @@ namespace Os.Server.Controllers
             try
             {
                 var session = Sessions.GetSession(Request);
-                var orderLineResult = await Logic.Order.Modify(session, orderLineId, data);
+                var orderLineResult = await Logic.Order.Modify(session, orderLineId, data).ConfigureAwait(false);
                 //201 - Created
                 return new CreatedResult("/api/v2/actions/orderLines/modifyUncommitted/" + orderLineResult.Id, orderLineResult);
             }
@@ -96,7 +96,7 @@ namespace Os.Server.Controllers
             try
             {
                 var session = Sessions.GetSession(Request);
-                var voidResult = await Logic.Order.Void(session, orderLineId, data);
+                var voidResult = await Logic.Order.Void(session, orderLineId, data).ConfigureAwait(false);
                 // 204 - No Content - delete Orderline
                 if (voidResult.Quantity <= 0)
                     return new NoContentResult();

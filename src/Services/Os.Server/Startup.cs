@@ -40,6 +40,7 @@ namespace Os.Server
 
             // add database service for automated (re)connection to the database 
             services.AddHostedService<Services.DatabaseService>();
+            services.AddHttpClient();
         }
 
         /// <summary>

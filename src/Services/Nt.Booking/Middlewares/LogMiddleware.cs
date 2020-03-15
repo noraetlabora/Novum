@@ -34,18 +34,18 @@ namespace Nt.Booking.Middlewares
             try
             {
                 //read and log request body
-                var requestBodyContent = await ReadRequestBody(httpContext.Request);
+                var requestBodyContent = await ReadRequestBody(httpContext.Request).ConfigureAwait(false);
 
                 var originalBodyStream = httpContext.Response.Body;
                 using (var responseBody = new MemoryStream())
                 {
                     httpContext.Response.Body = responseBody;
-                    await _next(httpContext);
+                    await _next(httpContext).ConfigureAwait(false);
 
                     //read and log response body
                     string responseBodyContent = null;
-                    responseBodyContent = await ReadResponseBody(httpContext.Response);
-                    await responseBody.CopyToAsync(originalBodyStream);
+                    responseBodyContent = await ReadResponseBody(httpContext.Response).ConfigureAwait(false);
+                    await responseBody.CopyToAsync(originalBodyStream).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)

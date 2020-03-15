@@ -19,7 +19,7 @@ namespace Os.Server.Logic
         {
             var osPrinters = new List<Models.Printer>();
 
-            var ntPrinters = await Nt.Database.DB.Api.Printer.GetInvoicePrinters();
+            var ntPrinters = await Nt.Database.DB.Api.Printer.GetInvoicePrinters().ConfigureAwait(false);
 
             foreach (var ntPrinter in ntPrinters.Values)
             {
@@ -38,15 +38,15 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static async Task Print(Nt.Data.Session session)
         {
-            var printJobId = await DB.Api.Printer.GetPrintJobId(session);
+            var printJobId = await DB.Api.Printer.GetPrintJobId(session).ConfigureAwait(false);
             while (!string.IsNullOrEmpty(printJobId))
             {
                 //get printing data and post the data to the client api
-                var printData = await DB.Api.Printer.GetPrintData(session, printJobId);
+                var printData = await DB.Api.Printer.GetPrintData(session, printJobId).ConfigureAwait(false);
                 Client.ClientApi.Print.PostPrintJob(session, printData);
                 //delete current print job id and get next one
-                await DB.Api.Printer.DeletePrintJobId(session, printJobId);
-                printJobId = await DB.Api.Printer.GetPrintJobId(session);
+                await DB.Api.Printer.DeletePrintJobId(session, printJobId).ConfigureAwait(false);
+                printJobId = await DB.Api.Printer.GetPrintJobId(session).ConfigureAwait(false);
             }
         }
 

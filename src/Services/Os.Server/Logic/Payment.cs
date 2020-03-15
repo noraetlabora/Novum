@@ -32,15 +32,15 @@ namespace Os.Server.Logic
 
             //order lines
             var tableId = data.SubTableIds[0];
-            var ntOrders = await Nt.Database.DB.Api.Order.GetOrders(tableId);
+            var ntOrders = await Nt.Database.DB.Api.Order.GetOrders(tableId).ConfigureAwait(false);
             //payment information
             var ntPaymentInformation = new Nt.Data.PaymentInformation();
             ntPaymentInformation.PrinterId = data.Printer;
             //payment methods
-            List<PaymentMethod> ntPaymentMethods = await GetNtPaymentMethods(data.Payments, data.Tip);
+            List<PaymentMethod> ntPaymentMethods = await GetNtPaymentMethods(data.Payments, data.Tip).ConfigureAwait(false);
 
             //pay
-            var ntPaymentResult = await Nt.Database.DB.Api.Payment.Pay(session, tableId, ntOrders.Values.ToList(), ntPaymentMethods, ntPaymentInformation);
+            var ntPaymentResult = await Nt.Database.DB.Api.Payment.Pay(session, tableId, ntOrders.Values.ToList(), ntPaymentMethods, ntPaymentInformation).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -73,9 +73,9 @@ namespace Os.Server.Logic
             var ntPaymentInformation = new Nt.Data.PaymentInformation();
             ntPaymentInformation.PrinterId = data.Printer;
             //payment methods
-            List<PaymentMethod> ntPaymentMethods = await GetNtPaymentMethods(data.Payments, data.Tip);
+            List<PaymentMethod> ntPaymentMethods = await GetNtPaymentMethods(data.Payments, data.Tip).ConfigureAwait(false);
             //orders
-            List<Nt.Data.Order> ntOrders = await GetNtOrders(data, tableId);
+            List<Nt.Data.Order> ntOrders = await GetNtOrders(data, tableId).ConfigureAwait(false);
             //pay
             var ntPaymentResult = Nt.Database.DB.Api.Payment.Pay(session, tableId, ntOrders, ntPaymentMethods, ntPaymentInformation);
         }
@@ -83,7 +83,7 @@ namespace Os.Server.Logic
         private static async Task<List<Nt.Data.Order>> GetNtOrders(Models.PayOrderLines data, string tableId)
         {
             //orderlines
-            var ntAllOrders = await Nt.Database.DB.Api.Order.GetOrders(tableId);
+            var ntAllOrders = await Nt.Database.DB.Api.Order.GetOrders(tableId).ConfigureAwait(false);
             var ntOrders = new List<Nt.Data.Order>();
             foreach (var orderLineQuantity in data.PaidLines)
             {
@@ -122,7 +122,7 @@ namespace Os.Server.Logic
                     switch (line.Key)
                     {
                         case "ROOM":
-                            var room = await Nt.Database.DB.Api.Hotel.GetRoom(session, paymentType.PartnerId, line.Value);
+                            var room = await Nt.Database.DB.Api.Hotel.GetRoom(session, paymentType.PartnerId, line.Value).ConfigureAwait(false);
                             if (room == null)
                                 throw new Exception("Zimmer " + line.Value + " nicht gefunden");
                             //set up dialog

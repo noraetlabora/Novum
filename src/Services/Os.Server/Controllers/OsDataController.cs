@@ -42,7 +42,7 @@ namespace Os.Server.Controllers
         {
             try
             {
-                var osCReasons = await Logic.Data.GetCancellationReasons();
+                var osCReasons = await Logic.Data.GetCancellationReasons().ConfigureAwait(false);
                 return new ObjectResult(osCReasons);
             }
             catch (Exception ex)
@@ -81,7 +81,7 @@ namespace Os.Server.Controllers
         {
             try
             {
-                var modifierGroups = await Logic.Data.GetModifierGroups();
+                var modifierGroups = await Logic.Data.GetModifierGroups().ConfigureAwait(false);
                 return new ObjectResult(modifierGroups);
             }
             catch (Exception ex)
@@ -120,10 +120,6 @@ namespace Os.Server.Controllers
                 if (OsServer.ClientConfiguration.Coursing)
                     osConfiguration.Features.Add("addCourseOnLongPress");
 
-                //TODO: delete folowing 2 lines - manual course and addCourseOnLongPress
-                osConfiguration.Global.Add("coursingMode", "manual");
-                osConfiguration.Features.Add("addCourseOnLongPress");
-
                 return new ObjectResult(osConfiguration);
 
             }
@@ -144,8 +140,8 @@ namespace Os.Server.Controllers
         {
             try
             {
-                var paymentMedia = await Logic.Data.GetPaymentMedia();
-                await Nt.Database.DB.Api.Misc.SetSnapshotTime(Controllers.OsHostController.PosStatus.SessionId);
+                var paymentMedia = await Logic.Data.GetPaymentMedia().ConfigureAwait(false);
+                await Nt.Database.DB.Api.Misc.SetSnapshotTime(Controllers.OsHostController.PosStatus.SessionId).ConfigureAwait(false);
                 return new ObjectResult(paymentMedia);
             }
             catch (Exception ex)
@@ -164,7 +160,7 @@ namespace Os.Server.Controllers
         {
             try
             {
-                var printers = await Logic.Printer.GetPrinters();
+                var printers = await Logic.Printer.GetPrinters().ConfigureAwait(false);
                 return new ObjectResult(printers);
             }
             catch (Exception ex)
@@ -183,7 +179,7 @@ namespace Os.Server.Controllers
         {
             try
             {
-                var serviceAreas = await Logic.Data.GetServiceAreas();
+                var serviceAreas = await Logic.Data.GetServiceAreas().ConfigureAwait(false);
                 return new OkObjectResult(serviceAreas);
             }
             catch (Exception ex)
@@ -202,7 +198,7 @@ namespace Os.Server.Controllers
         {
             try
             {
-                var users = await Logic.Data.GetUsers();
+                var users = await Logic.Data.GetUsers().ConfigureAwait(false);
                 return new ObjectResult(users);
             }
             catch (Exception ex)
@@ -224,7 +220,7 @@ namespace Os.Server.Controllers
             try
             {
                 var session = Sessions.GetSession(Request);
-                var orderLines = await Logic.Order.GetOrderLines(session, subTableId);
+                var orderLines = await Logic.Order.GetOrderLines(session, subTableId).ConfigureAwait(false);
                 return new ObjectResult(orderLines);
             }
             catch (Exception ex)
@@ -244,8 +240,12 @@ namespace Os.Server.Controllers
         {
             try
             {
-                var session = Sessions.GetSession(Request);
-                var tables = await Logic.Table.GetTables(session);
+                //var session = Sessions.GetSession(Request);
+                var session = new Nt.Data.Session();
+                session.ClientId = "1001";
+                session.PosId = "RK2";
+                session.WaiterId = "1";
+                var tables = await Logic.Table.GetTables(session).ConfigureAwait(false);
                 return new ObjectResult(tables);
             }
             catch (Exception ex)
@@ -264,7 +264,7 @@ namespace Os.Server.Controllers
         {
             try
             {
-                var courses = await Logic.Data.GetCourses();
+                var courses = await Logic.Data.GetCourses().ConfigureAwait(false);
                 return new ObjectResult(courses);
             }
             catch (Exception ex)

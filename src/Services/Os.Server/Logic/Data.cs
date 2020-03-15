@@ -29,7 +29,7 @@ namespace Os.Server.Logic
         public static async Task CheckStaticData()
         {
             // snapshot time exists, data is up to date
-            var snapshotTimeExists = await Nt.Database.DB.Api.Misc.HasSnapshotTime(Controllers.OsHostController.PosStatus.SessionId);
+            var snapshotTimeExists = await Nt.Database.DB.Api.Misc.HasSnapshotTime(Controllers.OsHostController.PosStatus.SessionId).ConfigureAwait(false);
             if (snapshotTimeExists)
                 return;
 
@@ -54,7 +54,7 @@ namespace Os.Server.Logic
             Client.ClientApi.Subscribe.PubsubTopicsPost("host_staticDataChanged", pubSubMessages);
 
             // set snapshot time
-            await Nt.Database.DB.Api.Misc.SetSnapshotTime(Controllers.OsHostController.PosStatus.SessionId);
+            await Nt.Database.DB.Api.Misc.SetSnapshotTime(Controllers.OsHostController.PosStatus.SessionId).ConfigureAwait(false);
         }
 
         #region Cancellation Reasons
@@ -66,7 +66,7 @@ namespace Os.Server.Logic
         public static async Task<List<Models.CancellationReason>> GetCancellationReasons()
         {
             var osCancellationReasons = new List<Models.CancellationReason>();
-            var ntCancellationReasons = await Nt.Database.DB.Api.Misc.GetCancellationReason();
+            var ntCancellationReasons = await Nt.Database.DB.Api.Misc.GetCancellationReason().ConfigureAwait(false);
             foreach (var ntCancellationReason in ntCancellationReasons.Values)
             {
                 var osCancellationReason = new Models.CancellationReason();
@@ -89,7 +89,7 @@ namespace Os.Server.Logic
         public static async Task<List<Models.Course>> GetCourses()
         {
             var osCourses = new List<Models.Course>();
-            var ntCourses = await Nt.Database.DB.Api.Misc.GetCourses();
+            var ntCourses = await Nt.Database.DB.Api.Misc.GetCourses().ConfigureAwait(false);
             foreach (var ntCourse in ntCourses.Values)
             {
                 var osCourse = new Models.Course();
@@ -110,14 +110,14 @@ namespace Os.Server.Logic
         public static async Task<List<Models.PaymentMedium>> GetPaymentMedia()
         {
             var osPaymentMedia = new List<Models.PaymentMedium>();
-            ntCachedPaymentTypes = await Nt.Database.DB.Api.Payment.GetPaymentTypes();
+            ntCachedPaymentTypes = await Nt.Database.DB.Api.Payment.GetPaymentTypes().ConfigureAwait(false);
             foreach (var ntPaymentType in ntCachedPaymentTypes.Values)
             {
                 var osPaymentMedium = GetPaymentMedium(ntPaymentType);
                 osPaymentMedia.Add(osPaymentMedium);
             }
 
-            ntCachedAssignmentTypes = await Nt.Database.DB.Api.Payment.GetAssignmentTypes();
+            ntCachedAssignmentTypes = await Nt.Database.DB.Api.Payment.GetAssignmentTypes().ConfigureAwait(false);
             foreach (var ntAssignmentType in ntCachedAssignmentTypes.Values)
             {
                 var osPaymentMedium = new Models.PaymentMedium();
@@ -260,9 +260,9 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static async Task<List<Models.Category>> GetCategories()
         {
-            var posId = await Nt.Database.DB.Api.Pos.GetPosId();
-            var menuId = await Nt.Database.DB.Api.Menu.GetMenuId(posId);
-            return await GetCategories(menuId);
+            var posId = await Nt.Database.DB.Api.Pos.GetPosId().ConfigureAwait(false);
+            var menuId = await Nt.Database.DB.Api.Menu.GetMenuId(posId).ConfigureAwait(false);
+            return await GetCategories(menuId).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -306,7 +306,7 @@ namespace Os.Server.Logic
         public static async Task<List<Models.ModifierGroup>> GetModifierGroups()
         {
             var osModifierGroups = new List<Models.ModifierGroup>();
-            var ntModifierMenus = await Nt.Database.DB.Api.Modifier.GetModifierMenus();
+            var ntModifierMenus = await Nt.Database.DB.Api.Modifier.GetModifierMenus().ConfigureAwait(false);
             Models.ModifierGroup osModifierGroup;
 
             //////////////////////////////////////
@@ -328,7 +328,7 @@ namespace Os.Server.Logic
 
                 osModifierGroup.Choices = new List<Models.ModifierChoice>();
                 //Todo: database call in loop, bad!
-                var ntModifierItems = await Nt.Database.DB.Api.Modifier.GetModifierItems(ntModifierMenu.Id);
+                var ntModifierItems = await Nt.Database.DB.Api.Modifier.GetModifierItems(ntModifierMenu.Id).ConfigureAwait(false);
                 var lastModifierItemId = "";
 
                 //////////////////////////////////////
@@ -390,22 +390,22 @@ namespace Os.Server.Logic
         public static async Task<List<Models.ServiceArea>> GetServiceAreas()
         {
             var osServiceAreas = new List<Models.ServiceArea>();
-            var currentPosId = await Nt.Database.DB.Api.Pos.GetPosId();
-            var posIds = await Nt.Database.DB.Api.Pos.GetAlternativePosIds(currentPosId);
+            var currentPosId = await Nt.Database.DB.Api.Pos.GetPosId().ConfigureAwait(false);
+            var posIds = await Nt.Database.DB.Api.Pos.GetAlternativePosIds(currentPosId).ConfigureAwait(false);
             var serviceAreas = new Dictionary<string, string>();
 
-            var pos = await Nt.Database.DB.Api.Pos.GetPos(currentPosId);
+            var pos = await Nt.Database.DB.Api.Pos.GetPos(currentPosId).ConfigureAwait(false);
             var osServiceArea = new Models.ServiceArea();
             osServiceArea.Id = pos.Id;
-            osServiceArea.Name = await Nt.Database.DB.Api.Pos.GetServiceAreaName(pos.ServiceAreaId);
+            osServiceArea.Name = await Nt.Database.DB.Api.Pos.GetServiceAreaName(pos.ServiceAreaId).ConfigureAwait(false);
             serviceAreas.Add(pos.ServiceAreaId, osServiceArea.Name);
 
             foreach (var posId in posIds)
             {
-                pos = await Nt.Database.DB.Api.Pos.GetPos(posId);
+                pos = await Nt.Database.DB.Api.Pos.GetPos(posId).ConfigureAwait(false);
                 osServiceArea = new Models.ServiceArea();
                 osServiceArea.Id = pos.Id;
-                osServiceArea.Name = await Nt.Database.DB.Api.Pos.GetServiceAreaName(pos.ServiceAreaId);
+                osServiceArea.Name = await Nt.Database.DB.Api.Pos.GetServiceAreaName(pos.ServiceAreaId).ConfigureAwait(false);
                 if (!serviceAreas.ContainsKey(pos.ServiceAreaId))
                     osServiceAreas.Add(osServiceArea);
             }
@@ -426,7 +426,7 @@ namespace Os.Server.Logic
         //bad
         public static async Task<string> GetServiceAreaIdAsync(string posId)
         {
-            return await Nt.Database.DB.Api.Pos.GetServiceAreaId(posId);
+            return await Nt.Database.DB.Api.Pos.GetServiceAreaId(posId).ConfigureAwait(false);
         }
 
         #endregion
@@ -440,7 +440,7 @@ namespace Os.Server.Logic
         public static async Task<List<Models.User>> GetUsers()
         {
             var osUsers = new List<Models.User>();
-            var ntWaiters = await Nt.Database.DB.Api.Waiter.GetWaiters();
+            var ntWaiters = await Nt.Database.DB.Api.Waiter.GetWaiters().ConfigureAwait(false);
             foreach (var ntWaiter in ntWaiters.Values)
             {
                 var osUser = new Models.User();

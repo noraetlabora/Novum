@@ -21,7 +21,7 @@ namespace Os.Server.Logic
         public static async Task<List<Models.OrderLine>> GetOrderLines(Nt.Data.Session session, string subTableId)
         {
             var osOrderLines = new List<Models.OrderLine>();
-            var ntOrders = await Nt.Database.DB.Api.Order.GetOrders(subTableId);
+            var ntOrders = await Nt.Database.DB.Api.Order.GetOrders(subTableId).ConfigureAwait(false);
             //committed
             foreach (var ntOrder in ntOrders.Values)
             {
@@ -56,16 +56,16 @@ namespace Os.Server.Logic
             var osOrderLineResult = new Models.OrderLineResult();
 
             if (data.EnteredPrice != null)
-                await Nt.Database.DB.Api.Article.CheckEnteredPrice(session, data.ArticleId, decimal.Divide((decimal)data.EnteredPrice, 100.0m));
+                await Nt.Database.DB.Api.Article.CheckEnteredPrice(session, data.ArticleId, decimal.Divide((decimal)data.EnteredPrice, 100.0m)).ConfigureAwait(false);
 
-            var ntOrder = await Nt.Database.DB.Api.Order.GetNewOrder(session, data.ArticleId);
+            var ntOrder = await Nt.Database.DB.Api.Order.GetNewOrder(session, data.ArticleId).ConfigureAwait(false);
             ntOrder.Quantity = (decimal)data.Quantity;
 
             if (data.EnteredPrice != null)
                 ntOrder.UnitPrice = decimal.Divide((decimal)data.EnteredPrice, 100.0m);
 
             if (data.Modifiers != null)
-                await SetModifiers(session, ntOrder, data.Modifiers);
+                await SetModifiers(session, ntOrder, data.Modifiers).ConfigureAwait(false);
 
             session.AddOrder(ntOrder);
             osOrderLineResult.Id = ntOrder.Id;
@@ -90,7 +90,7 @@ namespace Os.Server.Logic
             var ntOrder = session.GetOrder(orderLineId);
             if (ntOrder == null)
             {
-                var ntOrders = await Nt.Database.DB.Api.Order.GetOrders(session.CurrentTable.Id);
+                var ntOrders = await Nt.Database.DB.Api.Order.GetOrders(session.CurrentTable.Id).ConfigureAwait(false);
                 if (!ntOrders.ContainsKey(orderLineId))
                     throw new Exception(Resources.Dictionary.GetString("Order_NotFound"));
                 ntOrder = ntOrders[orderLineId];
@@ -106,7 +106,7 @@ namespace Os.Server.Logic
                     }
 
                     var price = decimal.Multiply((decimal)data.Quantity, ntOrder.UnitPrice);
-                    await Nt.Database.DB.Api.Order.VoidNewOrder(session, session.CurrentTable.Id, ntOrder.ArticleId, (decimal)data.Quantity, price, ntOrder.AssignmentTypeId, "");
+                    await Nt.Database.DB.Api.Order.VoidNewOrder(session, session.CurrentTable.Id, ntOrder.ArticleId, (decimal)data.Quantity, price, ntOrder.AssignmentTypeId, "").ConfigureAwait(false);
                     session.VoidOrder(orderLineId, (decimal)data.Quantity);
                     break;
                 case Nt.Data.Order.OrderStatus.Prebooked:
@@ -116,7 +116,7 @@ namespace Os.Server.Logic
                         throw new Exception(Resources.Dictionary.GetString("Order_VoidNotAllowed"));
                     }
 
-                    await Nt.Database.DB.Api.Order.VoidPrebookedOrder(session, session.CurrentTable.Id, (decimal)data.Quantity, ntOrder.SequenceNumber, "");
+                    await Nt.Database.DB.Api.Order.VoidPrebookedOrder(session, session.CurrentTable.Id, (decimal)data.Quantity, ntOrder.SequenceNumber, "").ConfigureAwait(false);
                     break;
                 case Nt.Data.Order.OrderStatus.Ordered:
                     if (session.NotPermitted(Nt.Data.Permission.PermissionType.CancelConfirmedOrder))
@@ -125,7 +125,7 @@ namespace Os.Server.Logic
                         throw new Exception(Resources.Dictionary.GetString("Order_VoidNotAllowed"));
                     }
 
-                    await Nt.Database.DB.Api.Order.VoidOrderedOrder(session, session.CurrentTable.Id, ntOrder, (decimal)data.Quantity, data.CancellationReasonId, "");
+                    await Nt.Database.DB.Api.Order.VoidOrderedOrder(session, session.CurrentTable.Id, ntOrder, (decimal)data.Quantity, data.CancellationReasonId, "").ConfigureAwait(false);
                     break;
             }
 
@@ -158,7 +158,7 @@ namespace Os.Server.Logic
             var ntOrder = session.GetOrder(orderLineId);
 
             var osOrderLineResult = new Models.OrderLineResult();
-            osOrderLineResult.Modifiers = await SetModifiers(session, ntOrder, data.Modifiers);
+            osOrderLineResult.Modifiers = await SetModifiers(session, ntOrder, data.Modifiers).ConfigureAwait(false);
             osOrderLineResult.SinglePrice = (int)decimal.Multiply(ntOrder.UnitPrice, 100.0m);
             osOrderLineResult.Id = ntOrder.Id;
 
@@ -175,7 +175,7 @@ namespace Os.Server.Logic
             if (session.CurrentTable == null)
                 throw new Exception(Resources.Dictionary.GetString("Table_NotOpen"));
 
-            await Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);
+            await Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id).ConfigureAwait(false);
             session.ClearOrders();
         }
 
@@ -193,7 +193,7 @@ namespace Os.Server.Logic
             {
                 if (order.TableId != lastSubTableId)
                 {
-                    await Nt.Database.DB.Api.Order.FinalizeOrder(session, subTableOrders, lastSubTableId);
+                    await Nt.Database.DB.Api.Order.FinalizeOrder(session, subTableOrders, lastSubTableId).ConfigureAwait(false);
                     subTableOrders = new List<Nt.Data.Order>();
                 }
 
@@ -201,8 +201,8 @@ namespace Os.Server.Logic
                 lastSubTableId = order.TableId;
             }
             //
-            await Nt.Database.DB.Api.Order.FinalizeOrder(session, subTableOrders, lastSubTableId);
-            await Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);
+            await Nt.Database.DB.Api.Order.FinalizeOrder(session, subTableOrders, lastSubTableId).ConfigureAwait(false);
+            await Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id).ConfigureAwait(false);
             session.ClearOrders();
             Image.RemoveImages(session);
         }
@@ -318,7 +318,7 @@ namespace Os.Server.Logic
 
                     foreach (var osOrderLineModifierChoice in osOrderLineModifier.Choices)
                     {
-                        var ntModifier = await Nt.Database.DB.Api.Modifier.GetModifier(session, osOrderLineModifierChoice.ModifierChoiceId, 1.0m);
+                        var ntModifier = await Nt.Database.DB.Api.Modifier.GetModifier(session, osOrderLineModifierChoice.ModifierChoiceId, 1.0m).ConfigureAwait(false);
                         ntModifier.MenuId = osOrderLineModifier.ModifierGroupId;
                         ntOrder.AddModifier(ntModifier);
 

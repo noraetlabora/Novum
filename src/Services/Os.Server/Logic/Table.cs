@@ -62,7 +62,7 @@ namespace Os.Server.Logic
             // getting tables means that we can unlock the current (main) table
             if (session.CurrentTable != null)
             {
-                await DB.Api.Table.UnlockTable(session, session.CurrentTable.Id);
+                await DB.Api.Table.UnlockTable(session, session.CurrentTable.Id).ConfigureAwait(false);
                 session.ClearCurrentTable();
             }
 
@@ -82,9 +82,9 @@ namespace Os.Server.Logic
                 var sourceTableMainId = GetMainTable(sourceTableId);
                 var tablePostfix = sourceTableId.Replace(sourceTableMainId, "");
                 var targetTableId = data.TargetTableId + tablePostfix;
-                await DB.Api.Table.SplitStart(session, sourceTableId, targetTableId);
+                await DB.Api.Table.SplitStart(session, sourceTableId, targetTableId).ConfigureAwait(false);
                 //
-                var ntOrders = await DB.Api.Order.GetOrders(sourceTableId);
+                var ntOrders = await DB.Api.Order.GetOrders(sourceTableId).ConfigureAwait(false);
                 foreach (var ntOrder in ntOrders)
                 {
                     await DB.Api.Table.SplitOrder(session, sourceTableId, targetTableId, ntOrder.Value, ntOrder.Value.Quantity);
@@ -93,8 +93,8 @@ namespace Os.Server.Logic
                 await DB.Api.Table.SplitDone(session);
             }
             // get data from target table
-            var targetTableName = await DB.Api.Table.GetTableName(session, data.TargetTableId);
-            var tableResult = await GetTableResult(session, targetTableName);
+            var targetTableName = await DB.Api.Table.GetTableName(session, data.TargetTableId).ConfigureAwait(false);
+            var tableResult = await GetTableResult(session, targetTableName).ConfigureAwait(false);
             return tableResult;
         }
 
@@ -109,8 +109,7 @@ namespace Os.Server.Logic
         public static async Task<Models.TableResult> OpenByName(Nt.Data.Session session, string tableName, string serviceAreaId, bool prePayment)
         {
             var osTableResult = await GetTableResult(session, tableName);
-
-            await DB.Api.Table.OpenTable(session, osTableResult.Id);
+            await DB.Api.Table.OpenTable(session, osTableResult.Id).ConfigureAwait(false);
             Table.SetCurrentTable(session, osTableResult.SubTables[0].Id);
             //
             return osTableResult;
@@ -124,14 +123,14 @@ namespace Os.Server.Logic
         /// <returns></returns>
         public static async Task<Models.SubTable> CreateSubTable(Nt.Data.Session session, string tableId)
         {
-            var subTableId = await DB.Api.Table.GetNewSubTableId(session, session.CurrentTable.Id);
+            var subTableId = await DB.Api.Table.GetNewSubTableId(session, session.CurrentTable.Id).ConfigureAwait(false);
             if (session.TableIdIsOpen(subTableId))
                 subTableId = session.GetNewTableId(session.CurrentTable.Id);
             Table.SetCurrentTable(session, subTableId);
             //
             var subTable = new Models.SubTable();
             subTable.Id = subTableId;
-            subTable.Name = await DB.Api.Table.GetTableName(session, subTableId);
+            subTable.Name = await DB.Api.Table.GetTableName(session, subTableId).ConfigureAwait(false);
             subTable.IsSelected = false;
             //
             return subTable;
@@ -185,7 +184,7 @@ namespace Os.Server.Logic
         private static async Task<Models.TableResultEx> GetTableResult(Nt.Data.Session session, string tableName)
         {
             var osTableResult = new Models.TableResultEx();
-            var ntTables = await DB.Api.Table.GetTables(session);
+            var ntTables = await DB.Api.Table.GetTables(session).ConfigureAwait(false);
             var ntMainTableName = "";
 
             //search maintable
@@ -228,7 +227,7 @@ namespace Os.Server.Logic
             //table is not in list, create new maintable with one subtable
             if (string.IsNullOrEmpty(osTableResult.Name))
             {
-                osTableResult.Id = await DB.Api.Table.GetTableId(session, tableName);
+                osTableResult.Id = await DB.Api.Table.GetTableId(session, tableName).ConfigureAwait(false);
                 osTableResult.Name = tableName;
                 osTableResult.BookedAmount = 0;
                 osTableResult.LastActivityTime = (int)Nt.Data.Utils.Unix.Timestamp(DateTime.Now);

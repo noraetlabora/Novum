@@ -21,7 +21,6 @@ namespace Os.Server
         public static ServerConfiguration ServerConfiguration { get; private set; }
         public static ClientConfiguration ClientConfiguration { get; private set; }
         public static ResourceManager Dictionary { get; private set; }
-        private static Client.ClientApi _clientApi;
 
         private static string serverConfigFile = AppDomain.CurrentDomain.BaseDirectory + @"\Os.Server.config.json";
         private static string clientConfigFile = AppDomain.CurrentDomain.BaseDirectory + @"\Os.Client.config.json";
@@ -36,7 +35,6 @@ namespace Os.Server
             {
                 Nt.Logging.Log.Server.Info("================================================================== Os.Server  ==================================================================");
                 GetConfig();
-                SetClientApi();
                 Resources.Dictionary.Initialize("de-AT");
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();
@@ -105,11 +103,5 @@ namespace Os.Server
             ClientConfiguration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.ClientConfiguration>(json);
             Nt.Logging.Log.Server.Info("ClientConfiguration : " + ClientConfiguration.ToString());
         }
-
-        private static void SetClientApi()
-        {
-            _clientApi = new Client.ClientApi(string.Format("http://{0}:{1}", ServerConfiguration.OsClientIp, ServerConfiguration.OsClientPort));
-        }
-
     }
 }

@@ -1,5 +1,6 @@
 using Os.Server.Client.Model;
 using System;
+using System.Net.Http;
 
 namespace Os.Server.Client.Api
 {
@@ -20,21 +21,18 @@ namespace Os.Server.Client.Api
     /// </summary>
     public class DefaultApi : IDefaultApi
     {
+        private readonly string _baseUrl;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public DefaultApi(String baseUrl)
+        public DefaultApi(String baseUrl, IHttpClientFactory httpClientFactory)
         {
-            BaseUrl = baseUrl;
+            _baseUrl = baseUrl;
+            _httpClientFactory = httpClientFactory;
         }
-
-        /// <summary>
-        /// Gets or sets the API client.
-        /// </summary>
-        /// <value>An instance of the ApiClient</value>
-        public string BaseUrl { get; private set; }
 
         /// <summary>
         /// Provides status information about the OsServer and conencted systems Used to get information about the current state of the system. 

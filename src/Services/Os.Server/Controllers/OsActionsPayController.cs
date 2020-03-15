@@ -23,8 +23,8 @@ namespace Os.Server.Controllers
             try
             {
                 var session = Sessions.GetSession(Request);
-                await Logic.Payment.PaySubTables(session, data);
-                await Logic.Printer.Print(session);
+                await Logic.Payment.PaySubTables(session, data).ConfigureAwait(false);
+                await Logic.Printer.Print(session).ConfigureAwait(false);
                 // 204 - No Content 
                 return new NoContentResult();
             }
@@ -49,7 +49,7 @@ namespace Os.Server.Controllers
             try
             {
                 var session = Sessions.GetSession(Request);
-                var authorizationResult = await Logic.Payment.PreAuthorize(session, data);
+                var authorizationResult = await Logic.Payment.PreAuthorize(session, data).ConfigureAwait(false);
                 // 204 - No Content 
                 return new ObjectResult(authorizationResult);
             }
@@ -71,8 +71,8 @@ namespace Os.Server.Controllers
             try
             {
                 var session = Sessions.GetSession(Request);
-                await Logic.Payment.PayOrderLines(session, data);
-                await Logic.Printer.Print(session);
+                await Logic.Payment.PayOrderLines(session, data).ConfigureAwait(false);
+                await Logic.Printer.Print(session).ConfigureAwait(false);
                 // 204 - No Content 
                 return new NoContentResult();
             }

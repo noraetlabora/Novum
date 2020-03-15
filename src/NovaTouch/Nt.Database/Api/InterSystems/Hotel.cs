@@ -40,10 +40,10 @@ namespace Nt.Database.Api.Intersystems
             {
                 room = new Data.Room();
                 var roomDataString = new DataString(roomString);
-                var roomDataList = new DataList(roomDataString.SplitByDoublePipes());
-                room.Id = roomDataList.GetString(0);
-                room.Name = roomDataList.GetString(2);
-                room.BookingNumber = roomDataList.GetString(3);
+                var roomDataArray = new DataArray(roomDataString.SplitByDoublePipes());
+                room.Id = roomDataArray.GetString(0);
+                room.Name = roomDataArray.GetString(2);
+                room.BookingNumber = roomDataArray.GetString(3);
             }
 
             return room;
@@ -61,8 +61,8 @@ namespace Nt.Database.Api.Intersystems
             var args = new object[6] { session.ClientId, session.PosId, session.WaiterId, partnerId, "", "" };
             var dbString = await Intersystems.CallClassMethod("cmNT.AbrOmanHotelIFC", "GetZimmerliste", args).ConfigureAwait(false); ;
             var dataString = new DataString(dbString);
-            var dataList = new DataList(dataString.SplitByChar96());
-
+            var dataArray = new DataArray(dataString.SplitByChar96());
+            //TODO: make roomlist out of database dataarray
             return rooms;
         }
 

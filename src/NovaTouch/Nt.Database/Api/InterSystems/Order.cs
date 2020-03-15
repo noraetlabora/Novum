@@ -43,12 +43,12 @@ namespace Nt.Database.Api.Intersystems
                     continue;
 
                 var dataString = new DataString(orderString);
-                var dataList = new DataList(dataString.SplitByChar96());
-                var indexString = new DataString(dataList.GetString(0));
-                var indexList = new DataList(indexString.SplitByDoublePipes());
-                var menuString = new DataString(dataList.GetString(9));
-                var menuList = new DataList(menuString.SplitBySemicolon());
-                var type = dataList.GetString(6);
+                var dataArray = new DataArray(dataString.SplitByChar96());
+                var indexString = new DataString(dataArray.GetString(0));
+                var indexArray = new DataArray(indexString.SplitByDoublePipes());
+                var menuString = new DataString(dataArray.GetString(9));
+                var menuArray = new DataArray(menuString.SplitBySemicolon());
+                var type = dataArray.GetString(6);
 
                 // orderline
                 if (string.IsNullOrEmpty(type) || type.Equals("I"))
@@ -56,17 +56,17 @@ namespace Nt.Database.Api.Intersystems
                     var order = new Nt.Data.Order();
                     orderLine++;
                     order.TableId = tableId;
-                    order.AssignmentTypeId = indexList.GetString(0);
-                    order.ArticleId = indexList.GetString(1);
-                    order.UnitPrice = indexList.GetDecimal(2);
-                    order.ReferenceId = indexList.GetString(3);
-                    order.Quantity = dataList.GetDecimal(1);
-                    order.Status = (Nt.Data.Order.OrderStatus)dataList.GetUInt(2);
-                    order.Name = dataList.GetString(4);
-                    order.CourseMenu = dataList.GetString(7);
-                    order.CourseNumber = dataList.GetString(8);
-                    order.CourseName = dataList.GetString(16);
-                    order.ArticleGroupId = dataList.GetString(23);
+                    order.AssignmentTypeId = indexArray.GetString(0);
+                    order.ArticleId = indexArray.GetString(1);
+                    order.UnitPrice = indexArray.GetDecimal(2);
+                    order.ReferenceId = indexArray.GetString(3);
+                    order.Quantity = dataArray.GetDecimal(1);
+                    order.Status = (Nt.Data.Order.OrderStatus)dataArray.GetUInt(2);
+                    order.Name = dataArray.GetString(4);
+                    order.CourseMenu = dataArray.GetString(7);
+                    order.CourseNumber = dataArray.GetString(8);
+                    order.CourseName = dataArray.GetString(16);
+                    order.ArticleGroupId = dataArray.GetString(23);
 
                     if (order.Status == Data.Order.OrderStatus.Ordered)
                         order.Line = 0;
@@ -91,20 +91,20 @@ namespace Nt.Database.Api.Intersystems
                 else if (type.Equals("A"))
                 {
                     var modifier = new Nt.Data.Modifier();
-                    var articleId = indexList.GetString(1);
+                    var articleId = indexArray.GetString(1);
                     // text input
                     if (string.IsNullOrEmpty(articleId))
                     {
-                        modifier.Name = dataList.GetString(4);
+                        modifier.Name = dataArray.GetString(4);
                     }
                     // choice
                     else
                     {
-                        modifier.ArticleId = indexList.GetString(1);
-                        modifier.UnitPrice = indexList.GetDecimal(2);
-                        modifier.Quantity = dataList.GetDecimal(1);
-                        modifier.Name = dataList.GetString(4);
-                        modifier.MenuId = menuList.GetString(3);
+                        modifier.ArticleId = indexArray.GetString(1);
+                        modifier.UnitPrice = indexArray.GetDecimal(2);
+                        modifier.Quantity = dataArray.GetDecimal(1);
+                        modifier.Name = dataArray.GetString(4);
+                        modifier.MenuId = menuArray.GetString(3);
                     }
                     //
                     if (orders.ContainsKey(lastOrderId))
@@ -127,21 +127,20 @@ namespace Nt.Database.Api.Intersystems
             var args = new object[7] { session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", articleId };
             var dbString = await Intersystems.CallClassMethod("cmNT.BonOman", "GetPLUDaten", args).ConfigureAwait(false);
             var dataString = new DataString(dbString);
-            var dataArray = dataString.SplitByChar96();
-            var dataList = new DataList(dataArray);
+            var dataArray = new DataArray(dataString.SplitByChar96());
 
             order.TableId = session.CurrentTable.Id;
             order.Line = session.GetOrders().Count + 1;
-            order.ArticleId = dataList.GetString(0);
-            order.Name = dataList.GetString(1);
-            order.UnitPrice = dataList.GetDecimal(4);
-            order.AssignmentTypeId = dataList.GetString(5);
-            order.CourseMenu = dataList.GetString(19);
-            order.CourseNumber = dataList.GetString(20);
-            order.CourseName = dataList.GetString(22);
+            order.ArticleId = dataArray.GetString(0);
+            order.Name = dataArray.GetString(1);
+            order.UnitPrice = dataArray.GetDecimal(4);
+            order.AssignmentTypeId = dataArray.GetString(5);
+            order.CourseMenu = dataArray.GetString(19);
+            order.CourseNumber = dataArray.GetString(20);
+            order.CourseName = dataArray.GetString(22);
             order.Status = Nt.Data.Order.OrderStatus.NewOrder;
 
-            var availability = dataList.GetString(21);
+            var availability = dataArray.GetString(21);
             Article.CheckAvailibility(availability, order.Name);
 
             return order;

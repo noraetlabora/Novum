@@ -44,20 +44,18 @@ namespace Os.Server.Client.Api
     /// </summary>
     public class PrintingApi : IPrintingApi
     {
+        private readonly string _baseUrl;
+        private readonly IHttpClientFactory _httpClientFactory;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PrintingApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public PrintingApi(String baseUrl)
+        public PrintingApi(String baseUrl, IHttpClientFactory httpClientFactory)
         {
-            BaseUrl = baseUrl;
+            _baseUrl = baseUrl;
+            _httpClientFactory = httpClientFactory;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        public string BaseUrl { get; private set; }
 
         /// <summary>
         /// Get Job information Get a list of print jobs for this printer with &#x60;id&#x60; on the local server (the one you are currently talking to) 
@@ -91,47 +89,45 @@ namespace Os.Server.Client.Api
             var requestPath = session.Printer + "/jobs";
             try
             {
-                using (var httpClient = new HttpClient())
-                {
-                    var printData = new PrintData(printLines);
-                    var printBytes = printData.ToBytes();
-                    var requestIdentifier = new Microsoft.AspNetCore.Http.Features.HttpRequestIdentifierFeature();
+                var httpClient = _httpClientFactory.CreateClient();
+                var printData = new PrintData(printLines);
+                var printBytes = printData.ToBytes();
+                var requestIdentifier = new Microsoft.AspNetCore.Http.Features.HttpRequestIdentifierFeature();
 
-                    var content = new ByteArrayContent(printBytes);
-                    content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                var content = new ByteArrayContent(printBytes);
+                content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
 
-                    var sb = new StringBuilder();
-                    sb.Append("Server Request ").Append("|");
-                    sb.Append(session.SerialNumber).Append("|");
-                    sb.Append(requestIdentifier.TraceIdentifier).Append("|");
-                    sb.Append("POS").Append("|");
-                    sb.Append(requestPath).Append("|");
-                    var printDataString = printData.ToString();
-                    //delete carriage return line feed (new lines) for logs
-                    printDataString = printDataString.Replace(System.Environment.NewLine, "CRLF");
+                var sb = new StringBuilder();
+                sb.Append("Server Request ").Append("|");
+                sb.Append(session.SerialNumber).Append("|");
+                sb.Append(requestIdentifier.TraceIdentifier).Append("|");
+                sb.Append("POS").Append("|");
+                sb.Append(requestPath).Append("|");
+                var printDataString = printData.ToString();
+                //delete carriage return line feed (new lines) for logs
+                printDataString = printDataString.Replace(System.Environment.NewLine, "CRLF");
 
-                    //shorten printDataString to max 500 characters in info log
-                    if (printDataString.Length > 500)
-                        sb.Append(printDataString.Substring(0, 500)).Append("...");
-                    else
-                        sb.Append(printDataString);
+                //shorten printDataString to max 500 characters in info log
+                if (printDataString.Length > 500)
+                    sb.Append(printDataString.Substring(0, 500)).Append("...");
+                else
+                    sb.Append(printDataString);
 
-                    Nt.Logging.Log.Communication.Info(sb.ToString());
+                Nt.Logging.Log.Communication.Info(sb.ToString());
 
-                    //write debug log if printDataStrinis over 500 characters long
-                    if (printDataString.Length > 500)
-                        Nt.Logging.Log.Communication.Debug(printDataString);
+                //write debug log if printDataStrinis over 500 characters long
+                if (printDataString.Length > 500)
+                    Nt.Logging.Log.Communication.Debug(printDataString);
 
-                    var requestUri = BaseUrl + requestPath;
-                    var response = await httpClient.PostAsync(requestUri, content);
+                var requestUri = _baseUrl + requestPath;
+                var response = await httpClient.PostAsync(requestUri, content).ConfigureAwait(false);
 
-                    sb = new StringBuilder();
-                    sb.Append("Client Response").Append("|");
-                    sb.Append(session.SerialNumber).Append("|");
-                    sb.Append(requestIdentifier.TraceIdentifier).Append("|");
-                    sb.Append((int)response.StatusCode).Append("|");
-                    Nt.Logging.Log.Communication.Info(sb.ToString());
-                }
+                sb = new StringBuilder();
+                sb.Append("Client Response").Append("|");
+                sb.Append(session.SerialNumber).Append("|");
+                sb.Append(requestIdentifier.TraceIdentifier).Append("|");
+                sb.Append((int)response.StatusCode).Append("|");
+                Nt.Logging.Log.Communication.Info(sb.ToString());
             }
             catch (Exception ex)
             {

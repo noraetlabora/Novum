@@ -56,20 +56,19 @@ namespace Nt.Database.Api.Intersystems
             var args = new object[6] { session.ClientId, session.PosId, session.WaiterId, "tableId", articleId, price };
             var dbString = await Intersystems.CallClassMethod("cmNT.BonOman", "CheckArtikelpreis", args).ConfigureAwait(false);
             var checkPriceString = new DataString(dbString);
-            var checkPriceArray = checkPriceString.SplitByChar96();
-            var checkPriceList = new DataList(checkPriceArray);
+            var checkPriceArray = new DataArray(checkPriceString.SplitByChar96());
 
-            switch (checkPriceList.GetString(0))
+            switch (checkPriceArray.GetString(0))
             {
                 // 0 - entered price is ok
                 case "0":
                     break;
                 // 1 - entered price is lower than min price
                 case "1":
-                    throw new Exception(string.Format("entered price {0} for article {1} is lower than the min. price {2}", price, articleId, checkPriceList.GetString(1)));
+                    throw new Exception(string.Format("entered price {0} for article {1} is lower than the min. price {2}", price, articleId, checkPriceArray.GetString(1)));
                 // 2 - entered price is higher than max price
                 case "2":
-                    throw new Exception(string.Format("entered price {0} for article {1} is higher than the max. price {2}", price, articleId, checkPriceList.GetString(1)));
+                    throw new Exception(string.Format("entered price {0} for article {1} is higher than the max. price {2}", price, articleId, checkPriceArray.GetString(1)));
                 default:
                     break;
             }

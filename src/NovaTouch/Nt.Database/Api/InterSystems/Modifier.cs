@@ -123,24 +123,24 @@ namespace Nt.Database.Api.Intersystems
             var args = new object[12] { session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", "", "", "", articleId, "", quantity };
             var dbString = await Intersystems.CallClassMethod("cmNT.BonOman", "GetArtikelDaten", args).ConfigureAwait(false);
             var dataString = new DataString(dbString);
-            var dataList = new DataList(dataString.SplitByChar96());
+            var dataArray = new DataArray(dataString.SplitByChar96());
 
-            modifier.ArticleId = dataList.GetString(0);
-            modifier.Name = dataList.GetString(1);
+            modifier.ArticleId = dataArray.GetString(0);
+            modifier.Name = dataArray.GetString(1);
             modifier.Quantity = quantity;
-            modifier.MenuId = dataList.GetString(29);
+            modifier.MenuId = dataArray.GetString(29);
 
-            var priceString = dataList.GetString(4);
+            var priceString = dataArray.GetString(4);
             if (priceString.Contains("%"))
             {
                 var priceDataString = new DataString(priceString);
-                var priceDataList = new DataList(priceDataString.SplitByPercent());
-                modifier.Percent = priceDataList.GetDecimal(0);
-                modifier.Rounding = priceDataList.GetDecimal(1);
+                var priceDataArray = new DataArray(priceDataString.SplitByPercent());
+                modifier.Percent = priceDataArray.GetDecimal(0);
+                modifier.Rounding = priceDataArray.GetDecimal(1);
             }
             else
             {
-                modifier.UnitPrice = dataList.GetDecimal(4);
+                modifier.UnitPrice = dataArray.GetDecimal(4);
             }
 
             return modifier;

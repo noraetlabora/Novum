@@ -145,7 +145,7 @@ namespace Nt.Database.Api.Intersystems
                 var adoConnection = (InterSystems.Data.IRISClient.IRISADOConnection)xepEventPersister.GetAdoNetConnection();
                 using (var dataAdapter = new InterSystems.Data.IRISClient.IRISDataAdapter(sql, adoConnection))
                 {
-                    await Task.Run(() => dataAdapter.Fill(dataTable));
+                    await Task.Run(() => dataAdapter.Fill(dataTable)).ConfigureAwait(false);
                 }
 
                 if (Logging.Log.Database.IsDebugEnabled)
@@ -179,7 +179,7 @@ namespace Nt.Database.Api.Intersystems
             var xepEventPersister = DequeueEventPersister();
             try
             {
-                Object returnValue = await Task.Run(() => xepEventPersister.CallClassMethod(className, methodName, args));
+                Object returnValue = await Task.Run(() => xepEventPersister.CallClassMethod(className, methodName, args)).ConfigureAwait(false);
                 if (Logging.Log.Database.IsDebugEnabled)
                     Logging.Log.Database.Debug(ticks + "|" + memberName + "|ClassMethodResult|" + returnValue.ToString());
 
@@ -211,7 +211,7 @@ namespace Nt.Database.Api.Intersystems
             var xepEventPersister = DequeueEventPersister();
             try
             {
-                await Task.Run(() => xepEventPersister.CallVoidClassMethod(className, methodName, args));
+                await Task.Run(() => xepEventPersister.CallVoidClassMethod(className, methodName, args)).ConfigureAwait(false);
                 if (Logging.Log.Database.IsDebugEnabled)
                     Logging.Log.Database.Debug(ticks + "|" + memberName + "|VoidClassMethod|success");
             }

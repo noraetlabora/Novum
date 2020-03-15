@@ -1,4 +1,5 @@
 using Os.Server.Client.Api;
+using System.Net.Http;
 
 namespace Os.Server.Client
 {
@@ -30,11 +31,11 @@ namespace Os.Server.Client
         /// 
         /// </summary>
         /// <param name="baseUrl"></param>
-        public ClientApi(string baseUrl)
+        public static void Initialize(string baseUrl, IHttpClientFactory httpClientFactory)
         {
-            Print = new PrintingApi(baseUrl);
-            Subscribe = new PubsubApi(baseUrl);
-            Default = new DefaultApi(baseUrl);
+            Print = new PrintingApi(baseUrl, httpClientFactory);
+            Subscribe = new PubsubApi(baseUrl, httpClientFactory);
+            Default = new DefaultApi(baseUrl, httpClientFactory);
         }
     }
 }

@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Os.Server.Client;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Os.Server.Controllers
@@ -11,6 +13,13 @@ namespace Os.Server.Controllers
     /// </summary>
     public class OsActionsController : Controller
     {
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public OsActionsController(IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+        }
+
         /// <summary>
         /// Execute a login transaciton. NOTE: Will set an \&quot;AuthToken\&quot; cookie needed in later authorized requests.
         /// </summary>
@@ -24,7 +33,7 @@ namespace Os.Server.Controllers
             var session = Sessions.GetSession(Request);
             try
             {
-                await Logic.Registration.Login(session, loginUser);
+                await Logic.Registration.Login(session, loginUser).ConfigureAwait(false);
                 //204 - No Content
                 return new NoContentResult();
             }
@@ -71,15 +80,15 @@ namespace Os.Server.Controllers
                 var session = Sessions.GetSession(Request);
                 if (session == null)
                 {
-                    await Logic.Registration.CheckDevice(clientInfo.Id);
+                    await Logic.Registration.CheckDevice(clientInfo.Id).ConfigureAwait(false);
                     session = new Nt.Data.Session();
                     session.SerialNumber = clientInfo.Id;
                     session.ClientId = Logic.Data.GetClientId();
-                    session.PosId = await Logic.Data.GetPosId(clientInfo.Id);
-                    session.ServiceAreaId = await Logic.Data.GetServiceAreaId(session.PosId);
-                    session.PriceLevel = await Logic.Data.GetPriceLevel(session.ServiceAreaId);
+                    session.PosId = await Logic.Data.GetPosId(clientInfo.Id).ConfigureAwait(false);
+                    session.ServiceAreaId = await Logic.Data.GetServiceAreaId(session.PosId).ConfigureAwait(false);
+                    session.PriceLevel = await Logic.Data.GetPriceLevel(session.ServiceAreaId).ConfigureAwait(false);
                     session.Printer = clientInfo.PrinterPath;
-                    session.FiscalProvider = await Logic.Fiscal.GetProvider(session);
+                    session.FiscalProvider = await Logic.Fiscal.GetProvider(session).ConfigureAwait(false);
                     Sessions.SetSession(session);
                 }
                 session.WaiterId = "";
@@ -116,6 +125,9 @@ namespace Os.Server.Controllers
                 registerGatewayResponse.RestaurantName = "NovacomTest";
                 registerGatewayResponse.UtcTime = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 registerGatewayResponse.PartnerId = "1OSZATNOVACOMSOF1HdRnQ3bZ0t2BED3003";
+                // setup clientApi
+                var baseUrl = string.Format("http://{0}:{1}", OsServer.ServerConfiguration.OsClientIp, OsServer.ServerConfiguration.OsClientPort);
+                Client.ClientApi.Initialize(baseUrl, _httpClientFactory);
                 //200 - Ok
                 return new OkObjectResult(registerGatewayResponse);
             }

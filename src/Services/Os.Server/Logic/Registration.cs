@@ -28,7 +28,7 @@ namespace Os.Server.Logic
 
         public static async Task CheckDevice(string serialNumber)
         {
-            var posId = await Nt.Database.DB.Api.Pos.GetPosId(serialNumber);
+            var posId = await Nt.Database.DB.Api.Pos.GetPosId(serialNumber).ConfigureAwait(false);
             if (string.IsNullOrEmpty(posId))
                 throw new Exception(string.Format(Resources.Dictionary.GetString("Device_NotValid"), serialNumber));
         }
@@ -43,7 +43,7 @@ namespace Os.Server.Logic
             // login over pin
             if (string.IsNullOrEmpty(loginUser.Password))
             {
-                var waiterId = await Nt.Database.DB.Api.Waiter.GetWaiterId(loginUser.Id);
+                var waiterId = await Nt.Database.DB.Api.Waiter.GetWaiterId(loginUser.Id).ConfigureAwait(false);
                 if (string.IsNullOrEmpty(waiterId))
                     throw new Exception(Resources.Dictionary.GetString("Waiter_PinNotValid"));
 
@@ -52,18 +52,18 @@ namespace Os.Server.Logic
             // login over waiter selection
             else
             {
-                var validWaiter = await Nt.Database.DB.Api.Waiter.ValidWaiter(loginUser.Id, loginUser.Password);
+                var validWaiter = await Nt.Database.DB.Api.Waiter.ValidWaiter(loginUser.Id, loginUser.Password).ConfigureAwait(false);
                 if (!validWaiter)
                     throw new Exception(Resources.Dictionary.GetString("Waiter_IdPasswordNotValid"));
 
                 session.WaiterId = loginUser.Id;
             }
 
-            await Nt.Database.DB.Api.Waiter.Login(session);
-            var permissions = await Nt.Database.DB.Api.Waiter.GetPermissions(loginUser.Id);
+            await Nt.Database.DB.Api.Waiter.Login(session).ConfigureAwait(false);
+            var permissions = await Nt.Database.DB.Api.Waiter.GetPermissions(loginUser.Id).ConfigureAwait(false);
             session.SetPermissions(permissions);
             Image.RemoveImages(session);
-            await Fiscal.CheckSystem(session);
+            await Fiscal.CheckSystem(session).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace Os.Server.Logic
         /// <param name="session"></param>
         public static async Task Logout(Nt.Data.Session session)
         {
-            await Nt.Database.DB.Api.Waiter.Logout(session);
+            await Nt.Database.DB.Api.Waiter.Logout(session).ConfigureAwait(false);
             Image.RemoveImages(session);
         }
     }

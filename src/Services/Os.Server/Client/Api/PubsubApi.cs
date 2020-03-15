@@ -37,20 +37,18 @@ namespace Os.Server.Client.Api
     /// </summary>
     public class PubsubApi : IPubsubApi
     {
+        private readonly string _baseUrl;
+        private readonly IHttpClientFactory _httpClientFactory;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PubsubApi"/> class.
         /// </summary>
         /// <returns></returns>
-        public PubsubApi(String baseUrl)
+        public PubsubApi(String baseUrl, IHttpClientFactory httpClientFactory)
         {
-            BaseUrl = baseUrl;
+            _baseUrl = baseUrl;
+            _httpClientFactory = httpClientFactory;
         }
-
-        /// <summary>
-        /// Gets or sets the API client.
-        /// </summary>
-        /// <value>An instance of the ApiClient</value>
-        public string BaseUrl { get; set; }
 
         /// <summary>
         /// Provides a list of known topics. 
@@ -73,31 +71,29 @@ namespace Os.Server.Client.Api
             var requestPath = "/api/v1/pubsub/topics/" + topic;
             try
             {
-                using (var httpClient = new HttpClient())
-                {
-                    var jsonString = System.Text.Json.JsonSerializer.Serialize(body);
-                    var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
-                    var requestIdentifier = new Microsoft.AspNetCore.Http.Features.HttpRequestIdentifierFeature();
+                var httpClient = _httpClientFactory.CreateClient();
+                var jsonString = System.Text.Json.JsonSerializer.Serialize(body);
+                var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                var requestIdentifier = new Microsoft.AspNetCore.Http.Features.HttpRequestIdentifierFeature();
 
-                    var sb = new StringBuilder();
-                    sb.Append("Server Request ").Append("|");
-                    sb.Append("125-00000000").Append("|");
-                    sb.Append(requestIdentifier.TraceIdentifier).Append("|");
-                    sb.Append("POS").Append("|");
-                    sb.Append(requestPath).Append("|");
-                    sb.Append(jsonString);
-                    Nt.Logging.Log.Communication.Info(sb.ToString());
+                var sb = new StringBuilder();
+                sb.Append("Server Request ").Append("|");
+                sb.Append("125-00000000").Append("|");
+                sb.Append(requestIdentifier.TraceIdentifier).Append("|");
+                sb.Append("POS").Append("|");
+                sb.Append(requestPath).Append("|");
+                sb.Append(jsonString);
+                Nt.Logging.Log.Communication.Info(sb.ToString());
 
-                    var requestUri = BaseUrl + requestPath;
-                    var response = await httpClient.PostAsync(requestUri, content);
+                var requestUri = _baseUrl + requestPath;
+                var response = await httpClient.PostAsync(requestUri, content).ConfigureAwait(false);
 
-                    sb = new StringBuilder();
-                    sb.Append("Client Response").Append("|");
-                    sb.Append("125-00000000").Append("|");
-                    sb.Append(requestIdentifier.TraceIdentifier).Append("|");
-                    sb.Append((int)response.StatusCode).Append("|");
-                    Nt.Logging.Log.Communication.Info(sb.ToString());
-                }
+                sb = new StringBuilder();
+                sb.Append("Client Response").Append("|");
+                sb.Append("125-00000000").Append("|");
+                sb.Append(requestIdentifier.TraceIdentifier).Append("|");
+                sb.Append((int)response.StatusCode).Append("|");
+                Nt.Logging.Log.Communication.Info(sb.ToString());
             }
             catch (Exception ex)
             {

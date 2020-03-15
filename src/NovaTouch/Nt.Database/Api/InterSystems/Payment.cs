@@ -76,10 +76,9 @@ namespace Nt.Database.Api.Intersystems
 
             var result = new Nt.Data.PaymentResult();
             var paymentString = new DataString(dbString);
-            var paymentArray = paymentString.SplitByDoublePipes();
-            var paymentList = new DataList(paymentArray);
+            var paymentArray = new DataArray(paymentString.SplitByDoublePipes());
 
-            result.BillId = paymentList.GetString(3);
+            result.BillId = paymentArray.GetString(3);
 
             return result;
         }
