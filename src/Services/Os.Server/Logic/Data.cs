@@ -43,7 +43,7 @@ namespace Os.Server.Logic
             tasks.Add(Logic.Data.GetUsers());
             tasks.Add(Nt.Database.DB.Api.Misc.GetArticleGroups());
             tasks.Add(Nt.Database.DB.Api.Misc.GetTaxGroups());
-            await Task.WhenAll(tasks);
+            await Task.WhenAll(tasks).ConfigureAwait(false);
 
             Nt.Logging.Log.Server.Info("new static data cached");
 
@@ -206,7 +206,7 @@ namespace Os.Server.Logic
             var taskGetArticles = Nt.Database.DB.Api.Article.GetArticles();
             var taskGetModifierMenus = Nt.Database.DB.Api.Modifier.GetModifierMenus();
             var taskGetArticleModifierGroups = GetArticleModifierGroups();
-            await Task.WhenAll(taskGetArticles, taskGetModifierMenus, taskGetArticleModifierGroups);
+            await Task.WhenAll(taskGetArticles, taskGetModifierMenus, taskGetArticleModifierGroups).ConfigureAwait(false);
             var ntArticles = taskGetArticles.Result;
             var ntModifierMenus = taskGetModifierMenus.Result;
             var osArticleModifierGroups = taskGetArticleModifierGroups.Result;
@@ -277,7 +277,7 @@ namespace Os.Server.Logic
             var taskGetMainMenus = Nt.Database.DB.Api.Menu.GetMainMenus(menuId);
             var taskGetMenus = Nt.Database.DB.Api.Menu.GetMenus();
             var taskGetMenuItems = Nt.Database.DB.Api.Menu.GetMenuItems();
-            await Task.WhenAll(taskGetMainMenus, taskGetMenus, taskGetMenuItems);
+            await Task.WhenAll(taskGetMainMenus, taskGetMenus, taskGetMenuItems).ConfigureAwait(false);
             var ntMainMenus = taskGetMainMenus.Result;
             var ntMenus = taskGetMenus.Result;
             var ntMenuItems = taskGetMenuItems.Result;
@@ -306,8 +306,13 @@ namespace Os.Server.Logic
         public static async Task<List<Models.ModifierGroup>> GetModifierGroups()
         {
             var osModifierGroups = new List<Models.ModifierGroup>();
-            var ntModifierMenus = await Nt.Database.DB.Api.Modifier.GetModifierMenus().ConfigureAwait(false);
             Models.ModifierGroup osModifierGroup;
+
+            var taskGetModiferMenus = Nt.Database.DB.Api.Modifier.GetModifierMenus();
+            var taskGetModifierItems = Nt.Database.DB.Api.Modifier.GetModifierItems();
+            await Task.WhenAll(taskGetModiferMenus, taskGetModifierItems).ConfigureAwait(false);
+            var ntModifierMenus = taskGetModiferMenus.Result;
+            var ntModifierItems = taskGetModifierItems.Result;
 
             //////////////////////////////////////
             // iterate Modifier Menu
@@ -327,8 +332,6 @@ namespace Os.Server.Logic
                     osModifierGroup.Type = Models.ModifierGroup.ModifierType.PickMultipleEnum;
 
                 osModifierGroup.Choices = new List<Models.ModifierChoice>();
-                //Todo: database call in loop, bad!
-                var ntModifierItems = await Nt.Database.DB.Api.Modifier.GetModifierItems(ntModifierMenu.Id).ConfigureAwait(false);
                 var lastModifierItemId = "";
 
                 //////////////////////////////////////
@@ -491,7 +494,7 @@ namespace Os.Server.Logic
 
             var taskGetMenuItems = Nt.Database.DB.Api.Menu.GetMenuItems();
             var taskGetMenuItemModifierMenus = Nt.Database.DB.Api.Modifier.GetMenuItemModifierMenus();
-            await Task.WhenAll(taskGetMenuItems, taskGetMenuItemModifierMenus);
+            await Task.WhenAll(taskGetMenuItems, taskGetMenuItemModifierMenus).ConfigureAwait(false);
             var ntMenuItems = taskGetMenuItems.Result;
             var ntMenuItemsModifierMenus = taskGetMenuItemModifierMenus.Result;
 

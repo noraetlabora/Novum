@@ -26,7 +26,7 @@ namespace Nt.Database.Api
         /// </summary>
         /// <param name="menuId"></param>
         /// <returns></returns>
-        Task<Dictionary<string, Nt.Data.Menu>> GetMainMenus(string menuId);
+        Task<Dictionary<string, Nt.Data.Menu>> GetMainMenus(string menuId = "");
 
         /// <summary>
         /// 

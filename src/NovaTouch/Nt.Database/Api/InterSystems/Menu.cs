@@ -58,7 +58,7 @@ namespace Nt.Database.Api.Intersystems
         /// </summary>
         /// <param name="menuId"></param>
         /// <returns></returns>
-        public async Task<Dictionary<string, Nt.Data.Menu>> GetMainMenus(string menuId)
+        public async Task<Dictionary<string, Nt.Data.Menu>> GetMainMenus(string menuId = "")
         {
             var menus = new Dictionary<string, Nt.Data.Menu>();
             var sql = new StringBuilder();
@@ -66,7 +66,9 @@ namespace Nt.Database.Api.Intersystems
             sql.Append(" FROM  NT.TouchMenuZeile M ");
             sql.Append(" INNER JOIN NT.TouchUmenu UM ON UM.FA = M.FA AND UM.UMENU = M.UMENU ");
             sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
-            sql.Append(" AND M.MENU = ").Append(Intersystems.SqlQuote(menuId));
+            if (!string.IsNullOrEmpty(menuId))
+                sql.Append(" AND M.MENU = ").Append(Intersystems.SqlQuote(menuId));
+
             var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)

@@ -49,7 +49,7 @@ namespace Nt.Database.Api.Intersystems
         /// </summary>
         /// <param name="modifierMenuId"></param>
         /// <returns></returns>
-        public async Task<Dictionary<string, Nt.Data.ModifierItem>> GetModifierItems(string modifierMenuId)
+        public async Task<Dictionary<string, Nt.Data.ModifierItem>> GetModifierItems(string modifierMenuId = "")
         {
             var modifierItems = new Dictionary<string, Nt.Data.ModifierItem>();
             var sql = new StringBuilder();
@@ -57,7 +57,8 @@ namespace Nt.Database.Api.Intersystems
             sql.Append(" FROM NT.TouchUmenuZeilen M ");
             sql.Append(" LEFT JOIN WW.ANR AS W ON (W.FA = M.FA AND W.ANR = M.ANR) ");
             sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
-            sql.Append(" AND M.UMENU = ").Append(modifierMenuId);
+            if (!string.IsNullOrEmpty(modifierMenuId))
+                sql.Append(" AND M.UMENU = ").Append(modifierMenuId);
             sql.Append(" AND M.ANR <> '' ");
             var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 

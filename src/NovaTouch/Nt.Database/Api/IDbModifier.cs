@@ -19,7 +19,7 @@ namespace Nt.Database.Api
         /// </summary>
         /// <param name="modifierMenuId"></param>
         /// <returns></returns>
-        Task<Dictionary<string, Nt.Data.ModifierItem>> GetModifierItems(string modifierMenuId);
+        Task<Dictionary<string, Nt.Data.ModifierItem>> GetModifierItems(string modifierMenuId = "");
 
         /// <summary>
         /// 
