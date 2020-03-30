@@ -141,7 +141,6 @@ namespace Os.Server.Controllers
             try
             {
                 var paymentMedia = await Logic.Data.GetPaymentMedia().ConfigureAwait(false);
-                await Nt.Database.DB.Api.Misc.SetSnapshotTime(Controllers.OsHostController.PosStatus.SessionId).ConfigureAwait(false);
                 return new ObjectResult(paymentMedia);
             }
             catch (Exception ex)

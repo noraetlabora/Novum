@@ -44,13 +44,14 @@ namespace Nt.Database.Api
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
-        Task<bool> HasSnapshotTime(string guid);
+        Task<bool> StaticDataChanged(string guid);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="guid"></param>
+        /// <param name="serviceName"></param>
         /// <returns></returns>
-        Task SetSnapshotTime(string guid);
+        Task ConfirmChangedStaticData(string guid, string serviceName);
     }
 }

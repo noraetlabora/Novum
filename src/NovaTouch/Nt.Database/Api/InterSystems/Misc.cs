@@ -153,17 +153,19 @@ namespace Nt.Database.Api.Intersystems
             return taxGroups;
         }
 
-        #region Snapshot    
+        #region StaticData    
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="guid"></param>
+        /// <param name="serviceName"></param>
         /// <returns></returns>
-        public async Task<bool> HasSnapshotTime(string guid)
+        public async Task<bool> StaticDataChanged(string guid)
         {
             var args = new object[2] { Api.ClientId, guid };
             var lastSnapshotTime = await Intersystems.CallClassMethod("cmNT.Kasse", "GetOrdermanSnapshot", args).ConfigureAwait(false);
+            System.Diagnostics.Debug.WriteLine("StaticDataChanged: " + lastSnapshotTime);
             if (string.IsNullOrEmpty(lastSnapshotTime))
                 return false;
             return true;
@@ -173,10 +175,11 @@ namespace Nt.Database.Api.Intersystems
         /// 
         /// </summary>
         /// <param name="guid"></param>
+        /// <param name="serviceName"></param>
         /// <returns></returns>
-        public Task SetSnapshotTime(string guid)
+        public Task ConfirmChangedStaticData(string guid, string serviceName)
         {
-            var args = new object[2] { Api.ClientId, guid };
+            var args = new object[3] { Api.ClientId, guid , serviceName};
             return Intersystems.CallClassMethod("cmNT.Kasse", "SetOrdermanSnapshot", args);
         }
 

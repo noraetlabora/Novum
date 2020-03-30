@@ -29,8 +29,8 @@ namespace Os.Server.Logic
         public static async Task CheckStaticData()
         {
             // snapshot time exists, data is up to date
-            var snapshotTimeExists = await Nt.Database.DB.Api.Misc.HasSnapshotTime(Controllers.OsHostController.PosStatus.SessionId).ConfigureAwait(false);
-            if (snapshotTimeExists)
+            var staticDataChanged = await Nt.Database.DB.Api.Misc.StaticDataChanged(Controllers.OsHostController.PosStatus.SessionId).ConfigureAwait(false);
+            if (staticDataChanged)
                 return;
 
             Nt.Logging.Log.Server.Info("new static data available");
@@ -45,6 +45,8 @@ namespace Os.Server.Logic
             tasks.Add(Nt.Database.DB.Api.Misc.GetTaxGroups());
             await Task.WhenAll(tasks).ConfigureAwait(false);
 
+            // confirm changed Static Dat
+            await Nt.Database.DB.Api.Misc.ConfirmChangedStaticData(Controllers.OsHostController.PosStatus.SessionId, "Os.Server").ConfigureAwait(false);
             Nt.Logging.Log.Server.Info("new static data cached");
 
             var pubSubMessages = new List<Client.Model.PubSubMessage>();
@@ -52,9 +54,6 @@ namespace Os.Server.Logic
             pubSubMessage.Payload = "";
             pubSubMessages.Add(pubSubMessage);
             Client.ClientApi.Subscribe.PubsubTopicsPost("host_staticDataChanged", pubSubMessages);
-
-            // set snapshot time
-            await Nt.Database.DB.Api.Misc.SetSnapshotTime(Controllers.OsHostController.PosStatus.SessionId).ConfigureAwait(false);
         }
 
         #region Cancellation Reasons
