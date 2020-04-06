@@ -30,5 +30,11 @@ namespace Nt.Logging
         /// </summary>
         /// <returns></returns>
         public static Logger Service = LogManager.GetLogger("ServiceLog");
+
+        /// <summary>
+        /// Logger of the Fiscal service
+        /// </summary>
+        /// <returns></returns>
+        public static Logger Fiscal = LogManager.GetLogger("FiscalLog");
     }
 }
