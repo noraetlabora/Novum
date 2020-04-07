@@ -1,31 +1,23 @@
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text;
 
 namespace NT.Fiscal.Models
 {
     /// <summary>
-    /// This object contains all information of the SendReceipt request
+    /// This object contains all information of the Client
     /// </summary>
     [DataContract]
-    public partial class SendReceiptRequest
+    public class ClientInformation
     {
         /// <summary>
-        /// Information about the client that calls the NT.Fiscal service. Optional provider settings overrides
+        /// software version of the requesting system
         /// </summary>
         /// <value>software version of the requesting system</value>
-        [DataMember(Name = "clientInformation")]
+        /// <remarks>Fuck you</remarks>
+        [DataMember(Name = "applicationVersion")]
         [Required]
-        public ClientInformation ClientInformation { get; set; }
-
-        /// <summary>
-        /// Information about the receipt
-        /// </summary>
-        /// <value>receipt information</value>
-        [DataMember(Name = "receipt")]
-        [Required]
-        public Receipt Receipt { get; set; }
+        public string ApplicationVersion { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -34,9 +26,8 @@ namespace NT.Fiscal.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class SendReceiptRequest {\n");
-            sb.Append("  ClientInformation: ").Append(ClientInformation.ToString()).Append("\n");
-            sb.Append("  Receipt: ").Append(Receipt.ToString()).Append("\n");
+            sb.Append("class ClientInformation {\n");
+            sb.Append("  ApplicationVersion: ").Append(ApplicationVersion).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -49,6 +40,5 @@ namespace NT.Fiscal.Models
         {
             return System.Text.Json.JsonSerializer.Serialize(this);
         }
-
     }
 }

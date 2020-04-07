@@ -29,13 +29,12 @@ namespace NT.Fiscal.Controllers
         [Route("/api/v1/echo")]
         public virtual IActionResult Echo()
         {
-            return StatusCode(200, default(string));
+            return StatusCode(200, "Service is running");
         }
 
         /// <summary>
         /// Send a receipt to the fiscal service
         /// </summary>
-
         /// <param name="receiptId">id of the receipt</param>
         /// <param name="data"></param>
         /// <response code="200"></response>
@@ -43,7 +42,8 @@ namespace NT.Fiscal.Controllers
         [Route("/api/v1/receipts/{receiptId}")]
         public virtual SendReceiptResponse SendReceipt([FromRoute][Required]string receiptId, [FromBody]SendReceiptRequest data)
         {
-            return new SendReceiptResponse(); //StatusCode(200, default(SendReceiptResponse));
+            SendReceiptResponse response = NT.Fiscal.NtFiscal.FiscalProvider.SendReceipt(data);
+            return response;
         }
     }
 }

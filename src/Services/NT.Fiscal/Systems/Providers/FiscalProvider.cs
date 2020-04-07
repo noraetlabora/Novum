@@ -1,6 +1,6 @@
-﻿using NT.Fiscal.Systems.Countries;
+﻿using NT.Fiscal.Models;
+using NT.Fiscal.Systems.Countries;
 using NT.Fiscal.Systems.Enums;
-using NT.Fiscal.Models;
 
 namespace NT.Fiscal.Systems.Providers
 {

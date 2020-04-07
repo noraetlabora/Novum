@@ -90,6 +90,5 @@ namespace NT.Fiscal
             ProviderConfiguration.ProviderLocation = "localhost";
             Log.Server.Info(ProviderConfiguration.ToString());
         }
-
     }
 }
