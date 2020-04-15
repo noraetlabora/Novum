@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nt.Booking", "..\..\Service
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nt.Util", "..\Nt.Util\Nt.Util.csproj", "{DA93D2C9-6558-409E-B14B-B9DB44248C97}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NT.Fiscal", "..\..\Services\NT.Fiscal\NT.Fiscal.csproj", "{72CF0CEC-EE13-4D82-AAB6-B5B279B618E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nt.Fiscal", "..\..\Services\NT.Fiscal\Nt.Fiscal.csproj", "{72CF0CEC-EE13-4D82-AAB6-B5B279B618E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

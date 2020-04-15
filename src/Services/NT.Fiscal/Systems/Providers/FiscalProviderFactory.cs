@@ -1,8 +1,8 @@
 ﻿using Nt.Logging;
-using NT.Fiscal.Systems.Providers;
-using NT.Fiscal.Systems.Providers.Efsta;
+using Nt.Fiscal.Systems.Providers;
+using Nt.Fiscal.Systems.Providers.Efsta;
 
-namespace NT.Fiscal.Systems.Factories
+namespace Nt.Fiscal.Systems.Factories
 {
     public class FiscalProviderFactory
     {

@@ -23,12 +23,14 @@ namespace Nt.Booking.Models
         /// <summary>
         /// Gets or Sets Owner
         /// </summary>
+        /// <value>xxxx</value>
         [DataMember(Name = "owner")]
         public Owner Owner { get; set; }
 
         /// <summary>
         /// Gets or Sets Debit
         /// </summary>
+        /// <value>yyyy</value>
         [DataMember(Name = "debit")]
         public Debit Debit { get; set; }
 

@@ -2,7 +2,7 @@ using System;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace NT.Fiscal.Models
+namespace Nt.Fiscal.Models
 {
     /// <summary>
     /// This object contains all information of a booking (payment/cancellation)

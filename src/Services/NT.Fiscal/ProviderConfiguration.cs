@@ -1,6 +1,6 @@
-﻿using NT.Fiscal.Systems.Enums;
+﻿using Nt.Fiscal.Systems.Enums;
 
-namespace NT.Fiscal
+namespace Nt.Fiscal
 {
     public class ProviderConfiguration
     {

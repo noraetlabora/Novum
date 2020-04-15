@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace NT.Fiscal.Models
+namespace Nt.Fiscal.Models
 {
     /// <summary>
     /// This object contains all information of the SendReceipt request
@@ -12,7 +12,7 @@ namespace NT.Fiscal.Models
     public partial class SendReceiptRequest
     {
         /// <summary>
-        /// Information about the client that calls the NT.Fiscal service. Optional provider settings overrides
+        /// Information about the client that calls the Nt.Fiscal service. Optional provider settings overrides
         /// </summary>
         /// <value>software version of the requesting system</value>
         [DataMember(Name = "clientInformation")]

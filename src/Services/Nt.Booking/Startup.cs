@@ -35,6 +35,27 @@ namespace Nt.Booking
             //services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.);
             services.AddMvc().AddJsonOptions(options => { options.JsonSerializerOptions.IgnoreNullValues = true; });
             services.AddHttpClient();
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Nt.Booking API",
+                    Version = "v1",
+                    Description = "novacom software GmbH Nt.Booking service",
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact
+                    {
+                        Name = "novacom software GmbH",
+                        Email = "office@novacom.at",
+                        Url = new System.Uri("https://www.novacom.at")
+                    }
+                });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = System.IO.Path.Combine(System.AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
         }
 
         /// <summary>
@@ -46,6 +67,12 @@ namespace Nt.Booking
         {
             //app.UseHsts();
             //app.UseHttpsRedirection();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Nt.Booking");
+                c.RoutePrefix = "swagger";
+            });
             app.UseMiddleware<Middlewares.LogMiddleware>();
             app.UseRouting();
             app.UseEndpoints(endpoints =>

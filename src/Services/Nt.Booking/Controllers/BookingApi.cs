@@ -34,8 +34,8 @@ namespace Nt.Booking.Controllers
         ///
         /// </summary>
         /// <param name="mediumId">xxxyyy</param>
-        /// <response code="200"></response>
-        /// <response code="400"></response>
+        /// <response code="200">super</response>
+        /// <response code="400">schlecht</response>
         [HttpGet]
         [Route("/api/v1/mediums/{mediumId}")]
         public async Task<IActionResult> GetMediumAsync([FromRoute][Required]string mediumId)
@@ -63,8 +63,8 @@ namespace Nt.Booking.Controllers
         /// </summary>
 
         /// <param name="mediumId">returns a list of mediums / chips / rooms / vouchers</param>
-        /// <response code="200"></response>
-        /// <response code="400"></response>
+        /// <response code="200">super</response>
+        /// <response code="400">schlecht</response>
         [HttpGet]
         [Route("/api/v1/mediums/")]
         public async Task<IActionResult> GetMediums()
@@ -89,7 +89,7 @@ namespace Nt.Booking.Controllers
         /// </summary>
         /// <param name="mediumId">id of the medium</param>
         /// <param name="data"></param>
-        /// <response code="200"></response>
+        /// <response code="200">gonz guad</response>
         [HttpPost]
         [Route("/api/v1/mediums/{mediumId}/payments")]
         public async Task<IActionResult> MediumPayment([FromRoute][Required]string mediumId, [FromBody]Models.PaymentRequest paymentRequest)
@@ -114,7 +114,7 @@ namespace Nt.Booking.Controllers
         /// </summary>
         /// <param name="mediumId">xxxyyy</param>
         /// <param name="data"></param>
-        /// <response code="200"></response>
+        /// <response code="200">jawoi</response>
         [HttpPost]
         [Route("/api/v1/mediums/{mediumId}/cancellations")]
         public async Task<IActionResult> MediumCancellation([FromRoute][Required]string mediumId, [FromBody]Models.CancellationRequest cancellationRequest)

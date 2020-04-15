@@ -159,7 +159,6 @@ namespace Nt.Database.Api.Intersystems
         /// 
         /// </summary>
         /// <param name="guid"></param>
-        /// <param name="serviceName"></param>
         /// <returns></returns>
         public async Task<bool> StaticDataChanged(string guid)
         {

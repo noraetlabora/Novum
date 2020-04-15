@@ -1,6 +1,6 @@
-﻿using NT.Fiscal.Systems.Enums;
+﻿using Nt.Fiscal.Systems.Enums;
 
-namespace NT.Fiscal.Systems.Countries
+namespace Nt.Fiscal.Systems.Countries
 {
     public class FiscalCountry_Austria : FiscalCountry
     {
