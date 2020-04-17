@@ -9,20 +9,35 @@ using System.ServiceProcess;
 
 namespace Nt.Booking
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class NtBooking
     {
+
+        /// <summary> </summary>
         public enum BookingSystemType
         {
+            /// <summary> </summary>
             ExSI,
+            /// <summary> </summary>
             Gantner,
+            /// <summary> </summary>
             SVS
         }
 
+        /// <summary> </summary>
         public static ServerConfiguration ServerConfiguration { get; private set; }
+
+        /// <summary> </summary>
         public static IBookingSystem BookingSystem;
 
         private static string serverConfigFile = AppDomain.CurrentDomain.BaseDirectory + @"\Nt.Booking.config.json";
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             try
@@ -33,9 +48,9 @@ namespace Nt.Booking
                 ServerConfiguration = new ServerConfiguration();
                 ServerConfiguration.BookingSystem = BookingSystemType.SVS;
                 ServerConfiguration.Port = 5000;
-                ServerConfiguration.Address = "https://webservices-cert.storedvalue.com/svsxml/v1/services/SVSXMLWay";
-                ServerConfiguration.Username = "Testuser";
-                ServerConfiguration.Password = "secretPassword";
+                ServerConfiguration.Address = "http://webservices-cert.storedvalue.com/svsxml/v1/services/SVSXMLWay";
+                ServerConfiguration.Username = "BRGEG-cert";
+                ServerConfiguration.Password = "ier2Ela@sea7Te";
                 ServerConfiguration.Timeout = 10;
 
                 BookingSystem = BookingSystemFactory.Create(ServerConfiguration);

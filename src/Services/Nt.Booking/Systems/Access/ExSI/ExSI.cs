@@ -5,22 +5,27 @@ using System.Threading.Tasks;
 
 namespace Nt.Booking.Systems.Access
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ExSI : IBookingSystem
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public ExSI()
         {
         }
 
+        /// <summary> </summary>
         public NtBooking.BookingSystemType Type { get => NtBooking.BookingSystemType.ExSI; }
 
-        Task<BookingResponse> IBookingSystem.Cancel(CancellationRequest cancellationRequest)
-        {
-            var ex = new BookingException("ExSI method 'cancel' is not yet implemented");
-            ex.HttpStatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status501NotImplemented;
-            throw ex;
-        }
-
-        async Task<InformationResponse> IBookingSystem.GetMediumInformation(string mediumId)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mediumId"></param>
+        /// <returns></returns>
+        public async Task<InformationResponse> GetMediumInformation(string mediumId)
         {
             var client = Controllers.BookingApiController.HttpClientFactory.CreateClient();
             client.BaseAddress = new System.Uri("https://jsonplaceholder.typicode.com");
@@ -38,16 +43,62 @@ namespace Nt.Booking.Systems.Access
             return information;
         }
 
-        Task<List<InformationResponse>> IBookingSystem.GetMediumInformation()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<InformationResponse>> GetMediumInformation()
         {
             var ex = new BookingException("ExSI can't return a list of medium information");
             ex.HttpStatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status405MethodNotAllowed;
             throw ex;
         }
 
-        Task<BookingResponse> IBookingSystem.Pay(PaymentRequest paymentRequest)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="creditRequest"></param>
+        /// <returns></returns>
+        public async Task<BookingResponse> Credit(Models.CreditRequest creditRequest)
         {
-            var ex = new BookingException("ExSI method 'pay' is not yet implemented");
+            var ex = new BookingException("ExSI method 'credit' is not yet implemented");
+            ex.HttpStatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status501NotImplemented;
+            throw ex;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="debitRequest"></param>
+        /// <returns></returns>
+        public async Task<BookingResponse> Debit(Models.DebitRequest  debitRequest)
+        {
+            var ex = new BookingException("ExSI method 'debit' is not yet implemented");
+            ex.HttpStatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status501NotImplemented;
+            throw ex;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cancellationRequest"></param>
+        /// <returns></returns>
+        public async Task<BookingResponse> CancelCredit(CancellationRequest cancellationRequest)
+        {
+            var ex = new BookingException("ExSI method 'cancel' is not yet implemented");
+            ex.HttpStatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status501NotImplemented;
+            throw ex;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cancellationRequest"></param>
+        /// <returns></returns>
+        public async Task<BookingResponse> CancelDebit(CancellationRequest cancellationRequest)
+        {
+            var ex = new BookingException("ExSI method 'cancel' is not yet implemented");
             ex.HttpStatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status501NotImplemented;
             throw ex;
         }

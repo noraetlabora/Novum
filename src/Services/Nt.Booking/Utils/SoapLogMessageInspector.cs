@@ -6,8 +6,16 @@ using System.Xml;
 
 namespace Nt.Booking.Utils
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class SoapLogMessageInspector : IClientMessageInspector
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reply"></param>
+        /// <param name="correlationState"></param>
         public void AfterReceiveReply(ref Message reply, object correlationState)
         {
             using (var buffer = reply.CreateBufferedCopy(int.MaxValue))
@@ -19,6 +27,12 @@ namespace Nt.Booking.Utils
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="channel"></param>
+        /// <returns></returns>
         public object BeforeSendRequest(ref Message request, IClientChannel channel)
         {
             using (var buffer = request.CreateBufferedCopy(int.MaxValue))
@@ -31,6 +45,11 @@ namespace Nt.Booking.Utils
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="soapMessage"></param>
+        /// <param name="messageType"></param>
         private static void LogSoapMessage(string soapMessage, string messageType)
         {
             var sb = new System.Text.StringBuilder();
