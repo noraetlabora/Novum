@@ -48,7 +48,7 @@ namespace Nt.Booking
                 ServerConfiguration = new ServerConfiguration();
                 ServerConfiguration.BookingSystem = BookingSystemType.SVS;
                 ServerConfiguration.Port = 5000;
-                ServerConfiguration.Address = "http://webservices-cert.storedvalue.com/svsxml/v1/services/SVSXMLWay";
+                ServerConfiguration.Address = "https://webservices-cert.storedvalue.com/svsxml/v1/services/SVSXMLWay";
                 ServerConfiguration.Username = "BRGEG-cert";
                 ServerConfiguration.Password = "ier2Ela@sea7Te";
                 ServerConfiguration.Timeout = 10;

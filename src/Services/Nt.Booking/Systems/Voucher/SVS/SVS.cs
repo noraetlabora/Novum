@@ -26,13 +26,11 @@ namespace Nt.Booking.Systems.Voucher.SVS
         public SVS(string uri, string username, string password, int timeout)
         {
             var timespan = new TimeSpan(0, 0, timeout);
-            //
-            var binding = new System.ServiceModel.BasicHttpBinding(System.ServiceModel.BasicHttpSecurityMode.None);
+            var binding = SvsSoapClient.GetBindingForEndpoint();
             binding.OpenTimeout = timespan;
             binding.CloseTimeout = timespan;
             binding.SendTimeout = timespan;
             binding.ReceiveTimeout = timespan;
-            //
             var endpoint = new System.ServiceModel.EndpointAddress(uri);
             //
             svsSoapClient = new SvsSoapClient(binding, endpoint);
@@ -60,18 +58,18 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.merchant.division = "00000";
             svsRequest.routingID = "301";
             svsRequest.stan = "123456"; //(HHMMSS)
-            
-
-            response.Currency = "EUR";
 
             try
             {
                 var svsResponse = await svsSoapClient.networkAsync(svsRequest);
+                Console.WriteLine("xx");
             }
             catch (System.ServiceModel.FaultException ex)
             {
                 ThrowSvsException(ex);
             }
+
+            
 
             return response;
         }
@@ -141,7 +139,6 @@ namespace Nt.Booking.Systems.Voucher.SVS
             try
             {
                 var svsResponse = await svsSoapClient.cancelAsync(svsRequest);
-                //response.Id = svsResponse.
             }
             catch (System.ServiceModel.FaultException ex)
             {
