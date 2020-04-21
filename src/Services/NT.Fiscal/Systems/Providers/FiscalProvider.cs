@@ -1,8 +1,8 @@
-﻿using NT.Fiscal.Models;
-using NT.Fiscal.Systems.Countries;
-using NT.Fiscal.Systems.Enums;
+﻿using Nt.Fiscal.Models;
+using Nt.Fiscal.Systems.Countries;
+using Nt.Fiscal.Systems.Enums;
 
-namespace NT.Fiscal.Systems.Providers
+namespace Nt.Fiscal.Systems.Providers
 {
     public abstract class FiscalProvider
     {

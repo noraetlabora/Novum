@@ -1,4 +1,4 @@
-﻿namespace NT.Fiscal
+﻿namespace Nt.Fiscal
 {
     public class ServerConfiguration
     {

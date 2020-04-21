@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace NT.Fiscal.Models
+namespace Nt.Fiscal.Models
 {
     /// <summary>
     /// Contains information about the client

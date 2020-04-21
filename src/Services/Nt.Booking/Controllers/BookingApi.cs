@@ -23,8 +23,15 @@ namespace Nt.Booking.Controllers
     [ApiController]
     public class BookingApiController : ControllerBase
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public static IHttpClientFactory HttpClientFactory { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="httpClientFactory"></param>
         public BookingApiController(IHttpClientFactory httpClientFactory)
         {
             HttpClientFactory = httpClientFactory;
@@ -34,8 +41,8 @@ namespace Nt.Booking.Controllers
         ///
         /// </summary>
         /// <param name="mediumId">xxxyyy</param>
-        /// <response code="200"></response>
-        /// <response code="400"></response>
+        /// <response code="200">super</response>
+        /// <response code="400">schlecht</response>
         [HttpGet]
         [Route("/api/v1/mediums/{mediumId}")]
         public async Task<IActionResult> GetMediumAsync([FromRoute][Required]string mediumId)
@@ -61,8 +68,6 @@ namespace Nt.Booking.Controllers
         /// <summary>
         ///
         /// </summary>
-
-        /// <param name="mediumId">returns a list of mediums / chips / rooms / vouchers</param>
         /// <response code="200"></response>
         /// <response code="400"></response>
         [HttpGet]
@@ -71,7 +76,7 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var mediumInformation = NtBooking.BookingSystem.GetMediumInformation();
+                var mediumInformation = await NtBooking.BookingSystem.GetMediumInformation();
                 return new ObjectResult(mediumInformation);
             }
             catch (BookingException ex)
@@ -88,15 +93,15 @@ namespace Nt.Booking.Controllers
         /// Get the status of the host / POS. This will be regularly called by clients to detect status changes (like host / POS restarts)
         /// </summary>
         /// <param name="mediumId">id of the medium</param>
-        /// <param name="data"></param>
-        /// <response code="200"></response>
+        /// <param name="debitRequest"></param>
+        /// <response code="200">gonz guad</response>
         [HttpPost]
-        [Route("/api/v1/mediums/{mediumId}/payments")]
-        public async Task<IActionResult> MediumPayment([FromRoute][Required]string mediumId, [FromBody]Models.PaymentRequest paymentRequest)
+        [Route("/api/v1/mediums/{mediumId}/debit")]
+        public async Task<IActionResult> Debit([FromRoute][Required]string mediumId, [FromBody]Models.DebitRequest debitRequest)
         {
             try
             {
-                var booking = await NtBooking.BookingSystem.Pay(paymentRequest);
+                var booking = await NtBooking.BookingSystem.Debit(debitRequest);
                 return new ObjectResult(booking);
             }
             catch (BookingException ex)
@@ -112,16 +117,64 @@ namespace Nt.Booking.Controllers
         /// <summary>
         /// Get the status of the host / POS. This will be regularly called by clients to detect status changes (like host / POS restarts)
         /// </summary>
-        /// <param name="mediumId">xxxyyy</param>
-        /// <param name="data"></param>
-        /// <response code="200"></response>
+        /// <param name="mediumId">id of the medium</param>
+        /// <param name="creditRequest"></param>
+        /// <response code="200">gonz guad</response>
         [HttpPost]
-        [Route("/api/v1/mediums/{mediumId}/cancellations")]
-        public async Task<IActionResult> MediumCancellation([FromRoute][Required]string mediumId, [FromBody]Models.CancellationRequest cancellationRequest)
+        [Route("/api/v1/mediums/{mediumId}/credit")]
+        public async Task<IActionResult> Credit([FromRoute][Required]string mediumId, [FromBody]Models.CreditRequest creditRequest)
         {
             try
             {
-                var booking = await NtBooking.BookingSystem.Cancel(cancellationRequest);
+                var booking = await NtBooking.BookingSystem.Credit(creditRequest);
+                return new ObjectResult(booking);
+            }
+            catch (BookingException ex)
+            {
+                return GetExceptionResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return GetExceptionResponse(ex);
+            }
+        }
+
+        /// <summary>
+        /// Get the status of the host / POS. This will be regularly called by clients to detect status changes (like host / POS restarts)
+        /// </summary>
+        /// <param name="mediumId"></param>
+        /// <response code="200"></response>
+        [HttpPost]
+        [Route("/api/v1/mediums/{mediumId}/cancelDebit")]
+        public async Task<IActionResult> CancelDebit([FromRoute][Required]string mediumId, [FromBody]Models.CancellationRequest cancellationRequest)
+        {
+            try
+            {
+                var booking = await NtBooking.BookingSystem.CancelDebit(cancellationRequest);
+                return new ObjectResult(booking);
+            }
+            catch (BookingException ex)
+            {
+                return GetExceptionResponse(ex);
+            }
+            catch (Exception ex)
+            {
+                return GetExceptionResponse(ex);
+            }
+        }
+
+        /// <summary>
+        /// Get the status of the host / POS. This will be regularly called by clients to detect status changes (like host / POS restarts)
+        /// </summary>
+        /// <param name="mediumId"></param>
+        /// <response code="200"></response>
+        [HttpPost]
+        [Route("/api/v1/mediums/{mediumId}/cancelCredit")]
+        public async Task<IActionResult> CancelCredit([FromRoute][Required]string mediumId, [FromBody]Models.CancellationRequest cancellationRequest)
+        {
+            try
+            {
+                var booking = await NtBooking.BookingSystem.CancelCredit(cancellationRequest);
                 return new ObjectResult(booking);
             }
             catch (BookingException ex)

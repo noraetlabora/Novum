@@ -1,7 +1,7 @@
-﻿using NT.Fiscal.Systems.Countries;
-using NT.Fiscal.Systems.Enums;
+﻿using Nt.Fiscal.Systems.Countries;
+using Nt.Fiscal.Systems.Enums;
 
-namespace NT.Fiscal.Systems.Factories
+namespace Nt.Fiscal.Systems.Factories
 {
     public class FiscalCountryFactory
     {

@@ -9,15 +9,18 @@
 using System.CodeDom.Compiler;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace Nt.Booking.Systems.Voucher.SVS
 {
-
-
     [GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.0.1")]
     [ServiceContractAttribute(Namespace = "http://service.svsxml.svs.com", ConfigurationName = "SvsSoapClient")]
     internal interface ISvsSoapClient
@@ -8747,12 +8750,12 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary>
         /// Implement this partial method to configure the service endpoint.
         /// </summary>
-        /// <param name="serviceEndpoint">The endpoint to configure</param>
-        /// <param name="clientCredentials">The client credentials</param>
+        /// <param name="binding">The endpoint to configure</param>
+        /// <param name="remoteAddress">The client credentials</param>
         public SvsSoapClient(System.ServiceModel.Channels.Binding binding, EndpointAddress remoteAddress) :
                 base(binding, remoteAddress)
         {
-            this.Endpoint.EndpointBehaviors.Add(new Nt.Booking.Utils.SoapLogEndpointBehavior());
+            this.Endpoint.EndpointBehaviors.Add(new SvsEndpointBehavior());
         }
 
         [EditorBrowsableAttribute(EditorBrowsableState.Advanced)]
@@ -9332,19 +9335,15 @@ namespace Nt.Booking.Systems.Voucher.SVS
             return Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
         }
 
-        private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
+        internal static System.ServiceModel.Channels.Binding GetBindingForEndpoint()
         {
-            if ((endpointConfiguration == EndpointConfiguration.SvsTestWebService))
-            {
-                System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
-                result.MaxBufferSize = int.MaxValue;
-                result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
-                result.MaxReceivedMessageSize = int.MaxValue;
-                result.AllowCookies = true;
-                result.Security.Mode = System.ServiceModel.BasicHttpSecurityMode.Transport;
-                return result;
-            }
-            throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
+            System.ServiceModel.BasicHttpBinding result = new System.ServiceModel.BasicHttpBinding();
+            result.MaxBufferSize = int.MaxValue;
+            result.ReaderQuotas = System.Xml.XmlDictionaryReaderQuotas.Max;
+            result.MaxReceivedMessageSize = int.MaxValue;
+            result.AllowCookies = true;
+            result.Security.Mode = System.ServiceModel.BasicHttpSecurityMode.Transport;
+            return result;
         }
 
         internal static EndpointAddress GetEndpointAddress(EndpointConfiguration endpointConfiguration)
@@ -9354,64 +9353,94 @@ namespace Nt.Booking.Systems.Voucher.SVS
                 case EndpointConfiguration.SvsTestWebService:
                     return new EndpointAddress("https://webservices-cert.storedvalue.com/svsxml/v1/services/SVSXMLWay");
                 case EndpointConfiguration.SvsProductionWebService:
-                //Todo: return new EndpointAddress("https://webservices.storedvalue.com/svsxml/v1/services/SVSXMLWay");
+                    return new EndpointAddress("https://webservices.storedvalue.com/svsxml/v1/services/SVSXMLWay");
                 default:
                     throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
             }
         }
 
-        private static System.ServiceModel.Channels.Binding GetDefaultBinding()
+        internal static System.ServiceModel.Channels.Binding GetDefaultBinding()
         {
-            return SvsSoapClient.GetBindingForEndpoint(EndpointConfiguration.SvsTestWebService);
+            return SvsSoapClient.GetBindingForEndpoint();
         }
 
-        private static EndpointAddress GetDefaultEndpointAddress()
+        internal static EndpointAddress GetDefaultEndpointAddress()
         {
             return SvsSoapClient.GetEndpointAddress(EndpointConfiguration.SvsTestWebService);
         }
 
         public enum EndpointConfiguration
         {
-
             SvsTestWebService,
             SvsProductionWebService
         }
     }
 
-    //internal class SvsMessageInspector : IClientMessageInspector
-    //{
-    //    public void AfterReceiveReply(ref Message reply, object correlationState)
-    //    {
-    //        System.Diagnostics.Debug.WriteLine("AfterReceiveReply");
-    //    }
+    internal class SvsMessageInspector : IClientMessageInspector
+    {
+        public void AfterReceiveReply(ref Message reply, object correlationState)
+        {
+            using (var buffer = reply.CreateBufferedCopy(int.MaxValue))
+            {
+                var document = GetDocument(buffer.CreateMessage());
+                //log soap response
+                Utils.Log.LogMessage(document.OuterXml, "SVS Soap Response   ");
+                reply = buffer.CreateMessage();
+            }
+        }
 
-    //    public object BeforeSendRequest(ref Message request, IClientChannel channel)
-    //    {
-    //        System.Diagnostics.Debug.WriteLine("BeforeSendRequest");
-    //        return null;
-    //    }
-    //}
+        public object BeforeSendRequest(ref Message request, IClientChannel channel)
+        {
+            request.Headers.Add(new Utils.Soap.SecurityHeader("xxx", NtBooking.ServerConfiguration.Username, NtBooking.ServerConfiguration.Password));
+            using (var buffer = request.CreateBufferedCopy(int.MaxValue))
+            {
+                var document = GetDocument(buffer.CreateMessage());
+                //log svs soap request
+                Utils.Log.LogMessage(document.OuterXml, "SVS Soap Request    ");
+                request = buffer.CreateMessage();
+                return null;
+            }
+        }
 
-    //internal class SvsEndpointBehavior : IEndpointBehavior
-    //{
-    //    public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
-    //    {
-    //        //no implementation necessary
-    //    }
+        private XmlDocument GetDocument(Message request)
+        {
+            XmlDocument document = new XmlDocument();
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                // write request to memory stream
+                XmlWriter writer = XmlWriter.Create(memoryStream);
+                request.WriteMessage(writer);
+                writer.Flush();
+                memoryStream.Position = 0;
 
-    //    public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
-    //    {
-    //        clientRuntime.ClientMessageInspectors.Add(new SvsMessageInspector());
-    //    }
+                // load memory stream into a document
+                document.Load(memoryStream);
+            }
 
-    //    public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
-    //    {
-    //        //no implementation necessary
-    //    }
+            return document;
+        }
+    }
 
-    //    public void Validate(ServiceEndpoint endpoint)
-    //    {
-    //        //no implementation necessary
-    //    }
-    //}
+    internal class SvsEndpointBehavior : IEndpointBehavior
+    {
+        public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
+        {
+            //no implementation necessary
+        }
+
+        public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
+        {
+            clientRuntime.ClientMessageInspectors.Add(new SvsMessageInspector());
+        }
+
+        public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
+        {
+            //no implementation necessary
+        }
+
+        public void Validate(ServiceEndpoint endpoint)
+        {
+            //no implementation necessary
+        }
+    }
 }

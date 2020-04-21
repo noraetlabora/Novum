@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Nt.Logging;
-using NT.Fiscal.Systems.Factories;
-using NT.Fiscal.Systems.Providers;
+using Nt.Fiscal.Systems.Factories;
+using Nt.Fiscal.Systems.Providers;
 using System;
 using System.ServiceProcess;
 
-namespace NT.Fiscal
+namespace Nt.Fiscal
 {
     public class NtFiscal
     {

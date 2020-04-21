@@ -1,8 +1,8 @@
-﻿using NT.Fiscal.Systems.Countries;
-using NT.Fiscal.Systems.Enums;
-using NT.Fiscal.Models;
+﻿using Nt.Fiscal.Systems.Countries;
+using Nt.Fiscal.Systems.Enums;
+using Nt.Fiscal.Models;
 
-namespace NT.Fiscal.Systems.Providers.Efsta
+namespace Nt.Fiscal.Systems.Providers.Efsta
 {
     internal class FiscalProviderEfsta : FiscalProvider
     {

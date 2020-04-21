@@ -1,30 +1,34 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace Nt.Fiscal.Models
+namespace Nt.Booking.Models
 {
     /// <summary>
-    /// Contains information about the receipt
+    /// This object contains all information of the payment with a medium
     /// </summary>
     [DataContract]
-    public class Receipt
+    public partial class DebitRequest
     {
         /// <summary>
-        /// date and time of the receipt
+        /// ID of the requesting system
         /// </summary>
-        /// <value>date and time of the receipt</value>
-        [DataMember(Name = "bookingTimeStamp")]
-        [Required]
-        public DateTime? BookingTimeStamp { get; set; }
+        /// <value>ID of the requesting system</value>
+        [DataMember(Name = "clientId")]
+        public string ClientId { get; set; }
+
+        /// <summary>
+        /// Name of the requesting system
+        /// </summary>
+        /// <value>Name of the requesting system</value>
+        [DataMember(Name = "clientName")]
+        public string ClientName { get; set; }
 
         /// <summary>
         /// ID of the POS operator
         /// </summary>
         /// <value>ID of the POS operator</value>
         [DataMember(Name = "waiterId")]
-        [Required]
         public string WaiterId { get; set; }
 
         /// <summary>
@@ -63,20 +67,44 @@ namespace Nt.Fiscal.Models
         public string ServiceAreaName { get; set; }
 
         /// <summary>
+        /// ID of the table
+        /// </summary>
+        /// <value>ID of the table</value>
+        [DataMember(Name = "tableId")]
+        public string TableId { get; set; }
+
+        /// <summary>
+        /// Name of the table
+        /// </summary>
+        /// <value>Name of the table</value>
+        [DataMember(Name = "tableName")]
+        public string TableName { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Sales
+        /// </summary>
+        [DataMember(Name = "sales")]
+        public List<Sale> Sales { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Receipt {\n");
-            sb.Append("  BookingTimeStamp: ").Append(BookingTimeStamp).Append("\n");
+            sb.Append("class DebitRequest {\n");
+            sb.Append("  ClientId: ").Append(ClientId).Append("\n");
+            sb.Append("  ClientName: ").Append(ClientName).Append("\n");
             sb.Append("  WaiterId: ").Append(WaiterId).Append("\n");
             sb.Append("  WaiterName: ").Append(WaiterName).Append("\n");
             sb.Append("  PosId: ").Append(PosId).Append("\n");
             sb.Append("  PosName: ").Append(PosName).Append("\n");
             sb.Append("  ServiceAreaId: ").Append(ServiceAreaId).Append("\n");
             sb.Append("  ServiceAreaName: ").Append(ServiceAreaName).Append("\n");
+            sb.Append("  TableId: ").Append(TableId).Append("\n");
+            sb.Append("  TableName: ").Append(TableName).Append("\n");
+            sb.Append("  Sales: ").Append(Sales).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -87,6 +115,7 @@ namespace Nt.Fiscal.Models
         /// <returns>JSON string presentation of the object</returns>
         public string ToJson()
         {
+            //return JsonConvert.SerializeObject(this, Formatting.Indented);
             return System.Text.Json.JsonSerializer.Serialize(this);
         }
     }

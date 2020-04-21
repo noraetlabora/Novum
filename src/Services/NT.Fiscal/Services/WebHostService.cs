@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 
-namespace NT.Fiscal.Services
+namespace Nt.Fiscal.Services
 {
     /// <summary>
     /// 

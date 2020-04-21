@@ -7,7 +7,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace NT.Fiscal
+namespace Nt.Fiscal
 {
     public class Startup
     {
@@ -53,8 +53,8 @@ namespace NT.Fiscal
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "NT.Fiscal");
-                c.RoutePrefix = string.Empty;
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Nt.Fiscal");
+                c.RoutePrefix = "swagger";
             });
             app.UseRouting();
             app.UseEndpoints(endpoints =>
