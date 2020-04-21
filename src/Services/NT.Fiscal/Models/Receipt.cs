@@ -6,7 +6,7 @@ using System.Text;
 namespace NT.Fiscal.Models
 {
     /// <summary>
-    /// This object contains all information of the receipt
+    /// Contains information about the receipt
     /// </summary>
     [DataContract]
     public class Receipt

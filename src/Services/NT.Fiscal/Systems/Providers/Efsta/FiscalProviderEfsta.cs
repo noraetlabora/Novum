@@ -20,8 +20,7 @@ namespace NT.Fiscal.Systems.Providers.Efsta
         public override SendReceiptResponse SendReceiptProvider(SendReceiptRequest request)
         {
             SendReceiptResponse response = new SendReceiptResponse();
-            response.Id = "1";
-            response.DisplayMessage = "This was processed by " + this.Provider.ToString("g") + " in " + this._country.Country.ToString("g");
+            response.Status = "1";
             return response;
         }
 

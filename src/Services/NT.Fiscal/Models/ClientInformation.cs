@@ -5,7 +5,7 @@ using System.Text;
 namespace NT.Fiscal.Models
 {
     /// <summary>
-    /// This object contains all information of the Client
+    /// Contains information about the client
     /// </summary>
     [DataContract]
     public class ClientInformation
@@ -14,7 +14,6 @@ namespace NT.Fiscal.Models
         /// software version of the requesting system
         /// </summary>
         /// <value>software version of the requesting system</value>
-        /// <remarks>Fuck you</remarks>
         [DataMember(Name = "applicationVersion")]
         [Required]
         public string ApplicationVersion { get; set; }

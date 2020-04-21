@@ -9,8 +9,8 @@
  */
 
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 using NT.Fiscal.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace NT.Fiscal.Controllers
 {
@@ -26,20 +26,32 @@ namespace NT.Fiscal.Controllers
 
         /// <response code="200">OK</response>
         [HttpGet]
-        [Route("/api/v1/echo")]
-        public virtual IActionResult Echo()
+        [Route("/api/v1/check/service")]
+        public virtual IActionResult CheckService()
         {
             return StatusCode(200, "Service is running");
         }
+
+        /// <summary>
+        /// Checks if the provider is configured correctly
+        /// </summary>
+        [HttpGet]
+        [Route("/api/v1/check/provider")]
+        public virtual IActionResult CheckProvider()
+        {
+            return StatusCode(200, "Service is running");
+        }
+
+
 
         /// <summary>
         /// Send a receipt to the fiscal service
         /// </summary>
         /// <param name="receiptId">id of the receipt</param>
         /// <param name="data"></param>
-        /// <response code="200"></response>
         [HttpPost]
         [Route("/api/v1/receipts/{receiptId}")]
+        [Produces("application/json")]
         public virtual SendReceiptResponse SendReceipt([FromRoute][Required]string receiptId, [FromBody]SendReceiptRequest data)
         {
             SendReceiptResponse response = NT.Fiscal.NtFiscal.FiscalProvider.SendReceipt(data);
