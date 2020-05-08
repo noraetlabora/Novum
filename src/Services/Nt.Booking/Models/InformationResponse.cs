@@ -22,13 +22,13 @@ namespace Nt.Booking.Models
         /// </summary>
         /// <value>yyyy</value>
         [DataMember(Name = "debit")]
-        public Debit Debit { get; set; }
+        public DebitResponse Debit { get; set; }
 
         /// <summary>
         /// Gets or Sets Credit
         /// </summary>
         [DataMember(Name = "credit")]
-        public Credit Credit { get; set; }
+        public CreditResponse Credit { get; set; }
 
         /// <summary>
         /// currency in ISO 4217 (EUR/CHF/GBP/USD/JPY/CNY/...)
@@ -45,18 +45,26 @@ namespace Nt.Booking.Models
         public string DiscountType { get; set; }
 
         /// <summary>
+        /// Message
+        /// </summary>
+        /// <value>type of discount</value>
+        [DataMember(Name = "message")]
+        public string Message { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class InformationResponse {\n");
+            sb.Append("InformationResponse {\n");
             sb.Append("  Owner: ").Append(Owner).Append("\n");
             sb.Append("  Debit: ").Append(Debit).Append("\n");
             sb.Append("  Credit: ").Append(Credit).Append("\n");
             sb.Append("  Currency: ").Append(Currency).Append("\n");
             sb.Append("  DiscountType: ").Append(DiscountType).Append("\n");
+            sb.Append("  Message: ").Append(Message).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

@@ -51,7 +51,7 @@ namespace Nt.Booking.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Sale {\n");
+            sb.Append("Sale {\n");
             sb.Append("  BillId: ").Append(BillId).Append("\n");
             sb.Append("  Timestamp: ").Append(Timestamp).Append("\n");
             sb.Append("  Currency: ").Append(Currency).Append("\n");

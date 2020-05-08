@@ -5,31 +5,24 @@ using System.Text;
 namespace Nt.Booking.Models
 {
     /// <summary>
-    /// debit object
+    /// credit object
     /// </summary>
     [DataContract]
-    public partial class Debit
+    public partial class CreditResponse
     {
         /// <summary>
-        /// debt amount/debt level (*100)
+        /// credit balance
         /// </summary>
-        /// <value>debt amount/debt level (*100)</value>
+        /// <value>credit balance</value>
         [DataMember(Name = "amount")]
-        public int? Amount { get; set; }
+        public decimal? Amount { get; set; }
 
         /// <summary>
-        /// debt limit (*100)
+        /// credit balance at opening
         /// </summary>
-        /// <value>debt limit (*100)</value>
-        [DataMember(Name = "limit")]
-        public int? Limit { get; set; }
-
-        /// <summary>
-        /// warning of debt limit (*100)
-        /// </summary>
-        /// <value>warning of debt limit (*100)</value>
-        [DataMember(Name = "limitWarning")]
-        public int? LimitWarning { get; set; }
+        /// <value>credit balance at opening</value>
+        [DataMember(Name = "openingAmount")]
+        public decimal? OpeningAmount { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -38,10 +31,9 @@ namespace Nt.Booking.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Debit {\n");
+            sb.Append("class Credit {\n");
             sb.Append("  Amount: ").Append(Amount).Append("\n");
-            sb.Append("  Limit: ").Append(Limit).Append("\n");
-            sb.Append("  LimitWarning: ").Append(LimitWarning).Append("\n");
+            sb.Append("  OpeningAmount: ").Append(OpeningAmount).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

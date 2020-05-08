@@ -1,4 +1,5 @@
-﻿using Nt.Booking.Models;
+﻿using Microsoft.AspNetCore.DataProtection.Repositories;
+using Nt.Booking.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -43,42 +44,52 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="metadata"></param>
         /// <param name="mediumId"></param>
         /// <returns></returns>
-        public async Task<InformationResponse> GetMediumInformation(string mediumId)
+        public async Task<InformationResponse> GetMediumInformation(string mediumId, MetaData metadata)
         {
             var response = new InformationResponse();
+            var svsResponse = new balanceInquiryResponse1();
 
-            var svsRequest = new NetworkRequest();
+            var svsRequest = new BalanceInquiryRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantName = "Gift Card Merchant, INC";
-            svsRequest.merchant.merchantNumber = "061286";
-            svsRequest.merchant.storeNumber = "0000009999";
-            svsRequest.merchant.division = "00000";
-            svsRequest.routingID = "301";
-            svsRequest.stan = "123456"; //(HHMMSS)
+            svsRequest.merchant.merchantName = metadata.ClientName;
+            svsRequest.merchant.division = metadata.ServiceAreaName;
+            svsRequest.routingID = "5045076327250000000";
+            svsRequest.stan = System.DateTime.Now.ToString("HHmmss");
+            svsRequest.amount = new Amount();
+            svsRequest.card = new Card();
+            svsRequest.card.cardCurrency = "EUR";
+            svsRequest.card.cardNumber = mediumId;
+            svsRequest.card.pinNumber = "0999";
 
             try
             {
-                var svsResponse = await svsSoapClient.networkAsync(svsRequest);
-                Console.WriteLine("xx");
+                svsResponse = await svsSoapClient.balanceInquiryAsync(svsRequest);
+                if (!svsResponse.balanceInquiryReturn.returnCode.returnCode.Equals("01"))
+                {
+                    response.Message = svsResponse.balanceInquiryReturn.returnCode.ToString();
+                    return response;
+                }
             }
             catch (System.ServiceModel.FaultException ex)
             {
                 ThrowSvsException(ex);
             }
 
-            
-
+            response.Currency = svsResponse.balanceInquiryReturn.card.cardCurrency;
+            response.Credit.Amount = (decimal)svsResponse.balanceInquiryReturn.balanceAmount.amount;
             return response;
         }
 
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="metadata"></param>
         /// <returns></returns>
-        public Task<List<InformationResponse>> GetMediumInformation()
+        public Task<List<InformationResponse>> GetMediumInformation(MetaData metadata)
         {
             throw new NotImplementedException();
         }
@@ -86,9 +97,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="mediumId"></param>
         /// <param name="debitRequest"></param>
         /// <returns></returns>
-        public async Task<BookingResponse> Debit(DebitRequest debitRequest)
+        public async Task<BookingResponse> Debit(string mediumId, DebitRequest debitRequest)
         {
             var response = new BookingResponse();
             var svsRequest = new RedemptionRequest();
@@ -107,12 +119,26 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="mediumId"></param>
         /// <param name="creditRequest"></param>
         /// <returns></returns>
-        public async Task<BookingResponse> Credit(Models.CreditRequest creditRequest)
+        public async Task<BookingResponse> Credit(string mediumId, Models.CreditRequest creditRequest)
         {
             var response = new BookingResponse();
             var svsRequest = new IssueGiftCardRequest();
+            svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
+            svsRequest.merchant = new Merchant();
+            svsRequest.merchant.merchantName = creditRequest.MetaData.ClientName;
+            svsRequest.merchant.division = creditRequest.MetaData.ServiceAreaName;
+            svsRequest.routingID = "5045076327250000000";
+            svsRequest.stan = System.DateTime.Now.ToString("HHmmss");
+            svsRequest.issueAmount = new Amount();
+            svsRequest.issueAmount.amount = (double)creditRequest.Amount;
+            svsRequest.issueAmount.currency = "EUR";
+            svsRequest.card = new Card();
+            svsRequest.card.cardCurrency = "EUR";
+            svsRequest.card.cardNumber = mediumId;
+            svsRequest.card.pinNumber = "0999";
 
             try
             {
@@ -129,9 +155,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="mediumId"></param>
         /// <param name="cancellationRequest"></param>
         /// <returns></returns>
-        public async Task<BookingResponse> CancelDebit(CancellationRequest cancellationRequest)
+        public async Task<BookingResponse> CancelDebit(string mediumId, CancellationRequest cancellationRequest)
         {
             var response = new BookingResponse();
             var svsRequest = new CancelRequest();
@@ -151,9 +178,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="mediumId"></param>
         /// <param name="cancellationRequest"></param>
         /// <returns></returns>
-        public async Task<BookingResponse> CancelCredit(CancellationRequest cancellationRequest)
+        public async Task<BookingResponse> CancelCredit(string mediumId, CancellationRequest cancellationRequest)
         {
             var response = new BookingResponse();
             var svsRequest = new CancelRequest();

@@ -783,6 +783,15 @@ namespace Nt.Booking.Systems.Voucher.SVS
                 this.returnDescriptionField = value;
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return this.returnCodeField + " - " + this.returnDescriptionField;
+        }
     }
 
     /// <remarks/>

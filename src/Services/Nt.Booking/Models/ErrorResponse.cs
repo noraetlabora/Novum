@@ -48,7 +48,7 @@ namespace Nt.Booking.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class ErrorResponse {\n");
+            sb.Append("ErrorResponse {\n");
             sb.Append("  Message: ").Append(Message).Append("\n");
             sb.Append("  BookingSystem: ").Append(BookingSystem).Append("\n");
             sb.Append("  BookingSystemMessage: ").Append(BookingSystemMessage).Append("\n");

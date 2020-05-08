@@ -29,7 +29,7 @@ namespace Nt.Booking.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class BookingResponse {\n");
+            sb.Append("BookingResponse {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  DisplayMessage: ").Append(DisplayMessage).Append("\n");
             sb.Append("}\n");

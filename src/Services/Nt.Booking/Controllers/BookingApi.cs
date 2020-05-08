@@ -41,18 +41,19 @@ namespace Nt.Booking.Controllers
         ///
         /// </summary>
         /// <param name="mediumId">xxxyyy</param>
+        /// <param name="metaData"></param>
         /// <response code="200">super</response>
         /// <response code="400">schlecht</response>
         [HttpGet]
         [Route("/api/v1/mediums/{mediumId}")]
-        public async Task<IActionResult> GetMediumAsync([FromRoute][Required]string mediumId)
+        public async Task<IActionResult> GetMediumAsync([FromRoute][Required]string mediumId, [FromBody]Models.MetaData metaData)
         {
             try
             {
                 System.Diagnostics.Debug.WriteLine("GetMedium Background" + System.Threading.Thread.CurrentThread.IsBackground);
                 System.Diagnostics.Debug.WriteLine("GetMedium Pool" + System.Threading.Thread.CurrentThread.IsThreadPoolThread);
                 System.Diagnostics.Debug.WriteLine("GetMedium ThreadId" + System.Threading.Thread.CurrentThread.ManagedThreadId);
-                var mediumInformation = await NtBooking.BookingSystem.GetMediumInformation(mediumId);
+                var mediumInformation = await NtBooking.BookingSystem.GetMediumInformation(mediumId, metaData);
                 return new ObjectResult(mediumInformation);
             }
             catch (BookingException ex)
@@ -72,11 +73,11 @@ namespace Nt.Booking.Controllers
         /// <response code="400"></response>
         [HttpGet]
         [Route("/api/v1/mediums/")]
-        public async Task<IActionResult> GetMediums()
+        public async Task<IActionResult> GetMediums([FromBody]Models.MetaData metaData)
         {
             try
             {
-                var mediumInformation = await NtBooking.BookingSystem.GetMediumInformation();
+                var mediumInformation = await NtBooking.BookingSystem.GetMediumInformation(metaData);
                 return new ObjectResult(mediumInformation);
             }
             catch (BookingException ex)
@@ -101,7 +102,7 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var booking = await NtBooking.BookingSystem.Debit(debitRequest);
+                var booking = await NtBooking.BookingSystem.Debit(mediumId, debitRequest);
                 return new ObjectResult(booking);
             }
             catch (BookingException ex)
@@ -126,7 +127,7 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var booking = await NtBooking.BookingSystem.Credit(creditRequest);
+                var booking = await NtBooking.BookingSystem.Credit(mediumId, creditRequest);
                 return new ObjectResult(booking);
             }
             catch (BookingException ex)
@@ -150,7 +151,7 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var booking = await NtBooking.BookingSystem.CancelDebit(cancellationRequest);
+                var booking = await NtBooking.BookingSystem.CancelDebit(mediumId, cancellationRequest);
                 return new ObjectResult(booking);
             }
             catch (BookingException ex)
@@ -174,7 +175,7 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var booking = await NtBooking.BookingSystem.CancelCredit(cancellationRequest);
+                var booking = await NtBooking.BookingSystem.CancelCredit(mediumId, cancellationRequest);
                 return new ObjectResult(booking);
             }
             catch (BookingException ex)

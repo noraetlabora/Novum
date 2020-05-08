@@ -11,74 +11,16 @@ namespace Nt.Booking.Models
     public partial class CreditRequest
     {
         /// <summary>
-        /// ID of the requesting system
+        /// 
         /// </summary>
-        /// <value>ID of the requesting system</value>
-        [DataMember(Name = "clientId")]
-        public string ClientId { get; set; }
+        [DataMember(Name = "amount")]
+        public decimal Amount { get; set; }
 
         /// <summary>
-        /// Name of the requesting system
+        /// 
         /// </summary>
-        /// <value>Name of the requesting system</value>
-        [DataMember(Name = "clientName")]
-        public string ClientName { get; set; }
-
-        /// <summary>
-        /// ID of the POS operator
-        /// </summary>
-        /// <value>ID of the POS operator</value>
-        [DataMember(Name = "waiterId")]
-        public string WaiterId { get; set; }
-
-        /// <summary>
-        /// Name of the POS operator
-        /// </summary>
-        /// <value>Name of the POS operator</value>
-        [DataMember(Name = "waiterName")]
-        public string WaiterName { get; set; }
-
-        /// <summary>
-        /// ID of the POS
-        /// </summary>
-        /// <value>ID of the POS</value>
-        [DataMember(Name = "posId")]
-        public string PosId { get; set; }
-
-        /// <summary>
-        /// Name of the POS
-        /// </summary>
-        /// <value>Name of the POS</value>
-        [DataMember(Name = "posName")]
-        public string PosName { get; set; }
-
-        /// <summary>
-        /// ID of the service area
-        /// </summary>
-        /// <value>ID of the service area</value>
-        [DataMember(Name = "serviceAreaId")]
-        public string ServiceAreaId { get; set; }
-
-        /// <summary>
-        /// Name of the service area
-        /// </summary>
-        /// <value>Name of the service area</value>
-        [DataMember(Name = "serviceAreaName")]
-        public string ServiceAreaName { get; set; }
-
-        /// <summary>
-        /// ID of the table
-        /// </summary>
-        /// <value>ID of the table</value>
-        [DataMember(Name = "tableId")]
-        public string TableId { get; set; }
-
-        /// <summary>
-        /// Name of the table
-        /// </summary>
-        /// <value>Name of the table</value>
-        [DataMember(Name = "tableName")]
-        public string TableName { get; set; }
+        [DataMember(Name = "metaData")]
+        public MetaData MetaData { get; set; }
 
         /// <summary>
         /// Gets or Sets Sales
@@ -93,18 +35,10 @@ namespace Nt.Booking.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class CreditRequest {\n");
-            sb.Append("  ClientId: ").Append(ClientId).Append("\n");
-            sb.Append("  ClientName: ").Append(ClientName).Append("\n");
-            sb.Append("  WaiterId: ").Append(WaiterId).Append("\n");
-            sb.Append("  WaiterName: ").Append(WaiterName).Append("\n");
-            sb.Append("  PosId: ").Append(PosId).Append("\n");
-            sb.Append("  PosName: ").Append(PosName).Append("\n");
-            sb.Append("  ServiceAreaId: ").Append(ServiceAreaId).Append("\n");
-            sb.Append("  ServiceAreaName: ").Append(ServiceAreaName).Append("\n");
-            sb.Append("  TableId: ").Append(TableId).Append("\n");
-            sb.Append("  TableName: ").Append(TableName).Append("\n");
-            sb.Append("  Sales: ").Append(Sales).Append("\n");
+            sb.Append("CreditRequest {\n");
+            sb.Append("  Amount: ").Append(Amount).Append("\n");
+            sb.Append("  Metadata: ").Append(MetaData.ToString()).Append("\n");
+            sb.Append("  Sales(count): ").Append(Sales?.Count).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

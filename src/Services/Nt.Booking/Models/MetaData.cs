@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using System.Text;
 
 namespace Nt.Booking.Models
 {
     /// <summary>
-    /// This object contains all information of the payment with a medium
+    /// 
     /// </summary>
     [DataContract]
-    public partial class DebitRequest
+    public partial class MetaData
     {
         /// <summary>
         /// ID of the requesting system
@@ -81,20 +80,23 @@ namespace Nt.Booking.Models
         public string TableName { get; set; }
 
         /// <summary>
-        /// Gets or Sets Sales
-        /// </summary>
-        [DataMember(Name = "sales")]
-        public List<Sale> Sales { get; set; }
-
-        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("DebitRequest {\n");
-            sb.Append("  Sales: ").Append(Sales).Append("\n");
+            sb.Append("class MetaData {\n");
+            sb.Append("  ClientId: ").Append(ClientId).Append("\n");
+            sb.Append("  ClientName: ").Append(ClientName).Append("\n");
+            sb.Append("  WaiterId: ").Append(WaiterId).Append("\n");
+            sb.Append("  WaiterName: ").Append(WaiterName).Append("\n");
+            sb.Append("  PosId: ").Append(PosId).Append("\n");
+            sb.Append("  PosName: ").Append(PosName).Append("\n");
+            sb.Append("  ServiceAreaId: ").Append(ServiceAreaId).Append("\n");
+            sb.Append("  ServiceAreaName: ").Append(ServiceAreaName).Append("\n");
+            sb.Append("  TableId: ").Append(TableId).Append("\n");
+            sb.Append("  TableName: ").Append(TableName).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }

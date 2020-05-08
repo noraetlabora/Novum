@@ -94,7 +94,7 @@ namespace Nt.Booking.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Article {\n");
+            sb.Append("Article {\n");
             sb.Append("  ArticleId: ").Append(ArticleId).Append("\n");
             sb.Append("  ArticleName: ").Append(ArticleName).Append("\n");
             sb.Append("  Quantity: ").Append(Quantity).Append("\n");
