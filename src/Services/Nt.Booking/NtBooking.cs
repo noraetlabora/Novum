@@ -52,6 +52,10 @@ namespace Nt.Booking
                 ServerConfiguration.Username = "BRGEG-cert";
                 ServerConfiguration.Password = "ier2Ela@sea7Te";
                 ServerConfiguration.Timeout = 10;
+                ServerConfiguration.Arguments = new System.Collections.Generic.List<string>();
+                ServerConfiguration.Arguments.Add("5045076327250000000"); //Routing Id
+                ServerConfiguration.Arguments.Add("509139"); //Merchant Id
+                ServerConfiguration.Arguments.Add("Breuninger Hospitality"); //Merchant Name
 
                 BookingSystem = BookingSystemFactory.Create(ServerConfiguration);
                 var webHostBuilder = CreateWebHostBuilder(args);

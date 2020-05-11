@@ -2,6 +2,7 @@
 using Nt.Booking.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Nt.Booking.Systems.Voucher.SVS
@@ -13,6 +14,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
     {
         /// <summary></summary>
         private SvsSoapClient svsSoapClient;
+        private string RoutingId;
+        private string MerchantName;
+        private string MerchantNumber;
 
         /// <summary> </summary>
         public NtBooking.BookingSystemType Type { get => NtBooking.BookingSystemType.SVS; }
@@ -44,6 +48,17 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="arguments"></param>
+        public void SetArguments(List<string> arguments)
+        {
+            RoutingId = arguments[0];
+            MerchantNumber = arguments[1];
+            MerchantName = arguments[2];
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="metadata"></param>
         /// <param name="mediumId"></param>
         /// <returns></returns>
@@ -55,15 +70,15 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new BalanceInquiryRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantName = metadata.ClientName;
-            svsRequest.merchant.division = metadata.ServiceAreaName;
-            svsRequest.routingID = "5045076327250000000";
+            svsRequest.merchant.merchantNumber = MerchantNumber;
+            svsRequest.merchant.merchantName = MerchantName;
+            svsRequest.routingID = RoutingId;
             svsRequest.stan = System.DateTime.Now.ToString("HHmmss");
             svsRequest.amount = new Amount();
             svsRequest.card = new Card();
             svsRequest.card.cardCurrency = "EUR";
-            svsRequest.card.cardNumber = mediumId;
-            svsRequest.card.pinNumber = "0999";
+            svsRequest.card.cardNumber = mediumId.Substring(0, 19);
+            svsRequest.card.pinNumber = mediumId.Substring(19, 4);
 
             try
             {
@@ -97,10 +112,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="mediumId"></param>
+        /// <param name="medium"></param>
         /// <param name="debitRequest"></param>
         /// <returns></returns>
-        public async Task<BookingResponse> Debit(string mediumId, DebitRequest debitRequest)
+        public async Task<BookingResponse> Debit(string medium, DebitRequest debitRequest)
         {
             var response = new BookingResponse();
             var svsRequest = new RedemptionRequest();
@@ -119,15 +134,16 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="mediumId"></param>
+        /// <param name="medium"></param>
         /// <param name="creditRequest"></param>
         /// <returns></returns>
-        public async Task<BookingResponse> Credit(string mediumId, Models.CreditRequest creditRequest)
+        public async Task<BookingResponse> Credit(string medium, Models.CreditRequest creditRequest)
         {
             var response = new BookingResponse();
             var svsRequest = new IssueGiftCardRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
+            svsRequest.merchant.merchantNumber = creditRequest.MetaData.ClientId;
             svsRequest.merchant.merchantName = creditRequest.MetaData.ClientName;
             svsRequest.merchant.division = creditRequest.MetaData.ServiceAreaName;
             svsRequest.routingID = "5045076327250000000";
@@ -137,7 +153,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.issueAmount.currency = "EUR";
             svsRequest.card = new Card();
             svsRequest.card.cardCurrency = "EUR";
-            svsRequest.card.cardNumber = mediumId;
+            svsRequest.card.cardNumber = medium;
             svsRequest.card.pinNumber = "0999";
 
             try
@@ -155,10 +171,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="mediumId"></param>
+        /// <param name="medium"></param>
         /// <param name="cancellationRequest"></param>
         /// <returns></returns>
-        public async Task<BookingResponse> CancelDebit(string mediumId, CancellationRequest cancellationRequest)
+        public async Task<BookingResponse> CancelDebit(string medium, CancellationRequest cancellationRequest)
         {
             var response = new BookingResponse();
             var svsRequest = new CancelRequest();
@@ -178,10 +194,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="mediumId"></param>
+        /// <param name="medium"></param>
         /// <param name="cancellationRequest"></param>
         /// <returns></returns>
-        public async Task<BookingResponse> CancelCredit(string mediumId, CancellationRequest cancellationRequest)
+        public async Task<BookingResponse> CancelCredit(string medium, CancellationRequest cancellationRequest)
         {
             var response = new BookingResponse();
             var svsRequest = new CancelRequest();
