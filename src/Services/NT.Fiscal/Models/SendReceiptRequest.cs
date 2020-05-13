@@ -1,8 +1,9 @@
+using Nt.Fiscal.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace NT.Fiscal.Models
+namespace Nt.Fiscal.Models
 {
     /// <summary>
     /// This object contains the information of the SendReceipt request

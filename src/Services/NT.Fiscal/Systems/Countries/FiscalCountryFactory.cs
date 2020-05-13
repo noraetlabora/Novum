@@ -12,8 +12,11 @@ namespace Nt.Fiscal.Systems.Factories
                 case Enums.Country.Austria:
                     return new FiscalCountry_Austria();
 
+                case Enums.Country.Germany:
+                    return new FiscalCountry_Germany();
+
                 default:
-                    return new FiscalCountry_Austria();
+                    return null;
             }
         }
     }
