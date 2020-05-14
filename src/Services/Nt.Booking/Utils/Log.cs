@@ -6,7 +6,7 @@ namespace Nt.Booking.Utils
         internal static void LogMessage(string message, string messageType)
         {
             var sb = new System.Text.StringBuilder();
-            sb.Append(NtBooking.BookingSystem.Type).Append("|");
+            sb.Append(NtBooking.BookingSystem.BookingSystem).Append("|");
             sb.Append(messageType).Append("|");
             //TODO
             //if (message.Length > 500)

@@ -8,7 +8,7 @@ namespace Nt.Booking.Models
     /// credit object
     /// </summary>
     [DataContract]
-    public partial class CreditResponse
+    public partial class CreditResponse : Response
     {
         /// <summary>
         /// credit balance
@@ -24,27 +24,13 @@ namespace Nt.Booking.Models
         [DataMember(Name = "openingAmount")]
         public decimal? OpeningAmount { get; set; }
 
-        /// <summary>
-        /// Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.Append("class Credit {\n");
-            sb.Append("  Amount: ").Append(Amount).Append("\n");
-            sb.Append("  OpeningAmount: ").Append(OpeningAmount).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
-        }
 
         /// <summary>
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
-        public string ToJson()
+        public override string ToJson()
         {
-            //return JsonConvert.SerializeObject(this, Formatting.Indented);
             return System.Text.Json.JsonSerializer.Serialize(this);
         }
     }

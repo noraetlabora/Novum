@@ -9400,7 +9400,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
 
         public object BeforeSendRequest(ref Message request, IClientChannel channel)
         {
-            request.Headers.Add(new Utils.Soap.SecurityHeader("xxx", NtBooking.ServerConfiguration.Username, NtBooking.ServerConfiguration.Password));
+            request.Headers.Add(new Utils.Soap.SecurityHeader("xxx", NtBooking.serverConfiguration.Username, NtBooking.serverConfiguration.Password));
             using (var buffer = request.CreateBufferedCopy(int.MaxValue))
             {
                 var document = GetDocument(buffer.CreateMessage());

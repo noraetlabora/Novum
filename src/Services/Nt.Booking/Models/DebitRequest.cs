@@ -86,18 +86,6 @@ namespace Nt.Booking.Models
         [DataMember(Name = "sales")]
         public List<Sale> Sales { get; set; }
 
-        /// <summary>
-        /// Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.Append("DebitRequest {\n");
-            sb.Append("  Sales: ").Append(Sales).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
-        }
 
         /// <summary>
         /// Returns the JSON string presentation of the object
@@ -105,7 +93,6 @@ namespace Nt.Booking.Models
         /// <returns>JSON string presentation of the object</returns>
         public string ToJson()
         {
-            //return JsonConvert.SerializeObject(this, Formatting.Indented);
             return System.Text.Json.JsonSerializer.Serialize(this);
         }
     }

@@ -8,7 +8,7 @@ namespace Nt.Booking.Models
     /// debit object
     /// </summary>
     [DataContract]
-    public partial class DebitResponse
+    public partial class DebitResponse : Response
     {
         /// <summary>
         /// debt amount/debt level
@@ -50,7 +50,7 @@ namespace Nt.Booking.Models
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
-        public string ToJson()
+        public override string ToJson()
         {
             //return JsonConvert.SerializeObject(this, Formatting.Indented);
             return System.Text.Json.JsonSerializer.Serialize(this);

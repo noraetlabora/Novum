@@ -77,7 +77,7 @@ namespace Nt.Booking.Middlewares
         private static void LogJson(string messageType, string traceId, string statusMethod, string path, string json)
         {
             var sb = new StringBuilder();
-            sb.Append(NtBooking.BookingSystem.Type).Append("|");
+            sb.Append(NtBooking.BookingSystem.BookingSystem).Append("|");
             sb.Append(messageType).Append("|");
             sb.Append(traceId).Append("|");
             sb.Append(statusMethod).Append("|");

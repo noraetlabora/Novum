@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure;
 using System;
 using System.Runtime.Serialization;
 using System.Text;
@@ -8,7 +9,7 @@ namespace Nt.Booking.Models
     /// This object contains all Information of the medium
     /// </summary>
     [DataContract]
-    public partial class InformationResponse
+    public partial class InformationResponse : Response
     {
         /// <summary>
         /// Gets or Sets Owner
@@ -37,45 +38,13 @@ namespace Nt.Booking.Models
         [DataMember(Name = "currency")]
         public string Currency { get; set; }
 
-        /// <summary>
-        /// type of discount
-        /// </summary>
-        /// <value>type of discount</value>
-        [DataMember(Name = "discountType")]
-        public string DiscountType { get; set; }
-
-        /// <summary>
-        /// Message
-        /// </summary>
-        /// <value>type of discount</value>
-        [DataMember(Name = "message")]
-        public string Message { get; set; }
-
-        /// <summary>
-        /// Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.Append("InformationResponse {\n");
-            sb.Append("  Owner: ").Append(Owner).Append("\n");
-            sb.Append("  Debit: ").Append(Debit).Append("\n");
-            sb.Append("  Credit: ").Append(Credit).Append("\n");
-            sb.Append("  Currency: ").Append(Currency).Append("\n");
-            sb.Append("  DiscountType: ").Append(DiscountType).Append("\n");
-            sb.Append("  Message: ").Append(Message).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
-        }
 
         /// <summary>
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
-        public string ToJson()
+        public override string ToJson()
         {
-            //return JsonConvert.SerializeObject(this, Formatting.Indented);
             return System.Text.Json.JsonSerializer.Serialize(this);
         }
     }
