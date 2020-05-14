@@ -82,26 +82,35 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.card.pinNumber = GetPinNumber(mediumId);
 
             var svsResponse = await svsSoapClient.balanceInquiryAsync(svsRequest);
-            //TODO: delete activation
-            if (svsResponse.balanceInquiryReturn.returnCode.returnCode.Equals("02"))
-                activate(mediumId);
 
-            if (!svsResponse.balanceInquiryReturn.returnCode.returnCode.Equals("00"))
-            {
-                var errorResponse = new ErrorResponse();
-                errorResponse.Error.BookingSystem = this.BookingSystemName;
-                errorResponse.Error.Code = 1;
-                errorResponse.Error.Message = "upsi";
-                errorResponse.Error.PartnerCode = svsResponse.balanceInquiryReturn.returnCode.returnCode;
-                errorResponse.Error.PartnerMessage = svsResponse.balanceInquiryReturn.returnCode.returnDescription;
-                return errorResponse;
-            }
+            if (SvsResponseHasError(svsResponse.balanceInquiryReturn.returnCode))
+                return SvsErrorResponse(svsResponse.balanceInquiryReturn.returnCode);
 
             var response = new InformationResponse();
             response.Currency = svsResponse.balanceInquiryReturn.card.cardCurrency;
             response.Credit = new CreditResponse();
             response.Credit.Amount = (decimal)svsResponse.balanceInquiryReturn.balanceAmount.amount;
             return response;
+        }
+
+        private ErrorResponse SvsErrorResponse(ReturnCode returnCode)
+        {
+            var errorResponse = new ErrorResponse();
+            errorResponse.Error.BookingSystem = this.BookingSystemName;
+            errorResponse.Error.Code = 1;
+            errorResponse.Error.Message = "upsi";
+            errorResponse.Error.PartnerCode = returnCode.returnCode;
+            errorResponse.Error.PartnerMessage = returnCode.returnDescription;
+            return errorResponse;
+        }
+
+        private bool SvsResponseHasError(ReturnCode returnCode)
+        {
+            // 01 - Approval
+            if (returnCode.returnCode.Equals("01"))
+                return false;
+            else
+                return true;
         }
 
         /// <summary>
@@ -130,31 +139,34 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
 
         /// <summary>
-        /// 
+        /// increase the value of the voucher
         /// </summary>
-        /// <param name="medium"></param>
+        /// <param name="mediumId"></param>
         /// <param name="creditRequest"></param>
         /// <returns></returns>
-        public async Task<Response> Credit(string medium, Models.CreditRequest creditRequest)
+        public async Task<Response> Credit(string mediumId, Models.CreditRequest creditRequest)
         {
-            var response = new BookingResponse();
             var svsRequest = new IssueGiftCardRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = creditRequest.MetaData.ClientId;
-            svsRequest.merchant.merchantName = creditRequest.MetaData.ClientName;
-            svsRequest.merchant.division = creditRequest.MetaData.ServiceAreaName;
-            svsRequest.routingID = "5045076327250000000";
-            svsRequest.stan = System.DateTime.Now.ToString("HHmmss");
+            svsRequest.merchant.merchantNumber = MerchantNumber;
+            svsRequest.merchant.merchantName = MerchantName;
+            svsRequest.routingID = RoutingId;
+            svsRequest.stan = random.Next(100000, 999999).ToString();
             svsRequest.issueAmount = new Amount();
             svsRequest.issueAmount.amount = (double)creditRequest.Amount;
             svsRequest.issueAmount.currency = "EUR";
             svsRequest.card = new Card();
             svsRequest.card.cardCurrency = "EUR";
-            svsRequest.card.cardNumber = medium;
-            svsRequest.card.pinNumber = "0999";
+            svsRequest.card.cardNumber = GetCardNumber(mediumId);
+            svsRequest.card.pinNumber = GetPinNumber(mediumId);
 
             var svsResponse = await svsSoapClient.issueGiftCardAsync(svsRequest);
+
+            if (SvsResponseHasError(svsResponse.issueGiftCardReturn.returnCode))
+                return SvsErrorResponse(svsResponse.issueGiftCardReturn.returnCode);
+
+            var response = new BookingResponse();
 
             return response;
         }
