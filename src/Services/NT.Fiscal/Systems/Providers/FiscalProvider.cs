@@ -1,12 +1,15 @@
 ﻿using Nt.Fiscal.Models;
 using Nt.Fiscal.Systems.Countries;
 using Nt.Fiscal.Systems.Enums;
+using System.Collections.Generic;
 
 namespace Nt.Fiscal.Systems.Providers
 {
     public abstract class FiscalProvider
     {
         protected FiscalCountry _country;
+
+        public List<Country> SupportedCountries;
 
         public Provider Provider;
 
@@ -41,9 +44,16 @@ namespace Nt.Fiscal.Systems.Providers
 
         #region Check provider
 
-        public virtual void CheckProvider()
+        public virtual CheckProviderResponse CheckProvider()
         {
+            var response = new CheckProviderResponse();
+            response.Country = Nt.Fiscal.NtFiscal.FiscalProvider._country.Country.ToString("g");
+            response.Provider = Nt.Fiscal.NtFiscal.FiscalProvider.Provider.ToString("g");
+            response.InTransaction = Nt.Fiscal.NtFiscal.FiscalProvider.InTransaction;
+            response.Status = "0";
+            response.StatusText = "OK";
             _country.CheckProvider();
+            return response;
         }
 
         #endregion Check provider

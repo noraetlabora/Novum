@@ -3,20 +3,29 @@ using Nt.Fiscal.Systems.Countries;
 using Nt.Fiscal.Systems.Enums;
 using System.Collections.Generic;
 
-namespace Nt.Fiscal.Systems.Providers.Efsta
+namespace Nt.Fiscal.Systems.Providers.Fiskaltrust
 {
-    internal class FiscalProviderEfsta : FiscalProvider
+    internal class FiscalProviderFiskaltrust : FiscalProvider
     {
-        public new List<Country> SupportedCountries = new List<Country> { Country.Croatia };
+        public new List<Country> SupportedCountries = new List<Country> { Country.Austria };
 
         #region Constructor
 
-        public FiscalProviderEfsta(FiscalCountry country) : base(country)
+        public FiscalProviderFiskaltrust(FiscalCountry country) : base(country)
         {
-            base.Provider = Provider.Efsta;
+            base.Provider = Provider.Fiskaltrust;
         }
 
         #endregion Constructor
+
+        #region Check provider
+
+        public override CheckProviderResponse CheckProvider()
+        {
+            return base.CheckProvider();
+        }
+
+        #endregion Check provider
 
         #region Send receipt
 
