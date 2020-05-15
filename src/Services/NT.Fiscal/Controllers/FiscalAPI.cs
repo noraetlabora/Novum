@@ -9,7 +9,7 @@
  */
 
 using Microsoft.AspNetCore.Mvc;
-using NT.Fiscal.Models;
+using Nt.Fiscal.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace NT.Fiscal.Controllers
@@ -37,12 +37,11 @@ namespace NT.Fiscal.Controllers
         /// </summary>
         [HttpGet]
         [Route("/api/v1/check/provider")]
-        public virtual IActionResult CheckProvider()
+        public virtual CheckProviderResponse CheckProvider()
         {
-            return StatusCode(200, "Service is running");
+            CheckProviderResponse response = Nt.Fiscal.NtFiscal.FiscalProvider.CheckProvider();
+            return response;
         }
-
-
 
         /// <summary>
         /// Send a receipt to the fiscal service
@@ -54,7 +53,7 @@ namespace NT.Fiscal.Controllers
         [Produces("application/json")]
         public virtual SendReceiptResponse SendReceipt([FromRoute][Required]string receiptId, [FromBody]SendReceiptRequest data)
         {
-            SendReceiptResponse response = NT.Fiscal.NtFiscal.FiscalProvider.SendReceipt(data);
+            SendReceiptResponse response = Nt.Fiscal.NtFiscal.FiscalProvider.SendReceipt(data);
             return response;
         }
     }

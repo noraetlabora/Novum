@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -8,14 +7,57 @@ namespace Nt.Booking.Models
     /// error object
     /// </summary>
     [DataContract]
-    public partial class ErrorResponse
+    public partial class ErrorResponse : Response
     {
+     
         /// <summary>
-        /// Gets or Sets Message
+        /// 
         /// </summary>
-        [DataMember(Name = "message")]
-        public string Message { get; set; }
+        public ErrorResponse()
+        {
+            this.Error = new ErrorResponseError();
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bookingSystem"></param>
+        /// <param name="statusCode"></param>
+        /// <param name="message"></param>
+        /// <param name="partnerCode"></param>
+        /// <param name="partnerMessage"></param>
+        public ErrorResponse(string bookingSystem, int statusCode, string message, string partnerCode, string partnerMessage)
+        {
+            this.Error = new ErrorResponseError();
+            this.Error.BookingSystem = bookingSystem;
+            this.Error.Code = statusCode;
+            this.Error.Message = message;
+            this.Error.PartnerCode = partnerCode;
+            this.Error.PartnerMessage = partnerMessage;
+        }
+        /// <summary>
+        /// message wich should be displayed (eg. information of the medium)
+        /// </summary>
+        /// <value>message wich should be displayed (eg. information of the medium)</value>
+        [DataMember(Name = "error")]
+        public ErrorResponseError Error { get; set; }
+
+        /// <summary>
+        /// Returns the JSON string presentation of the object
+        /// </summary>
+        /// <returns>JSON string presentation of the object</returns>
+        public override string ToJson()
+        {
+            return System.Text.Json.JsonSerializer.Serialize(this);
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [DataContract]
+    public class ErrorResponseError
+    {
         /// <summary>
         /// Gets or Sets BookingSystem
         /// </summary>
@@ -23,49 +65,27 @@ namespace Nt.Booking.Models
         public string BookingSystem { get; set; }
 
         /// <summary>
+        /// Gets or Sets Error Code
+        /// </summary>
+        [DataMember(Name = "code")]
+        public int Code { get; set; }
+
+        /// <summary>
+        /// Gets or Sets Error Message
+        /// </summary>
+        [DataMember(Name = "message")]
+        public string Message { get; set; }
+
+        /// <summary>
         /// Gets or Sets BookingSystemMessage
         /// </summary>
-        [DataMember(Name = "bookingSystemMessage")]
-        public string BookingSystemMessage { get; set; }
+        [DataMember(Name = "partnerMessage")]
+        public string PartnerMessage { get; set; }
 
         /// <summary>
         /// Gets or Sets BookingSystemCode
         /// </summary>
-        [DataMember(Name = "bookingSystemCode")]
-        public string BookingSystemCode { get; set; }
-
-        /// <summary>
-        /// message wich should be displayed (eg. information of the medium)
-        /// </summary>
-        /// <value>message wich should be displayed (eg. information of the medium)</value>
-        [DataMember(Name = "displayMessage")]
-        public string DisplayMessage { get; set; }
-
-        /// <summary>
-        /// Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.Append("class ErrorResponse {\n");
-            sb.Append("  Message: ").Append(Message).Append("\n");
-            sb.Append("  BookingSystem: ").Append(BookingSystem).Append("\n");
-            sb.Append("  BookingSystemMessage: ").Append(BookingSystemMessage).Append("\n");
-            sb.Append("  BookingSystemCode: ").Append(BookingSystemCode).Append("\n");
-            sb.Append("  DisplayMessage: ").Append(DisplayMessage).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Returns the JSON string presentation of the object
-        /// </summary>
-        /// <returns>JSON string presentation of the object</returns>
-        public string ToJson()
-        {
-            //return JsonConvert.SerializeObject(this, Formatting.Indented);
-            return System.Text.Json.JsonSerializer.Serialize(this);
-        }
+        [DataMember(Name = "partnerCode")]
+        public string PartnerCode { get; set; }
     }
 }

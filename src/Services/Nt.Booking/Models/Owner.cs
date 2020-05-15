@@ -24,7 +24,7 @@ namespace Nt.Booking.Models
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append("class Owner {\n");
+            sb.Append("Owner {\n");
             sb.Append("  Name: ").Append(Name).Append("\n");
             sb.Append("}\n");
             return sb.ToString();

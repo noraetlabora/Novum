@@ -41,26 +41,22 @@ namespace Nt.Booking.Controllers
         ///
         /// </summary>
         /// <param name="mediumId">xxxyyy</param>
+        /// <param name="metaData"></param>
         /// <response code="200">super</response>
         /// <response code="400">schlecht</response>
         [HttpGet]
         [Route("/api/v1/mediums/{mediumId}")]
-        public async Task<IActionResult> GetMediumAsync([FromRoute][Required]string mediumId)
+        public async Task<IActionResult> GetMediumAsync([FromRoute][Required]string mediumId, [FromBody]Models.MetaData metaData)
         {
             try
             {
-                System.Diagnostics.Debug.WriteLine("GetMedium Background" + System.Threading.Thread.CurrentThread.IsBackground);
-                System.Diagnostics.Debug.WriteLine("GetMedium Pool" + System.Threading.Thread.CurrentThread.IsThreadPoolThread);
-                System.Diagnostics.Debug.WriteLine("GetMedium ThreadId" + System.Threading.Thread.CurrentThread.ManagedThreadId);
-                var mediumInformation = await NtBooking.BookingSystem.GetMediumInformation(mediumId);
-                return new ObjectResult(mediumInformation);
-            }
-            catch (BookingException ex)
-            {
-                return GetExceptionResponse(ex);
+                var response = await NtBooking.BookingSystem.GetMediumInformation(mediumId, metaData);
+                return new ObjectResult(response);
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, string.Format("Exception at /api/v1/mediums/{0}", mediumId));
+                Nt.Logging.Log.Server.Error("metaData: " + metaData.ToJson());
                 return GetExceptionResponse(ex);
             }
         }
@@ -72,19 +68,17 @@ namespace Nt.Booking.Controllers
         /// <response code="400"></response>
         [HttpGet]
         [Route("/api/v1/mediums/")]
-        public async Task<IActionResult> GetMediums()
+        public async Task<IActionResult> GetMediums([FromBody]Models.MetaData metaData)
         {
             try
             {
-                var mediumInformation = await NtBooking.BookingSystem.GetMediumInformation();
-                return new ObjectResult(mediumInformation);
-            }
-            catch (BookingException ex)
-            {
-                return GetExceptionResponse(ex);
+                var response = await NtBooking.BookingSystem.GetMediumInformation(metaData);
+                return new ObjectResult(response);
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, "Exception at /api/v1/mediums");
+                Nt.Logging.Log.Server.Error("metaData: " + metaData.ToJson());
                 return GetExceptionResponse(ex);
             }
         }
@@ -101,15 +95,13 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var booking = await NtBooking.BookingSystem.Debit(debitRequest);
-                return new ObjectResult(booking);
-            }
-            catch (BookingException ex)
-            {
-                return GetExceptionResponse(ex);
+                var response = await NtBooking.BookingSystem.Debit(mediumId, debitRequest);
+                return new ObjectResult(response);
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, string.Format("Exception at /api/v1/mediums/{0}/debit", mediumId));
+                Nt.Logging.Log.Server.Error("debitRequest: " + debitRequest.ToJson());
                 return GetExceptionResponse(ex);
             }
         }
@@ -126,15 +118,13 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var booking = await NtBooking.BookingSystem.Credit(creditRequest);
-                return new ObjectResult(booking);
-            }
-            catch (BookingException ex)
-            {
-                return GetExceptionResponse(ex);
+                var response = await NtBooking.BookingSystem.Credit(mediumId, creditRequest);
+                return new ObjectResult(response);
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, string.Format("Exception at /api/v1/mediums/{0}/credit", mediumId));
+                Nt.Logging.Log.Server.Error("creditRequest: " + creditRequest.ToJson());
                 return GetExceptionResponse(ex);
             }
         }
@@ -143,6 +133,7 @@ namespace Nt.Booking.Controllers
         /// Get the status of the host / POS. This will be regularly called by clients to detect status changes (like host / POS restarts)
         /// </summary>
         /// <param name="mediumId"></param>
+        /// <param name="cancellationRequest"></param>
         /// <response code="200"></response>
         [HttpPost]
         [Route("/api/v1/mediums/{mediumId}/cancelDebit")]
@@ -150,15 +141,13 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var booking = await NtBooking.BookingSystem.CancelDebit(cancellationRequest);
-                return new ObjectResult(booking);
-            }
-            catch (BookingException ex)
-            {
-                return GetExceptionResponse(ex);
+                var response = await NtBooking.BookingSystem.CancelDebit(mediumId, cancellationRequest);
+                return new ObjectResult(response);
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, string.Format("Exception at /api/v1/mediums/{0}/cancelDebit", mediumId));
+                Nt.Logging.Log.Server.Error("cancellationRequest: " + cancellationRequest.ToJson());
                 return GetExceptionResponse(ex);
             }
         }
@@ -167,6 +156,7 @@ namespace Nt.Booking.Controllers
         /// Get the status of the host / POS. This will be regularly called by clients to detect status changes (like host / POS restarts)
         /// </summary>
         /// <param name="mediumId"></param>
+        /// <param name="cancellationRequest"></param>
         /// <response code="200"></response>
         [HttpPost]
         [Route("/api/v1/mediums/{mediumId}/cancelCredit")]
@@ -174,42 +164,27 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var booking = await NtBooking.BookingSystem.CancelCredit(cancellationRequest);
-                return new ObjectResult(booking);
-            }
-            catch (BookingException ex)
-            {
-                return GetExceptionResponse(ex);
+                var response = await NtBooking.BookingSystem.CancelCredit(mediumId, cancellationRequest);
+                return new ObjectResult(response);
             }
             catch (Exception ex)
             {
+                Nt.Logging.Log.Server.Error(ex, string.Format("Exception at /api/v1/mediums/{0}/cancelCredit", mediumId));
+                Nt.Logging.Log.Server.Error("cancellationRequest: " + cancellationRequest.ToJson());
                 return GetExceptionResponse(ex);
             }
         }
 
         #region private methods
 
-        private ObjectResult GetExceptionResponse(BookingException ex)
-        {
-            Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
-            var error = new Models.ErrorResponse();
-            error.Message = ex.Message;
-            error.DisplayMessage = ex.DisplayMessage;
-            error.BookingSystem = ex.BookingSystem.ToString();
-            error.BookingSystemCode = ex.BookingSystemCode;
-            error.BookingSystemMessage = ex.BookingSystemMessage;
-
-            return StatusCode(ex.HttpStatusCode, error);
-        }
-
         private ObjectResult GetExceptionResponse(Exception ex)
         {
             Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path + "|");
             //
-            var error = new Models.ErrorResponse();
-            error.Message = ex.Message;
+            var errorResponse = new Models.ErrorResponse();
+            errorResponse.Error.Message = ex.Message;
             //500
-            return StatusCode(StatusCodes.Status500InternalServerError, error);
+            return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
         }
 
         #endregion private methods

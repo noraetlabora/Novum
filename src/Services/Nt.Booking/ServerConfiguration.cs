@@ -1,4 +1,6 @@
-﻿namespace Nt.Booking
+﻿using System.Collections.Generic;
+
+namespace Nt.Booking
 {
     /// <summary>
     /// 
@@ -34,6 +36,11 @@
         /// Timeout in seconds
         /// </summary>
         public int Timeout { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<string> Arguments { get; set; }
 
 
         /// <summary>

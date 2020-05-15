@@ -87,36 +87,13 @@ namespace Nt.Booking.Models
         [DataMember(Name = "discountGroupName")]
         public string DiscountGroupName { get; set; }
 
-        /// <summary>
-        /// Returns the string presentation of the object
-        /// </summary>
-        /// <returns>String presentation of the object</returns>
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.Append("class Article {\n");
-            sb.Append("  ArticleId: ").Append(ArticleId).Append("\n");
-            sb.Append("  ArticleName: ").Append(ArticleName).Append("\n");
-            sb.Append("  Quantity: ").Append(Quantity).Append("\n");
-            sb.Append("  QuantityUnit: ").Append(QuantityUnit).Append("\n");
-            sb.Append("  ArticleGroupId: ").Append(ArticleGroupId).Append("\n");
-            sb.Append("  ArticleGroupName: ").Append(ArticleGroupName).Append("\n");
-            sb.Append("  UnitPrice: ").Append(UnitPrice).Append("\n");
-            sb.Append("  TaxRate: ").Append(TaxRate).Append("\n");
-            sb.Append("  DiscountAmount: ").Append(DiscountAmount).Append("\n");
-            sb.Append("  DiscountGroupId: ").Append(DiscountGroupId).Append("\n");
-            sb.Append("  DiscountGroupName: ").Append(DiscountGroupName).Append("\n");
-            sb.Append("}\n");
-            return sb.ToString();
-        }
-
+       
         /// <summary>
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
         public string ToJson()
         {
-            //return JsonConvert.SerializeObject(this, Formatting.Indented);
             return System.Text.Json.JsonSerializer.Serialize(this);
         }
 

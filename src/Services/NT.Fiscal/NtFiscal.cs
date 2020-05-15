@@ -27,7 +27,10 @@ namespace Nt.Fiscal
 
                 // Create Fiscal Provider
                 FiscalProvider = FiscalProviderFactory.Create(ProviderConfiguration);
-
+                if (FiscalProvider is null)
+                {
+                    throw new Exception("Cannot create fiscal provider");
+                }
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();
 
@@ -85,7 +88,7 @@ namespace Nt.Fiscal
         {
             // TODO: GetConfig from file
             ProviderConfiguration = new ProviderConfiguration();
-            ProviderConfiguration.Provider = Systems.Enums.Provider.Efsta;
+            ProviderConfiguration.Provider = Systems.Enums.Provider.Fiskaltrust;
             ProviderConfiguration.Country = Systems.Enums.Country.Austria;
             ProviderConfiguration.ProviderLocation = "localhost";
             Log.Server.Info(ProviderConfiguration.ToString());

@@ -1,38 +1,35 @@
-using System.Collections.Generic;
+using System;
 using System.Runtime.Serialization;
 using System.Text;
 
 namespace Nt.Booking.Models
 {
     /// <summary>
-    /// This object contains all information of the payment with a medium
+    /// credit object
     /// </summary>
     [DataContract]
-    public partial class CreditRequest
+    public partial class CreditResponse : Response
     {
         /// <summary>
-        /// 
+        /// credit balance
         /// </summary>
+        /// <value>credit balance</value>
         [DataMember(Name = "amount")]
-        public decimal Amount { get; set; }
+        public decimal? Amount { get; set; }
 
         /// <summary>
-        /// 
+        /// credit balance at opening
         /// </summary>
-        [DataMember(Name = "metaData")]
-        public MetaData MetaData { get; set; }
+        /// <value>credit balance at opening</value>
+        [DataMember(Name = "openingAmount")]
+        public decimal? OpeningAmount { get; set; }
 
-        /// <summary>
-        /// Gets or Sets Sales
-        /// </summary>
-        [DataMember(Name = "sales")]
-        public List<Sale> Sales { get; set; }
 
         /// <summary>
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
-        public string ToJson()
+        public override string ToJson()
         {
             return System.Text.Json.JsonSerializer.Serialize(this);
         }

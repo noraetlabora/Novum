@@ -1,7 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using System.Text;
 
-namespace NT.Fiscal.Models
+namespace Nt.Fiscal.Models
 {
     /// <summary>
     /// The ProviderConfiguration is optional and can be used to override the service settings.
