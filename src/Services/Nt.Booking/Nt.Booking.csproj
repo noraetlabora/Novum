@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Enums\" />
     <Folder Include="Systems\Access\ExSI\Models\" />
     <Folder Include="Systems\Hotel\" />
   </ItemGroup>

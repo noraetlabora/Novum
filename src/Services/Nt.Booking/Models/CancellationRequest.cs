@@ -13,8 +13,8 @@ namespace Nt.Booking.Models
         /// <summary>
         /// Gets or Sets Id
         /// </summary>
-        [DataMember(Name = "id")]
-        public string Id { get; set; }
+        [DataMember(Name = "amount")]
+        public decimal Amount { get; set; }
 
         /// <summary>
         /// Gets or Sets Name

@@ -68,7 +68,7 @@ namespace Nt.Booking.Models
         /// Gets or Sets Error Code
         /// </summary>
         [DataMember(Name = "code")]
-        public int Code { get; set; }
+        public Enums.StatusCode Code { get; set; }
 
         /// <summary>
         /// Gets or Sets Error Message
