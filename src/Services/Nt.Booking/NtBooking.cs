@@ -58,6 +58,8 @@ namespace Nt.Booking
                 serverConfiguration.Arguments.Add("509139"); //Merchant Id
                 serverConfiguration.Arguments.Add("Breuninger Hospitality"); //Merchant Name
 
+                Resources.Dictionary.Initialize("de-AT");
+
                 BookingSystem = BookingSystemFactory.Create(serverConfiguration);
                 var webHostBuilder = CreateWebHostBuilder(args);
                 var webHost = webHostBuilder.Build();

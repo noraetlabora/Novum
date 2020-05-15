@@ -102,16 +102,35 @@ namespace Nt.Booking.Systems.Voucher.SVS
 
             switch (returnCode.returnCode)
             {
-                case "01":
-                    errorResponse.Error.Code = Enums.StatusCode.Ok;
-                    errorResponse.Error.Message = null;
+                case "01": //Approval
+                    return null;
+                case "02": //Inactive Card
+                    errorResponse.Error.Code = Enums.StatusCode.VoucherInactive;
+                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_Inactive");
                     break;
-                case "02":
-
+                case "03": //Invalid Card Number
+                    errorResponse.Error.Code = Enums.StatusCode.VoucherInvalid;
+                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_Invalid");
+                    break;
+                case "05": //Insufficient Funds
+                    errorResponse.Error.Code = Enums.StatusCode.VoucherInsufficient;
+                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_Insufficient");
+                    break;
+                case "15": //Host Unavailable
+                    errorResponse.Error.Code = Enums.StatusCode.HostUnavailable;
+                    errorResponse.Error.Message = Resources.Dictionary.GetString("HostUnavailable");
+                    break;
+                case "20": //Pin Invalid
+                    errorResponse.Error.Code = Enums.StatusCode.VoucherPinInvalid;
+                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_PinInvalid");
+                    break;
+                case "21": //Card Already Issued
+                    errorResponse.Error.Code = Enums.StatusCode.VoucherAlreadyIssued;
+                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_AlreadyIssued");
                     break;
                 default:
                     errorResponse.Error.Code = Enums.StatusCode.Error;
-                    errorResponse.Error.Message = Resources.Dictionary.GetString("");
+                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_Error");
                     break;
             }
             return errorResponse;
