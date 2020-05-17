@@ -18,16 +18,16 @@ namespace Nt.Booking.Models
         public decimal? Amount { get; set; }
 
         /// <summary>
-        /// debt limit (*100)
+        /// debt limit
         /// </summary>
-        /// <value>debt limit (*100)</value>
+        /// <value>debt limit</value>
         [DataMember(Name = "limit")]
         public decimal? Limit { get; set; }
 
         /// <summary>
-        /// warning of debt limit (*100)
+        /// warning of debt limit
         /// </summary>
-        /// <value>warning of debt limit (*100)</value>
+        /// <value>warning of debt limit</value>
         [DataMember(Name = "limitWarning")]
         public decimal? LimitWarning { get; set; }
 

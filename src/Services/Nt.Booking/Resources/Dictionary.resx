@@ -117,13 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Access_MediumIsInactive" xml:space="preserve">
-    <value>medium is inactive</value>
+  <data name="Access_MediumUnknown" xml:space="preserve">
+    <value>Medium ist unbekannt</value>
   </data>
-  <data name="Hotel_RoomNotFound" xml:space="preserve">
-    <value>room not found</value>
+  <data name="HostUnavailable" xml:space="preserve">
+    <value>Buchungssystem ist nicht erreichbar</value>
   </data>
-  <data name="Voucher_NotFound" xml:space="preserve">
-    <value>voucher not found</value>
+  <data name="Hotel_RoomNotBooked" xml:space="preserve">
+    <value>Zimmer ist nicht belegt</value>
+  </data>
+  <data name="Hotel_RoomUnknown" xml:space="preserve">
+    <value>Zimmer ist unbekannt</value>
+  </data>
+  <data name="Voucher_AlreadyIssued" xml:space="preserve">
+    <value>Gutschein wurde bereits beladen</value>
+  </data>
+  <data name="Voucher_AlreadyUsed" xml:space="preserve">
+    <value>Gutschein wurde bereits verwendet</value>
+  </data>
+  <data name="Voucher_Error" xml:space="preserve">
+    <value>Gutscheinanfrage ist fehlerhaft</value>
+  </data>
+  <data name="Voucher_Insufficient" xml:space="preserve">
+    <value>Gutschein ist nicht ausreichend</value>
+  </data>
+  <data name="Voucher_NotIssued" xml:space="preserve">
+    <value>Gutschein ist noch nicht ausgestellt</value>
+  </data>
+  <data name="Voucher_PinInvalid" xml:space="preserve">
+    <value>Pin des Gutscheins ist falsch</value>
   </data>
 </root>
