@@ -38,6 +38,5 @@ jobs:
       run: dotnet restore src/NovaTouch/Nt.Database/Nt.Database.csproj
     - name: Build Os.Server
       run: dotnet build src/NovaTouch/Nt.Database/Nt.Database.csproj -c Release --no-restore
-  
-  # test:
+
 
