@@ -97,10 +97,42 @@ namespace Nt.Booking.Systems.Voucher.SVS
         {
             var errorResponse = new ErrorResponse();
             errorResponse.Error.BookingSystem = this.BookingSystemName;
-            errorResponse.Error.Code = 1;
-            errorResponse.Error.Message = "upsi";
             errorResponse.Error.PartnerCode = returnCode.returnCode;
             errorResponse.Error.PartnerMessage = returnCode.returnDescription;
+
+            switch (returnCode.returnCode)
+            {
+                case "01": //Approval
+                    return null;
+                case "02": //Inactive Card
+                    errorResponse.Error.Code = Enums.StatusCode.VoucherInactive;
+                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_Inactive");
+                    break;
+                case "03": //Invalid Card Number
+                    errorResponse.Error.Code = Enums.StatusCode.VoucherInvalid;
+                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_Invalid");
+                    break;
+                case "05": //Insufficient Funds
+                    errorResponse.Error.Code = Enums.StatusCode.VoucherInsufficient;
+                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_Insufficient");
+                    break;
+                case "15": //Host Unavailable
+                    errorResponse.Error.Code = Enums.StatusCode.HostUnavailable;
+                    errorResponse.Error.Message = Resources.Dictionary.GetString("HostUnavailable");
+                    break;
+                case "20": //Pin Invalid
+                    errorResponse.Error.Code = Enums.StatusCode.VoucherPinInvalid;
+                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_PinInvalid");
+                    break;
+                case "21": //Card Already Issued
+                    errorResponse.Error.Code = Enums.StatusCode.VoucherAlreadyIssued;
+                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_AlreadyIssued");
+                    break;
+                default:
+                    errorResponse.Error.Code = Enums.StatusCode.Error;
+                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_Error");
+                    break;
+            }
             return errorResponse;
         }
 
@@ -174,33 +206,48 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="medium"></param>
+        /// <param name="mediumId"></param>
         /// <param name="cancellationRequest"></param>
         /// <returns></returns>
-        public async Task<Response> CancelDebit(string medium, CancellationRequest cancellationRequest)
+        public async Task<Response> CancelDebit(string mediumId, CancellationRequest cancellationRequest)
         {
-            var response = new BookingResponse();
-            var svsRequest = new CancelRequest();
-
-            var svsResponse = await svsSoapClient.cancelAsync(svsRequest);
-
-            return response;
+            return await Cancel(mediumId, cancellationRequest);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="medium"></param>
+        /// <param name="mediumId"></param>
         /// <param name="cancellationRequest"></param>
         /// <returns></returns>
-        public async Task<Response> CancelCredit(string medium, CancellationRequest cancellationRequest)
+        public async Task<Response> CancelCredit(string mediumId, CancellationRequest cancellationRequest)
         {
-            var response = new BookingResponse();
+            return await Cancel(mediumId, cancellationRequest);
+        }
+
+        private async Task <Response> Cancel(string mediumId, CancellationRequest cancellationRequest)
+        {
             var svsRequest = new CancelRequest();
+            svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
+            svsRequest.merchant = new Merchant();
+            svsRequest.merchant.merchantNumber = MerchantNumber;
+            svsRequest.merchant.merchantName = MerchantName;
+            svsRequest.routingID = RoutingId;
+            svsRequest.stan = random.Next(100000, 999999).ToString();
+            svsRequest.transactionAmount = new Amount();
+            //svsRequest.transactionAmount.amount = (double)cancellationRequest.
+            //svsRequest.transactionAmount.currency = "EUR";
+            svsRequest.card = new Card();
+            svsRequest.card.cardCurrency = "EUR";
+            svsRequest.card.cardNumber = GetCardNumber(mediumId);
+            svsRequest.card.pinNumber = GetPinNumber(mediumId);
 
             var svsResponse = await svsSoapClient.cancelAsync(svsRequest);
 
+            var response = new BookingResponse();
+
             return response;
+
         }
 
         /// <summary>

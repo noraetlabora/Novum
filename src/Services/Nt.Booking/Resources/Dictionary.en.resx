@@ -117,34 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Modifier_Fax" xml:space="preserve">
-    <value>Handnote</value>
+  <data name="Access_MediumUnknown" xml:space="preserve">
+    <value>medium is unknown</value>
   </data>
-  <data name="Modifier_Text" xml:space="preserve">
-    <value>Note</value>
+  <data name="HostUnavailable" xml:space="preserve">
+    <value>booking system is unavailable</value>
   </data>
-  <data name="Order_NoneFound" xml:space="preserve">
-    <value>no orders found</value>
+  <data name="Hotel_RoomNotBooked" xml:space="preserve">
+    <value>room is not booked</value>
   </data>
-  <data name="Order_NotFound" xml:space="preserve">
-    <value>order not found</value>
+  <data name="Hotel_RoomUnknown" xml:space="preserve">
+    <value>room is unknown</value>
   </data>
-  <data name="Order_VoidNotAllowed" xml:space="preserve">
-    <value>void of order is not allowed</value>
+  <data name="Voucher_AlreadyIssued" xml:space="preserve">
+    <value>voucher already issued</value>
   </data>
-  <data name="Payment_Tip" xml:space="preserve">
-    <value>tip</value>
+  <data name="Voucher_AlreadyUsed" xml:space="preserve">
+    <value>voucher is already used</value>
   </data>
-  <data name="Room_Number" xml:space="preserve">
-    <value>room number</value>
+  <data name="Voucher_Error" xml:space="preserve">
+    <value>voucher request had an error</value>
   </data>
-  <data name="Table_NotOpen" xml:space="preserve">
-    <value>table {0} is not open</value>
+  <data name="Voucher_Insufficient" xml:space="preserve">
+    <value>voucher is insufficient</value>
   </data>
-  <data name="Waiter_IdPasswordNotValid" xml:space="preserve">
-    <value>waiter and password do not match</value>
+  <data name="Voucher_NotIssued" xml:space="preserve">
+    <value>voucher is not yet issued</value>
   </data>
-  <data name="Waiter_PinNotValid" xml:space="preserve">
-    <value>pin of waiter is unknown</value>
+  <data name="Voucher_PinInvalid" xml:space="preserve">
+    <value>voucher pin is invalid</value>
   </data>
 </root>
