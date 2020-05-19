@@ -123,7 +123,7 @@
   <data name="DB_NoConnection" xml:space="preserve">
     <value>Datenbankverbindung ist unterbrochen</value>
   </data>
-  <data name="Tabe_AlreadyOpen" xml:space="preserve">
+  <data name="Table_AlreadyOpen" xml:space="preserve">
     <value>Tisch {0} wird gerade bearbeitet</value>
   </data>
   <data name="Table_NoOpenPermission" xml:space="preserve">

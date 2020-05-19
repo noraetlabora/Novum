@@ -30,9 +30,9 @@ namespace Nt.Fiscal
             {
                 c.SwaggerDoc("v1", new OpenApiInfo 
                 { 
-                    Title = "NT.Fiscal API", 
+                    Title = "Nt.Fiscal API", 
                     Version = "v1", 
-                    Description = "novacom software GmbH NT.Fiscal service",
+                    Description = "novacom software GmbH Nt.Fiscal service",
                     Contact = new OpenApiContact
                     {
                         Name = "novacom software GmbH",

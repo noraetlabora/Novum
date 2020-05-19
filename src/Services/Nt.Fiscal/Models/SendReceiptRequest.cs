@@ -20,7 +20,7 @@ namespace Nt.Fiscal.Models
         public bool CheckOnly { get; set; }
 
         /// <summary>
-        /// Information about the client that calls the NT.Fiscal service. Optional provider settings overrides
+        /// Information about the client that calls the Nt.Fiscal service. Optional provider settings overrides
         /// </summary>
         /// <value>Client details</value>
         [DataMember(Name = "clientInformation")]
