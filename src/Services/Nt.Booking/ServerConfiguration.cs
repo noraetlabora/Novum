@@ -38,6 +38,11 @@ namespace Nt.Booking
         public int Timeout { get; set; }
 
         /// <summary>
+        ///  currency in ISO 4217 (EUR/CHF/GBP/USD/JPY/CNY/...)
+        /// </summary>
+        public string Currency { get; set; }
+
+        /// <summary>
         /// 
         /// </summary>
         public List<string> Arguments { get; set; }

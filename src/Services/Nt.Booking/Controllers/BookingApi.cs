@@ -55,7 +55,7 @@ namespace Nt.Booking.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, string.Format("Exception at /api/v1/medium/info/{0}", mediumId));
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path);
                 Nt.Logging.Log.Server.Error("metaData: " + metaData.ToJson());
                 return GetExceptionResponse(ex);
             }
@@ -77,7 +77,7 @@ namespace Nt.Booking.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, "Exception at /api/v1/medium/info");
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path);
                 Nt.Logging.Log.Server.Error("metaData: " + metaData.ToJson());
                 return GetExceptionResponse(ex);
             }
@@ -100,7 +100,7 @@ namespace Nt.Booking.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, string.Format("Exception at /api/v1/medium/debit/{0}", mediumId));
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path);
                 Nt.Logging.Log.Server.Error("debitRequest: " + debitRequest.ToJson());
                 return GetExceptionResponse(ex);
             }
@@ -124,7 +124,7 @@ namespace Nt.Booking.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, string.Format("Exception at /api/v1/medium/credit/{0}", mediumId));
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path);
                 Nt.Logging.Log.Server.Error("creditRequest: " + creditRequest.ToJson());
                 return GetExceptionResponse(ex);
             }
@@ -147,7 +147,7 @@ namespace Nt.Booking.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, string.Format("Exception at /api/v1/medium/credit"));
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path);
                 Nt.Logging.Log.Server.Error("creditRequest: " + creditRequest.ToJson());
                 return GetExceptionResponse(ex);
             }
@@ -170,7 +170,7 @@ namespace Nt.Booking.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, string.Format("Exception at /api/v1/medium/cancelDebit/{0}", mediumId));
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path);
                 Nt.Logging.Log.Server.Error("cancellationRequest: " + cancellationRequest.ToJson());
                 return GetExceptionResponse(ex);
             }
@@ -193,13 +193,13 @@ namespace Nt.Booking.Controllers
             }
             catch (Exception ex)
             {
-                Nt.Logging.Log.Server.Error(ex, string.Format("Exception at /api/v1/medium/cancelCredit/{0}", mediumId));
+                Nt.Logging.Log.Server.Error(ex, HttpContext.Request.Path);
                 Nt.Logging.Log.Server.Error("cancellationRequest: " + cancellationRequest.ToJson());
                 return GetExceptionResponse(ex);
             }
         }
 
-        #region private methods
+        #region private method
 
         private ObjectResult GetExceptionResponse(Exception ex)
         {

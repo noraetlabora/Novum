@@ -23,12 +23,6 @@ namespace Nt.Booking.Models
         public MetaData MetaData { get; set; }
 
         /// <summary>
-        /// Gets or Sets Sales
-        /// </summary>
-        [DataMember(Name = "sales")]
-        public List<Sale> Sales { get; set; }
-
-        /// <summary>
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>

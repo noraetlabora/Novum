@@ -54,6 +54,7 @@ namespace Nt.Booking
                 serverConfiguration.Password = "ier2Ela@sea7Te";
                 serverConfiguration.Timeout = 10;
                 serverConfiguration.Arguments = new System.Collections.Generic.List<string>();
+                serverConfiguration.Currency = "EUR";
                 serverConfiguration.Arguments.Add("5045076327250000000"); //Routing Id
                 serverConfiguration.Arguments.Add("509139"); //Merchant Id
                 serverConfiguration.Arguments.Add("Breuninger Hospitality"); //Merchant Name

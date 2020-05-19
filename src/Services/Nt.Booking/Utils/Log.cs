@@ -8,7 +8,6 @@ namespace Nt.Booking.Utils
             var sb = new System.Text.StringBuilder();
             sb.Append(NtBooking.BookingSystem.BookingSystem).Append("|");
             sb.Append(messageType).Append("|");
-            //TODO
             //if (message.Length > 500)
             //{
             //    sb.Append(message.Substring(0, 500)).Append("...");
