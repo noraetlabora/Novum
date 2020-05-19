@@ -14,7 +14,7 @@
         {
             var builder = new System.Text.StringBuilder();
             builder.Append("Server Configuration: ");
-            builder.Append("Service = NT.Fiscal|");
+            builder.Append("Service = Nt.Fiscal|");
             builder.Append("Port = ").Append(Port.ToString());
             return builder.ToString();
         }
