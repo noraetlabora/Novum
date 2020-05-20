@@ -1,7 +1,4 @@
-using Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure;
-using System;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Nt.Booking.Models
 {

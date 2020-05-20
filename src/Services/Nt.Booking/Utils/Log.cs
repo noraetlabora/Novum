@@ -14,7 +14,7 @@ namespace Nt.Booking.Utils
             //}
             //else
             //{
-                sb.Append(message);
+            sb.Append(message);
             //}
             Nt.Logging.Log.Communication.Info(sb.ToString());
 
