@@ -50,7 +50,7 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var response = await NtBooking.BookingSystem.GetMediumInformation(mediumId, metaData);
+                var response = await NtBooking.BookingSystem.GetMediumInformation(mediumId, metaData).ConfigureAwait(false);
                 return new ObjectResult(response);
             }
             catch (Exception ex)
@@ -72,7 +72,7 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var response = await NtBooking.BookingSystem.GetMediumInformation(metaData);
+                var response = await NtBooking.BookingSystem.GetMediumInformation(metaData).ConfigureAwait(false);
                 return new ObjectResult(response);
             }
             catch (Exception ex)
@@ -95,7 +95,7 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var response = await NtBooking.BookingSystem.Debit(mediumId, debitRequest);
+                var response = await NtBooking.BookingSystem.Debit(mediumId, debitRequest).ConfigureAwait(false);
                 return new ObjectResult(response);
             }
             catch (Exception ex)
@@ -119,7 +119,7 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var response = await NtBooking.BookingSystem.Credit(mediumId, creditRequest);
+                var response = await NtBooking.BookingSystem.Credit(mediumId, creditRequest).ConfigureAwait(false);
                 return new ObjectResult(response);
             }
             catch (Exception ex)
@@ -142,7 +142,7 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var response = await NtBooking.BookingSystem.Credit(string.Empty, creditRequest);
+                var response = await NtBooking.BookingSystem.Credit(string.Empty, creditRequest).ConfigureAwait(false);
                 return new ObjectResult(response);
             }
             catch (Exception ex)
@@ -165,7 +165,7 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var response = await NtBooking.BookingSystem.CancelDebit(mediumId, cancellationRequest);
+                var response = await NtBooking.BookingSystem.CancelDebit(mediumId, cancellationRequest).ConfigureAwait(false);
                 return new ObjectResult(response);
             }
             catch (Exception ex)
@@ -188,7 +188,7 @@ namespace Nt.Booking.Controllers
         {
             try
             {
-                var response = await NtBooking.BookingSystem.CancelCredit(mediumId, cancellationRequest);
+                var response = await NtBooking.BookingSystem.CancelCredit(mediumId, cancellationRequest).ConfigureAwait(false);
                 return new ObjectResult(response);
             }
             catch (Exception ex)
