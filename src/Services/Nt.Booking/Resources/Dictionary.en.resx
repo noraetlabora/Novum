@@ -118,33 +118,36 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Access_MediumUnknown" xml:space="preserve">
-    <value>medium is unknown</value>
+    <value>medium {0} is unknown</value>
   </data>
   <data name="HostUnavailable" xml:space="preserve">
-    <value>booking system is unavailable</value>
+    <value>booking system {0} is unavailable</value>
   </data>
   <data name="Hotel_RoomNotBooked" xml:space="preserve">
-    <value>room is not booked</value>
+    <value>room {0} is not booked</value>
   </data>
   <data name="Hotel_RoomUnknown" xml:space="preserve">
-    <value>room is unknown</value>
+    <value>room {0} is unknown</value>
   </data>
   <data name="Voucher_AlreadyIssued" xml:space="preserve">
-    <value>voucher already issued</value>
+    <value>voucher {0} already issued</value>
   </data>
   <data name="Voucher_AlreadyUsed" xml:space="preserve">
-    <value>voucher is already used</value>
+    <value>voucher {0} is already used</value>
   </data>
   <data name="Voucher_Error" xml:space="preserve">
     <value>voucher request had an error</value>
   </data>
   <data name="Voucher_Insufficient" xml:space="preserve">
-    <value>voucher is insufficient</value>
+    <value>voucher {0} is insufficient</value>
+  </data>
+  <data name="Voucher_NoFullRedemption" xml:space="preserve">
+    <value>no full redemption of voucher {0}</value>
   </data>
   <data name="Voucher_NotIssued" xml:space="preserve">
-    <value>voucher is not yet issued</value>
+    <value>voucher {0} is not yet issued</value>
   </data>
   <data name="Voucher_PinInvalid" xml:space="preserve">
-    <value>voucher pin is invalid</value>
+    <value>pin of voucher {0} is invalid</value>
   </data>
 </root>

@@ -11,80 +11,18 @@ namespace Nt.Booking.Models
     public partial class DebitRequest
     {
         /// <summary>
-        /// ID of the requesting system
+        /// 
         /// </summary>
-        /// <value>ID of the requesting system</value>
-        [DataMember(Name = "clientId")]
-        public string ClientId { get; set; }
+        /// <value></value>
+        [DataMember(Name = "amount")]
+        public decimal Amount { get; set; }
 
         /// <summary>
-        /// Name of the requesting system
+        /// 
         /// </summary>
-        /// <value>Name of the requesting system</value>
-        [DataMember(Name = "clientName")]
-        public string ClientName { get; set; }
+        [DataMember(Name = "metaData")]
+        public MetaData MetaData { get; set; }
 
-        /// <summary>
-        /// ID of the POS operator
-        /// </summary>
-        /// <value>ID of the POS operator</value>
-        [DataMember(Name = "waiterId")]
-        public string WaiterId { get; set; }
-
-        /// <summary>
-        /// Name of the POS operator
-        /// </summary>
-        /// <value>Name of the POS operator</value>
-        [DataMember(Name = "waiterName")]
-        public string WaiterName { get; set; }
-
-        /// <summary>
-        /// ID of the POS
-        /// </summary>
-        /// <value>ID of the POS</value>
-        [DataMember(Name = "posId")]
-        public string PosId { get; set; }
-
-        /// <summary>
-        /// Name of the POS
-        /// </summary>
-        /// <value>Name of the POS</value>
-        [DataMember(Name = "posName")]
-        public string PosName { get; set; }
-
-        /// <summary>
-        /// ID of the service area
-        /// </summary>
-        /// <value>ID of the service area</value>
-        [DataMember(Name = "serviceAreaId")]
-        public string ServiceAreaId { get; set; }
-
-        /// <summary>
-        /// Name of the service area
-        /// </summary>
-        /// <value>Name of the service area</value>
-        [DataMember(Name = "serviceAreaName")]
-        public string ServiceAreaName { get; set; }
-
-        /// <summary>
-        /// ID of the table
-        /// </summary>
-        /// <value>ID of the table</value>
-        [DataMember(Name = "tableId")]
-        public string TableId { get; set; }
-
-        /// <summary>
-        /// Name of the table
-        /// </summary>
-        /// <value>Name of the table</value>
-        [DataMember(Name = "tableName")]
-        public string TableName { get; set; }
-
-        /// <summary>
-        /// Gets or Sets Sales
-        /// </summary>
-        [DataMember(Name = "sales")]
-        public List<Sale> Sales { get; set; }
 
 
         /// <summary>

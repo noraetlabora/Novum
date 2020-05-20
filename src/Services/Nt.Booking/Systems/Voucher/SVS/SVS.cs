@@ -2,6 +2,7 @@
 using Nt.Booking.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.ServiceModel.Description;
 using System.Threading.Tasks;
@@ -76,25 +77,27 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.routingID = RoutingId;
             svsRequest.stan = random.Next(100000, 999999).ToString();
             svsRequest.amount = new Amount();
+            svsRequest.amount.currency = NtBooking.serverConfiguration.Currency;
             svsRequest.card = new Card();
-            svsRequest.card.cardCurrency = "EUR";
+            svsRequest.card.cardCurrency = NtBooking.serverConfiguration.Currency;
             svsRequest.card.cardNumber = GetCardNumber(mediumId);
             svsRequest.card.pinNumber = GetPinNumber(mediumId);
 
             var svsResponse = await svsSoapClient.balanceInquiryAsync(svsRequest);
 
             if (SvsResponseHasError(svsResponse.balanceInquiryReturn.returnCode))
-                return SvsErrorResponse(svsResponse.balanceInquiryReturn.returnCode);
+                return SvsErrorResponse(mediumId, svsResponse.balanceInquiryReturn.returnCode);
 
             var response = new InformationResponse();
-            response.Currency = svsResponse.balanceInquiryReturn.card.cardCurrency;
             response.Credit = new CreditResponse();
+            response.Currency = svsRequest.card.cardCurrency;
             response.Credit.Amount = (decimal)svsResponse.balanceInquiryReturn.balanceAmount.amount;
             return response;
         }
 
-        private ErrorResponse SvsErrorResponse(ReturnCode returnCode)
+        private ErrorResponse SvsErrorResponse(string mediumId, ReturnCode returnCode)
         {
+            var voucherNumber = GetCardNumber(mediumId);
             var errorResponse = new ErrorResponse();
             errorResponse.Error.BookingSystem = this.BookingSystemName;
             errorResponse.Error.PartnerCode = returnCode.returnCode;
@@ -105,31 +108,31 @@ namespace Nt.Booking.Systems.Voucher.SVS
                 case "01": //Approval
                     return null;
                 case "02": //Inactive Card
-                    errorResponse.Error.Code = Enums.StatusCode.VoucherInactive;
-                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_Inactive");
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInactive;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("Voucher_Inactive"), voucherNumber);
                     break;
                 case "03": //Invalid Card Number
-                    errorResponse.Error.Code = Enums.StatusCode.VoucherInvalid;
-                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_Invalid");
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInvalid;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("Voucher_Invalid"), voucherNumber);
                     break;
                 case "05": //Insufficient Funds
-                    errorResponse.Error.Code = Enums.StatusCode.VoucherInsufficient;
-                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_Insufficient");
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInsufficient;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("Voucher_Insufficient"), voucherNumber);
                     break;
                 case "15": //Host Unavailable
-                    errorResponse.Error.Code = Enums.StatusCode.HostUnavailable;
-                    errorResponse.Error.Message = Resources.Dictionary.GetString("HostUnavailable");
+                    errorResponse.Error.Code = Enums.ErrorCode.HostUnavailable;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("HostUnavailable"), "");
                     break;
                 case "20": //Pin Invalid
-                    errorResponse.Error.Code = Enums.StatusCode.VoucherPinInvalid;
-                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_PinInvalid");
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherPinInvalid;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("Voucher_PinInvalid"), voucherNumber);
                     break;
                 case "21": //Card Already Issued
-                    errorResponse.Error.Code = Enums.StatusCode.VoucherAlreadyIssued;
-                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_AlreadyIssued");
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherAlreadyIssued;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("Voucher_AlreadyIssued"), voucherNumber);
                     break;
                 default:
-                    errorResponse.Error.Code = Enums.StatusCode.Error;
+                    errorResponse.Error.Code = Enums.ErrorCode.Error;
                     errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_Error");
                     break;
             }
@@ -158,16 +161,41 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="medium"></param>
+        /// <param name="mediumId"></param>
         /// <param name="debitRequest"></param>
         /// <returns></returns>
-        public async Task<Response> Debit(string medium, DebitRequest debitRequest)
+        public async Task<Response> Debit(string mediumId, DebitRequest debitRequest)
         {
-            var response = new BookingResponse();
+            CheckDebit(mediumId, debitRequest);
+
             var svsRequest = new RedemptionRequest();
+            svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
+            svsRequest.merchant = new Merchant();
+            svsRequest.merchant.merchantNumber = MerchantNumber;
+            svsRequest.merchant.merchantName = MerchantName;
+            svsRequest.routingID = RoutingId;
+            svsRequest.stan = random.Next(100000, 999999).ToString();
+            svsRequest.redemptionAmount = new Amount();
+            svsRequest.redemptionAmount.amount = (double)debitRequest.Amount;
+            svsRequest.redemptionAmount.currency = NtBooking.serverConfiguration.Currency;
+            svsRequest.card = new Card();
+            svsRequest.card.cardCurrency = NtBooking.serverConfiguration.Currency;
+            svsRequest.card.cardNumber = GetCardNumber(mediumId);
+            svsRequest.card.pinNumber = GetPinNumber(mediumId);
+
             var svsResponse = await svsSoapClient.redemptionAsync(svsRequest);
 
+            if (SvsResponseHasError(svsResponse.redemptionReturn.returnCode))
+                return SvsErrorResponse(mediumId, svsResponse.redemptionReturn.returnCode);
+
+            var response = new BookingResponse();
+
             return response;
+        }
+
+        private void CheckDebit(string mediumId, DebitRequest debitRequest)
+        {
+            CheckBreuningerCenterVoucherDebit(mediumId, debitRequest);
         }
 
         /// <summary>
@@ -178,6 +206,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <returns></returns>
         public async Task<Response> Credit(string mediumId, Models.CreditRequest creditRequest)
         {
+            CheckCredit(mediumId, creditRequest);
             var svsRequest = new IssueGiftCardRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
@@ -187,20 +216,25 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.stan = random.Next(100000, 999999).ToString();
             svsRequest.issueAmount = new Amount();
             svsRequest.issueAmount.amount = (double)creditRequest.Amount;
-            svsRequest.issueAmount.currency = "EUR";
+            svsRequest.issueAmount.currency = NtBooking.serverConfiguration.Currency;
             svsRequest.card = new Card();
-            svsRequest.card.cardCurrency = "EUR";
+            svsRequest.card.cardCurrency = NtBooking.serverConfiguration.Currency;
             svsRequest.card.cardNumber = GetCardNumber(mediumId);
             svsRequest.card.pinNumber = GetPinNumber(mediumId);
 
             var svsResponse = await svsSoapClient.issueGiftCardAsync(svsRequest);
 
             if (SvsResponseHasError(svsResponse.issueGiftCardReturn.returnCode))
-                return SvsErrorResponse(svsResponse.issueGiftCardReturn.returnCode);
+                return SvsErrorResponse(mediumId, svsResponse.issueGiftCardReturn.returnCode);
 
             var response = new BookingResponse();
 
             return response;
+        }
+
+        private void CheckCredit(string mediumId, CreditRequest creditRequest)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -235,10 +269,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.routingID = RoutingId;
             svsRequest.stan = random.Next(100000, 999999).ToString();
             svsRequest.transactionAmount = new Amount();
-            //svsRequest.transactionAmount.amount = (double)cancellationRequest.
-            //svsRequest.transactionAmount.currency = "EUR";
+            svsRequest.transactionAmount.amount = (double)cancellationRequest.Amount;
+            svsRequest.transactionAmount.currency = NtBooking.serverConfiguration.Currency;
             svsRequest.card = new Card();
-            svsRequest.card.cardCurrency = "EUR";
+            svsRequest.card.cardCurrency = NtBooking.serverConfiguration.Currency;
             svsRequest.card.cardNumber = GetCardNumber(mediumId);
             svsRequest.card.pinNumber = GetPinNumber(mediumId);
 
@@ -259,17 +293,22 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <returns></returns>
         private string GetPinNumber(string mediumId)
         {
-            if (mediumId?.Length == 23)                       // SSC             
-                return mediumId.Substring(19, 4) + "0000";    // send pin like "SSSS0000"                              
-            if (mediumId?.Length >= 27)                       // Pin
-                return "0000" + mediumId.Substring(23, 4);    // send pin like "0000PPPP
+            // Breuninger Center Voucher (no SSC or pin)
+            if (IsBreuningerCenterVoucher(mediumId))
+                return "00000000";
+            // SSC - send pin like "SSSS0000"   
+            if (mediumId?.Length == 23)                                   
+                return mediumId.Substring(19, 4) + "0000";    
+            // Pin - send pin like "0000PPPP
+            if (mediumId?.Length >= 27)
+                return "0000" + mediumId.Substring(23, 4);
 
-            Nt.Logging.Log.Server.Error("SVS - pin number not detachable from mediumId " + mediumId);
+            Nt.Logging.Log.Server.Info("SVS - pin number not detachable from mediumId " + mediumId);
             return "00000000";
         }
 
         /// <summary>
-        /// extract 19 digits card number
+        /// extract 19 digits card number (or less)
         /// </summary>
         /// <param name="mediumId"></param>
         /// <returns></returns>
@@ -281,25 +320,29 @@ namespace Nt.Booking.Systems.Voucher.SVS
             return mediumId;
         }
 
-
-        //TODO: delete activation
-        private void activate(string mediumId)
+        #region Breuninger
+        private void CheckBreuningerCenterVoucherDebit(string mediumId, DebitRequest debitRequest)
         {
-            var svsRequest = new CardActivationRequest();
-            svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
-            svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = MerchantNumber;
-            svsRequest.merchant.merchantName = MerchantName;
-            svsRequest.routingID = RoutingId;
-            svsRequest.stan = random.Next(100000, 999999).ToString();
-            svsRequest.activationAmount = new Amount();
-            svsRequest.activationAmount.amount = 100;
-            svsRequest.activationAmount.currency = "EUR";
-            svsRequest.card = new Card();
-            svsRequest.card.cardNumber = GetCardNumber(mediumId);
-            svsRequest.card.pinNumber = GetPinNumber(mediumId);
-            var svsResponse = svsSoapClient.cardActivation(svsRequest);
-            System.Diagnostics.Debug.WriteLine(svsResponse.returnCode.returnCode + " - " + svsResponse.returnCode.returnDescription);
+            //Breuninger Center Voucher just full debit
+            if (IsBreuningerCenterVoucher(mediumId))
+            {
+                int voucherAmount = 0;
+                if (mediumId?.Length >= 23)
+                    voucherAmount = int.Parse(mediumId.Substring(19, 4));
+                if (debitRequest.Amount != voucherAmount)
+                {
+                    throw new Exception(string.Format(Resources.Dictionary.GetString("Voucher_NoFullRedemption"), GetCardNumber(mediumId)));
+                }
+            }
         }
+
+        private bool IsBreuningerCenterVoucher(string mediumId)
+        {
+            if (mediumId.StartsWith("50450763275") || mediumId.StartsWith("50450763276") || mediumId.StartsWith("50450763277"))
+                return true;
+            return false;
+        }
+
+        #endregion
     }
 }

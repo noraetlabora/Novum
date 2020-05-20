@@ -15,14 +15,14 @@ namespace Nt.Booking.Models
         /// </summary>
         /// <value>credit balance</value>
         [DataMember(Name = "amount")]
-        public decimal? Amount { get; set; }
+        public decimal Amount { get; set; }
 
         /// <summary>
         /// credit balance at opening
         /// </summary>
         /// <value>credit balance at opening</value>
         [DataMember(Name = "openingAmount")]
-        public decimal? OpeningAmount { get; set; }
+        public decimal OpeningAmount { get; set; }
 
 
         /// <summary>

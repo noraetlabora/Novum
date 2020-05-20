@@ -22,11 +22,21 @@ namespace Nt.Booking.Models
         /// 
         /// </summary>
         /// <param name="bookingSystem"></param>
+        public ErrorResponse(string bookingSystem)
+        {
+            this.Error = new ErrorResponseError();
+            this.Error.BookingSystem = bookingSystem;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="bookingSystem"></param>
         /// <param name="statusCode"></param>
         /// <param name="message"></param>
         /// <param name="partnerCode"></param>
         /// <param name="partnerMessage"></param>
-        public ErrorResponse(string bookingSystem, Enums.StatusCode statusCode, string message, string partnerCode, string partnerMessage)
+        public ErrorResponse(string bookingSystem, Enums.ErrorCode statusCode, string message, string partnerCode, string partnerMessage)
         {
             this.Error = new ErrorResponseError();
             this.Error.BookingSystem = bookingSystem;
@@ -68,7 +78,7 @@ namespace Nt.Booking.Models
         /// Gets or Sets Error Code
         /// </summary>
         [DataMember(Name = "code")]
-        public Enums.StatusCode Code { get; set; }
+        public Enums.ErrorCode? Code { get; set; }
 
         /// <summary>
         /// Gets or Sets Error Message

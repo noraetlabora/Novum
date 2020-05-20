@@ -3,7 +3,7 @@
     /// <summary>
     /// 
     /// </summary>
-    public enum StatusCode
+    public enum ErrorCode
     {
         //All
         Ok = 0,
@@ -21,6 +21,7 @@
         VoucherNotIssued = 1005,
         VoucherAlreadyUsed = 1006,
         VoucherPinInvalid = 1007,
+        VoucherNoFullRedemption = 1008,
 
 
 
