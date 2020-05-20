@@ -10,11 +10,26 @@ namespace Nt.Booking.Models
     public partial class BookingResponse : Response
     {
         /// <summary>
-        /// Gets or Sets Id
+        /// 
         /// </summary>
-        [DataMember(Name = "id")]
-        public string Id { get; set; }
-     
+        /// <value></value>
+        [DataMember(Name = "approvedAmount")]
+        public decimal? ApprovedAmount { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        [DataMember(Name = "balanceAmount")]
+        public decimal? BalanceAmount { get; set; }
+
+        /// <summary>
+        /// currency in ISO 4217 (EUR/CHF/GBP/USD/JPY/CNY/...)
+        /// </summary>
+        /// <value>currency in ISO 4217 (EUR/CHF/GBP/USD/JPY/CNY/...)</value>
+        [DataMember(Name = "currency")]
+        public string Currency { get; set; }
+
 
         /// <summary>
         /// Returns the JSON string presentation of the object
