@@ -248,6 +248,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.card.cardCurrency = NtBooking.serverConfiguration.Currency;
             svsRequest.card.cardNumber = GetCardNumber(mediumId);
             svsRequest.card.pinNumber = GetPinNumber(mediumId);
+            svsRequest.invoiceNumber = cancellationRequest.InvoiceId;
 
             //send asynchronous redemption request to SVS
             var svsResponse = await svsSoapClient.cancelAsync(svsRequest);

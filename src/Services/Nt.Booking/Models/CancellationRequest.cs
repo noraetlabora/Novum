@@ -19,8 +19,8 @@ namespace Nt.Booking.Models
         /// <summary>
         /// Gets or Sets Name
         /// </summary>
-        [DataMember(Name = "name")]
-        public string Name { get; set; }
+        [DataMember(Name = "invoiceId")]
+        public string InvoiceId { get; set; }
 
         /// <summary>
         /// Returns the JSON string presentation of the object
