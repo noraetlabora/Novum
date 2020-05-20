@@ -89,7 +89,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.card.pinNumber = GetPinNumber(mediumId);
 
             //send asynchronous redemption request to SVS
-            var svsResponse = await svsSoapClient.balanceInquiryAsync(svsRequest);
+            var svsResponse = await svsSoapClient.balanceInquiryAsync(svsRequest).ConfigureAwait(false);
 
             //return error response if response of svs contains error
             if (SvsResponseHasError(svsResponse.balanceInquiryReturn.returnCode))

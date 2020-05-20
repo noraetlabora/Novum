@@ -124,7 +124,7 @@
     <value>Buchungssystem {0} ist nicht erreichbar</value>
   </data>
   <data name="Hotel_RoomNotBooked" xml:space="preserve">
-    <value>Zimmer {0}ist nicht belegt</value>
+    <value>Zimmer {0} ist nicht belegt</value>
   </data>
   <data name="Hotel_RoomUnknown" xml:space="preserve">
     <value>Zimmer {0} ist unbekannt</value>
