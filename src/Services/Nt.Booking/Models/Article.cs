@@ -1,6 +1,4 @@
-using System;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Nt.Booking.Models
 {
@@ -87,7 +85,7 @@ namespace Nt.Booking.Models
         [DataMember(Name = "discountGroupName")]
         public string DiscountGroupName { get; set; }
 
-       
+
         /// <summary>
         /// Returns the JSON string presentation of the object
         /// </summary>

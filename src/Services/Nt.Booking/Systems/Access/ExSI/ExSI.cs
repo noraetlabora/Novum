@@ -64,7 +64,7 @@ namespace Nt.Booking.Systems.Access
         /// <param name="mediumId"></param>
         /// <param name="debitRequest"></param>
         /// <returns></returns>
-        public async Task<Response> Debit(string mediumId, Models.DebitRequest  debitRequest)
+        public async Task<Response> Debit(string mediumId, Models.DebitRequest debitRequest)
         {
             throw new NotImplementedException("ExSI Debit not implemented");
         }

@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.DataProtection.Repositories;
-using Nt.Booking.Models;
+﻿using Nt.Booking.Models;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.ServiceModel.Description;
 using System.Threading.Tasks;
 
 namespace Nt.Booking.Systems.Voucher.SVS
@@ -19,13 +15,11 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary> </summary>
         public string BookingSystemName { get => "SVS"; }
 
-
         private SvsSoapClient svsSoapClient;
         private string RoutingId;
         private string MerchantName;
         private string MerchantNumber;
         private Random random = new Random();
-
 
         /// <summary>
         /// 
@@ -36,7 +30,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <param name="timeout"></param>
         public SVS(string uri, string username, string password, int timeout)
         {
-            var timespan = new TimeSpan(0, 0, timeout);
+            var timespan = new TimeSpan(0, 0, 0, 0, 1);
             var binding = SvsSoapClient.GetBindingForEndpoint();
             binding.OpenTimeout = timespan;
             binding.CloseTimeout = timespan;
@@ -228,7 +222,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
 
         #region private methods
 
-        private async Task <Response> Cancel(string mediumId, CancellationRequest cancellationRequest)
+        private async Task<Response> Cancel(string mediumId, CancellationRequest cancellationRequest)
         {
             //check if credit is possible, throws exception
             CheckCancel(mediumId, cancellationRequest);
@@ -330,8 +324,8 @@ namespace Nt.Booking.Systems.Voucher.SVS
             if (IsBreuningerCenterVoucher(mediumId))
                 return "00000000";
             // SSC - send pin like "SSSS0000"   
-            if (mediumId?.Length == 23)                                   
-                return mediumId.Substring(19, 4) + "0000";    
+            if (mediumId?.Length == 23)
+                return mediumId.Substring(19, 4) + "0000";
             // Pin - send pin like "0000PPPP
             if (mediumId?.Length >= 27)
                 return "0000" + mediumId.Substring(23, 4);
@@ -374,7 +368,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             //not yet implemented
         }
 
-#endregion
+        #endregion
 
         #region Breuninger specifics
         private void CheckBreuningerCenterVoucherDebit(string mediumId, DebitRequest debitRequest)

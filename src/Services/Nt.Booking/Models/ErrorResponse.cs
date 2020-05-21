@@ -1,5 +1,4 @@
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace Nt.Booking.Models
 {
@@ -9,7 +8,7 @@ namespace Nt.Booking.Models
     [DataContract]
     public partial class ErrorResponse : Response
     {
-     
+
         /// <summary>
         /// 
         /// </summary>
