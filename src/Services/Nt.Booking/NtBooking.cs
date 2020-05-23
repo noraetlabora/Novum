@@ -26,13 +26,13 @@ namespace Nt.Booking
             SVS
         }
 
-        /// <summary> </summary>
+        /// <summary></summary>
         public static ServerConfiguration serverConfiguration { get; private set; }
 
         /// <summary> </summary>
         public static IBookingSystem BookingSystem;
 
-        private static string serverConfigFile = AppDomain.CurrentDomain.BaseDirectory + @"\Nt.Booking.config.json";
+        private static string serverConfigFile = AppDomain.CurrentDomain.BaseDirectory + @"\Nt.Booking.config.ini";
 
         /// <summary>
         /// 
@@ -42,24 +42,20 @@ namespace Nt.Booking
         {
             try
             {
-                Nt.Logging.Log.Server.Info("================================================================== Nt.Booking  ==================================================================");
-                //TODO: GetConfig();
-                //TODO: delete static server configuration
-                serverConfiguration = new ServerConfiguration();
-                serverConfiguration.BookingSystem = BookingSystemType.SVS;
-                serverConfiguration.Port = 5000;
-                serverConfiguration.Address = "https://webservices-cert.storedvalue.com/svsxml/v1/services/SVSXMLWay";  //TEST
-                //serverConfiguration.Address = "https://webservices.storedvalue.com/svsxml/v1/services/SVSXMLWay"; //PRODUCTION
-                serverConfiguration.Username = "BRGEG-cert";
-                serverConfiguration.Password = "ier2Ela@sea7Te";
-                serverConfiguration.Timeout = 10;
-                serverConfiguration.Arguments = new System.Collections.Generic.List<string>();
-                serverConfiguration.Currency = "EUR";
-                serverConfiguration.Arguments.Add("5045076327250000000"); //Routing Id
-                serverConfiguration.Arguments.Add("509139"); //Merchant Id
-                serverConfiguration.Arguments.Add("Breuninger Hospitality"); //Merchant Name
+                for(int i = 0, iLength = args.Length; i < iLength; i++)
+                {
+                    if((String.Compare(args[i].ToLower(), "-i") == 0) && (i+1 < iLength))
+                    {
+                        serverConfigFile = args[i+1];
+                        i++;
+                    }
+                }
 
+                Nt.Logging.Log.Server.Info("================================================================== Nt.Booking  ==================================================================");
                 Resources.Dictionary.Initialize("de-AT");
+
+                serverConfiguration = new ServerConfiguration(serverConfigFile);
+                serverConfiguration.BookingSystem = BookingSystemType.SVS;
 
                 BookingSystem = BookingSystemFactory.Create(serverConfiguration);
                 var webHostBuilder = CreateWebHostBuilder(args);
@@ -106,18 +102,5 @@ namespace Nt.Booking
                     {
                         logging.ClearProviders();
                     });
-
-        private static void GetConfig()
-        {
-            if (!System.IO.File.Exists(serverConfigFile))
-            {
-                throw new Exception("couldn't find configuration file " + serverConfigFile);
-            }
-
-            serverConfiguration = new ServerConfiguration();
-            var json = System.IO.File.ReadAllText(serverConfigFile);
-            serverConfiguration = System.Text.Json.JsonSerializer.Deserialize<ServerConfiguration>(json);
-            Nt.Logging.Log.Server.Info("ServerConfiguration : " + serverConfiguration.ToString());
-        }
     }
 }

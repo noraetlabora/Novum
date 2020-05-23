@@ -15,11 +15,11 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary> </summary>
         public string BookingSystemName { get => "SVS"; }
 
-        private SvsSoapClient svsSoapClient;
-        private string RoutingId;
-        private string MerchantName;
-        private string MerchantNumber;
-        private Random random = new Random();
+        private SvsSoapClient _svsSoapClient;
+        private string _routingId;
+        private string _merchantName;
+        private string _merchantNumber;
+        private Random _random = new Random();
 
         /// <summary>
         /// 
@@ -38,10 +38,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
             binding.ReceiveTimeout = timespan;
             var endpoint = new System.ServiceModel.EndpointAddress(uri);
             //
-            svsSoapClient = new SvsSoapClient(binding, endpoint);
+            _svsSoapClient = new SvsSoapClient(binding, endpoint);
             //credentials
-            svsSoapClient.ClientCredentials.UserName.UserName = username;
-            svsSoapClient.ClientCredentials.UserName.Password = password;
+            _svsSoapClient.ClientCredentials.UserName.UserName = username;
+            _svsSoapClient.ClientCredentials.UserName.Password = password;
             //
         }
 
@@ -49,11 +49,11 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// set SVS specific arguments like routingId, merchant number and merchant name
         /// </summary>
         /// <param name="arguments"></param>
-        public void SetArguments(List<string> arguments)
+        public void SetArguments(Dictionary<string, string> arguments)
         {
-            RoutingId = arguments[0];
-            MerchantNumber = arguments[1];
-            MerchantName = arguments[2];
+            _routingId = arguments.GetValueOrDefault("routingId", "");
+            _merchantNumber = arguments.GetValueOrDefault("merchantNumber", "");
+            _merchantName = arguments.GetValueOrDefault("merchantName", "");
         }
 
         /// <summary>
@@ -71,10 +71,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new BalanceInquiryRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = MerchantNumber;
-            svsRequest.merchant.merchantName = MerchantName;
-            svsRequest.routingID = RoutingId;
-            svsRequest.stan = random.Next(100000, 999999).ToString();
+            svsRequest.merchant.merchantNumber = _merchantNumber;
+            svsRequest.merchant.merchantName = _merchantName;
+            svsRequest.routingID = _routingId;
+            svsRequest.stan = _random.Next(100000, 999999).ToString();
             svsRequest.amount = new Amount();
             svsRequest.amount.currency = NtBooking.serverConfiguration.Currency;
             svsRequest.card = new Card();
@@ -83,7 +83,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.card.pinNumber = GetPinNumber(mediumId);
 
             //send asynchronous redemption request to SVS
-            var svsResponse = await svsSoapClient.balanceInquiryAsync(svsRequest).ConfigureAwait(false);
+            var svsResponse = await _svsSoapClient.balanceInquiryAsync(svsRequest).ConfigureAwait(false);
 
             //return error response if response of svs contains error
             if (SvsResponseHasError(svsResponse.balanceInquiryReturn.returnCode))
@@ -124,10 +124,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new RedemptionRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = MerchantNumber;
-            svsRequest.merchant.merchantName = MerchantName;
-            svsRequest.routingID = RoutingId;
-            svsRequest.stan = random.Next(100000, 999999).ToString();
+            svsRequest.merchant.merchantNumber = _merchantNumber;
+            svsRequest.merchant.merchantName = _merchantName;
+            svsRequest.routingID = _routingId;
+            svsRequest.stan = _random.Next(100000, 999999).ToString();
             svsRequest.redemptionAmount = new Amount();
             svsRequest.redemptionAmount.amount = (double)debitRequest.Amount;
             svsRequest.redemptionAmount.currency = NtBooking.serverConfiguration.Currency;
@@ -137,7 +137,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.card.pinNumber = GetPinNumber(mediumId);
 
             //send asynchronous redemption request to SVS
-            var svsResponse = await svsSoapClient.redemptionAsync(svsRequest);
+            var svsResponse = await _svsSoapClient.redemptionAsync(svsRequest);
 
             //return error response if response of svs contains error
             if (SvsResponseHasError(svsResponse.redemptionReturn.returnCode))
@@ -167,10 +167,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new IssueGiftCardRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = MerchantNumber;
-            svsRequest.merchant.merchantName = MerchantName;
-            svsRequest.routingID = RoutingId;
-            svsRequest.stan = random.Next(100000, 999999).ToString();
+            svsRequest.merchant.merchantNumber = _merchantNumber;
+            svsRequest.merchant.merchantName = _merchantName;
+            svsRequest.routingID = _routingId;
+            svsRequest.stan = _random.Next(100000, 999999).ToString();
             svsRequest.issueAmount = new Amount();
             svsRequest.issueAmount.amount = (double)creditRequest.Amount;
             svsRequest.issueAmount.currency = NtBooking.serverConfiguration.Currency;
@@ -180,7 +180,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.card.pinNumber = GetPinNumber(mediumId);
 
             //send asynchronous redemption request to SVS
-            var svsResponse = await svsSoapClient.issueGiftCardAsync(svsRequest);
+            var svsResponse = await _svsSoapClient.issueGiftCardAsync(svsRequest);
 
             //return error response if response of svs contains error
             if (SvsResponseHasError(svsResponse.issueGiftCardReturn.returnCode))
@@ -217,9 +217,6 @@ namespace Nt.Booking.Systems.Voucher.SVS
             return await Cancel(mediumId, cancellationRequest);
         }
 
-
-
-
         #region private methods
 
         private async Task<Response> Cancel(string mediumId, CancellationRequest cancellationRequest)
@@ -231,10 +228,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new CancelRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = MerchantNumber;
-            svsRequest.merchant.merchantName = MerchantName;
-            svsRequest.routingID = RoutingId;
-            svsRequest.stan = random.Next(100000, 999999).ToString();
+            svsRequest.merchant.merchantNumber = _merchantNumber;
+            svsRequest.merchant.merchantName = _merchantName;
+            svsRequest.routingID = _routingId;
+            svsRequest.stan = _random.Next(100000, 999999).ToString();
             svsRequest.transactionAmount = new Amount();
             svsRequest.transactionAmount.amount = (double)cancellationRequest.Amount;
             svsRequest.transactionAmount.currency = NtBooking.serverConfiguration.Currency;
@@ -245,7 +242,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.invoiceNumber = cancellationRequest.InvoiceId;
 
             //send asynchronous redemption request to SVS
-            var svsResponse = await svsSoapClient.cancelAsync(svsRequest);
+            var svsResponse = await _svsSoapClient.cancelAsync(svsRequest);
 
             //return error response if response of svs contains error
             if (SvsResponseHasError(svsResponse.cancelReturn.returnCode))
