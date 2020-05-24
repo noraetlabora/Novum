@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using Nt.Booking.Systems;
 using System;
 using System.ServiceProcess;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
 namespace Nt.Booking
 {
@@ -19,11 +21,13 @@ namespace Nt.Booking
         public enum BookingSystemType
         {
             /// <summary> </summary>
-            ExSI,
+            ExSI = 1,
             /// <summary> </summary>
-            Gantner,
+            Gantner = 2,
             /// <summary> </summary>
-            SVS
+            SVS = 3,
+            /// <summary> </summary>
+            Unknown = -1
         }
 
         /// <summary></summary>
@@ -31,8 +35,6 @@ namespace Nt.Booking
 
         /// <summary> </summary>
         public static IBookingSystem BookingSystem;
-
-        private static string serverConfigFile = AppDomain.CurrentDomain.BaseDirectory + @"\Nt.Booking.config.ini";
 
         /// <summary>
         /// 
@@ -42,20 +44,21 @@ namespace Nt.Booking
         {
             try
             {
-                for(int i = 0, iLength = args.Length; i < iLength; i++)
-                {
-                    if((String.Compare(args[i].ToLower(), "-i") == 0) && (i+1 < iLength))
-                    {
-                        serverConfigFile = args[i+1];
-                        i++;
-                    }
-                }
+                var switchMappings = new Dictionary<string, string>()
+                 {
+                     { "-i", "input" },
+                     { "--input", "input"}
+                 };
+                var builder = new ConfigurationBuilder();
+                builder.AddCommandLine(args, switchMappings);
+                var config = builder.Build();
+
+                var serverConfigFile = config.GetValue<string>("input", AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config.json");
 
                 Nt.Logging.Log.Server.Info("================================================================== Nt.Booking  ==================================================================");
                 Resources.Dictionary.Initialize("de-AT");
 
                 serverConfiguration = new ServerConfiguration(serverConfigFile);
-                serverConfiguration.BookingSystem = BookingSystemType.SVS;
 
                 BookingSystem = BookingSystemFactory.Create(serverConfiguration);
                 var webHostBuilder = CreateWebHostBuilder(args);
