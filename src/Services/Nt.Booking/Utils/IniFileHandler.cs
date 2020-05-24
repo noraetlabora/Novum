@@ -34,6 +34,15 @@ namespace Nt.Booking.Utils
         }
 
         /// <summary>
+        /// Get the main data key identifier.
+        /// </summary>
+        /// <returns>INI data key identifier.</returns>
+        public ICollection<string> GetKeys() 
+        {
+            return Data.Keys;
+        }
+
+        /// <summary>
         /// Get value from the INI data structure. If value does not exists the default value will be returned.
         /// </summary>
         /// <param name="key">Key that points to a value.</param>
