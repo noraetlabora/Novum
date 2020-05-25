@@ -27,10 +27,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <param name="uri"></param>
         /// <param name="username"></param>
         /// <param name="password"></param>
-        /// <param name="timeout"></param>
-        public SVS(string uri, string username, string password, int timeout)
+        /// <param name="timeoutMs"></param>
+        public SVS(string uri, string username, string password, int timeoutMs)
         {
-            var timespan = new TimeSpan(0, 0, 0, 0, 1);
+            var timespan = new TimeSpan(0, 0, 0, 0, timeoutMs);
             var binding = SvsSoapClient.GetBindingForEndpoint();
             binding.OpenTimeout = timespan;
             binding.CloseTimeout = timespan;
