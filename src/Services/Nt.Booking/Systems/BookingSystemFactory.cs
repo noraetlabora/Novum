@@ -25,7 +25,7 @@ namespace Nt.Booking.Systems
                     var svs = new SVS(configuration);                    
                     return svs;
                 default:
-                    throw new Exception("Couldn't find a corresponding booking system for " + configuration.BookingSystem);
+                    throw new Exception(String.Format("Couldn't find a corresponding booking system for '{0}'.", configuration.BookingSystem));
             }
         }
     }

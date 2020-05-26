@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 using Nt.Booking.Utils;
 using Microsoft.Extensions.Configuration;
 using System.IO;
@@ -103,25 +104,16 @@ namespace Nt.Booking
         /// Load configuration file from a defined file path.
         /// </summary>
         /// <param name="configFilePath">Path to the configuration file.</param>
-        public void Load(in string configFilePath)
+        private void Load(in string configFilePath)
         {
-            var fInfo = new FileInfo(configFilePath);
-
-            if (!fInfo.Exists)
-                throw new FileNotFoundException();
+            if (!File.Exists(configFilePath))
+                throw new FileNotFoundException(String.Format("File '{0}' does not exist.", configFilePath));
 
             var builder = new ConfigurationBuilder();
-
-            if(fInfo.Extension.ToLower() == ".json")
-            {
-                builder.AddJsonFile(configFilePath, optional: false, reloadOnChange: false);
-            }
-            else
-            {
-                throw new ArgumentException();
-            }
-
+            builder.AddJsonFile(configFilePath, optional: false, reloadOnChange: true);
+            
             _config = builder.Build();
+            
         }
 
         /// <summary>
