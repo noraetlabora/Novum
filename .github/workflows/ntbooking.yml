@@ -32,8 +32,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
+      uses: actions/setup-dotnet@v1
+      with:
         dotnet-version: 3.1.101
     - name: 
       run: dotnet test src/Services/Nt.Booking/Nt.Booking.csproj
@@ -44,8 +44,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
+      uses: actions/setup-dotnet@v1
+      with:
         dotnet-version: 3.1.101
     - name: 
       run: dotnet publish src/Services/Nt.Booking/Nt.Booking.csproj -c Release -o publish/windows
