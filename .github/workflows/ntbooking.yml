@@ -39,7 +39,7 @@ jobs:
   #     run: dotnet test src/Services/Nt.Booking/Nt.Booking.csproj
 
   deploy:
-    needs: test
+    #needs: test
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
