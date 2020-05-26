@@ -22,26 +22,28 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private Random _random = new Random();
 
         /// <summary>
-        /// 
+        /// SVS voucher service. Create an object to handle SVS voucher service queries.
         /// </summary>
-        /// <param name="uri"></param>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
-        /// <param name="timeoutMs"></param>
-        public SVS(string uri, string username, string password, int timeoutMs)
+        /// <param name="configuration">Main configuration file.</param>
+        public SVS(in ServerConfiguration configuration)
         {
-            var timespan = new TimeSpan(0, 0, 0, 0, timeoutMs);
+            if(configuration == null) 
+                throw new ArgumentNullException();
+            
+            SetArguments(configuration.Arguments);
+
+            var timespan = new TimeSpan(0, 0, 0, configuration.Timeout, 0);
             var binding = SvsSoapClient.GetBindingForEndpoint();
             binding.OpenTimeout = timespan;
             binding.CloseTimeout = timespan;
             binding.SendTimeout = timespan;
             binding.ReceiveTimeout = timespan;
-            var endpoint = new System.ServiceModel.EndpointAddress(uri);
+            var endpoint = new System.ServiceModel.EndpointAddress(configuration.Address);
             //
             _svsSoapClient = new SvsSoapClient(binding, endpoint);
             //credentials
-            _svsSoapClient.ClientCredentials.UserName.UserName = username;
-            _svsSoapClient.ClientCredentials.UserName.Password = password;
+            _svsSoapClient.ClientCredentials.UserName.UserName = configuration.Username;
+            _svsSoapClient.ClientCredentials.UserName.Password = configuration.Password;
             //
         }
 
@@ -49,7 +51,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// set SVS specific arguments like routingId, merchant number and merchant name
         /// </summary>
         /// <param name="arguments"></param>
-        public void SetArguments(Dictionary<string, string> arguments)
+        public void SetArguments(in Dictionary<string, string> arguments)
         {
             _routingId = arguments.GetValueOrDefault("routingId", "");
             _merchantNumber = arguments.GetValueOrDefault("merchantNumber", "");
