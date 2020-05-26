@@ -12,7 +12,7 @@ env:
 
 jobs:
   build:
-    runs-on: ${{platform}}
+    runs-on: ${{PLATFORM}}
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -26,7 +26,7 @@ jobs:
 
   test:
     needs: build
-    runs-on: ${{platform}}
+    runs-on: ${{PLATFORM}}
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -38,7 +38,7 @@ jobs:
 
   deploy:
     needs: test
-    runs-on: ${{platform}}
+    runs-on: ${{PLATFORM}}
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
