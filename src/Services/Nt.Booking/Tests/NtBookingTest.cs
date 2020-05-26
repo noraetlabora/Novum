@@ -15,5 +15,10 @@ namespace Nt.Booking.Test
         {
             Assert.Equal("HelloWorld","HelloWorld");
         }
+        [Fact]
+        public void HelloWorld3()
+        {
+            Assert.Equal("HelloWorld", "HelloWorld");
+        }
     }
 }
