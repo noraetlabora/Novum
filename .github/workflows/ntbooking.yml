@@ -27,14 +27,26 @@ jobs:
       run: dotnet build src/Services/Nt.Booking/Nt.Booking.csproj -c Release --no-restore
 
   test:
-    runs-on: ${platform}
     needs: build
+    runs-on: ${platform}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+        dotnet-version: 3.1.101
     - name: 
       run: dotnet test src/Services/Nt.Booking/Nt.Booking.csproj
 
   test:
+    needs: test
     runs-on: ${platform}
-    needs: build
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+        dotnet-version: 3.1.101
     - name: 
       run: dotnet publish src/Services/Nt.Booking/Nt.Booking.csproj -c Release -o publish/windows
     
