@@ -19,7 +19,7 @@
   
   <ItemGroup>
     <PackageReference Include="Core.System.Configuration.Install" Version="1.0.1" />
-    <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.6.0" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.7.0" />
     <PackageReference Include="TopShelf.ServiceInstaller" Version="4.2.1" />
   </ItemGroup>
   
