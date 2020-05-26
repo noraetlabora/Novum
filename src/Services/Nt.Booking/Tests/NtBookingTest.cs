@@ -5,9 +5,14 @@ namespace Nt.Booking.Test
     public class NtBookingTest
     {
         [Fact]
-        public void HelloWorld()
+        public void EmptyConfigurationFileTest()
         {
-            Assert.Equal("HelloWorld","HelloWorld");
+            Assert.Throws<System.ArgumentException>(()=> new ServerConfiguration(""));
+        }
+        [Fact]
+        public void MissingConfigurationFileTest()
+        {
+            Assert.Throws<System.IO.FileNotFoundException>(() => new ServerConfiguration("..."));
         }
 
         [Fact]

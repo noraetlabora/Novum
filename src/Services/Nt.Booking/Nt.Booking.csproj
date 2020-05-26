@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\NovaTouch\Nt.Logging\Nt.Logging.csproj" />
+    <ProjectReference Include="..\..\NovaTouch\Nt.Util\Nt.Util.csproj" />
   </ItemGroup>
 
   <ItemGroup>
