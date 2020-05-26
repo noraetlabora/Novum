@@ -7,7 +7,7 @@ using System;
 namespace Nt.Booking
 {
     /// <summary>
-    /// 
+    /// Main configuration of the current server settings.
     /// </summary>
     public class ServerConfiguration
     {
@@ -55,7 +55,7 @@ namespace Nt.Booking
             get { return _config.GetSection("options").GetValue<string>("currency", "EUR"); }
             set { _config.GetSection("options").GetSection("currency").Value = value; }
         }
-        /// <summary></summary>
+        /// <summary>Holds additional arguments of the current configuration.</summary>
         public Dictionary<string, string> Arguments
         {
             get 
@@ -93,17 +93,16 @@ namespace Nt.Booking
         /// <summary>
         /// Constructor. Base configuration of the server settings.
         /// </summary>
-        public ServerConfiguration() {}
-
-        /// <summary>
-        /// Constructor. Base configuration of the server settings.
-        /// </summary>
         /// <param name="configFilePath">Path to the configuration file.</param>
-        public ServerConfiguration(in string configFilePath) : this()
+        public ServerConfiguration(in string configFilePath)
         {          
             Load(configFilePath);
         }
 
+        /// <summary>
+        /// Load configuration file from a defined file path.
+        /// </summary>
+        /// <param name="configFilePath">Path to the configuration file.</param>
         public void Load(in string configFilePath)
         {
             var fInfo = new FileInfo(configFilePath);
@@ -113,11 +112,7 @@ namespace Nt.Booking
 
             var builder = new ConfigurationBuilder();
 
-            if(fInfo.Extension.ToLower() == ".ini")
-            {
-                builder.AddIniFile(configFilePath, optional: false, reloadOnChange: false);
-            }
-            else if(fInfo.Extension.ToLower() == ".json")
+            if(fInfo.Extension.ToLower() == ".json")
             {
                 builder.AddJsonFile(configFilePath, optional: false, reloadOnChange: false);
             }
