@@ -45,7 +45,6 @@ namespace Nt.Booking
         {
             var helpInfo = new StringBuilder();
             helpInfo.Append("\nNt.Booking\n\n");
-            helpInfo.Append("-h/--help\tHelp information.\n");
             helpInfo.Append("-i/--input\tJSON formatted input configuration file path.\n");
             System.Console.WriteLine(helpInfo.ToString());
         }
@@ -65,7 +64,7 @@ namespace Nt.Booking
                      { "-i", "input" },
                      { "--input", "input"}
                  };
-                 
+
                 var builder = new ConfigurationBuilder();
                 builder.AddCommandLine(args, switchMappings);
                 var config = builder.Build();

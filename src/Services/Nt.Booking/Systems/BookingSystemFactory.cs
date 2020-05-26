@@ -22,11 +22,10 @@ namespace Nt.Booking.Systems
                 case BookingSystemType.ExSI:
                     return new ExSI();
                 case BookingSystemType.SVS:
-                    var svs = new SVS(configuration.Address, configuration.Username, configuration.Password, configuration.Timeout);
-                    svs.SetArguments(configuration.Arguments);
+                    var svs = new SVS(configuration);                    
                     return svs;
                 default:
-                    throw new Exception("couldn't find a corresponding booking system for " + configuration.BookingSystem);
+                    throw new Exception("Couldn't find a corresponding booking system for " + configuration.BookingSystem);
             }
         }
     }
