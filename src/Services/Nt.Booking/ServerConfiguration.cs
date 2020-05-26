@@ -1,119 +1,117 @@
-﻿using System.Runtime.CompilerServices;
-using System.Collections.Generic;
-using Nt.Booking.Utils;
+﻿using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using System;
+using System.Text.Json;
 
 namespace Nt.Booking
 {
     /// <summary>
     /// Main configuration of the current server settings.
     /// </summary>
-    public class ServerConfiguration
+    public class ServerConfiguration : Nt.Util.Configuration
     {
         /// <summary>Declares the type of the booking system.</summary>
         public NtBooking.BookingSystemType BookingSystem
         {
-            get { return (Nt.Booking.NtBooking.BookingSystemType)_config.GetValue<int>("bookingSystem", -1); }
-            set { _config.GetSection("bookingSystem").Value = value.ToString(); }
+            get { return (Nt.Booking.NtBooking.BookingSystemType)Data.GetValue<int>("bookingSystem", -1); }
+            set { Data.GetSection("bookingSystem").Value = value.ToString(); }
         }
         /// <summary>Port where the Nt.Booking Service is listening.</summary>
-        public int Port 
-        { 
-            get { return _config.GetSection("connection").GetValue<int>("port", 0); } 
-            set { _config.GetSection("connection").GetSection("port").Value = value.ToString(); }
+        public int Port
+        {
+            get { return Data.GetSection("connection").GetValue<int>("port", 0); }
+            set { Data.GetSection("connection").GetSection("port").Value = value.ToString(); }
         }
 
-        /// <summary>Address (Ip:Port, Uri, ..) of the Bookingsystem like "192.168.0.1:4000", "https://webservices-cert.storedvalue.com/svsxml/v1/services/SVSXMLWay", ...</summary>
-        public string Address 
-        { 
-            get { return _config.GetSection("connection").GetValue<string>("address", null);  }
-            set { _config.GetSection("connection").GetSection("address").Value = value; } 
+        /// <summary>Address (Ip:Port, Uri, ..) of the booking system like "192.168.0.1:4000", "https://server.com", ...</summary>
+        public string Address
+        {
+            get { return Data.GetSection("connection").GetValue<string>("address", null); }
+            set { Data.GetSection("connection").GetSection("address").Value = value; }
         }
 
         /// <summary>Username needed for booking system.</summary>
         public string Username
         {
-            get { return _config.GetSection("connection").GetValue<string>("username", null); }
-            set { _config.GetSection("connection").GetSection("username").Value = value; }
+            get { return Data.GetSection("connection").GetValue<string>("username", null); }
+            set { Data.GetSection("connection").GetSection("username").Value = value; }
         }
         /// <summary>Password needed for booking system.</summary>
         public string Password
         {
-            get { return _config.GetSection("connection").GetValue<string>("password", null); }
-            set { _config.GetSection("connection").GetSection("password").Value = value; }
+            get { return Data.GetSection("connection").GetValue<string>("password", null); }
+            set { Data.GetSection("connection").GetSection("password").Value = value; }
         }
         /// <summary>Timeout in seconds.</summary>
         public int Timeout
         {
-            get { return _config.GetSection("connection").GetValue<int>("timeout", 10); }
-            set { _config.GetSection("connection").GetSection("timeout").Value = value.ToString(); }
+            get { return Data.GetSection("connection").GetValue<int>("timeout", 10); }
+            set { Data.GetSection("connection").GetSection("timeout").Value = value.ToString(); }
         }
         /// <summary>Currency in ISO 4217 (EUR/CHF/GBP/USD/JPY/CNY/...)</summary>
         public string Currency
         {
-            get { return _config.GetSection("options").GetValue<string>("currency", "EUR"); }
-            set { _config.GetSection("options").GetSection("currency").Value = value; }
+            get { return Data.GetSection("options").GetValue<string>("currency", "EUR"); }
+            set { Data.GetSection("options").GetSection("currency").Value = value; }
         }
         /// <summary>Holds additional arguments of the current configuration.</summary>
         public Dictionary<string, string> Arguments
         {
-            get 
+            get
             {
                 var arg = new Dictionary<string, string>();
-                foreach (var item in _config.GetSection("arguments").GetChildren())
+                foreach (var item in Data.GetSection("arguments").GetChildren())
                 {
                     arg.Add(item.Key, item.Value);
                 }
                 return arg;
             }
-            set 
-            { 
-                foreach(var arg in value)
+            set
+            {
+                foreach (var arg in value)
                 {
-                    _config.GetSection("arguments").GetSection(arg.Key).Value = arg.Value; 
+                    Data.GetSection("arguments").GetSection(arg.Key).Value = arg.Value;
                 }
             }
         }
         /// <summary>Language code, e.g. de-AT.</summary>
         public string Language
         {
-            get { return _config.GetSection("options").GetValue<string>("language", "de-AT"); }
-            set { _config.GetSection("options").GetSection("language").Value = value; }
+            get { return Data.GetSection("options").GetValue<string>("language", "de-AT"); }
+            set { Data.GetSection("options").GetSection("language").Value = value; }
         }
         /// <summary>Server configuration version number.</summary>
         public string Version
         {
-            get { return _config.GetValue<string>("version", "0.0"); }
-            set { _config.GetSection("version").Value = value; }
+            get { return Data.GetValue<string>("version", "0.0"); }
+            set { Data.GetSection("version").Value = value; }
         }
-        /// <summary>Stores loaded config file information.</summary>
-        private IConfigurationRoot _config = null;
+
+        /// <summary>
+        /// Default constructor. Base configuration of the server settings.
+        /// </summary>
+        public ServerConfiguration() : base() { }
 
         /// <summary>
         /// Constructor. Base configuration of the server settings.
         /// </summary>
         /// <param name="configFilePath">Path to the configuration file.</param>
-        public ServerConfiguration(in string configFilePath)
-        {          
-            Load(configFilePath);
-        }
+        public ServerConfiguration(in string configFilePath) : base(configFilePath) { }
 
         /// <summary>
-        /// Load configuration file from a defined file path.
+        /// Constructor. Base configuration of the server settings.
         /// </summary>
-        /// <param name="configFilePath">Path to the configuration file.</param>
-        private void Load(in string configFilePath)
-        {
-            if (!File.Exists(configFilePath))
-                throw new FileNotFoundException(String.Format("File '{0}' does not exist.", configFilePath));
+        /// <param name="config">New server configuration.</param>
+        public ServerConfiguration(in Nt.Util.Configuration config) : base(config) { }
 
-            var builder = new ConfigurationBuilder();
-            builder.AddJsonFile(configFilePath, optional: false, reloadOnChange: true);
-            
-            _config = builder.Build();
-            
+        /// <summary>
+        /// Convert server configuration to a JSON string.
+        /// </summary>
+        /// <returns>JSON string of the current server configuration.</returns>
+        public string ToJson()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
