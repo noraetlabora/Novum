@@ -8,11 +8,10 @@ on:
   
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: 0
-  PLATFORM: windows-latest
 
 jobs:
   build:
-    runs-on: ${{PLATFORM}}
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -26,7 +25,7 @@ jobs:
 
   test:
     needs: build
-    runs-on: ${{PLATFORM}}
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -38,7 +37,7 @@ jobs:
 
   deploy:
     needs: test
-    runs-on: ${{PLATFORM}}
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
