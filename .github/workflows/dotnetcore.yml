@@ -6,13 +6,10 @@ on:
   
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: 0
-  platform: ubuntu-latest
 
 jobs:
   build:
-
-    runs-on: ${platform}
-
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -38,7 +35,7 @@ jobs:
 
   test:
     needs: build
-    runs-on: ${platform}
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
