@@ -1,8 +1,13 @@
 name: .NET Core Workflow
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
+  # deployment
+  #- cron: '0 0 * * *' 
+  push: 
+    schedule: 
+      branches: [ master ] 
+    pull_request: 
+      branches: [ master ]
   
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: 0
