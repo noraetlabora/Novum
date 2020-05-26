@@ -80,7 +80,7 @@ namespace Nt.Data
         /// 
         /// </summary>
         /// <value></value>
-        public Nt.Data.Table CurrentTable { get; private set; }        
+        public Nt.Data.Table CurrentTable { get; private set; }
 
         /// <summary>
         /// 
@@ -200,10 +200,10 @@ namespace Nt.Data
             _orders[orderId].Quantity -= splitQuantity;
             var splitOrder = _orders[orderId];
             splitOrder.Quantity = splitQuantity;
-            while(_orders.ContainsKey(splitOrder.Id)) 
+            while (_orders.ContainsKey(splitOrder.Id))
             {
                 splitOrder.Line++;
-            }    
+            }
             _orders.Add(splitOrder.Id, splitOrder);
             return splitOrder.Id;
         }
@@ -233,9 +233,17 @@ namespace Nt.Data
         /// <summary>
         /// 
         /// </summary>
+        public void ClearCurrentTable()
+        {
+            CurrentTable = null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="tableId"></param>
         /// <returns></returns>
-        public bool TableIdIsOpen(string tableId) 
+        public bool TableIdIsOpen(string tableId)
         {
             if (_openTables.ContainsKey(tableId))
                 return true;
@@ -246,7 +254,7 @@ namespace Nt.Data
         /// </summary>
         /// <param name="tableId"></param>
         /// <returns></returns>
-        public string GetNewTableId(string tableId) 
+        public string GetNewTableId(string tableId)
         {
             //tableId is not yet open
             if (!TableIdIsOpen(tableId))
@@ -256,8 +264,8 @@ namespace Nt.Data
                 return tableId + ".1";
             //get subtablenumber, icrement the number and return xxxx.yy
             var index = tableId.IndexOf('.');
-            var subTableString = tableId.Substring(index+1);
-            var mainTableId = tableId.Substring(0,index);
+            var subTableString = tableId.Substring(index + 1);
+            var mainTableId = tableId.Substring(0, index);
             var subTableNumber = uint.Parse(subTableString);
             subTableNumber++;
             return mainTableId + "." + subTableNumber.ToString();
@@ -285,7 +293,7 @@ namespace Nt.Data
             return _permissions[permissionType].Permitted;
         }
 
-                /// <summary>
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="permissionType"></param>

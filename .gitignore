@@ -7,3 +7,5 @@ packages
 *.cache
 *.cache
 *.log
+~$*
+*.user

@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 namespace Nt.Database.Api
 {
     /// <summary>
@@ -15,34 +18,48 @@ namespace Nt.Database.Api
         /// 
         /// </summary>
         /// <returns></returns>
-        string GetPosId();
+        Task<string> GetPosId();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="deviceId"></param>
         /// <returns></returns>
-        string GetPosId(string deviceId);
+        Task<string> GetPosId(string deviceId);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="posId"></param>
         /// <returns></returns>
-        string GetServiceAreaId(string posId);
+        Task<string> GetServiceAreaId(string posId);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="serviceAreaId"></param>
         /// <returns></returns>
-        string GetServiceAreaName(string serviceAreaId);
+        Task<string> GetServiceAreaName(string serviceAreaId);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sercieAreaId"></param>
         /// <returns></returns>
-        string GetPriceLevel(string sercieAreaId);
+        Task<string> GetPriceLevel(string sercieAreaId);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="posId"></param>
+        /// <returns></returns>
+        Task<Data.Pos> GetPos(string posId);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="posId"></param>
+        /// <returns></returns>
+        Task<List<string>> GetAlternativePosIds(string posId);
     }
 }

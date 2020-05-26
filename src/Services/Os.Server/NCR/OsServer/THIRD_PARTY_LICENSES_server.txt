@@ -1,0 +1,142 @@
+Google Protocol Buffers
+    - BSD like
+    - Copyright 2008 Google Inc.
+    - https://github.com/google/protobuf
+    - Details see "LICENSES/LICENSE_GoogleProtocolBuffers.txt
+Brotli compression library
+    - MIT
+    - Copyright 2013 Google Inc
+    - https://github.com/google/brotli
+    - Details see "LICENSES/LICENSE_Brotli.txt"
+Boost C++ library
+    - Boost Software License - Version 1.0
+    - multiple different copyright holders
+    - http://www.boost.org
+    - Details see "LICENSES/LICENSE_boost.txt"
+    
+microtar.h / microtar.cpp
+    - MIT
+    - Copyright (c) 2017 rxi
+    - https://github.com/rxi/microtar
+    - Details see "LICENSES/LICENSE_microtar.txt"
+nodejs / nan
+    - MIT
+    - Copyright (c) 2018 NAN contributors (details see https://github.com/nodejs/nan#contributors)
+    - https://github.com/nodejs/nan
+    - Details see "LICENSES/LICENSE_nodejs_nan.md"
+nodejs
+    - used build verison V10.1.0
+    - multiple (see detailed license file)
+    - https://github.com/nodejs/node
+    - Details see "LICENSE/LICENSE_nodejs.txt"
+	
+sphinx_rtd_theme (which is the theme for the OrderSolution html documentation)
+    - MIT license; Details see "LICENSES/LICENSE_sphinx_rtd_theme.txt"
+    - Copyright (c) 2013-2018 Dave Snider, Read the Docs, Inc. & contributors
+    - https://github.com/rtfd/sphinx_rtd_theme
+
+node.js modules the OrderSolution Server depends on:
+{
+    "body-parser@1.19.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/expressjs/body-parser",
+        "licenseUrl": "https://github.com/expressjs/body-parser/raw/master/LICENSE",
+        "parents": "OsServerRuntime"
+    },
+    "config@1.31.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/lorenwest/node-config",
+        "licenseUrl": "https://github.com/lorenwest/node-config/raw/master/LICENSE",
+        "parents": "OsServerRuntime"
+    },
+    "config@3.2.4": {
+        "licenses": "MIT",
+        "repository": "https://github.com/lorenwest/node-config",
+        "licenseUrl": "https://github.com/lorenwest/node-config/raw/master/LICENSE",
+        "parents": "OsServerApp"
+    },
+    "debug@3.2.6": {
+        "licenses": "MIT",
+        "repository": "https://github.com/visionmedia/debug",
+        "licenseUrl": "https://github.com/visionmedia/debug/raw/master/LICENSE",
+        "parents": "OsServerRuntime"
+    },
+    "debug@4.1.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/visionmedia/debug",
+        "licenseUrl": "https://github.com/visionmedia/debug/raw/master/LICENSE",
+        "parents": "OsServerApp"
+    },
+    "express@4.17.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/expressjs/express",
+        "licenseUrl": "https://github.com/expressjs/express/raw/master/LICENSE",
+        "parents": "OsServerRuntime"
+    },
+    "hashmap@2.4.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/flesler/hashmap",
+        "licenseUrl": "https://github.com/flesler/hashmap/raw/master/LICENSE",
+        "parents": "OsServerRuntime"
+    },
+    "jsonminify@0.4.1": {
+        "licenses": "MIT*",
+        "repository": "https://github.com/fkei/JSON.minify",
+        "licenseUrl": "https://github.com/fkei/JSON.minify/raw/master/README.md",
+        "parents": "OsServerRuntime"
+    },
+    "md5@2.2.1": {
+        "licenses": "BSD-3-Clause",
+        "repository": "https://github.com/pvorb/node-md5",
+        "licenseUrl": "https://github.com/pvorb/node-md5/raw/master/LICENSE",
+        "parents": "OsServerApp"
+    },
+    "node-cache@4.2.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/mpneuried/nodecache",
+        "licenseUrl": "https://github.com/mpneuried/nodecache/raw/master/LICENSE",
+        "parents": "OsServerApp"
+    },
+    "node-stream-zip@1.8.2": {
+        "licenses": "MIT",
+        "repository": "https://github.com/antelle/node-stream-zip",
+        "licenseUrl": "https://github.com/antelle/node-stream-zip/raw/master/LICENSE",
+        "parents": "OsServerApp"
+    },
+    "nodejbig@1.0.1": {
+        "licenses": "UNKNOWN",
+        "repository": "git+https://bitbucket.org/om_rubicon/nodejbig",
+        "licenseUrl": "git+https://bitbucket.org/om_rubicon/nodejbig",
+        "parents": "OsServerApp"
+    },
+    "pubsub-js@1.7.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/mroderick/PubSubJS",
+        "licenseUrl": "https://github.com/mroderick/PubSubJS/raw/master/LICENSE.md",
+        "parents": "OsServerApp"
+    },
+    "request@2.88.0": {
+        "licenses": "Apache-2.0",
+        "repository": "https://github.com/request/request",
+        "licenseUrl": "https://github.com/request/request/raw/master/LICENSE",
+        "parents": "OsServerRuntime"
+    },
+    "supports-color@5.5.0": {
+        "licenses": "MIT",
+        "repository": "https://github.com/chalk/supports-color",
+        "licenseUrl": "https://github.com/chalk/supports-color/raw/master/license",
+        "parents": "OsServerRuntime"
+    },
+    "swagger-ui-dist@3.24.3": {
+        "licenses": "Apache-2.0",
+        "repository": "https://github.com/swagger-api/swagger-ui",
+        "licenseUrl": "https://github.com/swagger-api/swagger-ui",
+        "parents": "OsServerApp"
+    },
+    "winston@3.2.1": {
+        "licenses": "MIT",
+        "repository": "https://github.com/winstonjs/winston",
+        "licenseUrl": "https://github.com/winstonjs/winston/raw/master/LICENSE",
+        "parents": "OsServerRuntime"
+    }
+}

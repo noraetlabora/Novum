@@ -1,0 +1,20 @@
+{
+    "version": "0.1",
+    "bookingSystem": -1,
+    "connection": {
+        "address": "https://server.address.com",
+        "port": 5000,
+        "username": "user",
+        "password": "pass",
+        "timeout": 10
+    },
+    "options": {
+        "currency": "EUR",
+        "language": "de-AT"
+    },
+    "arguments": {
+        "routingId": "",
+        "merchantNumber": "",
+        "merchantName": ""
+    }
+}

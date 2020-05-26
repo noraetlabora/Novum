@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -23,13 +25,13 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public string GetPosId()
+        public async Task<string> GetPosId()
         {
             var sql = new StringBuilder();
             sql.Append(" SELECT Kassa ");
             sql.Append(" FROM NT.OMDevConfig ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             if (dataTable.Rows.Count == 0)
                 return "";
@@ -38,24 +40,68 @@ namespace Nt.Database.Api.InterSystems
             return DataObject.GetString(dataRow, "Kassa");
         }
 
-        public string GetPosId(string deviceId)
+        public Task<string> GetPosId(string deviceId)
         {
-            return Interaction.CallClassMethod("cmNT.Kassa", "GetOmanKassa", Api.ClientId, deviceId);
+            var args = new object[2] { Api.ClientId, deviceId };
+            return Intersystems.CallClassMethod("cmNT.Kassa", "GetOmanKassa", args);
         }
 
-        public string GetServiceAreaId(string posId)
+        public Task<string> GetServiceAreaId(string posId)
         {
-            return Interaction.CallClassMethod("cmNT.Kassa", "GetVerkaufsort", Api.ClientId, posId);
+            var args = new object[2] { Api.ClientId, posId };
+            return Intersystems.CallClassMethod("cmNT.Kassa", "GetVerkaufsort", args);
         }
 
-        public string GetServiceAreaName(string sercieAreaId)
+        public Task<string> GetServiceAreaName(string sercieAreaId)
         {
-            return Interaction.CallClassMethod("cmWW.VKO", "GetVKOBez", Api.ClientId, sercieAreaId);
+            var args = new object[2] { Api.ClientId, sercieAreaId };
+            return Intersystems.CallClassMethod("cmWW.VKO", "GetVKOBez", args);
         }
 
-        public string GetPriceLevel(string sercieAreaId)
+        public Task<string> GetPriceLevel(string sercieAreaId)
         {
-            return Interaction.CallClassMethod("cmWW.VKO", "GetVKPEbene", Api.ClientId, sercieAreaId);
+            var args = new object[2] { Api.ClientId, sercieAreaId };
+            return Intersystems.CallClassMethod("cmWW.VKO", "GetVKPEbene", args);
+        }
+
+        public async Task<Data.Pos> GetPos(string posId)
+        {
+            var pos = new Data.Pos();
+
+            var sql = new StringBuilder();
+            sql.Append(" SELECT KASSA, Vko, bez ");
+            sql.Append(" FROM NT.KassenStamm ");
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
+            sql.Append(" AND   KASSA = ").Append(Intersystems.SqlQuote(posId));
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+
+            if (dataTable.Rows.Count == 0)
+                return null;
+
+            DataRow dataRow = dataTable.Rows[0];
+            pos.Id = DataObject.GetString(dataRow, "KASSA");
+            pos.Name = DataObject.GetString(dataRow, "bez");
+            pos.ServiceAreaId = DataObject.GetString(dataRow, "VKO");
+
+            return pos;
+        }
+
+        public async Task<List<string>> GetAlternativePosIds(string posId)
+        {
+            var posIds = new List<string>();
+            var args = new object[2] { Api.ClientId, posId };
+            var dbString = await Intersystems.CallClassMethod("cmNT.Kassa", "GetUmleitungsKassen", args).ConfigureAwait(false);
+            var posDataString = new DataString(dbString);
+            var posArray = posDataString.SplitByChar96();
+
+            foreach (var singlePosString in posArray)
+            {
+                var singlePosDataString = new DataString(singlePosString);
+                var singlePosArray = singlePosDataString.SplitByDoublePipes();
+                posIds.Add(singlePosArray[0]);
+            }
+
+            return posIds;
         }
 
     }

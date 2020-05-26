@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Nt.Services.UserControls
 {
@@ -20,6 +11,8 @@ namespace Nt.Services.UserControls
     public partial class OrderSolutions : UserControl
     {
         private const string novOsServiceName = "Novacom OrderSolution Server";
+        private string osServerConfigurationFile = AppDomain.CurrentDomain.BaseDirectory + @"OrderSolution\Os.Server.config.json";
+        private string osClientConfigurationFile = AppDomain.CurrentDomain.BaseDirectory + @"OrderSolution\Os.Client.config.json";
 
         public OrderSolutions()
         {
@@ -31,8 +24,13 @@ namespace Nt.Services.UserControls
             dispatcherTimer.Start();
         }
 
+        public override bool ShouldSerializeContent()
+        {
+            return base.ShouldSerializeContent();
+        }
+
         private void serviceStatus_Tick(object sender, EventArgs e)
-        {            
+        {
             var serviceStatus = Service.GetStatus(novOsServiceName);
 
             switch (serviceStatus)
@@ -106,9 +104,9 @@ namespace Nt.Services.UserControls
                     DisableArguments();
                     btnServiceInstall.IsEnabled = false;
                     btnServiceRun.IsEnabled = false;
-                    SaveArguments();
-                    var args = new string[] { "--dbIp", txtDbIp.Text, "--dbPrt", txtDbPort.Text, "--dbNs", txtDbNamespace.Text, "--dbUsr", txtDbUser.Text, "--dbPwd", txtDbPassword.Password, "--osSPrt", txtOsServerPort.Text, "--osCIp", txtOsClientIp.Text, "--osCPrt", txtOsClientPort.Text };
-                    Service.Start(novOsServiceName, args);
+                    SaveServerConfiguration();
+                    SaveClientConfiguration();
+                    Service.Start(novOsServiceName);
                     System.Threading.Thread.Sleep(10000);
                     NcrOsServer("start");
                 }
@@ -118,32 +116,16 @@ namespace Nt.Services.UserControls
                     NcrOsServer("stop");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                LogEvent(ex);
+                Logging.Log.Service.Error(ex, "couldn't start/stop service");
             }
-        }
-
-        private static void LogEvent(Exception ex)
-        {
-            var eventLog = new EventLog();
-            eventLog.Source = novOsServiceName;
-
-            var builder = new StringBuilder();
-            builder.Append(ex.Message);
-            if (ex.InnerException != null)
-            {
-                builder.Append(System.Environment.NewLine);
-                builder.Append(ex.InnerException.Message);
-            }
-
-            eventLog.WriteEntry(builder.ToString());
         }
 
         private void BtnServiceInstall_Click(object sender, RoutedEventArgs e)
         {
             var assemblyFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var novOsServer = assemblyFolder + "\\OrderSolution\\Os.Server.exe";
+            var novOsServer = assemblyFolder + @"\OrderSolution\Os.Server.exe";
 
             try
             {
@@ -161,7 +143,7 @@ namespace Nt.Services.UserControls
             }
             catch (Exception ex)
             {
-                LogEvent(ex);
+                Logging.Log.Service.Error(ex, "couldn't (un)install service");
             }
         }
 
@@ -172,9 +154,17 @@ namespace Nt.Services.UserControls
             txtDbNamespace.IsEnabled = true;
             txtDbUser.IsEnabled = true;
             txtDbPassword.IsEnabled = true;
+            cmbDbConnections.IsEnabled = true;
             txtOsServerPort.IsEnabled = true;
             txtOsClientIp.IsEnabled = true;
             txtOsClientPort.IsEnabled = true;
+            cmbLocalization.IsEnabled = true;
+            cmbPriceEntryMode.IsEnabled = true;
+            cmbAuthenticationMode.IsEnabled = true;
+            chbDisableSubTables.IsEnabled = true;
+            chbMoveAllSubTables.IsEnabled = true;
+            chbMoveSingleSubTable.IsEnabled = true;
+            chbTip.IsEnabled = true;
         }
 
         private void DisableArguments()
@@ -184,68 +174,161 @@ namespace Nt.Services.UserControls
             txtDbNamespace.IsEnabled = false;
             txtDbUser.IsEnabled = false;
             txtDbPassword.IsEnabled = false;
+            cmbDbConnections.IsEnabled = false;
             txtOsServerPort.IsEnabled = false;
             txtOsClientIp.IsEnabled = false;
             txtOsClientPort.IsEnabled = false;
+            cmbLocalization.IsEnabled = false;
+            cmbPriceEntryMode.IsEnabled = false;
+            cmbAuthenticationMode.IsEnabled = false;
+            chbDisableSubTables.IsEnabled = false;
+            chbMoveAllSubTables.IsEnabled = false;
+            chbMoveSingleSubTable.IsEnabled = false;
+            chbTip.IsEnabled = false;
         }
 
-        private void SaveArguments()
+        private void SaveServerConfiguration()
         {
-            var osArguments = new Arguments.OsArguments();
-            osArguments.DatabaseIp = txtDbIp.Text;
-            osArguments.DatabasePort = uint.Parse(txtDbPort.Text);
-            osArguments.DatabaseNamespace = txtDbNamespace.Text;
-            osArguments.DatabaseUser = txtDbUser.Text;
-            osArguments.DatabasePassword = Util.Encryption.EncryptString(txtDbPassword.Password);
-            osArguments.OsServerPort = uint.Parse(txtOsServerPort.Text);
-            osArguments.OsClientIp = txtOsClientIp.Text;
-            osArguments.OsClientPort = uint.Parse(txtOsClientPort.Text);
+            try
+            {
+                var osServerConfiguration = new Os.Server.ServerConfiguration();
+                osServerConfiguration.DatabaseIp = txtDbIp.Text;
+                osServerConfiguration.DatabasePort = uint.Parse(txtDbPort.Text);
+                osServerConfiguration.DatabaseNamespace = txtDbNamespace.Text;
+                osServerConfiguration.DatabaseUser = txtDbUser.Text;
+                osServerConfiguration.DatabasePassword = Nt.Util.Encryption.EncryptString(txtDbPassword.Password);
+                osServerConfiguration.DatabaseConnections = uint.Parse(cmbDbConnections.Text);
 
-            string json = System.Text.Json.JsonSerializer.Serialize(osArguments);
-            System.IO.File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + @"\Os.Server.json", json);
+                osServerConfiguration.OsServerPort = uint.Parse(txtOsServerPort.Text);
+                osServerConfiguration.OsClientIp = txtOsClientIp.Text;
+                osServerConfiguration.OsClientPort = uint.Parse(txtOsClientPort.Text);
+
+                var jsonOption = new System.Text.Json.JsonSerializerOptions();
+                jsonOption.WriteIndented = true;
+                string json = System.Text.Json.JsonSerializer.Serialize(osServerConfiguration, jsonOption);
+                System.IO.File.WriteAllText(osServerConfigurationFile, json);
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Service.Error(ex, "exception while saving server configuration");
+            }
         }
 
-        private void LoadArguments()
+        private void SaveClientConfiguration()
         {
-            var osArguments = new Arguments.OsArguments();
+            try
+            {
+                var osClientConfiguration = new Os.Server.ClientConfiguration();
+
+                var jsonOption = new System.Text.Json.JsonSerializerOptions();
+                jsonOption.WriteIndented = true;
+
+                //CommaToSet
+                if (cmbPriceEntryMode.Text.Equals("CommaToSet"))
+                    osClientConfiguration.PriceEntryMode = "0";
+                //FixedComma
+                else
+                    osClientConfiguration.PriceEntryMode = "1";
+
+                if ((bool)chbDisableSubTables.IsChecked)
+                    osClientConfiguration.DisableSubtables = true;
+                else
+                    osClientConfiguration.DisableSubtables = false;
+
+                osClientConfiguration.Localization = cmbLocalization.Text;
+                osClientConfiguration.AuthenthicationMode = cmbAuthenticationMode.Text;
+                osClientConfiguration.FeatureMoveAllSubTables = (bool)chbMoveAllSubTables.IsChecked;
+                osClientConfiguration.FeatureMoveSingleSubTable = (bool)chbMoveSingleSubTable.IsChecked;
+                osClientConfiguration.FeatureTip = (bool)chbTip.IsChecked;
+                osClientConfiguration.Coursing = (bool)chbCoursing.IsChecked;
+
+                string json = System.Text.Json.JsonSerializer.Serialize(osClientConfiguration, jsonOption);
+                System.IO.File.WriteAllText(osClientConfigurationFile, json);
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Service.Error(ex, "exception while saving client configuration");
+            }
+        }
+
+        private void LoadClientConfiguration()
+        {
+            var osClientConfiguration = new Os.Server.ClientConfiguration();
 
             try
             {
-                var json = System.IO.File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\Os.Server.json");
-                osArguments = System.Text.Json.JsonSerializer.Deserialize<Arguments.OsArguments>(json);
+                var json = System.IO.File.ReadAllText(osClientConfigurationFile);
+                osClientConfiguration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.ClientConfiguration>(json);
+
+                //CommaToSet
+                if (osClientConfiguration.PriceEntryMode.Equals("0"))
+                    cmbPriceEntryMode.Text = "CommaToSet";
+                else
+                    cmbPriceEntryMode.Text = "FixedComma";
+
+                if (osClientConfiguration.DisableSubtables)
+                    chbDisableSubTables.IsChecked = true;
+                else
+                    chbDisableSubTables.IsChecked = false;
+
+                cmbLocalization.Text = osClientConfiguration.Localization;
+                cmbAuthenticationMode.Text = osClientConfiguration.AuthenthicationMode;
+                chbMoveAllSubTables.IsChecked = osClientConfiguration.FeatureMoveAllSubTables;
+                chbMoveSingleSubTable.IsChecked = osClientConfiguration.FeatureMoveSingleSubTable;
+                chbTip.IsChecked = osClientConfiguration.FeatureTip;
+                chbCoursing.IsChecked = osClientConfiguration.Coursing;
             }
-            catch
+            catch (Exception ex)
             {
+                Logging.Log.Service.Error(ex, "exception while loading client configuration");
             }
 
-            txtDbIp.Text = osArguments.DatabaseIp;
-            txtDbPort.Text = osArguments.DatabasePort.ToString();
-            txtDbNamespace.Text = osArguments.DatabaseNamespace;
-            txtDbUser.Text = osArguments.DatabaseUser;
-            txtDbPassword.Password = Util.Encryption.DecryptString(osArguments.DatabasePassword);
-            txtOsServerPort.Text = osArguments.OsServerPort.ToString();
-            txtOsClientIp.Text = osArguments.OsClientIp;
-            txtOsClientPort.Text = osArguments.OsClientPort.ToString(); 
+        }
+
+        private void LoadServerConfiguration()
+        {
+            var osServerConfiguration = new Os.Server.ServerConfiguration();
+
+            try
+            {
+                var json = System.IO.File.ReadAllText(osServerConfigurationFile);
+                osServerConfiguration = System.Text.Json.JsonSerializer.Deserialize<Os.Server.ServerConfiguration>(json);
+
+                txtDbIp.Text = osServerConfiguration.DatabaseIp;
+                txtDbPort.Text = osServerConfiguration.DatabasePort.ToString();
+                txtDbNamespace.Text = osServerConfiguration.DatabaseNamespace;
+                txtDbUser.Text = osServerConfiguration.DatabaseUser;
+                txtDbPassword.Password = Nt.Util.Encryption.DecryptString(osServerConfiguration.DatabasePassword);
+                cmbDbConnections.Text = osServerConfiguration.DatabaseConnections.ToString();
+                cmbAuthenticationMode.Text = osServerConfiguration.DatabaseConnections.ToString();
+                txtOsServerPort.Text = osServerConfiguration.OsServerPort.ToString();
+                txtOsClientIp.Text = osServerConfiguration.OsClientIp;
+                txtOsClientPort.Text = osServerConfiguration.OsClientPort.ToString();
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Service.Error(ex, "exception while loading server configuration");
+            }
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadArguments();
+            LoadServerConfiguration();
+            LoadClientConfiguration();
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            SaveArguments();
+            SaveServerConfiguration();
+            SaveClientConfiguration();
         }
 
         private void NcrOsServer(string argument)
         {
             var assemblyFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var ncrOsServer = assemblyFolder + "\\OrderSolution\\NRC\\OsServer\\OsServerRun.exe";
-
-            EventLog eventLog = new EventLog();
-            eventLog.Source = "Novacom Service";
-            eventLog.WriteEntry(argument + " service NCR OrderSolution Server" + System.Environment.NewLine + ncrOsServer);
+            var ncrOsServer = System.IO.Path.Combine(assemblyFolder, @"OrderSolution\NCR\OsServer\OsServerRun.exe");
+            Logging.Log.Service.Info("call NCR OrderSolution Server to " + argument);
+            Logging.Log.Service.Info(ncrOsServer + " " + argument);
 
             using (Process process = new Process())
             {
@@ -258,11 +341,10 @@ namespace Nt.Services.UserControls
                 process.WaitForExit();
 
                 var message = process.StandardOutput.ReadToEnd();
+
                 if (!string.IsNullOrEmpty(message))
                 {
-                    eventLog = new EventLog();
-                    eventLog.Source = "Novacom Service";
-                    eventLog.WriteEntry(ncrOsServer + argument + System.Environment.NewLine + message);
+                    Logging.Log.Service.Info(message);
                 }
             }
         }

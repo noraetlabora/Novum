@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -24,10 +25,11 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="tableId"></param>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.Order> GetOrders(string tableId)
+        public async Task<Dictionary<string, Nt.Data.Order>> GetOrders(string tableId)
         {
             var orders = new Dictionary<string, Nt.Data.Order>();
-            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetAllTischBonMitAenderer", Api.ClientId, "RK", tableId, "", "2");
+            var args = new object[5] { Api.ClientId, "RK", tableId, "", "2" };
+            var dbString = await Intersystems.CallClassMethod("cmNT.BonOman", "GetAllTischBonMitAenderer", args).ConfigureAwait(false);
             var ordersString = new DataString(dbString);
             var ordersArray = ordersString.SplitByCRLF();
             var orderLine = 0;
@@ -41,12 +43,12 @@ namespace Nt.Database.Api.InterSystems
                     continue;
 
                 var dataString = new DataString(orderString);
-                var dataList = new DataList(dataString.SplitByChar96());
-                var indexString = new DataString(dataList.GetString(0));
-                var indexList = new DataList(indexString.SplitByDoublePipes());
-                var menuString = new DataString(dataList.GetString(9));
-                var menuList = new DataList(menuString.SplitBySemicolon());
-                var type = dataList.GetString(6);
+                var dataArray = new DataArray(dataString.SplitByChar96());
+                var indexString = new DataString(dataArray.GetString(0));
+                var indexArray = new DataArray(indexString.SplitByDoublePipes());
+                var menuString = new DataString(dataArray.GetString(9));
+                var menuArray = new DataArray(menuString.SplitBySemicolon());
+                var type = dataArray.GetString(6);
 
                 // orderline
                 if (string.IsNullOrEmpty(type) || type.Equals("I"))
@@ -54,27 +56,30 @@ namespace Nt.Database.Api.InterSystems
                     var order = new Nt.Data.Order();
                     orderLine++;
                     order.TableId = tableId;
-                    order.Line = orderLine;
-                    order.AssignmentTypeId = indexList.GetString(0);
-                    order.ArticleId = indexList.GetString(1);
-                    order.UnitPrice = indexList.GetDecimal(2);
-                    order.ReferenceId = indexList.GetString(3);
-                    order.Quantity = dataList.GetDecimal(1);
-                    order.Status = (Nt.Data.Order.OrderStatus)dataList.GetUInt(2);
-                    order.Name = dataList.GetString(4);
-                    order.CourseMenu = dataList.GetString(7);
-                    order.CourseNumber = dataList.GetString(8);
-                    order.CourseName = dataList.GetString(16);
-                    order.ArticleGroupId = dataList.GetString(23);
-                    if (Misc.cachedArticleGroups.ContainsKey(order.ArticleGroupId))
-                    {
-                        order.TaxGroupId = Misc.cachedArticleGroups[order.ArticleGroupId].TaxGroupId;
-                    }
-                    if (Misc.cachedTaxGroups.ContainsKey(order.TaxGroupId))
-                    {
-                        order.TaxRate = Misc.cachedTaxGroups[order.TaxGroupId].TaxRate;
-                    }
+                    order.AssignmentTypeId = indexArray.GetString(0);
+                    order.ArticleId = indexArray.GetString(1);
+                    order.UnitPrice = indexArray.GetDecimal(2);
+                    order.ReferenceId = indexArray.GetString(3);
+                    order.Quantity = dataArray.GetDecimal(1);
+                    order.Status = (Nt.Data.Order.OrderStatus)dataArray.GetUInt(2);
+                    order.Name = dataArray.GetString(4);
+                    order.CourseMenu = dataArray.GetString(7);
+                    order.CourseNumber = dataArray.GetString(8);
+                    order.CourseName = dataArray.GetString(16);
+                    order.ArticleGroupId = dataArray.GetString(23);
 
+                    if (order.Status == Data.Order.OrderStatus.Ordered)
+                        order.Line = 0;
+                    else
+                        order.Line = orderLine;
+
+                    //
+                    if (Misc.cachedArticleGroups.ContainsKey(order.ArticleGroupId))
+                        order.TaxGroupId = Misc.cachedArticleGroups[order.ArticleGroupId].TaxGroupId;
+                    if (Misc.cachedTaxGroups.ContainsKey(order.TaxGroupId))
+                        order.TaxRate = Misc.cachedTaxGroups[order.TaxGroupId].TaxRate;
+
+                    //
                     if (orders.ContainsKey(order.Id))
                         orders[order.Id].Quantity += order.Quantity;
                     else
@@ -86,20 +91,20 @@ namespace Nt.Database.Api.InterSystems
                 else if (type.Equals("A"))
                 {
                     var modifier = new Nt.Data.Modifier();
-                    var articleId = indexList.GetString(1);
+                    var articleId = indexArray.GetString(1);
                     // text input
                     if (string.IsNullOrEmpty(articleId))
                     {
-                        modifier.Name = dataList.GetString(4);
+                        modifier.Name = dataArray.GetString(4);
                     }
                     // choice
                     else
                     {
-                        modifier.ArticleId = indexList.GetString(1);
-                        modifier.UnitPrice = indexList.GetDecimal(2);
-                        modifier.Quantity = dataList.GetDecimal(1);
-                        modifier.Name = dataList.GetString(4);
-                        modifier.MenuId = menuList.GetString(3);
+                        modifier.ArticleId = indexArray.GetString(1);
+                        modifier.UnitPrice = indexArray.GetDecimal(2);
+                        modifier.Quantity = dataArray.GetDecimal(1);
+                        modifier.Name = dataArray.GetString(4);
+                        modifier.MenuId = menuArray.GetString(3);
                     }
                     //
                     if (orders.ContainsKey(lastOrderId))
@@ -116,27 +121,27 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="session"></param>
         /// <param name="articleId"></param>
         /// <returns></returns>
-        public Nt.Data.Order GetNewOrder(Nt.Data.Session session, string articleId)
+        public async Task<Nt.Data.Order> GetNewOrder(Nt.Data.Session session, string articleId)
         {
             var order = new Nt.Data.Order();
-            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetPLUDaten", session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", articleId);
+            var args = new object[7] { session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", articleId };
+            var dbString = await Intersystems.CallClassMethod("cmNT.BonOman", "GetPLUDaten", args).ConfigureAwait(false);
             var dataString = new DataString(dbString);
-            var dataArray = dataString.SplitByChar96();
-            var dataList = new DataList(dataArray);
-
-            var availability = dataList.GetString(21);
-            Article.CheckAvailibility(availability);
+            var dataArray = new DataArray(dataString.SplitByChar96());
 
             order.TableId = session.CurrentTable.Id;
             order.Line = session.GetOrders().Count + 1;
-            order.ArticleId = dataList.GetString(0);
-            order.Name = dataList.GetString(1);
-            order.UnitPrice = dataList.GetDecimal(4);
-            order.AssignmentTypeId = dataList.GetString(5);
-            order.CourseMenu = dataList.GetString(19);
-            order.CourseNumber = dataList.GetString(20);
-            order.CourseName = dataList.GetString(22);
+            order.ArticleId = dataArray.GetString(0);
+            order.Name = dataArray.GetString(1);
+            order.UnitPrice = dataArray.GetDecimal(4);
+            order.AssignmentTypeId = dataArray.GetString(5);
+            order.CourseMenu = dataArray.GetString(19);
+            order.CourseNumber = dataArray.GetString(20);
+            order.CourseName = dataArray.GetString(22);
             order.Status = Nt.Data.Order.OrderStatus.NewOrder;
+
+            var availability = dataArray.GetString(21);
+            Article.CheckAvailibility(availability, order.Name);
 
             return order;
         }
@@ -150,12 +155,15 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="newQuantity"></param>
         /// <param name="cancellationReasonId"></param>
         /// <param name="authorizingWaiterId"></param>
-        public void VoidOrderedOrder(Nt.Data.Session session, string tableId, Nt.Data.Order order, decimal newQuantity, string cancellationReasonId, string authorizingWaiterId)
+        public async Task VoidOrderedOrder(Nt.Data.Session session, string tableId, Nt.Data.Order order, decimal newQuantity, string cancellationReasonId, string authorizingWaiterId)
         {
-            Interaction.CallVoidClassMethod("cmNT.BonOman", "SetBonDaten", session.ClientId, session.PosId, session.WaiterId, tableId);
+            var args = new object[4] { session.ClientId, session.PosId, session.WaiterId, tableId };
+            await Intersystems.CallVoidClassMethod("cmNT.BonOman", "SetBonDaten", args).ConfigureAwait(false);
             var orderDataString = GetVoidDataString(order);
-            Interaction.CallVoidClassMethod("cmNT.BonOman", "SetBonZeile", session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, orderDataString, newQuantity.ToString(), cancellationReasonId);
-            Interaction.CallVoidClassMethod("cmNT.BonOman", "SetBonStornoOK", session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, authorizingWaiterId);
+            args = new object[8] { session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, orderDataString, newQuantity.ToString(), cancellationReasonId };
+            await Intersystems.CallVoidClassMethod("cmNT.BonOman", "SetBonZeile", args).ConfigureAwait(false);
+            args = new object[6] { session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, authorizingWaiterId };
+            await Intersystems.CallVoidClassMethod("cmNT.BonOman", "SetBonStornoOK", args).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -168,9 +176,10 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="voidPrice"></param>
         /// <param name="assignmentTypeId"></param>
         /// <param name="authorizingWaiterId"></param>
-        public void VoidNewOrder(Nt.Data.Session session, string tableId, string articleId, decimal voidQuantity, decimal voidPrice, string assignmentTypeId, string authorizingWaiterId)
+        public Task VoidNewOrder(Nt.Data.Session session, string tableId, string articleId, decimal voidQuantity, decimal voidPrice, string assignmentTypeId, string authorizingWaiterId)
         {
-            Interaction.CallVoidClassMethod("cmNT.BonOman", "SetSofortStornoJournal", session.ClientId, session.PosId, session.WaiterId, tableId, articleId, voidQuantity.ToString(), voidPrice.ToString(), assignmentTypeId, authorizingWaiterId);
+            var args = new object[9] { session.ClientId, session.PosId, session.WaiterId, tableId, articleId, voidQuantity.ToString(), voidPrice.ToString(), assignmentTypeId, authorizingWaiterId };
+            return Intersystems.CallVoidClassMethod("cmNT.BonOman", "SetSofortStornoJournal", args);
         }
 
         /// <summary>
@@ -181,9 +190,10 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="voidQuantity"></param>
         /// <param name="orderSequenceNumber"></param>
         /// <param name="authorizingWaiterId"></param>
-        public void VoidPrebookedOrder(Nt.Data.Session session, string tableId, decimal voidQuantity, string orderSequenceNumber, string authorizingWaiterId)
+        public Task VoidPrebookedOrder(Nt.Data.Session session, string tableId, decimal voidQuantity, string orderSequenceNumber, string authorizingWaiterId)
         {
-            Interaction.CallVoidClassMethod("cmNT.BonOmanVormerk", "SetVormerkStorno", session.ClientId, session.PosId, session.WaiterId, tableId, orderSequenceNumber, authorizingWaiterId, voidQuantity.ToString());
+            var args = new object[7] { session.ClientId, session.PosId, session.WaiterId, tableId, orderSequenceNumber, authorizingWaiterId, voidQuantity.ToString() };
+            return Intersystems.CallVoidClassMethod("cmNT.BonOmanVormerk", "SetVormerkStorno", args);
         }
 
         /// <summary>
@@ -191,10 +201,10 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="session"></param>
         /// <param name="tableId"></param>
-        public void FinalizeOrder(Nt.Data.Session session, string tableId)
+        public async Task FinalizeOrder(Nt.Data.Session session, string tableId)
         {
             var orders = session.GetOrders();
-            FinalizeOrder(session, orders, tableId);
+            await FinalizeOrder(session, orders, tableId).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -203,21 +213,22 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="session"></param>
         /// <param name="orders"></param>
         /// <param name="tableId"></param>
-        public void FinalizeOrder(Nt.Data.Session session, List<Nt.Data.Order> orders, string tableId)
+        public Task FinalizeOrder(Nt.Data.Session session, List<Nt.Data.Order> orders, string tableId)
         {
             //
             if (orders == null || orders.Count == 0)
-                return;
+                return Task.CompletedTask;
             //
             if (string.IsNullOrEmpty(tableId))
-                return;
+                return Task.CompletedTask;
             //
             var newOrdersDataString = GetOrderDataString(orders);
             //
             if (string.IsNullOrEmpty(newOrdersDataString))
-                return;
+                return Task.CompletedTask;
             //
-            Interaction.CallVoidClassMethod("cmNT.BonOman", "SetAllBonDatenMitAenderer", session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, newOrdersDataString);
+            var args = new object[6] { session.ClientId, session.PosId, session.WaiterId, tableId, session.PriceLevel, newOrdersDataString };
+            return Intersystems.CallVoidClassMethod("cmNT.BonOman", "SetAllBonDatenMitAenderer", args);
         }
 
         #endregion

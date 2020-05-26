@@ -1,5 +1,4 @@
 using InterSystems.Data.IRISClient;
-using InterSystems.XEP;
 using System;
 using System.Data;
 
@@ -11,41 +10,55 @@ namespace Nt.Database
     public class DB : IDbConnection
     {
         private static readonly Lazy<DB> lazy = new Lazy<DB>(() => new DB());
+        private Api.Intersystems.Intersystems _database;
+        private Api.Intersystems.Api _api;
+
+        private DB()
+        {
+            Resources.Dictionary.Initialize("de-AT");
+            Logging.Log.Database.Info("creating InterSystems database / api");
+            _database = new Api.Intersystems.Intersystems();
+            _api = new Api.Intersystems.Api();
+        }
 
         /// <summary>
         /// Singelton Design Pattern (http://csharpindepth.com/Articles/Singleton#lazy)
         /// </summary>
         /// <value></value>
         public static DB Instance { get { return lazy.Value; } }
-        private DB()
-        {
-            Logging.Log.Database.Info("creating InterSystems connection");
-            xep = PersisterFactory.CreatePersister();
-            Logging.Log.Database.Info("creating InterSystems API");
-            api = new Api.InterSystems.Api();
-        }
-
-        private static string connectionString;
-        private static IRISConnection dbConnection;
-        private static EventPersister xep;
-        private static Api.InterSystems.Api api;
 
         /// <summary>
         /// 
         /// </summary>
-        /// <value></value>
-        internal static IRISConnection Connection
+        public void CheckConnection()
         {
-            get { return dbConnection; }
-        }
+            //foreach (var xepEventPersister in xepEventPersisters)
+            //{
+            //    switch (xepEventPersister.GetAdoNetConnection().State)
+            //    {
+            //        case System.Data.ConnectionState.Closed:
+            //            Nt.Logging.Log.Database.Warn("DatabaseService: connection is closed");
+            //            xepEventPersister.Close();
+            //            xepEventPersister.Connect(connectionString);
+            //            break;
+            //        case System.Data.ConnectionState.Broken:
+            //            Nt.Logging.Log.Database.Warn("DatabaseService: connection is broken");
+            //            xepEventPersister.Close();
+            //            xepEventPersister.Connect(connectionString);
+            //            break;
+            //        case System.Data.ConnectionState.Connecting:
+            //            Nt.Logging.Log.Database.Info("DatabaseService: connection is connecting");
+            //            break;
+            //        case System.Data.ConnectionState.Executing:
+            //            Nt.Logging.Log.Database.Info("DatabaseService: connection is executing");
+            //            break;
+            //        case System.Data.ConnectionState.Fetching:
+            //            Nt.Logging.Log.Database.Info("DatabaseService: connection is fetching");
+            //            break;
+            //    }
+            //}
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value></value>
-        internal static EventPersister Xep
-        {
-            get { return xep; }
+            Logging.Log.Database.Info(string.Format("connections active {0}, idle {1}, inUse {2}", IRISPoolManager.ActiveConnectionCount, IRISPoolManager.IdleCount(), IRISPoolManager.InUseCount()));
         }
 
         /// <summary>
@@ -54,7 +67,16 @@ namespace Nt.Database
         /// <value></value>
         public static Api.IDbApi Api
         {
-            get { return api; }
+            get { return Instance._api; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connectionCount"></param>
+        public void Initialize(uint connectionCount = 1)
+        {
+            _database.Initialize(connectionCount);
         }
 
         /*******************************************************/
@@ -67,82 +89,16 @@ namespace Nt.Database
         /// </summary>
         public void Open()
         {
-            try
-            {
-                Logging.Log.Database.Info("opening database connection");
-                xep.Connect(connectionString);
-                dbConnection = new IRISConnection(connectionString);
-                dbConnection.Open();
-                Logging.Log.Database.Info("database connection is open");
-                api.Initialize();
-            }
-            catch (Exception ex)
-            {
-                Logging.Log.Database.Fatal(ex, "could not open database connection");
-                throw ex;
-            }
+            _database.Open();
+            _api.Initialize();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public ConnectionState State
-        {
-            get { return dbConnection.State; }
-        }
         /// <summary>
         /// 
         /// </summary>
         public void Close()
         {
-            try
-            {
-                Logging.Log.Database.Info("closing database connection");
-                xep.Close();
-                dbConnection.Close();
-                Logging.Log.Database.Info("database connection is closed");
-            }
-            catch (Exception ex)
-            {
-                Logging.Log.Database.Error(ex, "could not close database connection");
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public IDbTransaction BeginTransaction()
-        {
-            return dbConnection.BeginTransaction();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="isolevel"></param>
-        /// <returns></returns>
-        public IDbTransaction BeginTransaction(IsolationLevel isolevel)
-        {
-            return dbConnection.BeginTransaction(isolevel);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        public void ChangeDatabase(string value)
-        {
-            dbConnection.ChangeDatabase(value);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public IDbCommand CreateCommand()
-        {
-            return dbConnection.CreateCommand();
+            _database.Close();
         }
 
         /// <summary>
@@ -151,48 +107,69 @@ namespace Nt.Database
         /// <value></value>
         public string ConnectionString
         {
-            get { return connectionString; }
-            set
-            {
-                Logging.Log.Database.Info("setting connection string to: " + value.Substring(0, 55) + "...");
-                connectionString = value;
-            }
+            get { return _database.ConnectionString; }
+            set { _database.ConnectionString = value; }
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public int ConnectionTimeout
-        {
-            get { return dbConnection.ConnectionTimeout; }
-        }
+        public int ConnectionTimeout { get => _database.ConnectionTimeout; }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <value></value>
-        public string Database
-        {
-            get { return dbConnection.Database; }
-        }
+        public string Database { get => _database.Database; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ConnectionState State { get => _database.State; }
 
         /// <summary>
         /// 
         /// </summary>
         public void Dispose()
         {
-            if (dbConnection.State != ConnectionState.Closed)
-                Close();
-            Logging.Log.Database.Info("disposing database connection");
+            _database.Dispose();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public void Ping()
+        /// <returns></returns>
+        public IDbTransaction BeginTransaction()
         {
-            dbConnection.ping();
+            return _database.BeginTransaction();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="isolationLevel"></param>
+        /// <returns></returns>
+        public IDbTransaction BeginTransaction(IsolationLevel isolationLevel)
+        {
+            return _database.BeginTransaction(isolationLevel);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="databaseName"></param>
+        public void ChangeDatabase(string databaseName)
+        {
+            _database.ChangeDatabase(databaseName);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public IDbCommand CreateCommand()
+        {
+            return _database.CreateCommand();
         }
 
         #endregion

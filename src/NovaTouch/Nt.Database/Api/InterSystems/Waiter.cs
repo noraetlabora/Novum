@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -19,15 +20,15 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.Waiter> GetWaiters()
+        public async Task<Dictionary<string, Nt.Data.Waiter>> GetWaiters()
         {
             var waiters = new Dictionary<string, Nt.Data.Waiter>();
             var sql = new StringBuilder();
             sql.Append(" SELECT PNR, name ");
             sql.Append(" FROM NT.Pers ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -45,20 +46,41 @@ namespace Nt.Database.Api.InterSystems
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public async Task<string> GetWaiterId(string code)
+        {
+            var sql = new StringBuilder();
+            sql.Append(" SELECT PNR, code, name");
+            sql.Append(" FROM NT.Pers ");
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
+            sql.Append(" AND code = ").Append(Intersystems.SqlQuote(code));
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+
+            if (dataTable.Rows.Count == 1)
+                return DataObject.GetString(dataTable.Rows[0], "PNR");
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="waiterId"></param>
         /// <param name="code"></param>
         /// <returns></returns>
-        public bool ValidWaiter(string waiterId, string code)
+        public async Task<bool> ValidWaiter(string waiterId, string code)
         {
             var waiters = new Dictionary<string, Nt.Data.Waiter>();
             var sql = new StringBuilder();
             sql.Append(" SELECT PNR, code, name");
             sql.Append(" FROM NT.Pers ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND PNR = ").Append(Interaction.SqlQuote(waiterId));
-            sql.Append(" AND code = ").Append(Interaction.SqlQuote(code));
-            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            sql.Append(" AND PNR = ").Append(Intersystems.SqlQuote(waiterId));
+            sql.Append(" AND code = ").Append(Intersystems.SqlQuote(code));
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             if (dataTable.Rows.Count == 1)
                 return true;
@@ -70,21 +92,24 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <param name="session"></param>
-        public void Login(Nt.Data.Session session)
+        public async Task Login(Nt.Data.Session session)
         {
-            var posId = DB.Api.Pos.GetPosId(session.SerialNumber);
-            Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogin", session.ClientId, posId, session.WaiterId);
-            Interaction.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", Api.ClientId, posId, session.WaiterId, session.SerialNumber, "1");
+            var posId = await DB.Api.Pos.GetPosId(session.SerialNumber).ConfigureAwait(false);
+            var args = new object[3] { session.ClientId, posId, session.WaiterId };
+            await Intersystems.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogin", args).ConfigureAwait(false);
+            args = new object[5] { Api.ClientId, posId, session.WaiterId, session.SerialNumber, "1" };
+            await Intersystems.CallVoidClassMethod("cmNT.Kellner", "KellnerloginJournal", args).ConfigureAwait(false);
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
-        public void Logout(Nt.Data.Session session)
+        public async Task Logout(Nt.Data.Session session)
         {
-            var posId = DB.Api.Pos.GetPosId(session.SerialNumber);
-            Interaction.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogout", session.ClientId, posId, session.WaiterId);
+            var posId = await DB.Api.Pos.GetPosId(session.SerialNumber).ConfigureAwait(false);
+            var args = new object[3] { session.ClientId, posId, session.WaiterId };
+            await Intersystems.CallVoidClassMethod("cmNT.Kellner", "Kellnerlogout", args).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -92,7 +117,7 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="waiterId"></param>
         /// <returns></returns>
-        public Dictionary<Nt.Data.Permission.PermissionType, Nt.Data.Permission> GetPermissions(string waiterId)
+        public async Task<Dictionary<Nt.Data.Permission.PermissionType, Nt.Data.Permission>> GetPermissions(string waiterId)
         {
             var permissions = new Dictionary<Nt.Data.Permission.PermissionType, Nt.Data.Permission>();
             var sql = new StringBuilder();
@@ -102,7 +127,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" JOIN NT.PersSecProg P ON P.PRG = B.PRG AND P.obsolet = 0 ");
             sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
             sql.Append(" AND M.PNR = ").Append(waiterId);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -121,6 +146,9 @@ namespace Nt.Database.Api.InterSystems
                         break;
                     case "SEC-4":
                         permissionType = Nt.Data.Permission.PermissionType.CancelConfirmedOrder;
+                        break;
+                    case "SEC-15":
+                        permissionType = Nt.Data.Permission.PermissionType.CancelUnconfirmedOrder;
                         break;
                     case "SPLITT":
                         permissionType = Nt.Data.Permission.PermissionType.SplitTable;

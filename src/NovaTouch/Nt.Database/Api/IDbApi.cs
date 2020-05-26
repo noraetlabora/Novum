@@ -80,6 +80,12 @@ namespace Nt.Database.Api
         /// <summary>
         /// 
         /// </summary>
+        /// <value></value>
+        Database.Api.IDbHotel Hotel { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         void Initialize();
     }
 }

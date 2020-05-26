@@ -1,5 +1,3 @@
-using System;
-
 namespace Nt.Data
 {
 
@@ -45,6 +43,12 @@ namespace Nt.Data
         /// </summary>
         /// <value></value>
         public string PriceLevel { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <value></value>
+        public string PrinterId { get; set; }
 
 
 

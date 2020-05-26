@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -18,7 +19,7 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.ModifierMenu> GetModifierMenus()
+        public async Task<Dictionary<string, Nt.Data.ModifierMenu>> GetModifierMenus()
         {
             var modifierMenus = new Dictionary<string, Nt.Data.ModifierMenu>();
             var sql = new StringBuilder();
@@ -26,7 +27,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" FROM NT.TouchUmenu ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
             sql.Append(" AND aend = 1");
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -48,23 +49,24 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="modifierMenuId"></param>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.ModifierItem> GetModifierItems(string modifierMenuId)
+        public async Task<Dictionary<string, Nt.Data.ModifierItem>> GetModifierItems(string modifierMenuId = "")
         {
             var modifierItems = new Dictionary<string, Nt.Data.ModifierItem>();
             var sql = new StringBuilder();
-            sql.Append(" SELECT M.ROW, M.COL, M.ANR, M.bgcolor, M.fgcolor, W.bez ");
+            sql.Append(" SELECT M.ROW, M.COL, M.ANR, M.bgcolor, M.fgcolor, W.vkbez ");
             sql.Append(" FROM NT.TouchUmenuZeilen M ");
             sql.Append(" LEFT JOIN WW.ANR AS W ON (W.FA = M.FA AND W.ANR = M.ANR) ");
             sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
-            sql.Append(" AND M.UMENU = ").Append(modifierMenuId);
+            if (!string.IsNullOrEmpty(modifierMenuId))
+                sql.Append(" AND M.UMENU = ").Append(modifierMenuId);
             sql.Append(" AND M.ANR <> '' ");
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 var modifierItem = new Nt.Data.ModifierItem();
                 modifierItem.Id = DataObject.GetString(dataRow, "ANR");
-                modifierItem.Name = DataObject.GetString(dataRow, "bez");
+                modifierItem.Name = DataObject.GetString(dataRow, "vkbez");
                 modifierItem.Row = DataObject.GetUInt(dataRow, "ROW");
                 modifierItem.Column = DataObject.GetUInt(dataRow, "COL");
                 modifierItem.BackgroundColor = DataObject.GetString(dataRow, "bgcolor");
@@ -83,14 +85,14 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<Nt.Data.MenuItemModifierMenu> GetMenuItemModifierMenus()
+        public async Task<List<Nt.Data.MenuItemModifierMenu>> GetMenuItemModifierMenus()
         {
             var menus = new List<Nt.Data.MenuItemModifierMenu>();
             var sql = new StringBuilder();
             sql.Append(" SELECT UMENU, ROW, COL, LFD, AendUMenu ");
             sql.Append(" FROM NT.TouchUmenuZeilenA ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -116,29 +118,30 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="articleId"></param>
         /// <param name="quantity"></param>
         /// <returns></returns>
-        public Nt.Data.Modifier GetModifier(Nt.Data.Session session, string articleId, decimal quantity)
+        public async Task<Nt.Data.Modifier> GetModifier(Nt.Data.Session session, string articleId, decimal quantity)
         {
             var modifier = new Nt.Data.Modifier();
-            var dbString = Interaction.CallClassMethod("cmNT.BonOman", "GetArtikelDaten", session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", "", "", "", articleId, "", quantity);
+            var args = new object[12] { session.ClientId, session.PosId, session.WaiterId, "tableId", session.PriceLevel, "N", "", "", "", articleId, "", quantity };
+            var dbString = await Intersystems.CallClassMethod("cmNT.BonOman", "GetArtikelDaten", args).ConfigureAwait(false);
             var dataString = new DataString(dbString);
-            var dataList = new DataList(dataString.SplitByChar96());
+            var dataArray = new DataArray(dataString.SplitByChar96());
 
-            modifier.ArticleId = dataList.GetString(0);
-            modifier.Name = dataList.GetString(1);
+            modifier.ArticleId = dataArray.GetString(0);
+            modifier.Name = dataArray.GetString(1);
             modifier.Quantity = quantity;
-            modifier.MenuId = dataList.GetString(29);
+            modifier.MenuId = dataArray.GetString(29);
 
-            var priceString = dataList.GetString(4);
+            var priceString = dataArray.GetString(4);
             if (priceString.Contains("%"))
             {
                 var priceDataString = new DataString(priceString);
-                var priceDataList = new DataList(priceDataString.SplitByPercent());
-                modifier.Percent = priceDataList.GetDecimal(0);
-                modifier.Rounding = priceDataList.GetDecimal(1);
+                var priceDataArray = new DataArray(priceDataString.SplitByPercent());
+                modifier.Percent = priceDataArray.GetDecimal(0);
+                modifier.Rounding = priceDataArray.GetDecimal(1);
             }
             else
             {
-                modifier.UnitPrice = dataList.GetDecimal(4);
+                modifier.UnitPrice = dataArray.GetDecimal(4);
             }
 
             return modifier;

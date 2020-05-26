@@ -1,5 +1,3 @@
-using System;
-
 namespace Nt.Data
 {
 
@@ -38,6 +36,12 @@ namespace Nt.Data
         /// </summary>
         /// <value>true or false</value>
         public bool Signature { get; set; }
+
+        /// <summary>
+        /// Id of partner system (EGUMA, NTV, IBELSA, PROTEL, ...)
+        /// </summary>
+        /// <value>true or false</value>
+        public string PartnerId { get; set; }
 
         #endregion
 

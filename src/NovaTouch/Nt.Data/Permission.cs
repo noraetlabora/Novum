@@ -1,5 +1,3 @@
-using System;
-
 namespace Nt.Data
 {
 
@@ -11,7 +9,7 @@ namespace Nt.Data
         /// <summary>
         /// 
         /// </summary>
-         public enum PermissionType
+        public enum PermissionType
         {
             /// <summary>
             /// 

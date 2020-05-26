@@ -1,7 +1,4 @@
-using System;
-using Microsoft.Extensions.Logging;
 using NLog;
-using NLog.Extensions.Logging;
 
 namespace Nt.Logging
 {
@@ -27,5 +24,17 @@ namespace Nt.Logging
         /// </summary>
         /// <returns></returns>
         public static Logger Server = LogManager.GetLogger("ServerLog");
+
+        /// <summary>
+        /// Logger of the Service
+        /// </summary>
+        /// <returns></returns>
+        public static Logger Service = LogManager.GetLogger("ServiceLog");
+
+        /// <summary>
+        /// Logger of the Fiscal service
+        /// </summary>
+        /// <returns></returns>
+        public static Logger Fiscal = LogManager.GetLogger("FiscalLog");
     }
 }

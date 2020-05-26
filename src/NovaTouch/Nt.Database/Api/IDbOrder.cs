@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api
 {
@@ -12,7 +13,7 @@ namespace Nt.Database.Api
         /// </summary>
         /// <param name="tableId"></param>
         /// <returns></returns>
-        Dictionary<string, Nt.Data.Order> GetOrders(string tableId);
+        Task<Dictionary<string, Nt.Data.Order>> GetOrders(string tableId);
 
         /// <summary>
         /// 
@@ -20,7 +21,7 @@ namespace Nt.Database.Api
         /// <param name="session"></param>
         /// <param name="articleId"></param>
         /// <returns></returns>
-        Nt.Data.Order GetNewOrder(Nt.Data.Session session, string articleId);
+        Task<Nt.Data.Order> GetNewOrder(Nt.Data.Session session, string articleId);
 
         /// <summary>
         /// 
@@ -31,7 +32,7 @@ namespace Nt.Database.Api
         /// <param name="newQuantity"></param>
         /// <param name="cancellationReasonId"></param>
         /// <param name="authorizingWaiterId"></param>
-        void VoidOrderedOrder(Nt.Data.Session session, string tableId, Nt.Data.Order order, decimal newQuantity, string cancellationReasonId, string authorizingWaiterId);
+        Task VoidOrderedOrder(Nt.Data.Session session, string tableId, Nt.Data.Order order, decimal newQuantity, string cancellationReasonId, string authorizingWaiterId);
 
         /// <summary>
         /// 
@@ -43,7 +44,7 @@ namespace Nt.Database.Api
         /// <param name="voidPrice"></param>
         /// <param name="assignmentTypeId"></param>
         /// <param name="authorizingWaiterId"></param>
-        void VoidNewOrder(Nt.Data.Session session, string tableId, string articleId, decimal voidQuantity, decimal voidPrice, string assignmentTypeId, string authorizingWaiterId);
+        Task VoidNewOrder(Nt.Data.Session session, string tableId, string articleId, decimal voidQuantity, decimal voidPrice, string assignmentTypeId, string authorizingWaiterId);
 
         /// <summary>
         /// 
@@ -53,14 +54,14 @@ namespace Nt.Database.Api
         /// <param name="orderSequenceNumber"></param>
         /// <param name="authorizingWaiterId"></param>
         /// <param name="voidQuantity"></param>
-        void VoidPrebookedOrder(Nt.Data.Session session, string tableId, decimal voidQuantity, string orderSequenceNumber, string authorizingWaiterId);
+        Task VoidPrebookedOrder(Nt.Data.Session session, string tableId, decimal voidQuantity, string orderSequenceNumber, string authorizingWaiterId);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
         /// <param name="tableId"></param>
-        void FinalizeOrder(Nt.Data.Session session, string tableId);
+        Task FinalizeOrder(Nt.Data.Session session, string tableId);
 
         /// <summary>
         /// 
@@ -68,6 +69,6 @@ namespace Nt.Database.Api
         /// <param name="session"></param>
         /// <param name="orders"></param>
         /// <param name="tableId"></param>
-        void FinalizeOrder(Nt.Data.Session session, List<Nt.Data.Order> orders, string tableId);
+        Task FinalizeOrder(Nt.Data.Session session, List<Nt.Data.Order> orders, string tableId);
     }
 }

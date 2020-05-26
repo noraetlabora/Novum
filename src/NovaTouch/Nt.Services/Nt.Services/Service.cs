@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Diagnostics;
 using System.ServiceProcess;
-using System.Diagnostics;
-using System.Configuration.Install;
+using System.Text;
 
 namespace Nt.Services
 {
@@ -50,48 +47,45 @@ namespace Nt.Services
 
         public static void Install(string serviceName, string binPath)
         {
-            LogEvent("install service " + serviceName + " at " + binPath);
+            Logging.Log.Service.Info("install service " + serviceName + " at " + binPath);
             //install service
             var builder = new StringBuilder();
             builder.Append(" create \"").Append(serviceName).Append("\"");
             builder.Append(" binPath=\"").Append(binPath).Append("\"");
-            RunServiceControl(builder.ToString());
-            //configure service to auto - service automatically started at boot time, even if no user logs on
-            builder = new StringBuilder();
-            builder.Append(" create \"").Append(serviceName).Append("\"");
             builder.Append(" start=auto");
             RunServiceControl(builder.ToString());
         }
 
         public static void Uninstall(string serviceName)
         {
-            LogEvent("uninstall service " + serviceName);
+            Logging.Log.Service.Info("uninstall service \n" + serviceName + "\"");
             var builder = new StringBuilder();
             builder.Append(" delete \"").Append(serviceName).Append("\"");
             RunServiceControl(builder.ToString());
         }
 
+        public static void Start(string serviceName)
+        {
+            Logging.Log.Service.Info("start service \n" + serviceName + "\"");
+            //var serviceController = new ServiceController(serviceName);
+            //serviceController.Start();
+            var builder = new StringBuilder();
+            builder.Append(" start \"").Append(serviceName).Append("\"");
+            RunServiceControl(builder.ToString());
+        }
+
         public static void Start(string serviceName, string[] args)
         {
-            LogEvent("start service " + serviceName + " " + string.Join(" ", args));
-
+            Logging.Log.Service.Info("start service " + serviceName + " " + string.Join(" ", args));
             var serviceController = new ServiceController(serviceName);
             serviceController.Start(args);
         }
 
         public static void Stop(string serviceName)
         {
-            LogEvent("stop service " + serviceName);
-
+            Logging.Log.Service.Info("stop service " + serviceName);
             var serviceController = new ServiceController(serviceName);
             serviceController.Stop();
-        }
-
-        private static void LogEvent(string message)
-        {
-            EventLog eventLog = new EventLog();
-            eventLog.Source = "Novacom Service";
-            eventLog.WriteEntry(message);
         }
 
         private static void RunServiceControl(string argument)
@@ -103,14 +97,14 @@ namespace Nt.Services
                 process.StartInfo.CreateNoWindow = true;
                 process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 process.StartInfo.RedirectStandardOutput = true;
+                Logging.Log.Service.Info("sc.exe" + argument);
                 process.Start();
                 process.WaitForExit();
 
                 var message = process.StandardOutput.ReadToEnd();
-                if (!string.IsNullOrEmpty(message)) {
-                    EventLog eventLog = new EventLog();
-                    eventLog.Source = "Novacom Service";
-                    eventLog.WriteEntry("sc.exe " + argument + System.Environment.NewLine + message);
+                if (!string.IsNullOrEmpty(message))
+                {
+                    Logging.Log.Service.Info(message);
                 }
             }
         }

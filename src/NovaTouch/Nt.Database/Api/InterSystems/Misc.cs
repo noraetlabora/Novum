@@ -1,9 +1,10 @@
+using Nt.Data;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using Nt.Data;
+using System.Threading.Tasks;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -19,15 +20,15 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, ArticleGroup> GetArticleGroups()
+        public async Task<Dictionary<string, ArticleGroup>> GetArticleGroups()
         {
             var articleGroups = new Dictionary<string, Nt.Data.ArticleGroup>();
             var sql = new StringBuilder();
             sql.Append(" SELECT AGR, bez, STGR  ");
             sql.Append(" FROM WW.AGR ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -43,21 +44,21 @@ namespace Nt.Database.Api.InterSystems
             cachedArticleGroups = articleGroups;
             return articleGroups;
         }
-        
+
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.CancellationResason> GetCancellationReason()
+        public async Task<Dictionary<string, Nt.Data.CancellationResason>> GetCancellationReason()
         {
             var cancellationReasons = new Dictionary<string, Nt.Data.CancellationResason>();
             var sql = new StringBuilder();
             sql.Append(" SELECT GRUND, bez ");
             sql.Append(" FROM NT.StornoGrund ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -72,19 +73,42 @@ namespace Nt.Database.Api.InterSystems
             return cancellationReasons;
         }
 
+        public async Task<Dictionary<string, Course>> GetCourses()
+        {
+            var courses = new Dictionary<string, Nt.Data.Course>();
+            var sql = new StringBuilder();
+            sql.Append(" SELECT GANGMENU, GANG, bez ");
+            sql.Append(" FROM WW.Speisenfolge ");
+            sql.Append(" WHERE FA = ").Append(Api.ClientId);
+            sql.Append(" AND  passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
+
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                var course = new Nt.Data.Course();
+                course.Menu = DataObject.GetInt(dataRow, "GANGMENU");
+                course.Number = DataObject.GetInt(dataRow, "GANG");
+                course.Name = DataObject.GetString(dataRow, "bez");
+                if (!courses.ContainsKey(course.Id))
+                    courses.Add(course.Id, course);
+            }
+
+            return courses;
+        }
+
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.ServiceArea> GetServiceAreas()
+        public async Task<Dictionary<string, Nt.Data.ServiceArea>> GetServiceAreas()
         {
             var serviceAreas = new Dictionary<string, Nt.Data.ServiceArea>();
             var sql = new StringBuilder();
             sql.Append(" SELECT VKO, bez, vkebene ");
             sql.Append(" FROM WW.VKO ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND  passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            sql.Append(" AND  passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -102,16 +126,16 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, TaxGroup> GetTaxGroups()
+        public async Task<Dictionary<string, TaxGroup>> GetTaxGroups()
         {
             var taxGroups = new Dictionary<string, Nt.Data.TaxGroup>();
             var sql = new StringBuilder();
             sql.Append(" SELECT A.STGR, A.bez, B.uproz, B.uproz2  ");
             sql.Append(" FROM WW.STGR A ");
-            sql.Append(" INNER JOIN WW.STGRSteuer B ON (B.FA = A.FA AND B.STGR = A.STGR AND B.GILT <= ").Append(Interaction.SqlToday).Append(")");
+            sql.Append(" INNER JOIN WW.STGRSteuer B ON (B.FA = A.FA AND B.STGR = A.STGR AND B.GILT <= ").Append(Intersystems.SqlToday).Append(")");
             sql.Append(" WHERE A.FA = ").Append(Api.ClientId);
-            sql.Append(" AND A.passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            sql.Append(" AND A.passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -129,16 +153,18 @@ namespace Nt.Database.Api.InterSystems
             return taxGroups;
         }
 
-        #region Snapshot    
+        #region StaticData    
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public bool HasSnapshotTime(string guid)
+        public async Task<bool> StaticDataChanged(string guid)
         {
-            var lastSnapshotTime = Interaction.CallClassMethod("cmNT.Kasse", "GetOrdermanSnapshot", Api.ClientId, guid);
+            var args = new object[2] { Api.ClientId, guid };
+            var lastSnapshotTime = await Intersystems.CallClassMethod("cmNT.Kasse", "GetOrdermanSnapshot", args).ConfigureAwait(false);
+            System.Diagnostics.Debug.WriteLine("StaticDataChanged: " + lastSnapshotTime);
             if (string.IsNullOrEmpty(lastSnapshotTime))
                 return false;
             return true;
@@ -148,10 +174,12 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <param name="guid"></param>
+        /// <param name="serviceName"></param>
         /// <returns></returns>
-        public void SetSnapshotTime(string guid)
+        public Task ConfirmChangedStaticData(string guid, string serviceName)
         {
-            Interaction.CallClassMethod("cmNT.Kasse", "SetOrdermanSnapshot", Api.ClientId, guid);
+            var args = new object[3] { Api.ClientId, guid , serviceName};
+            return Intersystems.CallClassMethod("cmNT.Kasse", "SetOrdermanSnapshot", args);
         }
 
         #endregion

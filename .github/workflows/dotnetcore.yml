@@ -1,0 +1,51 @@
+name: .NET Core Workflow
+
+on:
+  # deployment
+  #- cron: '0 0 * * *' 
+  push: 
+    schedule: 
+      branches: [ master ] 
+    pull_request: 
+      branches: [ master ]
+  
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Install Nt.Booking dependencies
+      run: dotnet restore src/Services/Nt.Booking/Nt.Booking.csproj
+    - name: Build Nt.Booking
+      run: dotnet build src/Services/Nt.Booking/Nt.Booking.csproj -c Release --no-restore
+    - name: Install Nt.Fiscal dependencies
+      run: dotnet restore src/Services/Nt.Fiscal/Nt.Fiscal.csproj
+    - name: Build Nt.Fiscal
+      run: dotnet build src/Services/Nt.Fiscal/Nt.Fiscal.csproj -c Release --no-restore
+    - name: Install Os.Server dependencies
+      run: dotnet restore src/Services/Os.Server/Os.Server.csproj
+    - name: Build Os.Server
+      run: dotnet build src/Services/Os.Server/Os.Server.csproj -c Release --no-restore    
+    - name: Install Nt.Database dependencies
+      run: dotnet restore src/NovaTouch/Nt.Database/Nt.Database.csproj
+    - name: Build Nt.Database
+      run: dotnet build src/NovaTouch/Nt.Database/Nt.Database.csproj -c Release --no-restore
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: 
+      run: dotnet test src/Services/Nt.Booking/Nt.Booking.csproj

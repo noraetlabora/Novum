@@ -1,0 +1,83 @@
+// DO NOT MODIFY THIS FILE!
+// Any of your overrides should go into "production.json". Leave the defaults intact.
+// DO NOT MODIFY THIS FILE!
+{
+	"osServer": {
+		"serviceName": "OrderSolution Server",
+
+		// the port the server listens for incoming connections from OsClient
+		"servicePort": 24999,
+
+		// The port on which status information and push requests can be executed for this instance.
+		// To disable this feature comment this line out.
+		"httpApiPort": 25001,
+		// The host on which the server will listen for requests.
+		// if omitted OsServer will listen on all ips / interfaces for incomming requests.
+		"httpApiHost": "localhost",		// just listen to the localhost
+		//"httpApiHost": "0.0.0.0", // listen to all IPv4 interfaces; ATTENTION: This has security issues and should only be done when you are sure about the consequences!
+		//"httpApiHost": "::", // listen to all IPv6 interfaces
+
+		// if enableApiDocs is true in case the the httpApi is enabled (via port and host) the api documentation of OsServer is
+		// available at http://<httpApiHost>:<httpApiPort>/swagger
+		"enableApiDocs": true,
+
+		// *********************************************************************
+		// Standard PATHs used by the OsServer
+
+		// the root data directory to write data to
+		// 		If it's a a relative path it will be relative to the host operating system app data path
+		//		- on Windows it's relative to %APPDATA%/NCR/OrderSolution)
+		//		- when installed as a windows service running with LOCAL SERVICE user the %APPDATA% folder is typically
+		//			at C:\Windows\ServiceProfiles\LocalService\AppData\Roaming\
+		//		- when running as as normal user it can be found in <userhome>appdata
+		//"appDataRoot": "",
+		// the directory to write persistent runtime data to.
+		//		If it's a relative path it will be relative to osServer.appDataRoot
+		// 		Will include custom theme and POS static data.
+		"dataDirectory": "data",
+		// the directory to write log files to
+		// 		If it's a relative path it will be relative to osServer.appDataRoot
+		"logDirectory": "logs",		// a relative path will be relative to osServer.appDataRoot
+
+		// *********************************************************************
+		// Logging settings (note: logDirectory moved up to the paths)
+
+		// defines the log level; possible values: debug, info, warning, error
+		"logLevel": "info",
+		// maximum size of a log file in bytes
+		"logMaxFileSize": 10000000,
+		// maximum number of logfiles (full size is logMaxFileCount * logMaxFileSize)
+		"logMaxFileCount": 10,
+
+		// *********************************************************************
+		// DO NOT CHANGE --- start
+
+		// Path to the applications protocol definition file
+		// Relative to OsServer/.
+		"protoFilePath": "app/client/shared/amber.proto",
+
+		// DO NOT CHANGE --- end
+		// *********************************************************************
+
+		// ATTENTION: Do not enable debugging for production environments as it may be a security risk!
+		"enableClientDebugging": false,
+
+		// Directory with the om7app file (and nothing else!) used for OsClient updates
+		// Relative to OsServer working directory which is typically where the OsServerRun executable is.
+		"om7app": "../OsClient",
+	},
+	"POS": {
+		// The URL at which the POS is listening for connections
+		"posAdapterUrl": "http://localhost:25000",
+		// the API prefix at which the POS accepts OrderSolution requests as defined in the OrderSolution HTTP API
+		// 		NOTE: The full used URL for connetions is posAdapterUrl + posUrlPathApiPrefix
+		"posUrlPathApiPrefix": "/api/v2",
+		// timout in seconds to wait for responses from the POS system
+		"httpRequestTimeoutSeconds": 300,
+		// interval in seconds to poll for latest POS static data
+		"staticDataPollTimeSeconds": 3600,
+		// interval in seconds to poll /hostStatus	(default = 10s)
+		// "statusPollTimeSeconds": 10
+	}
+}
+

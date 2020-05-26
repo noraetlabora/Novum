@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -18,14 +19,14 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.Menu> GetMenus()
+        public async Task<Dictionary<string, Nt.Data.Menu>> GetMenus()
         {
             var menus = new Dictionary<string, Nt.Data.Menu>();
             var sql = new StringBuilder();
             sql.Append(" SELECT UMENU, bez, spalten ");
             sql.Append(" FROM NT.TouchUmenu ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -46,9 +47,10 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="posId"></param>
         /// <returns></returns>
-        public string GetMenuId(string posId)
+        public Task<string> GetMenuId(string posId)
         {
-            return Interaction.CallClassMethod("cmNT.Kassa", "GetTouchMenu", Api.ClientId, posId, "0");
+            var args = new object[3] { Api.ClientId, posId, "0" };
+            return Intersystems.CallClassMethod("cmNT.Kassa", "GetTouchMenu", args);
         }
 
         /// <summary>
@@ -56,7 +58,7 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="menuId"></param>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.Menu> GetMainMenus(string menuId)
+        public async Task<Dictionary<string, Nt.Data.Menu>> GetMainMenus(string menuId = "")
         {
             var menus = new Dictionary<string, Nt.Data.Menu>();
             var sql = new StringBuilder();
@@ -64,8 +66,10 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" FROM  NT.TouchMenuZeile M ");
             sql.Append(" INNER JOIN NT.TouchUmenu UM ON UM.FA = M.FA AND UM.UMENU = M.UMENU ");
             sql.Append(" WHERE M.FA = ").Append(Api.ClientId);
-            sql.Append(" AND M.MENU = ").Append(Interaction.SqlQuote(menuId));
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            if (!string.IsNullOrEmpty(menuId))
+                sql.Append(" AND M.MENU = ").Append(Intersystems.SqlQuote(menuId));
+
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -86,7 +90,7 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<Nt.Data.MenuItem> GetMenuItems()
+        public async Task<List<Nt.Data.MenuItem>> GetMenuItems()
         {
             var menuItems = new List<Nt.Data.MenuItem>();
             var sql = new StringBuilder();
@@ -98,7 +102,7 @@ namespace Nt.Database.Api.InterSystems
             sql.Append(" , cmNT.BonTouch_GetArtikelTouchBezeichnung(A.FA,'RK',A.UMENU,A.ROW, A.COL,0,1) As name");
             sql.Append(" FROM NT.TouchUMenuZeilen A ");
             sql.Append(" WHERE A.FA = ").Append(Api.ClientId);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {

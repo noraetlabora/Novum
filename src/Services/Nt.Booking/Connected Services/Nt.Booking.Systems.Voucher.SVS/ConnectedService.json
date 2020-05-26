@@ -1,0 +1,24 @@
+﻿{
+  "ProviderId": "Microsoft.VisualStudio.ConnectedService.Wcf",
+  "Version": "15.0.30730.948",
+  "GettingStartedDocument": {
+    "Uri": "https://go.microsoft.com/fwlink/?linkid=858517"
+  },
+  "ExtendedData": {
+    "inputs": [
+      "https://webservices-cert.storedvalue.com/svsxml/v1/services/SVSXMLWay/wsdl/SVSXMLWay.wsdl"
+    ],
+    "collectionTypes": [
+      "System.Collections.Generic.Dictionary`2",
+      "System.Collections.Generic.List`1"
+    ],
+    "internalTypeAccess": true,
+    "messageContract": true,
+    "namespaceMappings": [
+      "*, Nt.Booking.Systems.Voucher.SVS"
+    ],
+    "sync": true,
+    "targetFramework": "netcoreapp3.0",
+    "typeReuseMode": "None"
+  }
+}

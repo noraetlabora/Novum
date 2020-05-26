@@ -1,108 +1,125 @@
+using System;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
     /// </summary>
     internal class Api : IDbApi
     {
-        private static Misc misc;
-        private static Table table;
-        private static Waiter waiter;
-        private static Menu menu;
-        private static Article article;
-        private static Modifier modifier;
-        private static Printer printer;
-        private static Image image;
-        private static Payment payment;
-        private static Fiscal fiscal;
-        private static Order order;
-        private static Pos pos;
+        private static Misc _misc;
+        private static Table _table;
+        private static Waiter _waiter;
+        private static Menu _menu;
+        private static Article _article;
+        private static Modifier _modifier;
+        private static Printer _printer;
+        private static Image _image;
+        private static Payment _payment;
+        private static Fiscal _fiscal;
+        private static Order _order;
+        private static Pos _pos;
+        private static Hotel _hotel;
+        private static string _clientId;
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public static string ClientId { get; set; }
+        public static string ClientId
+        {
+            get
+            {
+                return _clientId;
+            }
+        }
 
         public Api()
         {
-            misc = new Misc();
-            table = new Table();
-            waiter = new Waiter();
-            menu = new Menu();
-            article = new Article();
-            modifier = new Modifier();
-            printer = new Printer();
-            image = new Image();
-            payment = new Payment();
-            fiscal = new Fiscal();
-            order = new Order();
-            pos = new Pos();
+            _misc = new Misc();
+            _table = new Table();
+            _waiter = new Waiter();
+            _menu = new Menu();
+            _article = new Article();
+            _modifier = new Modifier();
+            _printer = new Printer();
+            _image = new Image();
+            _payment = new Payment();
+            _fiscal = new Fiscal();
+            _order = new Order();
+            _pos = new Pos();
+            _hotel = new Hotel();
+            _clientId = "";
         }
 
         public IDbMisc Misc
         {
-            get { return misc; }
+            get { return _misc; }
         }
         public IDbTable Table
         {
-            get { return table; }
+            get { return _table; }
         }
         public IDbWaiter Waiter
         {
-            get { return waiter; }
+            get { return _waiter; }
         }
 
         public IDbMenu Menu
         {
-            get { return menu; }
+            get { return _menu; }
         }
 
         public IDbArticle Article
         {
-            get { return article; }
+            get { return _article; }
         }
 
         public IDbModifier Modifier
         {
-            get { return modifier; }
+            get { return _modifier; }
         }
 
         public IDbPrinter Printer
         {
-            get { return printer; }
+            get { return _printer; }
         }
 
         public IDbImage Image
         {
-            get { return image; }
+            get { return _image; }
         }
 
         public IDbPayment Payment
         {
-            get { return payment; }
+            get { return _payment; }
         }
 
         public IDbFiscal Fiscal
         {
-            get { return fiscal; }
+            get { return _fiscal; }
         }
 
         public IDbOrder Order
         {
-            get { return order; }
+            get { return _order; }
         }
 
         public IDbPos Pos
         {
-            get { return pos; }
+            get { return _pos; }
+        }
+
+        public IDbHotel Hotel
+        {
+            get { return _hotel; }
         }
 
         public void Initialize()
         {
-            Api.ClientId = Interaction.CallClassMethod("cmNT.Kassa", "GetOmanFirma");
-            Logging.Log.Database.Info("ClientId = " + Api.ClientId);
+            var args = Array.Empty<object>();
+            _clientId = Intersystems.CallClassMethod("cmNT.Kassa", "GetOmanFirma", args).GetAwaiter().GetResult();
+            Logging.Log.Database.Info("ClientId = " + _clientId);
         }
     }
 }

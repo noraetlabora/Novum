@@ -1,5 +1,3 @@
-using System;
-
 namespace Nt.Data
 {
     /// <summary>
@@ -60,13 +58,13 @@ namespace Nt.Data
         /// 
         /// </summary>
         /// <value></value>
-        public string MenuId { get; set;}
+        public string MenuId { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public Nt.Data.Image Image {get; set;}
+        public Nt.Data.Image Image { get; set; }
 
         #endregion
 

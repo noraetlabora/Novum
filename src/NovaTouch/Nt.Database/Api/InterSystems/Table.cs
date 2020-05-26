@@ -1,7 +1,9 @@
+using Nt.Data;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -20,10 +22,11 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.Table> GetTables(Nt.Data.Session session)
+        public async Task<Dictionary<string, Nt.Data.Table>> GetTables(Nt.Data.Session session)
         {
             var tables = new Dictionary<string, Nt.Data.Table>();
-            var dbString = Interaction.CallClassMethod("cmNT.Tisch", "GetTischListe2", session.ClientId, session.PosId, session.WaiterId);
+            var args = new object[3] { session.ClientId, session.PosId, session.WaiterId };
+            var dbString = await Intersystems.CallClassMethod("cmNT.Tisch", "GetTischListe2", args).ConfigureAwait(false);
             var tablesString = new DataString(dbString);
             var tablesArray = tablesString.SplitByDoublePipes();
 
@@ -34,21 +37,21 @@ namespace Nt.Database.Api.InterSystems
 
                 var table = new Nt.Data.Table();
                 var dataString = new DataString(tableString);
-                var dataList = new DataList(dataString.SplitByChar96());
+                var dataArray = new DataArray(dataString.SplitByChar96());
 
-                table.Id = dataList.GetString(0);
-                table.Name = dataList.GetString(1);
-                table.Amount = dataList.GetDecimal(2);
-                table.Comment = dataList.GetString(3);
-                table.WaiterId = dataList.GetString(7);
-                table.WaiterName = dataList.GetString(8);
-                table.Opend = dataList.GetDateTime(9);
-                table.Updated = dataList.GetDateTime(10);
-                table.Room = dataList.GetString(11);
-                table.Guests = dataList.GetUInt(13);
-                table.LeftTableId = dataList.GetString(21);
-                table.RightTableId = dataList.GetString(22);
-                table.AssignmentTypeId = dataList.GetString(23);
+                table.Id = dataArray.GetString(0);
+                table.Name = dataArray.GetString(1);
+                table.Amount = dataArray.GetDecimal(2);
+                table.Comment = dataArray.GetString(3);
+                table.WaiterId = dataArray.GetString(7);
+                table.WaiterName = dataArray.GetString(8);
+                table.Opend = dataArray.GetDateTime(9);
+                table.Updated = dataArray.GetDateTime(10);
+                table.Room = dataArray.GetString(11);
+                table.Guests = dataArray.GetUInt(13);
+                table.LeftTableId = dataArray.GetString(21);
+                table.RightTableId = dataArray.GetString(22);
+                table.AssignmentTypeId = dataArray.GetString(23);
 
                 tables.Add(table.Id, table);
             }
@@ -62,9 +65,10 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="session"></param>
         /// <param name="tableName"></param>
         /// <returns></returns>
-        public string GetTableId(Nt.Data.Session session, string tableName)
+        public Task<string> GetTableId(Nt.Data.Session session, string tableName)
         {
-            return Interaction.CallClassMethod("cmNT.Tisch", "GetTischIntern", session.ClientId, session.PosId, tableName);
+            var args = new object[3] { session.ClientId, session.PosId, tableName };
+            return Intersystems.CallClassMethod("cmNT.Tisch", "GetTischIntern", args);
         }
 
         /// <summary>
@@ -73,9 +77,10 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="session"></param>
         /// <param name="tableId"></param>
         /// <returns></returns>
-        public string GetTableName(Nt.Data.Session session, string tableId)
+        public Task<string> GetTableName(Nt.Data.Session session, string tableId)
         {
-            return Interaction.CallClassMethod("cmNT.Tisch", "GetTischDisplay", session.ClientId, session.PosId, tableId);
+            var args = new object[3] { session.ClientId, session.PosId, tableId };
+            return Intersystems.CallClassMethod("cmNT.Tisch", "GetTischDisplay", args);
         }
 
         /// <summary>
@@ -84,9 +89,10 @@ namespace Nt.Database.Api.InterSystems
         /// <param name="session"></param>
         /// <param name="tableId"></param>
         /// <returns></returns>
-        public string GetNewSubTableId(Nt.Data.Session session, string tableId)
+        public Task<string> GetNewSubTableId(Nt.Data.Session session, string tableId)
         {
-            return Interaction.CallClassMethod("cmNT.Tisch", "SplittTischNeu", session.ClientId, tableId);
+            var args = new object[2] { session.ClientId, tableId };
+            return Intersystems.CallClassMethod("cmNT.Tisch", "SplittTischNeu", args);
         }
 
         /// <summary>
@@ -94,28 +100,31 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="session"></param>
         /// <param name="tableId"></param>
-        public void OpenTable(Nt.Data.Session session, string tableId)
+        public async Task OpenTable(Nt.Data.Session session, string tableId)
         {
-            var dbString = Interaction.CallClassMethod("cmNT.Tisch", "TischOpen", session.ClientId, session.PosId, session.WaiterId, tableId, "0");
+            var args = new object[5] { session.ClientId, session.PosId, session.WaiterId, tableId, "0" };
+            var dbString = await Intersystems.CallClassMethod("cmNT.Tisch", "TischOpen", args).ConfigureAwait(false);
             var dataString = new DataString(dbString);
-            var dataList = new DataList(dataString.SplitByPipe());
+            var dataArray = new DataArray(dataString.SplitByPipe());
 
-            var error = dataList.GetString(0).Equals("0");
+            var error = dataArray.GetString(0).Equals("0");
             if (error)
             {
-                var errorCode = dataList.GetString(1);
-                var errorMessage = dataList.GetString(2);
-                switch (errorCode)
-                {
-                    case "2":
-                        throw new Exception("table not defined");
-                    case "5":
-                        throw new Exception("no permission to opent a table");
-                    case "6":
-                        throw new Exception("table already open");
-                    default:
-                        throw new Exception("error while opening the table");
-                }
+                var errorCode = dataArray.GetString(1);
+                var errorMessage = dataArray.GetString(2);
+                var tableName = GetTableName(session, tableId);
+                //TODO uncomment switch statement
+                //switch (errorCode)
+                //{
+                //    case "2":
+                //        throw new Exception(string.Format(Resources.Dictionary.GetString("Table_NotDefined"), tableName));
+                //    case "5":
+                //        throw new Exception(string.Format(Resources.Dictionary.GetString("Table_NoOpenPermission"), tableName));
+                //    case "6":
+                //        throw new Exception(string.Format(Resources.Dictionary.GetString("Table_AlreadyOpen"), tableName));
+                //    default:
+                //        throw new Exception(string.Format(Resources.Dictionary.GetString("Table_OpenError"), tableName));
+                //}
             }
         }
 
@@ -124,9 +133,49 @@ namespace Nt.Database.Api.InterSystems
         /// </summary>
         /// <param name="session"></param>
         /// <param name="tableId"></param>
-        public void UnlockTable(Nt.Data.Session session, string tableId)
+        public Task UnlockTable(Nt.Data.Session session, string tableId)
         {
-            Interaction.CallClassMethod("cmNT.Tisch", "TischUnlock", session.ClientId, session.PosId, session.WaiterId, tableId);
+            var args = new object[4] { session.ClientId, session.PosId, session.WaiterId, tableId };
+            return Intersystems.CallClassMethod("cmNT.Tisch", "TischUnlock", args);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="sourceTableId"></param>
+        /// <param name="targetTableId"></param>
+        public async Task SplitStart(Session session, string sourceTableId, string targetTableId)
+        {
+            var args = new object[4] { session.ClientId, session.PosId, session.SerialNumber, session.WaiterId };
+            await Intersystems.CallVoidClassMethod("cmNT.SplittOman", "SetSplittStart", args).ConfigureAwait(false);
+            args = new object[6] { session.ClientId, session.PosId, session.SerialNumber, session.WaiterId, sourceTableId, targetTableId };
+            await Intersystems.CallVoidClassMethod("cmNT.SplittOman", "SetSplittDaten", args).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="sourceTableId"></param>
+        /// <param name="targetTableId"></param>
+        /// <param name="order"></param>
+        /// <param name="quantity"></param>
+        public async Task SplitOrder(Session session, string sourceTableId, string targetTableId, Data.Order order, decimal quantity)
+        {
+            var orderDataString = Order.GetOrderDataString(order);
+            var args = new object[9] { session.ClientId, session.PosId, session.SerialNumber, session.WaiterId, sourceTableId, targetTableId, orderDataString, orderDataString, quantity };
+            var returnValue = await Intersystems.CallClassMethod("cmNT.SplittOman", "SetSplittZeile", args).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        public Task SplitDone(Session session)
+        {
+            var args = new object[4] { session.ClientId, session.PosId, session.SerialNumber, session.WaiterId };
+            return Intersystems.CallVoidClassMethod("cmNT.SplittOman", "SetSplittOK", args);
         }
     }
 }

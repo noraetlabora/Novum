@@ -2,23 +2,35 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationManifest>App.manifest</ApplicationManifest>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>3</WarningLevel>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\..\Services\Os.Server\ClientConfiguration.cs" Link="Configuration\Os.Server\ClientConfiguration.cs" />
+    <Compile Include="..\..\..\Services\Os.Server\ServerConfiguration.cs" Link="Configuration\Os.Server\ServerConfiguration.cs" />
+  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Core.System.Configuration.Install" Version="1.0.1" />
-    <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.6.0" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.7.0" />
     <PackageReference Include="TopShelf.ServiceInstaller" Version="4.2.1" />
   </ItemGroup>
   
   <ItemGroup>
+    <Folder Include="Configuration\Os.Server\" />
     <Folder Include="Properties\" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\Nt.Logging\Nt.Logging.csproj" />
+    <ProjectReference Include="..\..\Nt.Util\Nt.Util.csproj" />
   </ItemGroup>
 
 </Project>

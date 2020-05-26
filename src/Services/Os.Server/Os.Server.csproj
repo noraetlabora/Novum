@@ -1,0 +1,73 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn />
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DefineConstants />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="OsServer\**" />
+    <Content Remove="OsServer\**" />
+    <EmbeddedResource Remove="OsServer\**" />
+    <None Remove="OsServer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="NCR\OsClient\OsClient.19.2.3.2.om7app" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="NCR\OsClient\OsClient.19.2.3.2.om7app">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NCR\OsServer\LICENSES">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NCR\OsServer\OsServerRun.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NCR\OsServer\THIRD_PARTY_LICENSES_server.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="3.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\NovaTouch\Nt.Logging\Nt.Logging.csproj" />
+    <ProjectReference Include="..\..\NovaTouch\Nt.Data\Nt.Data.csproj" />
+    <ProjectReference Include="..\..\NovaTouch\Nt.Database\Nt.Database.csproj" />
+    <ProjectReference Include="..\..\NovaTouch\Nt.Util\Nt.Util.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="NCR\OsServer\config\default.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="NCR\OsServer\config\production.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Dictionary.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api
 {
@@ -12,82 +13,72 @@ namespace Nt.Database.Api
         /// 1 = no fiscalization - just payment methods where we don't need fiscalization
         /// 2 = no fiscalization due to the law
         /// </summary>
-        /// <param name="clientId">The current client id ("1001").</param>
-        /// <param name="posId">The current pos id ("RK2").</param>
+        /// <param name="session"></param>
         /// <returns></returns>
-        string GetMode(string clientId, string posId);
-
-        /// <summary>
-        /// 1 = old modul version (VB6)
-        /// 2 = new modul version (.NET)
-        /// </summary>
-        /// <param name="clientId">The current client id ("1001").</param>
-        /// <returns></returns>
-        string GetModulVersion(string clientId);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="clientId">The current client id ("1001").</param>
-        /// <returns></returns>
-        string GetServiceType(string clientId);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="clientId">The current client id ("1001").</param>
-        /// <param name="posId">The current pos id ("RK2").</param>
-        /// <returns></returns>
-        string GetConfiguration(string clientId, string posId);
-       
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="clientId">The current client id ("1001").</param>
-        /// <returns></returns>
-        string GetClient(string clientId);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="clientId">The current client id ("1001").</param>
-        /// <param name="posId">The current pos id ("RK2").</param>
-        /// <param name="waiterId"></param>
-        /// <returns></returns>
-        string GetUser(string clientId, string posId, string waiterId);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        object GetProvider(string clientId, string posId, string serialNumber);
+        Task<string> GetMode(Data.Session session);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
-        string CheckSystem(Data.Session session);
+        /// <returns></returns>
+        Task<string> GetModulVersion(Data.Session session);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
-        /// <param name="ordersDataString"></param>
-        /// <param name="paymentMethodsDataString"></param>
-        /// <param name="paymentBillDataString"></param>
-        object SendTransaction(Data.Session session, string ordersDataString, string paymentMethodsDataString, string paymentBillDataString);
+        /// <returns></returns>
+        Task<string> GetConfiguration(Data.Session session);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
-        void CommitTransaction(Data.Session session);
+        /// <returns></returns>
+        Task<string> GetClient(Data.Session session);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
+        Task<string> GetUser(Data.Session session);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
+        Task<object> GetProvider(Data.Session session);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        Task<string> CheckSystem(Data.Session session);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="orders"></param>
+        /// <param name="paymentMethods"></param>
+        /// <param name="paymentInformation"></param>
+        /// <returns></returns>
+        Task<object> SendTransaction(Data.Session session, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="session"></param>
+        Task CommitTransaction(Data.Session session);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
         /// <param name="reason"></param>
-        void RollbackTransaction(Data.Session session, string reason);
+        Task RollbackTransaction(Data.Session session, string reason);
     }
 }

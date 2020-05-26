@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace Nt.Database.Api.InterSystems
+namespace Nt.Database.Api.Intersystems
 {
     /// <summary>
     /// 
@@ -18,15 +19,15 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.PaymentType> GetPaymentTypes()
+        public async Task<Dictionary<string, Nt.Data.PaymentType>> GetPaymentTypes()
         {
             var paymentTypes = new Dictionary<string, Nt.Data.PaymentType>();
             var sql = new StringBuilder();
-            sql.Append(" SELECT IKA, bez, prg, druanz, unterschrift ");
+            sql.Append(" SELECT IKA, bez, prg, druanz, unterschrift, Copa ");
             sql.Append(" FROM NT.Zahlart ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -35,6 +36,7 @@ namespace Nt.Database.Api.InterSystems
                 paymentType.Name = DataObject.GetString(dataRow, "bez");
                 paymentType.Program = DataObject.GetString(dataRow, "prg");
                 paymentType.ReceiptCount = DataObject.GetUInt(dataRow, "druanz");
+                paymentType.PartnerId = DataObject.GetString(dataRow, "Copa");
                 var signature = DataObject.GetString(dataRow, "unterschrift");
 
                 if (signature.Equals("0"))
@@ -49,7 +51,7 @@ namespace Nt.Database.Api.InterSystems
             return paymentTypes;
         }
 
-        public Nt.Data.PaymentResult Pay(Nt.Data.Session session, string tableId, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation)
+        public async Task<Nt.Data.PaymentResult> Pay(Nt.Data.Session session, string tableId, List<Nt.Data.Order> orders, List<Nt.Data.PaymentMethod> paymentMethods, Nt.Data.PaymentInformation paymentInformation)
         {
             var ordersDataString = Order.GetOrderDataString(orders);
             var paymentMethodsDataString = Payment.GetPaymentMethodDataString(paymentMethods);
@@ -57,26 +59,26 @@ namespace Nt.Database.Api.InterSystems
             var paymentOptionDataString = Payment.GetPaymentOptionDataString(paymentInformation);
 
             //send the Fiscal Transaction if there is a provider
-            var fiscalResult = (Nov.NT.POS.Fiscal.FiscalResult)DB.Api.Fiscal.SendTransaction(session, ordersDataString, paymentMethodsDataString, paymentBillDataString);
+            var fiscalResult = (Nov.NT.POS.Fiscal.FiscalResult)await DB.Api.Fiscal.SendTransaction(session, orders, paymentMethods, paymentInformation).ConfigureAwait(false);
             var fiscalResultString = string.Empty;
             if (fiscalResult != null)
                 fiscalResultString = fiscalResult.ToDtoString();
-            
+
             //actual payment in database
-            var dbString = Interaction.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersDataString, paymentBillDataString, paymentMethodsDataString, paymentOptionDataString, "", "", "", "", "", fiscalResultString);
+            var args = new object[15] { session.ClientId, session.PosId, session.WaiterId, tableId, session.SerialNumber, ordersDataString, paymentBillDataString, paymentMethodsDataString, paymentOptionDataString, "", "", "", "", "", fiscalResultString };
+            var dbString = await Intersystems.CallClassMethod("cmNT.AbrOman2", "DoAbrechnung", args).ConfigureAwait(false);
 
             if (dbString.StartsWith("FM"))
             {
-                DB.Api.Fiscal.RollbackTransaction(session, dbString);
+                await DB.Api.Fiscal.RollbackTransaction(session, dbString).ConfigureAwait(false);
                 throw new Exception(dbString);
             }
 
             var result = new Nt.Data.PaymentResult();
             var paymentString = new DataString(dbString);
-            var paymentArray = paymentString.SplitByDoublePipes();
-            var paymentList = new DataList(paymentArray);
+            var paymentArray = new DataArray(paymentString.SplitByDoublePipes());
 
-            result.BillId = paymentList.GetString(3);
+            result.BillId = paymentArray.GetString(3);
 
             return result;
         }
@@ -85,15 +87,15 @@ namespace Nt.Database.Api.InterSystems
         /// 
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, Nt.Data.AssignmentType> GetAssignmentTypes()
+        public async Task<Dictionary<string, Nt.Data.AssignmentType>> GetAssignmentTypes()
         {
             var assignmentTypes = new Dictionary<string, Nt.Data.AssignmentType>();
             var sql = new StringBuilder();
             sql.Append(" SELECT VA, bez, unterschrift ");
             sql.Append(" FROM WW.VA ");
             sql.Append(" WHERE FA = ").Append(Api.ClientId);
-            sql.Append(" AND passiv > ").Append(Interaction.SqlToday);
-            var dataTable = Interaction.GetDataTable(sql.ToString());
+            sql.Append(" AND passiv > ").Append(Intersystems.SqlToday);
+            var dataTable = await Intersystems.GetDataTable(sql.ToString()).ConfigureAwait(false);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -133,7 +135,7 @@ namespace Nt.Database.Api.InterSystems
         internal static string GetPaymentMethodDataString(Nt.Data.PaymentMethod paymentMethod)
         {
             var dataString = new StringBuilder();
-            //
+
             dataString.Append(paymentMethod.PaymentTypeId).Append(DataString.DoublePipes);
             dataString.Append(paymentMethod.AssignmentTypeId).Append(DataString.DoublePipes);
             dataString.Append(paymentMethod.Name).Append(DataString.DoublePipes);
@@ -142,8 +144,9 @@ namespace Nt.Database.Api.InterSystems
             dataString.Append(paymentMethod.Tip).Append(DataString.DoublePipes);
             dataString.Append(paymentMethod.Comment).Append(DataString.DoublePipes);
             dataString.Append("").Append(DataString.DoublePipes); //Adresse
-            dataString.Append("").Append(DataString.DoublePipes); //ZimmerCOPA
-            dataString.Append("").Append(DataString.DoublePipes); //ZimmerBuchnr
+            dataString.Append(paymentMethod.PartnerId).Append(DataString.DoublePipes); //ZimmerCOPA
+            dataString.Append(paymentMethod.RoomBookingNumber).Append(DataString.DoublePipes); //ZimmerBuchnr
+            dataString.Append(paymentMethod.RoomNumber).Append(DataString.DoublePipes); //ZimmerNummer
             dataString.Append("").Append(DataString.DoublePipes); //Ids
             dataString.Append("").Append(DataString.DoublePipes); //Beschreibung
             dataString.Append("").Append(DataString.DoublePipes); //SerNr
@@ -153,14 +156,14 @@ namespace Nt.Database.Api.InterSystems
             dataString.Append("").Append(DataString.DoublePipes); //KreditkartenTransaktion
             dataString.Append("").Append(DataString.DoublePipes); //RfidTID
             dataString.Append("").Append(DataString.DoublePipes); //RfidDaten
-            //
+
             return dataString.ToString();
         }
 
         internal static string GetPaymentBillDataString(Nt.Data.PaymentInformation paymentInformation)
         {
             var dataString = new StringBuilder();
-            //
+
             dataString.Append("").Append(DataString.DoublePipes);//VKO
             dataString.Append("").Append(DataString.DoublePipes);//GesamtBetragBrutto
             dataString.Append(paymentInformation.DiscountAmount).Append(DataString.DoublePipes);
@@ -187,20 +190,20 @@ namespace Nt.Database.Api.InterSystems
             dataString.Append("").Append(DataString.DoublePipes);//OptPrinterDev
             dataString.Append("").Append(DataString.DoublePipes);//OptPrinterName
             dataString.Append("").Append(DataString.DoublePipes);//FiskalBelegType
-            //
+
             return dataString.ToString();
         }
 
         internal static string GetPaymentOptionDataString(Nt.Data.PaymentInformation paymentInformation)
         {
             var dataString = new StringBuilder();
-            //
-            dataString.Append("").Append(DataString.DoublePipes);//Bewritungsbeleg
+
+            dataString.Append("").Append(DataString.DoublePipes);//Bewirtungsbeleg
             dataString.Append("").Append(DataString.DoublePipes);//ZweiteUstGruppe
             dataString.Append("").Append(DataString.DoublePipes);//ReserveDrucker
             dataString.Append("").Append(DataString.DoublePipes);//obsoletKeinBelegDruck
-            dataString.Append("").Append(DataString.DoublePipes);//BelegDrucker
-            //
+            dataString.Append(paymentInformation.PrinterId).Append(DataString.DoublePipes);//BelegDrucker
+
             return dataString.ToString();
         }
 

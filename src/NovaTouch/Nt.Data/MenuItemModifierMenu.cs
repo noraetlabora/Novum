@@ -1,5 +1,3 @@
-using System;
-
 namespace Nt.Data
 {
     /// <summary>
@@ -38,7 +36,7 @@ namespace Nt.Data
         /// </summary>
         /// <value></value>
         public uint Sort { get; set; }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -65,7 +63,7 @@ namespace Nt.Data
         /// </summary>
         /// <param name="menuItem"></param>
         /// <returns></returns>
-        public bool ContainsMenuItem(Nt.Data.MenuItem menuItem) 
+        public bool ContainsMenuItem(Nt.Data.MenuItem menuItem)
         {
             if (!this.MenuItemMenuId.Equals(menuItem.MenuId))
                 return false;

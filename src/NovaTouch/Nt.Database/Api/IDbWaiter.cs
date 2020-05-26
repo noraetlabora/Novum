@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api
 {
@@ -11,7 +12,14 @@ namespace Nt.Database.Api
         /// 
         /// </summary>
         /// <returns></returns>
-        Dictionary<string, Nt.Data.Waiter> GetWaiters();
+        Task<Dictionary<string, Nt.Data.Waiter>> GetWaiters();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        Task<string> GetWaiterId(string code);
 
         /// <summary>
         /// 
@@ -19,25 +27,25 @@ namespace Nt.Database.Api
         /// <param name="waiterId"></param>
         /// <param name="code"></param>
         /// <returns></returns>
-        bool ValidWaiter(string waiterId, string code);
+        Task<bool> ValidWaiter(string waiterId, string code);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
-        void Login(Nt.Data.Session session);
+        Task Login(Nt.Data.Session session);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="session"></param>
-        void Logout(Nt.Data.Session session);
+        Task Logout(Nt.Data.Session session);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="waiterId"></param>
         /// <returns></returns>
-        Dictionary<Nt.Data.Permission.PermissionType, Nt.Data.Permission> GetPermissions(string waiterId);
+        Task<Dictionary<Nt.Data.Permission.PermissionType, Nt.Data.Permission>> GetPermissions(string waiterId);
     }
 }

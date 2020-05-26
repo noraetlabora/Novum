@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Nt.Database.Api
 {
@@ -11,39 +12,46 @@ namespace Nt.Database.Api
         /// 
         /// </summary>
         /// <returns></returns>
-        Dictionary<string, Nt.Data.CancellationResason> GetCancellationReason();
+        Task<Dictionary<string, Nt.Data.CancellationResason>> GetCancellationReason();
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        Dictionary<string, Nt.Data.ServiceArea> GetServiceAreas();
+        Task<Dictionary<string, Nt.Data.ServiceArea>> GetServiceAreas();
 
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        Dictionary<string, Nt.Data.ArticleGroup> GetArticleGroups();
+        Task<Dictionary<string, Nt.Data.ArticleGroup>> GetArticleGroups();
 
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        Dictionary<string, Nt.Data.TaxGroup> GetTaxGroups();
+        Task<Dictionary<string, Nt.Data.TaxGroup>> GetTaxGroups();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        Task<Dictionary<string, Nt.Data.Course>> GetCourses();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
-        bool HasSnapshotTime(string guid);
+        Task<bool> StaticDataChanged(string guid);
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="guid"></param>
+        /// <param name="serviceName"></param>
         /// <returns></returns>
-        void SetSnapshotTime(string guid);
+        Task ConfirmChangedStaticData(string guid, string serviceName);
     }
 }

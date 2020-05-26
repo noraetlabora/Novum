@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
 
 namespace Nt.Data
@@ -102,6 +100,7 @@ namespace Nt.Data
                 id.Append(TableId).Append(_pipe);
                 id.Append((int)Status).Append(_pipe);
                 id.Append(ArticleId).Append(_pipe);
+                id.Append(UnitPrice).Append(_pipe);
                 id.Append(Line);
                 return id.ToString();
             }
@@ -173,13 +172,13 @@ namespace Nt.Data
         /// <summary>
         /// 
         /// </summary>
-        public decimal VatRate { get; set; } 
+        public decimal VatRate { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <value></value>
-        public List<Modifier> Modifiers 
+        public List<Modifier> Modifiers
         {
             get { return _modifiers; }
         }
@@ -211,18 +210,19 @@ namespace Nt.Data
 
             if (this.Status.Equals(OrderStatus.NewOrder))
                 this.UnitPrice += GetModifierUnitPrice(modifier);
+
             _modifiers.Add(modifier);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public void ClearModifiers() 
+        public void ClearModifiers()
         {
             if (_modifiers == null)
                 return;
 
-            foreach(var modifier in _modifiers) 
+            foreach (var modifier in _modifiers)
             {
                 this.UnitPrice -= GetModifierUnitPrice(modifier);
             }
@@ -234,7 +234,7 @@ namespace Nt.Data
 
         #region private methods
 
-                /// <summary>
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="modifier"></param>
@@ -249,6 +249,7 @@ namespace Nt.Data
                 modifierUnitPrice = Nt.Data.Utils.Math.Round(modifierUnitPrice, modifier.Rounding);
                 return modifierUnitPrice;
             }
+
             return modifier.UnitPrice;
         }
 
