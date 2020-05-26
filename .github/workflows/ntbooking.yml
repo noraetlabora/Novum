@@ -38,7 +38,7 @@ jobs:
     - name: 
       run: dotnet test src/Services/Nt.Booking/Nt.Booking.csproj
 
-  test:
+  deploy:
     needs: test
     runs-on: ${platform}
     steps:
