@@ -2,44 +2,44 @@ name: Nt.Booking Deploy
 
 on:
   # deployment
-  #- cron: '0 0 * * *' 
-  push: 
-    schedule: 
-      branches: [ master ] 
-    pull_request: 
-      branches: [ master ]
+  - cron: '0 0 * * *' 
+  # push: 
+  #   schedule: 
+  #     branches: [ master ] 
+  #   pull_request: 
+  #     branches: [ master ]
   
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: 0
 
 jobs:
-  # build:
-  #   runs-on: windows-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Setup .NET Core
-  #     uses: actions/setup-dotnet@v1
-  #     with:
-  #       dotnet-version: 3.1.101
-  #   - name: Install Nt.Booking dependencies
-  #     run: dotnet restore src/Services/Nt.Booking/Nt.Booking.csproj
-  #   - name: Build Nt.Booking
-  #     run: dotnet build src/Services/Nt.Booking/Nt.Booking.csproj -c Release --no-restore
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Install Nt.Booking dependencies
+      run: dotnet restore src/Services/Nt.Booking/Nt.Booking.csproj
+    - name: Build Nt.Booking
+      run: dotnet build src/Services/Nt.Booking/Nt.Booking.csproj -c Release --no-restore
 
-  # test:
-  #   needs: build
-  #   runs-on: windows-latest
-  #   steps:
-  #   - uses: actions/checkout@v2
-  #   - name: Setup .NET Core
-  #     uses: actions/setup-dotnet@v1
-  #     with:
-  #       dotnet-version: 3.1.101
-  #   - name: Test Nt.Booking
-  #     run: dotnet test src/Services/Nt.Booking/Nt.Booking.csproj
+  test:
+    needs: build
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Test Nt.Booking
+      run: dotnet test src/Services/Nt.Booking/Nt.Booking.csproj
 
   deploy:
-    #needs: test
+    needs: test
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
@@ -52,7 +52,7 @@ jobs:
     - name: Saving Artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: windows
+        name: ntbooking_win_x64
         path: publish/windows
     
 
