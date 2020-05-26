@@ -2,10 +2,10 @@ name: Nt.Booking Deploy
 
 on:
   # deployment
+  #- cron: '0 0 * * *' 
   push: 
     schedule: 
       branches: [ master ] 
-      - cron: '0 0 * * *' 
     pull_request: 
       branches: [ master ]
   
