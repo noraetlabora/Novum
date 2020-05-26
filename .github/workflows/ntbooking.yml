@@ -1,10 +1,7 @@
 name: Nt.Booking Deploy
 
 on:
-    push:
-      branches: [ master ]
-    pull_request:
-      branches: [ master ]
+    deployment
   
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: 0
@@ -32,7 +29,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: 
+    - name: Test Nt.Booking
       run: dotnet test src/Services/Nt.Booking/Nt.Booking.csproj
 
   deploy:
@@ -44,7 +41,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
-    - name: 
+    - name: Publish Nt.Booking
       run: dotnet publish src/Services/Nt.Booking/Nt.Booking.csproj -c Release -o publish/windows
     
 
