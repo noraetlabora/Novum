@@ -271,31 +271,47 @@ namespace Nt.Booking.Systems.Voucher.SVS
                     return null;
                 case "02": //Inactive Card
                     errorResponse.Error.Code = Enums.ErrorCode.VoucherInactive;
-                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("Voucher_Inactive"), voucherNumber);
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherInactive"), returnCode.returnCode);
                     break;
                 case "03": //Invalid Card Number
-                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInvalid;
-                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("Voucher_Invalid"), voucherNumber);
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInvalidNumber;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherInvalidNumber"), returnCode.returnCode);
+                    break;
+                case "04": //Invalid Transaction Code
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInvalidTransactionCode;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherInvalidTransactionCode"), returnCode.returnCode);
                     break;
                 case "05": //Insufficient Funds
-                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInsufficient;
-                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("Voucher_Insufficient"), voucherNumber);
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInsufficientFunds;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherInsufficientFunds"), returnCode.returnCode);
+                    break;
+                case "08": //VoucherUnknown
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherUnknown;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherUnknown"), returnCode.returnCode);
                     break;
                 case "15": //Host Unavailable
                     errorResponse.Error.Code = Enums.ErrorCode.HostUnavailable;
-                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("HostUnavailable"), "");
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("HostUnavailable"), returnCode.returnCode);
+                    break;
+                case "19": //Invalid CCV or SSC
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInvalidCcvOrSsc;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherInvalidCcvOrSsc"), returnCode.returnCode);
                     break;
                 case "20": //Pin Invalid
-                    errorResponse.Error.Code = Enums.ErrorCode.VoucherPinInvalid;
-                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("Voucher_PinInvalid"), voucherNumber);
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInvalidPin;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherInvalidPin"), returnCode.returnCode);
                     break;
                 case "21": //Card Already Issued
                     errorResponse.Error.Code = Enums.ErrorCode.VoucherAlreadyIssued;
-                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("Voucher_AlreadyIssued"), voucherNumber);
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherAlreadyIssued"), returnCode.returnCode);
+                    break;
+                case "22": //Card Already Issued
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherNotIssued;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherNotIssued"), returnCode.returnCode);
                     break;
                 default:
                     errorResponse.Error.Code = Enums.ErrorCode.Error;
-                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_Error");
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherError"), returnCode.returnCode);
                     break;
             }
             return errorResponse;
@@ -380,7 +396,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
                     voucherAmount = int.Parse(mediumId.Substring(19, 4));
                 if (debitRequest.Amount != voucherAmount)
                 {
-                    throw new Exception(string.Format(Resources.Dictionary.GetString("Voucher_NoFullRedemption"), GetCardNumber(mediumId)));
+                    throw new Exception(string.Format(Resources.Dictionary.GetString("VoucherNoFullRedemption"), GetCardNumber(mediumId)));
                 }
             }
         }
