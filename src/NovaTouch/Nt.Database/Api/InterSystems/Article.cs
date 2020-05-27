@@ -93,7 +93,7 @@ namespace Nt.Database.Api.Intersystems
                 //2 = not available, error
                 //3 = not available, ?
                 default:
-                    throw new Exception(string.Format(Resources.Dictionary.GetString("Article_NotAvailable"), articleName));
+                    throw new Exception(string.Format(Resources.Dictionary.GetString("ArticleNotAvailable"), articleName));
             }
         }
     }

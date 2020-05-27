@@ -117,37 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Device_NotValid" xml:space="preserve">
-    <value>Gerät {0} ist nicht definiert</value>
+  <data name="DeviceNotValid" xml:space="preserve">
+    <value>Gerät {0} ist nicht definiert.</value>
   </data>
-  <data name="Modifier_Fax" xml:space="preserve">
+  <data name="ModifierFax" xml:space="preserve">
     <value>Handnotiz</value>
   </data>
-  <data name="Modifier_Text" xml:space="preserve">
+  <data name="ModifierText" xml:space="preserve">
     <value>Notiz</value>
   </data>
-  <data name="Order_NoneFound" xml:space="preserve">
-    <value>keine Bons gefunden</value>
+  <data name="OrderNoneFound" xml:space="preserve">
+    <value>Keine Bons gefunden.</value>
   </data>
-  <data name="Order_NotFound" xml:space="preserve">
-    <value>Bon nicht gefunden</value>
+  <data name="OrderNotFound" xml:space="preserve">
+    <value>Bon nicht gefunden.</value>
   </data>
-  <data name="Order_VoidNotAllowed" xml:space="preserve">
-    <value>Bonstorno ist nicht erlaubt</value>
+  <data name="OrderVoidNotAllowed" xml:space="preserve">
+    <value>Bonstorno ist nicht erlaubt.</value>
   </data>
-  <data name="Payment_Tip" xml:space="preserve">
+  <data name="PaymentTip" xml:space="preserve">
     <value>Trinkgeld</value>
   </data>
-  <data name="Room_Number" xml:space="preserve">
+  <data name="RoomNumber" xml:space="preserve">
     <value>Zimmernummer</value>
   </data>
-  <data name="Table_NotOpen" xml:space="preserve">
-    <value>Tisch {0} ist nicht offen</value>
+  <data name="TableNotOpen" xml:space="preserve">
+    <value>Tisch {0} ist nicht offen.</value>
   </data>
-  <data name="Waiter_IdPasswordNotValid" xml:space="preserve">
-    <value>Kellner und Passwort stimmen nicht überein</value>
+  <data name="WaiterIdPasswordNotValid" xml:space="preserve">
+    <value>Kellner und Passwort stimmen nicht überein.</value>
   </data>
-  <data name="Waiter_PinNotValid" xml:space="preserve">
-    <value>Kellnerpin ist unbekannt</value>
+  <data name="WaiterPinNotValid" xml:space="preserve">
+    <value>Kellner-PIN ist unbekannt.</value>
   </data>
 </root>

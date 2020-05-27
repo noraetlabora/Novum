@@ -117,37 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Access_MediumUnknown" xml:space="preserve">
-    <value>medium {0} is unknown</value>
+  <data name="AccessMediumUnknown" xml:space="preserve">
+    <value>Medium {0} is unknown.</value>
   </data>
   <data name="HostUnavailable" xml:space="preserve">
-    <value>booking system {0} is unavailable</value>
+    <value>[{0}]: Cash register offline or server not responding. Please inform the cashier management.</value>
   </data>
-  <data name="Hotel_RoomNotBooked" xml:space="preserve">
-    <value>room {0} is not booked</value>
+  <data name="HotelRoomNotBooked" xml:space="preserve">
+    <value>Room {0} is not booked.</value>
   </data>
-  <data name="Hotel_RoomUnknown" xml:space="preserve">
-    <value>room {0} is unknown</value>
+  <data name="HotelRoomUnknown" xml:space="preserve">
+    <value>Room {0} is unknown.</value>
   </data>
-  <data name="Voucher_AlreadyIssued" xml:space="preserve">
-    <value>voucher {0} already issued</value>
+  <data name="VoucherAlreadyIssued" xml:space="preserve">
+    <value>[{0}]: Gift card already charged and cannot be charged again. Please use a different gift card.</value>
   </data>
-  <data name="Voucher_AlreadyUsed" xml:space="preserve">
-    <value>voucher {0} is already used</value>
+  <data name="VoucherAlreadyUsed" xml:space="preserve">
+    <value>[{0}]: Action cannot be performed because the card has been used in the meantime. Please contact customer service.</value>
   </data>
-  <data name="Voucher_Error" xml:space="preserve">
-    <value>voucher request had an error</value>
+  <data name="VoucherError" xml:space="preserve">
+    <value>[{0}]: Voucher request is incorrect.</value>
   </data>
-  <data name="Voucher_Insufficient" xml:space="preserve">
-    <value>voucher {0} is insufficient</value>
+  <data name="VoucherInactive" xml:space="preserve">
+    <value>[{0}]: Card blocked. Use another card or contact the customer service.</value>
   </data>
-  <data name="Voucher_NoFullRedemption" xml:space="preserve">
-    <value>no full redemption of voucher {0}</value>
+  <data name="VoucherInsufficientFunds" xml:space="preserve">
+    <value>[{0}]: Card has no more funds.</value>
   </data>
-  <data name="Voucher_NotIssued" xml:space="preserve">
-    <value>voucher {0} is not yet issued</value>
+  <data name="VoucherInvalidBarcode" xml:space="preserve">
+    <value>Invalid barcode.</value>
   </data>
-  <data name="Voucher_PinInvalid" xml:space="preserve">
-    <value>pin of voucher {0} is invalid</value>
+  <data name="VoucherInvalidCcvOrSsc" xml:space="preserve">
+    <value>[{0}]: Gift card or coupon number incorrect. Please try again.</value>
+  </data>
+  <data name="VoucherInvalidNumber" xml:space="preserve">
+    <value>[{0}]: Gift card or coupon number incorrect. Please try again.</value>
+  </data>
+  <data name="VoucherInvalidPin" xml:space="preserve">
+    <value>[{0}]: Gift card or coupon number incorrect. Please try again.</value>
+  </data>
+  <data name="VoucherInvalidTransactionCode" xml:space="preserve">
+    <value>[{0}]: This function cannot be performed on this gift card or voucher.</value>
+  </data>
+  <data name="VoucherNoFullRedemption" xml:space="preserve">
+    <value>Voucher {0} is not completely redeemed.</value>
+  </data>
+  <data name="VoucherNotIssued" xml:space="preserve">
+    <value>[{0}]: Gift card or coupon number has not yet been issued.</value>
+  </data>
+  <data name="VoucherUnknown" xml:space="preserve">
+    <value>[{0}]: Gift card or coupon number incorrect. Please try again.</value>
   </data>
 </root>

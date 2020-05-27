@@ -12,18 +12,20 @@
         Timeout = 3,
 
 
-        //1000 - 1999 Voucher
-        VoucherUnknown = 1000,
-        VoucherInactive = 1001,
-        VoucherInvalid = 1002,
-        VoucherInsufficient = 1003,
-        VoucherAlreadyIssued = 1004,
-        VoucherNotIssued = 1005,
-        VoucherAlreadyUsed = 1006,
-        VoucherPinInvalid = 1007,
-        VoucherNoFullRedemption = 1008,
-
-
+        //1000 - 1999 Voucher todo: recheck, currently oriented on SSV
+        VoucherNoFullRedemption = 1000,
+        VoucherInvalidBarcode = 1001,
+        VoucherInactive = 1002,
+        VoucherInvalidNumber = 1003,
+        VoucherInvalidTransactionCode = 1004,
+        VoucherInsufficientFunds = 1005,
+        VoucherUnknown = 1008,
+        VoucherInvalidCcvOrSsc = 1019,
+        VoucherInvalidPin = 1020,
+        VoucherAlreadyIssued = 1021,
+        VoucherNotIssued = 1022,
+        VoucherAlreadyUsed = 1023,
+        VoucherFrozen = 1033,
 
         //2000 - 2999 Hotel
         HotelRoomUnknown = 2000,

@@ -117,37 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Access_MediumUnknown" xml:space="preserve">
-    <value>Medium {0} ist unbekannt</value>
+  <data name="AccessMediumUnknown" xml:space="preserve">
+    <value>Medium {0} ist unbekannt.</value>
   </data>
   <data name="HostUnavailable" xml:space="preserve">
-    <value>Buchungssystem {0} ist nicht erreichbar</value>
+    <value>[{0}]: Kasse offline oder Server nicht erreichbar. Bitte informieren Sie die Kassenleitung.</value>
   </data>
-  <data name="Hotel_RoomNotBooked" xml:space="preserve">
-    <value>Zimmer {0} ist nicht belegt</value>
+  <data name="HotelRoomNotBooked" xml:space="preserve">
+    <value>Zimmer {0} ist nicht belegt.</value>
   </data>
-  <data name="Hotel_RoomUnknown" xml:space="preserve">
-    <value>Zimmer {0} ist unbekannt</value>
+  <data name="HotelRoomUnknown" xml:space="preserve">
+    <value>Zimmer {0} ist unbekannt.</value>
   </data>
-  <data name="Voucher_AlreadyIssued" xml:space="preserve">
-    <value>Gutschein {0} wurde bereits beladen</value>
+  <data name="VoucherAlreadyIssued" xml:space="preserve">
+    <value>[{0}]: Geschenkkarte bereits beladen und kann nicht erneut beladen werden. Bitte verwenden Sie eine andere Geschenkkarte.</value>
   </data>
-  <data name="Voucher_AlreadyUsed" xml:space="preserve">
-    <value>Gutschein {0} wurde bereits verwendet</value>
+  <data name="VoucherAlreadyUsed" xml:space="preserve">
+    <value>[{0}]: Aktion kann nicht durchgeführt werden, da die Karte zwischenzeitlich verwendet wurde. Bitte wenden Sie sich an den Kundenservice.</value>
   </data>
-  <data name="Voucher_Error" xml:space="preserve">
-    <value>Gutscheinanfrage ist fehlerhaft</value>
+  <data name="VoucherError" xml:space="preserve">
+    <value>[{0}]: Gutscheinanfrage ist fehlerhaft.</value>
   </data>
-  <data name="Voucher_Insufficient" xml:space="preserve">
-    <value>Gutschein {0} ist nicht ausreichend</value>
+  <data name="VoucherInactive" xml:space="preserve">
+    <value>[{0}]: Karte gesperrt. Verwenden Sie eine andere oder wenden Sie sich an den Kundenservice.</value>
   </data>
-  <data name="Voucher_NoFullRedemption" xml:space="preserve">
-    <value>Gutschein {0} wird nicht komplett eingelöst</value>
+  <data name="VoucherInsufficientFunds" xml:space="preserve">
+    <value>[{0}]: Karte hat kein Guthaben mehr.</value>
   </data>
-  <data name="Voucher_NotIssued" xml:space="preserve">
-    <value>Gutschein {0} ist noch nicht ausgestellt</value>
+  <data name="VoucherInvalidBarcode" xml:space="preserve">
+    <value>Ungültiger Barcode.</value>
   </data>
-  <data name="Voucher_PinInvalid" xml:space="preserve">
-    <value>Pin des Gutscheins {0} ist falsch</value>
+  <data name="VoucherInvalidCcvOrSsc" xml:space="preserve">
+    <value>[{0}]: Geschenkkarten- oder Gutscheinnummer nicht korrekt. Bitte versuchen Sie es erneut.</value>
+  </data>
+  <data name="VoucherInvalidNumber" xml:space="preserve">
+    <value>[{0}]: Geschenkkarten- oder Gutscheinnummer nicht korrekt. Bitte versuchen Sie es erneut.</value>
+  </data>
+  <data name="VoucherInvalidPin" xml:space="preserve">
+    <value>[{0}]: Geschenkkarten- oder Gutscheinnummer nicht korrekt. Bitte versuchen Sie es erneut.</value>
+  </data>
+  <data name="VoucherInvalidTransactionCode" xml:space="preserve">
+    <value>[{0}]: Diese Funktion kann auf dies Geschenkkarte oder Gutschein nicht durchgeführt werden.</value>
+  </data>
+  <data name="VoucherNoFullRedemption" xml:space="preserve">
+    <value>Gutschein {0} wird nicht komplett eingelöst.</value>
+  </data>
+  <data name="VoucherNotIssued" xml:space="preserve">
+    <value>[{0}]: Geschenkkarten- oder Gutscheinnummer wurde noch nicht ausgestellt.</value>
+  </data>
+  <data name="VoucherUnknown" xml:space="preserve">
+    <value>[{0}]: Geschenkkarten- oder Gutscheinnummer nicht korrekt. Bitte versuchen Sie es erneut.</value>
   </data>
 </root>
