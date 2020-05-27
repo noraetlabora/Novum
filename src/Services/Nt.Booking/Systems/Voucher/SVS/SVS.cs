@@ -15,12 +15,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary> </summary>
         public string BookingSystemName { get => "SVS"; }
 
-        private SvsSoapClient _svsSoapClient;
-        private string _routingId;
-        private string _merchantName;
-        private string _merchantNumber;
+        private SvsSoapClient _svsSoapClient = null;
+        private ServerConfiguration _config = null;
         private Random _random = new Random();
-
         /// <summary>
         /// SVS voucher service. Create an object to handle SVS voucher service queries.
         /// </summary>
@@ -28,9 +25,12 @@ namespace Nt.Booking.Systems.Voucher.SVS
         public SVS(in ServerConfiguration configuration)
         {
             if(configuration == null) 
-                throw new ArgumentNullException();
-            
-            SetArguments(configuration.Arguments);
+                throw new ArgumentNullException("Configuration has not been initialized.");
+
+            if(configuration.Version != "0.2")
+                throw new ArgumentNullException("Invalid configuration. Please update to newer version.");
+
+            _config = configuration;
 
             var timespan = new TimeSpan(0, 0, 0, configuration.Timeout, 0);
             var binding = SvsSoapClient.GetBindingForEndpoint();
@@ -48,17 +48,6 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
 
         /// <summary>
-        /// set SVS specific arguments like routingId, merchant number and merchant name
-        /// </summary>
-        /// <param name="arguments"></param>
-        public void SetArguments(in Dictionary<string, string> arguments)
-        {
-            _routingId = arguments.GetValueOrDefault("routingId", "");
-            _merchantNumber = arguments.GetValueOrDefault("merchantNumber", "");
-            _merchantName = arguments.GetValueOrDefault("merchantName", "");
-        }
-
-        /// <summary>
         /// get information of a medium
         /// </summary>
         /// <param name="metaData"></param>
@@ -73,9 +62,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new BalanceInquiryRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _merchantNumber;
-            svsRequest.merchant.merchantName = _merchantName;
-            svsRequest.routingID = _routingId;
+            svsRequest.merchant.merchantNumber = _config.MerchantNumber;
+            svsRequest.merchant.merchantName = _config.MerchantName;
+            svsRequest.routingID = _config.RoutingId;
             svsRequest.stan = _random.Next(100000, 999999).ToString();
             svsRequest.amount = new Amount();
             svsRequest.amount.currency = NtBooking.serverConfiguration.Currency;
@@ -126,9 +115,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new RedemptionRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _merchantNumber;
-            svsRequest.merchant.merchantName = _merchantName;
-            svsRequest.routingID = _routingId;
+            svsRequest.merchant.merchantNumber = _config.MerchantNumber;
+            svsRequest.merchant.merchantName = _config.MerchantName;
+            svsRequest.routingID = _config.RoutingId;
             svsRequest.stan = _random.Next(100000, 999999).ToString();
             svsRequest.redemptionAmount = new Amount();
             svsRequest.redemptionAmount.amount = (double)debitRequest.Amount;
@@ -169,9 +158,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new IssueGiftCardRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _merchantNumber;
-            svsRequest.merchant.merchantName = _merchantName;
-            svsRequest.routingID = _routingId;
+            svsRequest.merchant.merchantNumber = _config.MerchantNumber;
+            svsRequest.merchant.merchantName = _config.MerchantName;
+            svsRequest.routingID = _config.RoutingId; 
             svsRequest.stan = _random.Next(100000, 999999).ToString();
             svsRequest.issueAmount = new Amount();
             svsRequest.issueAmount.amount = (double)creditRequest.Amount;
@@ -230,9 +219,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new CancelRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _merchantNumber;
-            svsRequest.merchant.merchantName = _merchantName;
-            svsRequest.routingID = _routingId;
+            svsRequest.merchant.merchantNumber = _config.MerchantNumber;
+            svsRequest.merchant.merchantName = _config.MerchantName;
+            svsRequest.routingID = _config.RoutingId; 
             svsRequest.stan = _random.Next(100000, 999999).ToString();
             svsRequest.transactionAmount = new Amount();
             svsRequest.transactionAmount.amount = (double)cancellationRequest.Amount;
@@ -401,11 +390,38 @@ namespace Nt.Booking.Systems.Voucher.SVS
             }
         }
 
-        private bool IsBreuningerCenterVoucher(string mediumId)
+        /// <summary>
+        /// Determine if medium ID is between defined range.
+        /// </summary>
+        /// <param name="ranges">String that represents the ranges by minRange-maxRange</param>
+        /// <param name="mediumId">Medium ID, e.g. voucher number.</param>
+        /// <returns>True if in range, otherwise false.</returns>
+        private bool IsInRange(in string ranges, in string mediumId)
         {
-            if (mediumId.StartsWith("50450763275") || mediumId.StartsWith("50450763276") || mediumId.StartsWith("50450763277"))
-                return true;
+            var xRange = ranges.Split('-');
+
+            if (int.TryParse(xRange[0].Trim(), out int minRange))
+            {
+                if (int.TryParse(xRange[1].Trim(), out int maxRange))
+                {
+                    if (int.TryParse(mediumId.Trim(), out int id))
+                    {
+                        if(id >= minRange && id <= maxRange)
+                            return true;
+                    }
+                }
+            }
             return false;
+        }
+
+        /// <summary>
+        /// Check if medium is of type center voucher.
+        /// </summary>
+        /// <param name="mediumId">Medium ID, e.g. voucher number.</param>
+        /// <returns>True if in range, otherwise false.</returns>
+        private bool IsBreuningerCenterVoucher(in string mediumId)
+        {
+            return IsInRange(_config.BRGECRange, mediumId);
         }
 
         #endregion
