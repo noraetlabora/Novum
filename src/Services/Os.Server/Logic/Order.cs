@@ -51,7 +51,7 @@ namespace Os.Server.Logic
         public static async Task<Models.OrderLineResult> Add(Nt.Data.Session session, string subTableId, Models.OrderLineAdd data)
         {
             if (session.CurrentTable == null)
-                throw new Exception(Resources.Dictionary.GetString("Table_NotFound"));
+                throw new Exception(Resources.Dictionary.GetString("TableNotFound"));
 
             var osOrderLineResult = new Models.OrderLineResult();
 
@@ -84,7 +84,7 @@ namespace Os.Server.Logic
         public static async Task<Models.OrderLineVoidResult> Void(Nt.Data.Session session, string orderLineId, Models.OrderLineVoid data)
         {
             if (session.CurrentTable == null)
-                throw new Exception(Resources.Dictionary.GetString("Table_NotOpen"));
+                throw new Exception(Resources.Dictionary.GetString("TableNotOpen"));
 
             //search in new/uncommited orders, when not found search in ordered/prebooked orders of current table
             var ntOrder = session.GetOrder(orderLineId);
@@ -92,7 +92,7 @@ namespace Os.Server.Logic
             {
                 var ntOrders = await Nt.Database.DB.Api.Order.GetOrders(session.CurrentTable.Id).ConfigureAwait(false);
                 if (!ntOrders.ContainsKey(orderLineId))
-                    throw new Exception(Resources.Dictionary.GetString("Order_NotFound"));
+                    throw new Exception(Resources.Dictionary.GetString("OrderNotFound"));
                 ntOrder = ntOrders[orderLineId];
             }
 
@@ -102,7 +102,7 @@ namespace Os.Server.Logic
                     if (session.NotPermitted(Nt.Data.Permission.PermissionType.CancelUnconfirmedOrder))
                     {
                         Nt.Logging.Log.Server.Error("void new order is not allowed: " + orderLineId);
-                        throw new Exception(Resources.Dictionary.GetString("Order_VoidNotAllowed"));
+                        throw new Exception(Resources.Dictionary.GetString("OrderVoidNotAllowed"));
                     }
 
                     var price = decimal.Multiply((decimal)data.Quantity, ntOrder.UnitPrice);
@@ -113,7 +113,7 @@ namespace Os.Server.Logic
                     if (session.NotPermitted(Nt.Data.Permission.PermissionType.CancelUnconfirmedOrder))
                     {
                         Nt.Logging.Log.Server.Error("void prebooked order is not allowed: " + orderLineId);
-                        throw new Exception(Resources.Dictionary.GetString("Order_VoidNotAllowed"));
+                        throw new Exception(Resources.Dictionary.GetString("OrderVoidNotAllowed"));
                     }
 
                     await Nt.Database.DB.Api.Order.VoidPrebookedOrder(session, session.CurrentTable.Id, (decimal)data.Quantity, ntOrder.SequenceNumber, "").ConfigureAwait(false);
@@ -122,7 +122,7 @@ namespace Os.Server.Logic
                     if (session.NotPermitted(Nt.Data.Permission.PermissionType.CancelConfirmedOrder))
                     {
                         Nt.Logging.Log.Server.Error("void confirmed order is not allowed: " + orderLineId);
-                        throw new Exception(Resources.Dictionary.GetString("Order_VoidNotAllowed"));
+                        throw new Exception(Resources.Dictionary.GetString("OrderVoidNotAllowed"));
                     }
 
                     await Nt.Database.DB.Api.Order.VoidOrderedOrder(session, session.CurrentTable.Id, ntOrder, (decimal)data.Quantity, data.CancellationReasonId, "").ConfigureAwait(false);
@@ -150,10 +150,10 @@ namespace Os.Server.Logic
         public static async Task<Models.OrderLineResult> Modify(Nt.Data.Session session, string orderLineId, Models.OrderLineModify data)
         {
             if (session.CurrentTable == null)
-                throw new Exception(Resources.Dictionary.GetString("Table_NotOpen"));
+                throw new Exception(Resources.Dictionary.GetString("TableNotOpen"));
 
             if (!session.ContainsOrder(orderLineId))
-                throw new Exception(Resources.Dictionary.GetString("Order_NotFound"));
+                throw new Exception(Resources.Dictionary.GetString("OrderNotFound"));
 
             var ntOrder = session.GetOrder(orderLineId);
 
@@ -173,7 +173,7 @@ namespace Os.Server.Logic
         public static async Task CancelOrder(Nt.Data.Session session, string tableId)
         {
             if (session.CurrentTable == null)
-                throw new Exception(Resources.Dictionary.GetString("Table_NotOpen"));
+                throw new Exception(Resources.Dictionary.GetString("TableNotOpen"));
 
             await Nt.Database.DB.Api.Table.UnlockTable(session, session.CurrentTable.Id).ConfigureAwait(false);
             session.ClearOrders();
@@ -218,7 +218,7 @@ namespace Os.Server.Logic
             var osOrderLineSplitResult = new Models.OrderLineSplitResult();
 
             if (!session.ContainsOrder(orderLineId))
-                throw new Exception(Resources.Dictionary.GetString("Order_NotFound"));
+                throw new Exception(Resources.Dictionary.GetString("OrderNotFound"));
 
             var ntSplitOrderId = session.SplitOrder(orderLineId, (decimal)data.Quantity);
             //

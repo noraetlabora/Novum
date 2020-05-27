@@ -117,13 +117,13 @@ namespace Nt.Database.Api.Intersystems
                 //switch (errorCode)
                 //{
                 //    case "2":
-                //        throw new Exception(string.Format(Resources.Dictionary.GetString("Table_NotDefined"), tableName));
+                //        throw new Exception(string.Format(Resources.Dictionary.GetString("TableNotDefined"), tableName));
                 //    case "5":
-                //        throw new Exception(string.Format(Resources.Dictionary.GetString("Table_NoOpenPermission"), tableName));
+                //        throw new Exception(string.Format(Resources.Dictionary.GetString("TableNoOpenPermission"), tableName));
                 //    case "6":
-                //        throw new Exception(string.Format(Resources.Dictionary.GetString("Table_AlreadyOpen"), tableName));
+                //        throw new Exception(string.Format(Resources.Dictionary.GetString("TableAlreadyOpen"), tableName));
                 //    default:
-                //        throw new Exception(string.Format(Resources.Dictionary.GetString("Table_OpenError"), tableName));
+                //        throw new Exception(string.Format(Resources.Dictionary.GetString("TableOpenError"), tableName));
                 //}
             }
         }

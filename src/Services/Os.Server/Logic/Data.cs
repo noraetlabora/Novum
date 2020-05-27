@@ -145,7 +145,7 @@ namespace Os.Server.Logic
                     //Roomnumber
                     var manualInputLine = new Models.ManualInputLine();
                     manualInputLine.Key = "ROOM";
-                    manualInputLine.Label = Resources.Dictionary.GetString("Room_Number");
+                    manualInputLine.Label = Resources.Dictionary.GetString("RoomNumber");
                     manualInputLine.Type = Models.ManualInputType.TextEnum;
                     osPaymentMedium.RequestInput.MethodManual.Lines.Add(manualInputLine);
                     break;
@@ -365,7 +365,7 @@ namespace Os.Server.Logic
             //////////////////////////////////////
             osModifierGroup = new Models.ModifierGroup();
             osModifierGroup.Id = "text";
-            osModifierGroup.Name = Resources.Dictionary.GetString("Modifier_Text");
+            osModifierGroup.Name = Resources.Dictionary.GetString("ModifierText");
             osModifierGroup.Type = Models.ModifierGroup.ModifierType.TextInputEnum;
             osModifierGroups.Add(osModifierGroup);
 
@@ -374,7 +374,7 @@ namespace Os.Server.Logic
             //////////////////////////////////////
             osModifierGroup = new Models.ModifierGroup();
             osModifierGroup.Id = "fax";
-            osModifierGroup.Name = Resources.Dictionary.GetString("Modifier_Fax");
+            osModifierGroup.Name = Resources.Dictionary.GetString("ModifierFax");
             osModifierGroup.Type = Models.ModifierGroup.ModifierType.FaxInputEnum;
             osModifierGroups.Add(osModifierGroup);
 
