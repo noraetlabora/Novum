@@ -118,7 +118,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.merchant.merchantNumber = _config.MerchantNumber;
             svsRequest.merchant.merchantName = _config.MerchantName;
             svsRequest.routingID = _config.RoutingId;
-            svsRequest.stan = debitRequest.MetaData.InvoiceId;
+            svsRequest.stan = debitRequest.MetaData.transactionId;
             svsRequest.redemptionAmount = new Amount();
             svsRequest.redemptionAmount.amount = (double)debitRequest.Amount;
             svsRequest.redemptionAmount.currency = NtBooking.serverConfiguration.Currency;
@@ -161,7 +161,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.merchant.merchantNumber = _config.MerchantNumber;
             svsRequest.merchant.merchantName = _config.MerchantName;
             svsRequest.routingID = _config.RoutingId; 
-            svsRequest.stan = creditRequest.MetaData.InvoiceId;
+            svsRequest.stan = creditRequest.MetaData.transactionId;
             svsRequest.issueAmount = new Amount();
             svsRequest.issueAmount.amount = (double)creditRequest.Amount;
             svsRequest.issueAmount.currency = NtBooking.serverConfiguration.Currency;
@@ -222,7 +222,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.merchant.merchantNumber = _config.MerchantNumber;
             svsRequest.merchant.merchantName = _config.MerchantName;
             svsRequest.routingID = _config.RoutingId; 
-            svsRequest.stan = cancellationRequest.MetaData.InvoiceId;
+            svsRequest.stan = cancellationRequest.MetaData.transactionId;
             svsRequest.transactionAmount = new Amount();
             svsRequest.transactionAmount.amount = (double)cancellationRequest.Amount;
             svsRequest.transactionAmount.currency = NtBooking.serverConfiguration.Currency;
