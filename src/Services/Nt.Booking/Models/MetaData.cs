@@ -83,8 +83,8 @@ namespace Nt.Booking.Models
         /// Name of the table
         /// </summary>
         /// <value>Name of the table</value>
-        [DataMember(Name = "invoiceId")]
-        public string InvoiceId { get; set; }
+        [DataMember(Name = "transactionId")]
+        public string transactionId { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
@@ -104,7 +104,7 @@ namespace Nt.Booking.Models
             sb.Append("  ServiceAreaName: ").Append(ServiceAreaName).Append("\n");
             sb.Append("  TableId: ").Append(TableId).Append("\n");
             sb.Append("  TableName: ").Append(TableName).Append("\n");
-            sb.Append("  InvoiceId: ").Append(InvoiceId).Append("\n");
+            sb.Append("  InvoiceId: ").Append(transactionId).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
