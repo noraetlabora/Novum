@@ -21,6 +21,12 @@ namespace Nt.Booking.Models
         public string InvoiceId { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        [DataMember(Name = "metaData")]
+        public MetaData MetaData { get; set; }
+
+        /// <summary>
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
