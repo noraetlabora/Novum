@@ -117,22 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Article_NotAvailable" xml:space="preserve">
-    <value>Der Artikel '{0}' ist nicht verfügbar</value>
+  <data name="ArticleNotAvailable" xml:space="preserve">
+    <value>Der Artikel '{0}' ist nicht verfügbar.</value>
   </data>
-  <data name="DB_NoConnection" xml:space="preserve">
-    <value>Datenbankverbindung ist unterbrochen</value>
+  <data name="DBNoConnection" xml:space="preserve">
+    <value>Datenbankverbindung ist unterbrochen.</value>
   </data>
-  <data name="Table_AlreadyOpen" xml:space="preserve">
-    <value>Tisch {0} wird gerade bearbeitet</value>
+  <data name="TableAlreadyOpen" xml:space="preserve">
+    <value>Tisch {0} wird gerade bearbeitet.</value>
   </data>
-  <data name="Table_NoOpenPermission" xml:space="preserve">
+  <data name="TableNoOpenPermission" xml:space="preserve">
     <value>Tisch {0} kann nicht geöffnet werden. Sie haben keine Berechtigung.</value>
   </data>
-  <data name="Table_NotDefined" xml:space="preserve">
-    <value>Tisch {0} ist nicht vorhanden</value>
+  <data name="TableNotDefined" xml:space="preserve">
+    <value>Tisch {0} ist nicht vorhanden.</value>
   </data>
-  <data name="Table_OpenError" xml:space="preserve">
-    <value>Fehler beim Öffnen des Tisches {0}</value>
+  <data name="TableOpenError" xml:space="preserve">
+    <value>Fehler beim Öffnen des Tisches {0}.</value>
   </data>
 </root>

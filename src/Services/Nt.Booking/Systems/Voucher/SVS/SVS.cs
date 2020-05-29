@@ -15,12 +15,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary> </summary>
         public string BookingSystemName { get => "SVS"; }
 
-        private SvsSoapClient _svsSoapClient;
-        private string _routingId;
-        private string _merchantName;
-        private string _merchantNumber;
+        private SvsSoapClient _svsSoapClient = null;
+        private ServerConfiguration _config = null;
         private Random _random = new Random();
-
         /// <summary>
         /// SVS voucher service. Create an object to handle SVS voucher service queries.
         /// </summary>
@@ -28,9 +25,12 @@ namespace Nt.Booking.Systems.Voucher.SVS
         public SVS(in ServerConfiguration configuration)
         {
             if(configuration == null) 
-                throw new ArgumentNullException();
-            
-            SetArguments(configuration.Arguments);
+                throw new ArgumentNullException("Configuration has not been initialized.");
+
+            if(configuration.Version != "0.2")
+                throw new ArgumentNullException("Invalid configuration. Please update to newer version.");
+
+            _config = configuration;
 
             var timespan = new TimeSpan(0, 0, 0, configuration.Timeout, 0);
             var binding = SvsSoapClient.GetBindingForEndpoint();
@@ -48,17 +48,6 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
 
         /// <summary>
-        /// set SVS specific arguments like routingId, merchant number and merchant name
-        /// </summary>
-        /// <param name="arguments"></param>
-        public void SetArguments(in Dictionary<string, string> arguments)
-        {
-            _routingId = arguments.GetValueOrDefault("routingId", "");
-            _merchantNumber = arguments.GetValueOrDefault("merchantNumber", "");
-            _merchantName = arguments.GetValueOrDefault("merchantName", "");
-        }
-
-        /// <summary>
         /// get information of a medium
         /// </summary>
         /// <param name="metaData"></param>
@@ -73,9 +62,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new BalanceInquiryRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _merchantNumber;
-            svsRequest.merchant.merchantName = _merchantName;
-            svsRequest.routingID = _routingId;
+            svsRequest.merchant.merchantNumber = _config.MerchantNumber;
+            svsRequest.merchant.merchantName = _config.MerchantName;
+            svsRequest.routingID = _config.RoutingId;
             svsRequest.stan = _random.Next(100000, 999999).ToString();
             svsRequest.amount = new Amount();
             svsRequest.amount.currency = NtBooking.serverConfiguration.Currency;
@@ -126,10 +115,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new RedemptionRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _merchantNumber;
-            svsRequest.merchant.merchantName = _merchantName;
-            svsRequest.routingID = _routingId;
-            svsRequest.stan = _random.Next(100000, 999999).ToString();
+            svsRequest.merchant.merchantNumber = _config.MerchantNumber;
+            svsRequest.merchant.merchantName = _config.MerchantName;
+            svsRequest.routingID = _config.RoutingId;
+            svsRequest.stan = debitRequest.MetaData.InvoiceId;
             svsRequest.redemptionAmount = new Amount();
             svsRequest.redemptionAmount.amount = (double)debitRequest.Amount;
             svsRequest.redemptionAmount.currency = NtBooking.serverConfiguration.Currency;
@@ -169,10 +158,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new IssueGiftCardRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _merchantNumber;
-            svsRequest.merchant.merchantName = _merchantName;
-            svsRequest.routingID = _routingId;
-            svsRequest.stan = _random.Next(100000, 999999).ToString();
+            svsRequest.merchant.merchantNumber = _config.MerchantNumber;
+            svsRequest.merchant.merchantName = _config.MerchantName;
+            svsRequest.routingID = _config.RoutingId; 
+            svsRequest.stan = creditRequest.MetaData.InvoiceId;
             svsRequest.issueAmount = new Amount();
             svsRequest.issueAmount.amount = (double)creditRequest.Amount;
             svsRequest.issueAmount.currency = NtBooking.serverConfiguration.Currency;
@@ -230,10 +219,10 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new CancelRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _merchantNumber;
-            svsRequest.merchant.merchantName = _merchantName;
-            svsRequest.routingID = _routingId;
-            svsRequest.stan = _random.Next(100000, 999999).ToString();
+            svsRequest.merchant.merchantNumber = _config.MerchantNumber;
+            svsRequest.merchant.merchantName = _config.MerchantName;
+            svsRequest.routingID = _config.RoutingId; 
+            svsRequest.stan = cancellationRequest.MetaData.InvoiceId;
             svsRequest.transactionAmount = new Amount();
             svsRequest.transactionAmount.amount = (double)cancellationRequest.Amount;
             svsRequest.transactionAmount.currency = NtBooking.serverConfiguration.Currency;
@@ -271,31 +260,47 @@ namespace Nt.Booking.Systems.Voucher.SVS
                     return null;
                 case "02": //Inactive Card
                     errorResponse.Error.Code = Enums.ErrorCode.VoucherInactive;
-                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("Voucher_Inactive"), voucherNumber);
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherInactive"), returnCode.returnCode);
                     break;
                 case "03": //Invalid Card Number
-                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInvalid;
-                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("Voucher_Invalid"), voucherNumber);
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInvalidNumber;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherInvalidNumber"), returnCode.returnCode);
+                    break;
+                case "04": //Invalid Transaction Code
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInvalidTransactionCode;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherInvalidTransactionCode"), returnCode.returnCode);
                     break;
                 case "05": //Insufficient Funds
-                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInsufficient;
-                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("Voucher_Insufficient"), voucherNumber);
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInsufficientFunds;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherInsufficientFunds"), returnCode.returnCode);
+                    break;
+                case "08": //VoucherUnknown
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherUnknown;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherUnknown"), returnCode.returnCode);
                     break;
                 case "15": //Host Unavailable
                     errorResponse.Error.Code = Enums.ErrorCode.HostUnavailable;
-                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("HostUnavailable"), "");
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("HostUnavailable"), returnCode.returnCode);
+                    break;
+                case "19": //Invalid CCV or SSC
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInvalidCcvOrSsc;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherInvalidCcvOrSsc"), returnCode.returnCode);
                     break;
                 case "20": //Pin Invalid
-                    errorResponse.Error.Code = Enums.ErrorCode.VoucherPinInvalid;
-                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("Voucher_PinInvalid"), voucherNumber);
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherInvalidPin;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherInvalidPin"), returnCode.returnCode);
                     break;
                 case "21": //Card Already Issued
                     errorResponse.Error.Code = Enums.ErrorCode.VoucherAlreadyIssued;
-                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("Voucher_AlreadyIssued"), voucherNumber);
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherAlreadyIssued"), returnCode.returnCode);
+                    break;
+                case "22": //Card Already Issued
+                    errorResponse.Error.Code = Enums.ErrorCode.VoucherNotIssued;
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherNotIssued"), returnCode.returnCode);
                     break;
                 default:
                     errorResponse.Error.Code = Enums.ErrorCode.Error;
-                    errorResponse.Error.Message = Resources.Dictionary.GetString("Voucher_Error");
+                    errorResponse.Error.Message = string.Format(Resources.Dictionary.GetString("VoucherError"), returnCode.returnCode);
                     break;
             }
             return errorResponse;
@@ -380,16 +385,43 @@ namespace Nt.Booking.Systems.Voucher.SVS
                     voucherAmount = int.Parse(mediumId.Substring(19, 4));
                 if (debitRequest.Amount != voucherAmount)
                 {
-                    throw new Exception(string.Format(Resources.Dictionary.GetString("Voucher_NoFullRedemption"), GetCardNumber(mediumId)));
+                    throw new Exception(string.Format(Resources.Dictionary.GetString("VoucherNoFullRedemption"), GetCardNumber(mediumId)));
                 }
             }
         }
 
-        private bool IsBreuningerCenterVoucher(string mediumId)
+        /// <summary>
+        /// Determine if medium ID is between defined range.
+        /// </summary>
+        /// <param name="ranges">String that represents the ranges by minRange-maxRange</param>
+        /// <param name="mediumId">Medium ID, e.g. voucher number.</param>
+        /// <returns>True if in range, otherwise false.</returns>
+        private bool IsInRange(in string ranges, in string mediumId)
         {
-            if (mediumId.StartsWith("50450763275") || mediumId.StartsWith("50450763276") || mediumId.StartsWith("50450763277"))
-                return true;
+            var xRange = ranges.Split('-');
+
+            if (int.TryParse(xRange[0].Trim(), out int minRange))
+            {
+                if (int.TryParse(xRange[1].Trim(), out int maxRange))
+                {
+                    if (int.TryParse(mediumId.Trim(), out int id))
+                    {
+                        if(id >= minRange && id <= maxRange)
+                            return true;
+                    }
+                }
+            }
             return false;
+        }
+
+        /// <summary>
+        /// Check if medium is of type center voucher.
+        /// </summary>
+        /// <param name="mediumId">Medium ID, e.g. voucher number.</param>
+        /// <returns>True if in range, otherwise false.</returns>
+        private bool IsBreuningerCenterVoucher(in string mediumId)
+        {
+            return IsInRange(_config.BRGECRange, mediumId);
         }
 
         #endregion

@@ -30,7 +30,7 @@ namespace Os.Server.Logic
         {
             var posId = await Nt.Database.DB.Api.Pos.GetPosId(serialNumber).ConfigureAwait(false);
             if (string.IsNullOrEmpty(posId))
-                throw new Exception(string.Format(Resources.Dictionary.GetString("Device_NotValid"), serialNumber));
+                throw new Exception(string.Format(Resources.Dictionary.GetString("DeviceNotValid"), serialNumber));
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Os.Server.Logic
             {
                 var waiterId = await Nt.Database.DB.Api.Waiter.GetWaiterId(loginUser.Id).ConfigureAwait(false);
                 if (string.IsNullOrEmpty(waiterId))
-                    throw new Exception(Resources.Dictionary.GetString("Waiter_PinNotValid"));
+                    throw new Exception(Resources.Dictionary.GetString("WaiterPinNotValid"));
 
                 session.WaiterId = waiterId;
             }
@@ -54,7 +54,7 @@ namespace Os.Server.Logic
             {
                 var validWaiter = await Nt.Database.DB.Api.Waiter.ValidWaiter(loginUser.Id, loginUser.Password).ConfigureAwait(false);
                 if (!validWaiter)
-                    throw new Exception(Resources.Dictionary.GetString("Waiter_IdPasswordNotValid"));
+                    throw new Exception(Resources.Dictionary.GetString("WaiterIdPasswordNotValid"));
 
                 session.WaiterId = loginUser.Id;
             }

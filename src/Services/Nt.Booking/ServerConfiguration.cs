@@ -88,6 +88,45 @@ namespace Nt.Booking
             set { Data.GetSection("version").Value = value; }
         }
 
+        public string MerchantNumber
+        {
+            get { return Arguments.GetValueOrDefault<string, string>("merchantNumber", ""); }
+            set { }
+        }
+        public string MerchantName
+        {
+            get { return Arguments.GetValueOrDefault<string, string>("merchantName", ""); }
+            set { }
+        }
+        public string RoutingId
+        {
+            get { return Arguments.GetValueOrDefault<string, string>("routingId", ""); }
+            set { }
+        }
+
+        public string BRGEGRange
+        {
+            get { return Arguments.GetValueOrDefault<string,string>("gRange", "0 - 0"); }
+            set { Data.GetSection("arguments").GetSection("gRange").Value = value; }
+        }
+
+        public string BRGEBRange
+        {
+            get { return Arguments.GetValueOrDefault<string, string>("bRange", "0 - 0"); }
+            set { Data.GetSection("arguments").GetSection("bRange").Value = value; }
+        }
+
+        public string BRGECRange
+        {
+            get { return Arguments.GetValueOrDefault<string, string>("cRange", "0 - 0"); }
+            set { Data.GetSection("arguments").GetSection("cRange").Value = value; }
+        }
+
+        public string BRGESRange
+        {
+            get { return Arguments.GetValueOrDefault<string, string>("sRange", "0 - 0"); }
+            set { Data.GetSection("arguments").GetSection("sRange").Value = value; }
+        }
         /// <summary>
         /// Default constructor. Base configuration of the server settings.
         /// </summary>

@@ -117,34 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Modifier_Fax" xml:space="preserve">
+  <data name="DeviceNotValid" xml:space="preserve">
+    <value>Device {0} is not defined.</value>
+  </data>
+  <data name="ModifierFax" xml:space="preserve">
     <value>Handnote</value>
   </data>
-  <data name="Modifier_Text" xml:space="preserve">
+  <data name="ModifierText" xml:space="preserve">
     <value>Note</value>
   </data>
-  <data name="Order_NoneFound" xml:space="preserve">
-    <value>no orders found</value>
+  <data name="OrderNoneFound" xml:space="preserve">
+    <value>No orders found</value>
   </data>
-  <data name="Order_NotFound" xml:space="preserve">
-    <value>order not found</value>
+  <data name="OrderNotFound" xml:space="preserve">
+    <value>Order not found</value>
   </data>
-  <data name="Order_VoidNotAllowed" xml:space="preserve">
-    <value>void of order is not allowed</value>
+  <data name="OrderVoidNotAllowed" xml:space="preserve">
+    <value>Void of order is not allowed.</value>
   </data>
-  <data name="Payment_Tip" xml:space="preserve">
-    <value>tip</value>
+  <data name="PaymentTip" xml:space="preserve">
+    <value>Tip</value>
   </data>
-  <data name="Room_Number" xml:space="preserve">
-    <value>room number</value>
+  <data name="RoomNumber" xml:space="preserve">
+    <value>Room number</value>
   </data>
-  <data name="Table_NotOpen" xml:space="preserve">
-    <value>table {0} is not open</value>
+  <data name="TableNotOpen" xml:space="preserve">
+    <value>Table {0} is not open.</value>
   </data>
-  <data name="Waiter_IdPasswordNotValid" xml:space="preserve">
-    <value>waiter and password do not match</value>
+  <data name="WaiterIdPasswordNotValid" xml:space="preserve">
+    <value>Waiter and password do not match.</value>
   </data>
-  <data name="Waiter_PinNotValid" xml:space="preserve">
-    <value>pin of waiter is unknown</value>
+  <data name="WaiterPinNotValid" xml:space="preserve">
+    <value>PIN of waiter is unknown.</value>
   </data>
 </root>

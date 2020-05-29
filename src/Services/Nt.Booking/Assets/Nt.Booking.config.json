@@ -1,5 +1,5 @@
 {
-    "version": "0.1",
+    "version": "0.2",
     "bookingSystem": -1,
     "connection": {
         "address": "https://server.address.com",
@@ -15,6 +15,10 @@
     "arguments": {
         "routingId": "",
         "merchantNumber": "",
-        "merchantName": ""
+        "merchantName": "",
+        "gRange": "",
+        "bRange": "",
+        "cRange": "",
+        "sRange": ""
     }
 }
