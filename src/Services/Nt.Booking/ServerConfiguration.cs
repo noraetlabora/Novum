@@ -89,40 +89,49 @@ namespace Nt.Booking
             set { Data.GetSection("version").Value = value; }
         }
 
+        /// <summary></summary>
         public string MerchantNumber
         {
             get { return Arguments.GetValueOrDefault<string, string>("merchantNumber", ""); }
             set { }
         }
+
+        /// <summary></summary>
         public string MerchantName
         {
             get { return Arguments.GetValueOrDefault<string, string>("merchantName", ""); }
             set { }
         }
+
+        /// <summary></summary>
         public string RoutingId
         {
             get { return Arguments.GetValueOrDefault<string, string>("routingId", ""); }
             set { }
         }
 
+        /// <summary></summary>
         public string BRGEGRange
         {
             get { return Arguments.GetValueOrDefault<string,string>("gRange", "0 - 0"); }
             set { Data.GetSection("arguments").GetSection("gRange").Value = value; }
         }
 
+        /// <summary></summary>
         public string BRGEBRange
         {
             get { return Arguments.GetValueOrDefault<string, string>("bRange", "0 - 0"); }
             set { Data.GetSection("arguments").GetSection("bRange").Value = value; }
         }
 
+        /// <summary></summary>
         public string BRGECRange
         {
             get { return Arguments.GetValueOrDefault<string, string>("cRange", "0 - 0"); }
             set { Data.GetSection("arguments").GetSection("cRange").Value = value; }
         }
 
+        /// <summary></summary>
         public string BRGESRange
         {
             get { return Arguments.GetValueOrDefault<string, string>("sRange", "0 - 0"); }
