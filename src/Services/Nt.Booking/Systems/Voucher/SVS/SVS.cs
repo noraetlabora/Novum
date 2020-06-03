@@ -89,7 +89,6 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
 
 
-
         /// <summary>
         /// get information of all media, not used in SVS
         /// </summary>
@@ -326,7 +325,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         {
             // Breuninger Center Voucher (no SSC or pin)
             if (IsBreuningerCenterVoucher(mediumId))
-                return "00000000";
+                return string.Empty;
             // SSC - send pin like "SSSS0000"   
             if (mediumId?.Length == 23)
                 return mediumId.Substring(19, 4) + "0000";
@@ -335,7 +334,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
                 return "0000" + mediumId.Substring(23, 4);
 
             Nt.Logging.Log.Server.Info("SVS - pin number not detachable from mediumId " + mediumId);
-            return "00000000";
+            return string.Empty;
         }
 
         /// <summary>

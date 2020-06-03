@@ -17,6 +17,7 @@ namespace Nt.Booking
             get { return (Nt.Booking.NtBooking.BookingSystemType)Data.GetValue<int>("bookingSystem", -1); }
             set { Data.GetSection("bookingSystem").Value = value.ToString(); }
         }
+
         /// <summary>Port where the Nt.Booking Service is listening.</summary>
         public int Port
         {
@@ -88,45 +89,55 @@ namespace Nt.Booking
             set { Data.GetSection("version").Value = value; }
         }
 
+        /// <summary></summary>
         public string MerchantNumber
         {
             get { return Arguments.GetValueOrDefault<string, string>("merchantNumber", ""); }
             set { }
         }
+
+        /// <summary></summary>
         public string MerchantName
         {
             get { return Arguments.GetValueOrDefault<string, string>("merchantName", ""); }
             set { }
         }
+
+        /// <summary></summary>
         public string RoutingId
         {
             get { return Arguments.GetValueOrDefault<string, string>("routingId", ""); }
             set { }
         }
 
+        /// <summary></summary>
         public string BRGEGRange
         {
             get { return Arguments.GetValueOrDefault<string,string>("gRange", "0 - 0"); }
             set { Data.GetSection("arguments").GetSection("gRange").Value = value; }
         }
 
+        /// <summary></summary>
         public string BRGEBRange
         {
             get { return Arguments.GetValueOrDefault<string, string>("bRange", "0 - 0"); }
             set { Data.GetSection("arguments").GetSection("bRange").Value = value; }
         }
 
+        /// <summary></summary>
         public string BRGECRange
         {
             get { return Arguments.GetValueOrDefault<string, string>("cRange", "0 - 0"); }
             set { Data.GetSection("arguments").GetSection("cRange").Value = value; }
         }
 
+        /// <summary></summary>
         public string BRGESRange
         {
             get { return Arguments.GetValueOrDefault<string, string>("sRange", "0 - 0"); }
             set { Data.GetSection("arguments").GetSection("sRange").Value = value; }
         }
+
         /// <summary>
         /// Default constructor. Base configuration of the server settings.
         /// </summary>
@@ -150,20 +161,7 @@ namespace Nt.Booking
         /// <returns>JSON string of the current server configuration.</returns>
         public string ToJson()
         {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Convert data structure to string.
-        /// </summary>
-        /// <returns>String of currenct configuration.</returns>
-        public override string ToString()
-        {
-            var builder = new System.Text.StringBuilder();
-            builder.Append("ServerConfiguration: ");
-            builder.Append(" BookingSystem = ").Append(BookingSystem);
-            builder.Append(" Port =").Append(Port);
-            return builder.ToString();
+            return JsonSerializer.Serialize(this);
         }
     }
 }
