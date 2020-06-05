@@ -8,7 +8,9 @@ using Nt.Booking.Systems;
 using System;
 using System.ServiceProcess;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.CommandLineUtils;
 using System.Collections.Generic;
+using Nt.Booking.Systems.Voucher.SVS;
 
 namespace Nt.Booking
 {
@@ -44,8 +46,12 @@ namespace Nt.Booking
         public static void Help()
         {
             var helpInfo = new StringBuilder();
-            helpInfo.Append("\nNt.Booking\n\n");
-            helpInfo.Append("-i/--input\tJSON formatted input configuration file path.\n");
+            helpInfo.Append("\nNt.Booking:\n");
+            helpInfo.Append("  Creates a booking service based on a preconfigured configuration file.\n");
+            helpInfo.Append("Usage:\n");
+            helpInfo.Append("  Nt.Booking.exe [options]:\n");
+            helpInfo.Append("Options:\n");
+            helpInfo.Append("  -i/--input\tJSON formatted input configuration file path.\n");
             System.Console.WriteLine(helpInfo.ToString());
         }
 
@@ -57,47 +63,62 @@ namespace Nt.Booking
         /// <param name="args">Optional arguments.</param>
         public static void Main(string[] args)
         {
+            CommandLineApplication commandLineApplication = new CommandLineApplication(throwOnUnexpectedArg: false);
+            commandLineApplication.Description = "Creates a service that is used to handle booking queries.";
+            commandLineApplication.Name = "Nt.Booking";
+            commandLineApplication.FullName = "Nt.Booking";
+
+            CommandOption input = commandLineApplication.Option("-i |--input <file>", "The service configuration file.", CommandOptionType.SingleValue);
+            commandLineApplication.HelpOption("-? | -h | --help");
             try
             {
-                var switchMappings = new Dictionary<string, string>()
-                 {
-                     { "-i", "input" },
-                     { "--input", "input"}
-                 };
-
-                var builder = new ConfigurationBuilder();
-                builder.AddCommandLine(args, switchMappings);
-                var config = builder.Build();
-
-                var serverConfigFile = config.GetValue<string>("input", AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config.json");
-
                 Nt.Logging.Log.Server.Info("================================================================== Nt.Booking  ==================================================================");
-                Resources.Dictionary.Initialize("de-AT");
 
-                serverConfiguration = new ServerConfiguration(serverConfigFile);
-
-                BookingSystem = BookingSystemFactory.Create(serverConfiguration);
-
-                args = new string[2] { "--port", serverConfiguration.Port.ToString() };
-                var webHostBuilder = CreateWebHostBuilder(args);
-                var webHost = webHostBuilder.Build();
-
-                if (Console.IsOutputRedirected)
+                commandLineApplication.OnExecute(() =>
                 {
-                    Nt.Logging.Log.Server.Info("starting as service");
-                    var webHostService = new Services.WebHostService(webHost);
-                    ServiceBase.Run(webHostService);
-                }
-                else
-                {
-                    Nt.Logging.Log.Server.Info("starting in console");
-                    webHost.Run();
-                }
+                    Resources.Dictionary.Initialize("de-AT");
+
+                    string serverConfigFile = input.Value() ?? (AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config.json");
+                    serverConfiguration = new ServerConfiguration(serverConfigFile);
+                    serverConfiguration.Save(AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config2.json");
+
+                    StartBookingService(serverConfiguration);
+
+                    return 0;
+                });
+                commandLineApplication.Execute(args);
             }
             catch (Exception ex)
             {
-                Help();
+                System.Console.Out.Write(ex.Message);
+                commandLineApplication.ShowHelp();
+
                 Nt.Logging.Log.Server.Fatal(ex);
+            }
+        }
+
+        /// <summary>
+        /// Start booking service by a user defined configuration.
+        /// </summary>
+        /// <param name="serverConfiguration">Server configuration.</param>
+        public static void StartBookingService(in ServerConfiguration serverConfiguration)
+        {
+            BookingSystem = BookingSystemFactory.Create(serverConfiguration);
+
+            string[] args = new string[2] { "--port", serverConfiguration.Port.ToString() };
+            var webHostBuilder = CreateWebHostBuilder(args);
+            var webHost = webHostBuilder.Build();
+
+            if (Console.IsOutputRedirected)
+            {
+                Nt.Logging.Log.Server.Info("starting as service");
+                var webHostService = new Services.WebHostService(webHost);
+                ServiceBase.Run(webHostService);
+            }
+            else
+            {
+                Nt.Logging.Log.Server.Info("starting in console");
+                webHost.Run();
             }
         }
 
