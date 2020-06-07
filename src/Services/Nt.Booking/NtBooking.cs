@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.CommandLineUtils;
 using System.Collections.Generic;
 using Nt.Booking.Systems.Voucher.SVS;
+using System.Text.Json;
 
 namespace Nt.Booking
 {
@@ -35,7 +36,7 @@ namespace Nt.Booking
         }
 
         /// <summary>Main configuration settings.</summary>
-        public static ServerConfiguration serverConfiguration { get; private set; }
+        public static ServiceConfiguration serverConfiguration { get; private set; }
 
         /// <summary>Booking system that is created.</summary>
         public static IBookingSystem BookingSystem;
@@ -79,7 +80,12 @@ namespace Nt.Booking
                     Resources.Dictionary.Initialize("de-AT");
 
                     string serverConfigFile = input.Value() ?? (AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config.json");
-                    serverConfiguration = new ServerConfiguration(serverConfigFile);
+
+                    // todo: possible to serialize config file
+                    // var conf = System.Text.Json.JsonSerializer.Deserialize<SvsServiceConfiguration>(System.IO.File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config.json"), new JsonSerializerOptions { PropertyNamingPolicy=JsonNamingPolicy.CamelCase} );
+                    // var jsonTxt = conf.ToJson();
+
+                    serverConfiguration = new ServiceConfiguration(serverConfigFile);
                     serverConfiguration.Save(AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config2.json");
 
                     StartBookingService(serverConfiguration);
@@ -101,7 +107,7 @@ namespace Nt.Booking
         /// Start booking service by a user defined configuration.
         /// </summary>
         /// <param name="serverConfiguration">Server configuration.</param>
-        public static void StartBookingService(in ServerConfiguration serverConfiguration)
+        public static void StartBookingService(in ServiceConfiguration serverConfiguration)
         {
             BookingSystem = BookingSystemFactory.Create(serverConfiguration);
 

@@ -7,9 +7,9 @@ using System.Text.Json;
 namespace Nt.Booking
 {
     /// <summary>
-    /// Main configuration of the current server settings.
+    /// Main configuration of the current service settings.
     /// </summary>
-    public class ServerConfiguration : Nt.Util.Configuration
+    public class ServiceConfiguration : Nt.Util.Configuration
     {
         /// <summary>Declares the type of the booking system.</summary>
         public NtBooking.BookingSystemType BookingSystem
@@ -57,23 +57,11 @@ namespace Nt.Booking
             set { Data.GetSection("options").GetSection("currency").Value = value; }
         }
         /// <summary>Holds additional arguments of the current configuration.</summary>
-        public Dictionary<string, string> Arguments
+        public IConfigurationSection Arguments
         {
             get
             {
-                var arg = new Dictionary<string, string>();
-                foreach (var item in Data.GetSection("arguments").GetChildren())
-                {
-                    arg.Add(item.Key, item.Value);
-                }
-                return arg;
-            }
-            set
-            {
-                foreach (var arg in value)
-                {
-                    Data.GetSection("arguments").GetSection(arg.Key).Value = arg.Value;
-                }
+                return Data.GetSection("arguments");
             }
         }
         /// <summary>Language code, e.g. de-AT.</summary>
@@ -89,79 +77,21 @@ namespace Nt.Booking
             set { Data.GetSection("version").Value = value; }
         }
 
-        /// <summary></summary>
-        public string MerchantNumber
-        {
-            get { return Arguments.GetValueOrDefault<string, string>("merchantNumber", ""); }
-            set { }
-        }
-
-        /// <summary></summary>
-        public string MerchantName
-        {
-            get { return Arguments.GetValueOrDefault<string, string>("merchantName", ""); }
-            set { }
-        }
-
-        /// <summary></summary>
-        public string RoutingId
-        {
-            get { return Arguments.GetValueOrDefault<string, string>("routingId", ""); }
-            set { }
-        }
-
-        /// <summary></summary>
-        public string BRGEGRange
-        {
-            get { return Arguments.GetValueOrDefault<string,string>("gRange", "0 - 0"); }
-            set { Data.GetSection("arguments").GetSection("gRange").Value = value; }
-        }
-
-        /// <summary></summary>
-        public string BRGEBRange
-        {
-            get { return Arguments.GetValueOrDefault<string, string>("bRange", "0 - 0"); }
-            set { Data.GetSection("arguments").GetSection("bRange").Value = value; }
-        }
-
-        /// <summary></summary>
-        public string BRGECRange
-        {
-            get { return Arguments.GetValueOrDefault<string, string>("cRange", "0 - 0"); }
-            set { Data.GetSection("arguments").GetSection("cRange").Value = value; }
-        }
-
-        /// <summary></summary>
-        public string BRGESRange
-        {
-            get { return Arguments.GetValueOrDefault<string, string>("sRange", "0 - 0"); }
-            set { Data.GetSection("arguments").GetSection("sRange").Value = value; }
-        }
-
         /// <summary>
         /// Default constructor. Base configuration of the server settings.
         /// </summary>
-        public ServerConfiguration() : base() { }
+        public ServiceConfiguration() : base() { }
 
         /// <summary>
         /// Constructor. Base configuration of the server settings.
         /// </summary>
         /// <param name="configFilePath">Path to the configuration file.</param>
-        public ServerConfiguration(in string configFilePath) : base(configFilePath) { }
+        public ServiceConfiguration(in string configFilePath) : base(configFilePath) { }
 
         /// <summary>
         /// Constructor. Base configuration of the server settings.
         /// </summary>
         /// <param name="config">New server configuration.</param>
-        public ServerConfiguration(in Nt.Util.Configuration config) : base(config) { }
-
-        /// <summary>
-        /// Convert server configuration to a JSON string.
-        /// </summary>
-        /// <returns>JSON string of the current server configuration.</returns>
-        public string ToJson()
-        {
-            return JsonSerializer.Serialize(this);
-        }
+        public ServiceConfiguration(in Nt.Util.Configuration config) : base(config) { }
     }
 }

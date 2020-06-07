@@ -1,36 +1,48 @@
-﻿using Nt.Booking.Models;
+﻿using Microsoft.Extensions.Configuration;
+using Nt.Booking.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Nt.Booking.Systems.Voucher.SVS
-{
+{    
     /// <summary>
-    /// 
+    /// SVS booking system service handler.
     /// </summary>
     public class SVS : IBookingSystem
     {
-        /// <summary> </summary>
+        /// <summary>Get the SVS booking system type.</summary>
         public NtBooking.BookingSystemType BookingSystem { get => NtBooking.BookingSystemType.SVS; }
-        /// <summary> </summary>
+        /// <summary>Get the SVS booking system name.</summary>
         public string BookingSystemName { get => "SVS"; }
-
+        /// <summary>Soap client object.</summary>
         private SvsSoapClient _svsSoapClient = null;
-        private ServerConfiguration _config = null;
+        /// <summary>User defined service configuration.</summary>
+        private ServiceConfiguration _config = null;
+        /// <summary>Random number generator.</summary>
         private Random _random = new Random();
+        /// <summary>Merchant name.</summary>
+        private string _merchantName = "";
+        /// <summary>Merchant number.</summary>
+        private string _merchantNumber = "";
+        /// <summary>Routing identification number.</summary>
+        private string _routingId = "";
+        /// <summary>Supported SVS cards, defined by the service configuration.</summary>
+        private List<SvsCardHandler> _svsCardPool = new List<SvsCardHandler>();
+
         /// <summary>
         /// SVS voucher service. Create an object to handle SVS voucher service queries.
         /// </summary>
         /// <param name="configuration">Main configuration file.</param>
-        public SVS(in ServerConfiguration configuration)
+        public SVS(in ServiceConfiguration configuration)
         {
-            if(configuration == null) 
+            if (configuration == null)
                 throw new ArgumentNullException("Configuration has not been initialized.");
 
-            if(configuration.Version != "0.2")
+            if (configuration.Version != "0.3")
                 throw new ArgumentNullException("Invalid configuration. Please update to newer version.");
 
-            _config = configuration;
+            Initialize(configuration);
 
             var timespan = new TimeSpan(0, 0, 0, configuration.Timeout, 0);
             var binding = SvsSoapClient.GetBindingForEndpoint();
@@ -39,39 +51,40 @@ namespace Nt.Booking.Systems.Voucher.SVS
             binding.SendTimeout = timespan;
             binding.ReceiveTimeout = timespan;
             var endpoint = new System.ServiceModel.EndpointAddress(configuration.Address);
-            //
+
             _svsSoapClient = new SvsSoapClient(binding, endpoint);
-            //credentials
+            // credentials
             _svsSoapClient.ClientCredentials.UserName.UserName = configuration.Username;
             _svsSoapClient.ClientCredentials.UserName.Password = configuration.Password;
-            //
         }
 
         /// <summary>
-        /// get information of a medium
+        /// Get information of a medium.
         /// </summary>
-        /// <param name="metaData"></param>
-        /// <param name="mediumId"></param>
-        /// <returns></returns>
+        /// <param name="mediumId">Medium identification number.</param>
+        /// <param name="metaData">Additional meta information.</param>
+        /// <returns>Information response object.</returns>
         public async Task<Response> GetMediumInformation(string mediumId, MetaData metaData)
         {
-            //check if information is possible, throws exception
-            CheckInfo(mediumId, metaData);
+            var mediumHandler = GetMediumHandler(mediumId, _svsCardPool);
+
+            if (mediumHandler == null)
+                throw new Exception(string.Format(Resources.Dictionary.GetString("VoucherInvalidBarcode"), mediumHandler.GetCardNumber(mediumId)));
 
             //assemble request for SVS
             var svsRequest = new BalanceInquiryRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _config.MerchantNumber;
-            svsRequest.merchant.merchantName = _config.MerchantName;
-            svsRequest.routingID = _config.RoutingId;
+            svsRequest.merchant.merchantNumber = _merchantNumber;
+            svsRequest.merchant.merchantName = _merchantName;
+            svsRequest.routingID = _routingId;
             svsRequest.stan = _random.Next(100000, 999999).ToString();
             svsRequest.amount = new Amount();
             svsRequest.amount.currency = NtBooking.serverConfiguration.Currency;
             svsRequest.card = new Card();
             svsRequest.card.cardCurrency = NtBooking.serverConfiguration.Currency;
-            svsRequest.card.cardNumber = GetCardNumber(mediumId);
-            svsRequest.card.pinNumber = GetPinNumber(mediumId);
+            svsRequest.card.cardNumber = mediumHandler.GetCardNumber(mediumId);
+            svsRequest.card.pinNumber = mediumHandler.GetPinNumber(mediumId);
 
             //send asynchronous redemption request to SVS
             var svsResponse = await _svsSoapClient.balanceInquiryAsync(svsRequest).ConfigureAwait(false);
@@ -90,7 +103,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
 
 
         /// <summary>
-        /// get information of all media, not used in SVS
+        /// Get information of all media, not used in SVS.
         /// </summary>
         /// <param name="metadata"></param>
         /// <returns></returns>
@@ -100,31 +113,48 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
 
         /// <summary>
-        /// pay with voucher (debit)
+        /// Pay with voucher (debit).
         /// </summary>
-        /// <param name="mediumId"></param>
-        /// <param name="debitRequest"></param>
-        /// <returns></returns>
+        /// <param name="mediumId">Medium identification number.</param>
+        /// <param name="debitRequest">Debit request object.</param>
+        /// <returns>Booking response object.</returns>
         public async Task<Response> Debit(string mediumId, DebitRequest debitRequest)
         {
-            //check if debit is possible, throws exception
-            CheckDebit(mediumId, debitRequest);
+            var mediumHandler = GetMediumHandler(mediumId, _svsCardPool);
+
+            if (mediumHandler == null)
+                throw new Exception(string.Format(Resources.Dictionary.GetString("VoucherInvalidBarcode"), mediumHandler.GetCardNumber(mediumId)));
+
+            if(mediumHandler.OnlyFullRedemption)
+            {
+                if(int.TryParse(mediumHandler.GetAmount(mediumId), out int voucherAmount))
+                {
+                    if (debitRequest.Amount != voucherAmount)
+                    {
+                        throw new Exception(string.Format(Resources.Dictionary.GetString("VoucherNoFullRedemption"), mediumHandler.GetCardNumber(mediumId)));
+                    }
+                }
+                else
+                {
+                    throw new Exception(Resources.Dictionary.GetString("VoucherInvalidBarcode"));
+                }
+            }
 
             //assemble request for SVS
             var svsRequest = new RedemptionRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _config.MerchantNumber;
-            svsRequest.merchant.merchantName = _config.MerchantName;
-            svsRequest.routingID = _config.RoutingId;
+            svsRequest.merchant.merchantNumber = _merchantNumber;
+            svsRequest.merchant.merchantName = _merchantName;
+            svsRequest.routingID = _routingId;
             svsRequest.stan = debitRequest.MetaData.transactionId;
             svsRequest.redemptionAmount = new Amount();
             svsRequest.redemptionAmount.amount = (double)debitRequest.Amount;
             svsRequest.redemptionAmount.currency = NtBooking.serverConfiguration.Currency;
             svsRequest.card = new Card();
             svsRequest.card.cardCurrency = NtBooking.serverConfiguration.Currency;
-            svsRequest.card.cardNumber = GetCardNumber(mediumId);
-            svsRequest.card.pinNumber = GetPinNumber(mediumId);
+            svsRequest.card.cardNumber = mediumHandler.GetCardNumber(mediumId);
+            svsRequest.card.pinNumber = mediumHandler.GetPinNumber(mediumId);
 
             //send asynchronous redemption request to SVS
             var svsResponse = await _svsSoapClient.redemptionAsync(svsRequest);
@@ -143,31 +173,36 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
 
         /// <summary>
-        /// increase the value of the voucher
+        /// Increase the value of the voucher.
         /// </summary>
-        /// <param name="mediumId"></param>
-        /// <param name="creditRequest"></param>
-        /// <returns></returns>
+        /// <param name="mediumId">Medium identification number.</param>
+        /// <param name="creditRequest">Credit request object.</param>
+        /// <returns>Booking response object.</returns>
         public async Task<Response> Credit(string mediumId, Models.CreditRequest creditRequest)
         {
-            //check if credit is possible, throws exception
-            CheckCredit(mediumId, creditRequest);
+            var mediumHandler = GetMediumHandler(mediumId, _svsCardPool);
+
+            if (mediumHandler == null)
+                throw new Exception(string.Format(Resources.Dictionary.GetString("VoucherInvalidBarcode"), mediumHandler.GetCardNumber(mediumId)));
+
+            if (mediumHandler.MaxCharge == 0)
+                throw new Exception(string.Format(Resources.Dictionary.GetString("VoucherAlreadyIssued"), mediumHandler.GetCardNumber(mediumId)));
 
             //assemble request for SVS
             var svsRequest = new IssueGiftCardRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _config.MerchantNumber;
-            svsRequest.merchant.merchantName = _config.MerchantName;
-            svsRequest.routingID = _config.RoutingId; 
+            svsRequest.merchant.merchantNumber = _merchantNumber;
+            svsRequest.merchant.merchantName = _merchantName;
+            svsRequest.routingID = _routingId;
             svsRequest.stan = creditRequest.MetaData.transactionId;
             svsRequest.issueAmount = new Amount();
             svsRequest.issueAmount.amount = (double)creditRequest.Amount;
             svsRequest.issueAmount.currency = NtBooking.serverConfiguration.Currency;
             svsRequest.card = new Card();
             svsRequest.card.cardCurrency = NtBooking.serverConfiguration.Currency;
-            svsRequest.card.cardNumber = GetCardNumber(mediumId);
-            svsRequest.card.pinNumber = GetPinNumber(mediumId);
+            svsRequest.card.cardNumber = mediumHandler.GetCardNumber(mediumId);
+            svsRequest.card.pinNumber = mediumHandler.GetPinNumber(mediumId);
 
             //send asynchronous redemption request to SVS
             var svsResponse = await _svsSoapClient.issueGiftCardAsync(svsRequest);
@@ -186,22 +221,22 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
 
         /// <summary>
-        /// 
+        /// Cancel existing debit entry.  
         /// </summary>
-        /// <param name="mediumId"></param>
-        /// <param name="cancellationRequest"></param>
-        /// <returns></returns>
+        /// <param name="mediumId">Medium identification number.</param>
+        /// <param name="cancellationRequest">Cancellation request object.</param>
+        /// <returns>Booking request object.</returns>
         public async Task<Response> CancelDebit(string mediumId, CancellationRequest cancellationRequest)
         {
             return await Cancel(mediumId, cancellationRequest);
         }
 
         /// <summary>
-        /// 
+        /// Cancel existing credit entry.
         /// </summary>
-        /// <param name="mediumId"></param>
-        /// <param name="cancellationRequest"></param>
-        /// <returns></returns>
+        /// <param name="mediumId">Medium identification number.</param>
+        /// <param name="cancellationRequest">Cancellation request object.</param>
+        /// <returns>Booking request object.</returns>
         public async Task<Response> CancelCredit(string mediumId, CancellationRequest cancellationRequest)
         {
             return await Cancel(mediumId, cancellationRequest);
@@ -209,26 +244,47 @@ namespace Nt.Booking.Systems.Voucher.SVS
 
         #region private methods
 
+        /// <summary>
+        /// Check if medium is in the valid range.
+        /// </summary>
+        /// <param name="mediumId">Medium identification number of the card to check.</param>
+        /// <param name="svsCards">Cards that include the valid ranges.</param>
+        /// <returns>True, card is in range, otherwise false.</returns>
+        private SvsCardHandler GetMediumHandler(in string mediumId, in List<SvsCardHandler> svsCards)
+        {
+            foreach (var card in svsCards)
+            {
+                if(card.IsInRange(mediumId))
+                {
+                    return card;
+                }
+            }
+            return null;
+        }
+
+
         private async Task<Response> Cancel(string mediumId, CancellationRequest cancellationRequest)
         {
-            //check if credit is possible, throws exception
-            CheckCancel(mediumId, cancellationRequest);
+            var mediumHandler = GetMediumHandler(mediumId, _svsCardPool);
+
+            if (mediumHandler == null)
+                throw new Exception(string.Format(Resources.Dictionary.GetString("VoucherInvalidBarcode"), mediumHandler.GetCardNumber(mediumId)));
 
             //assemble request for SVS
             var svsRequest = new CancelRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _config.MerchantNumber;
-            svsRequest.merchant.merchantName = _config.MerchantName;
-            svsRequest.routingID = _config.RoutingId; 
+            svsRequest.merchant.merchantNumber = _merchantNumber;
+            svsRequest.merchant.merchantName = _merchantName;
+            svsRequest.routingID = _routingId;
             svsRequest.stan = cancellationRequest.MetaData.transactionId;
             svsRequest.transactionAmount = new Amount();
             svsRequest.transactionAmount.amount = (double)cancellationRequest.Amount;
             svsRequest.transactionAmount.currency = NtBooking.serverConfiguration.Currency;
             svsRequest.card = new Card();
             svsRequest.card.cardCurrency = NtBooking.serverConfiguration.Currency;
-            svsRequest.card.cardNumber = GetCardNumber(mediumId);
-            svsRequest.card.pinNumber = GetPinNumber(mediumId);
+            svsRequest.card.cardNumber = mediumHandler.GetCardNumber(mediumId);
+            svsRequest.card.pinNumber = mediumHandler.GetPinNumber(mediumId);
             svsRequest.invoiceNumber = cancellationRequest.InvoiceId;
 
             //send asynchronous redemption request to SVS
@@ -245,9 +301,20 @@ namespace Nt.Booking.Systems.Voucher.SVS
 
         }
 
+        /// <summary>
+        /// SVS error response handler.
+        /// </summary>
+        /// <param name="mediumId">Medium identification number.</param>
+        /// <param name="returnCode">Return code that is handled.</param>
+        /// <returns>Error response object.</returns>
         private ErrorResponse SvsErrorResponse(string mediumId, ReturnCode returnCode)
         {
-            var voucherNumber = GetCardNumber(mediumId);
+            var mediumHandler = GetMediumHandler(mediumId, _svsCardPool);
+
+            if (mediumHandler == null)
+                throw new Exception(string.Format(Resources.Dictionary.GetString("VoucherInvalidBarcode"), mediumHandler.GetCardNumber(mediumId)));
+
+            var voucherNumber = mediumHandler.GetCardNumber(mediumId);
             var errorResponse = new ErrorResponse();
             errorResponse.Error.BookingSystem = this.BookingSystemName;
             errorResponse.Error.PartnerCode = returnCode.returnCode;
@@ -305,6 +372,11 @@ namespace Nt.Booking.Systems.Voucher.SVS
             return errorResponse;
         }
 
+        /// <summary>
+        /// Check if SVS response is an error response.
+        /// </summary>
+        /// <param name="returnCode">Return code.</param>
+        /// <returns>True, if it is an error, otherwise false.</returns>
         private bool SvsResponseHasError(ReturnCode returnCode)
         {
             // 01 - Approval
@@ -315,114 +387,32 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
 
         /// <summary>
-        /// Secondary Security Code(SSC) is encoded in the QR-Code like xxxxxxxxxxxxxxxxxxxSSSS
-        /// Pin from the manual input should be encoded like            xxxxxxxxxxxxxxxxxxx????PPPP
-        /// The PinNumber is either SSSS0000 or 0000PPPP
+        /// Initialize object with a user defined configuration.
         /// </summary>
-        /// <param name="mediumId"></param>
-        /// <returns></returns>
-        private string GetPinNumber(string mediumId)
+        /// <param name="configuration">User defined server configuration.</param>
+        private void Initialize(in ServiceConfiguration configuration)
         {
-            // Breuninger Center Voucher (no SSC or pin)
-            if (IsBreuningerCenterVoucher(mediumId))
-                return string.Empty;
-            // SSC - send pin like "SSSS0000"   
-            if (mediumId?.Length == 23)
-                return mediumId.Substring(19, 4) + "0000";
-            // Pin - send pin like "0000PPPP
-            if (mediumId?.Length >= 27)
-                return "0000" + mediumId.Substring(23, 4);
+            _config = configuration;
+            _merchantName = configuration.Arguments.GetValue<string>("merchantName", "");
+            _merchantNumber = configuration.Arguments.GetValue<string>("merchantNumber", "");
+            _routingId = configuration.Arguments.GetValue<string>("routingId", "");
 
-            Nt.Logging.Log.Server.Info("SVS - pin number not detachable from mediumId " + mediumId);
-            return string.Empty;
-        }
+            IConfigurationSection cards = configuration.Arguments.GetSection("cards");
 
-        /// <summary>
-        /// extract 19 digits card number (or less)
-        /// </summary>
-        /// <param name="mediumId"></param>
-        /// <returns></returns>
-        private string GetCardNumber(string mediumId)
-        {
-            if (mediumId?.Length >= 19)
-                return mediumId.Substring(0, 19);
+            _svsCardPool.Clear();
 
-            return mediumId;
-        }
-
-
-        private void CheckInfo(string mediumId, MetaData metaData)
-        {
-            //not yet implemented
-        }
-
-        private void CheckDebit(string mediumId, DebitRequest debitRequest)
-        {
-            CheckBreuningerCenterVoucherDebit(mediumId, debitRequest);
-        }
-
-        private void CheckCredit(string mediumId, CreditRequest creditRequest)
-        {
-            //not yet implemented
-        }
-
-        private void CheckCancel(string mediumId, CancellationRequest cancellationRequest)
-        {
-            //not yet implemented
-        }
-
-        #endregion
-
-        #region Breuninger specifics
-        private void CheckBreuningerCenterVoucherDebit(string mediumId, DebitRequest debitRequest)
-        {
-            //Breuninger Center Voucher just full debit
-            if (IsBreuningerCenterVoucher(mediumId))
+            foreach (var card in cards.GetChildren())
             {
-                int voucherAmount = 0;
-                if (mediumId?.Length >= 23)
-                    voucherAmount = int.Parse(mediumId.Substring(19, 4));
-                if (debitRequest.Amount != voucherAmount)
+                SvsCardHandler svsCard = new SvsCardHandler(card.GetValue<string>("range", "0-0"))
                 {
-                    throw new Exception(string.Format(Resources.Dictionary.GetString("VoucherNoFullRedemption"), GetCardNumber(mediumId)));
-                }
+                    Type = card.GetValue<string>("type", ""),
+                    MaxCharge = card.GetValue<decimal>("maxCharge", -1),
+                    OnlyFullRedemption = card.GetValue<bool>("onlyFullRedemption", false),
+                    PinPattern = card.GetValue<string>("pinPattern", ""),
+                };
+                _svsCardPool.Add(svsCard);
             }
         }
-
-        /// <summary>
-        /// Determine if medium ID is between defined range.
-        /// </summary>
-        /// <param name="ranges">String that represents the ranges by minRange-maxRange</param>
-        /// <param name="mediumId">Medium ID, e.g. voucher number.</param>
-        /// <returns>True if in range, otherwise false.</returns>
-        private bool IsInRange(in string ranges, in string mediumId)
-        {
-            var xRange = ranges.Split('-');
-
-            if (int.TryParse(xRange[0].Trim(), out int minRange))
-            {
-                if (int.TryParse(xRange[1].Trim(), out int maxRange))
-                {
-                    if (int.TryParse(mediumId.Trim(), out int id))
-                    {
-                        if(id >= minRange && id <= maxRange)
-                            return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Check if medium is of type center voucher.
-        /// </summary>
-        /// <param name="mediumId">Medium ID, e.g. voucher number.</param>
-        /// <returns>True if in range, otherwise false.</returns>
-        private bool IsBreuningerCenterVoucher(in string mediumId)
-        {
-            return IsInRange(_config.BRGECRange, mediumId);
-        }
-
         #endregion
     }
 }

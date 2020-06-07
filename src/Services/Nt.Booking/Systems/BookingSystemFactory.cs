@@ -15,7 +15,7 @@ namespace Nt.Booking.Systems
         /// </summary>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        public static IBookingSystem Create(ServerConfiguration configuration)
+        public static IBookingSystem Create(ServiceConfiguration configuration)
         {
             switch (configuration.BookingSystem)
             {
