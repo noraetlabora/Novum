@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.IO;
 using System;
+using System.Linq;
 
 namespace Nt.Util
 {
@@ -65,6 +66,63 @@ namespace Nt.Util
 
             }
             Data = builder.Build();
+        }
+
+        /// <summary>
+        /// Save configuration as JSON to a user defined output file.
+        /// </summary>
+        /// <param name="configFilePath">Output file path.</param>
+        public void Save(in string configFilePath)
+        {
+            var jsonStr = "{\n";
+            if (Data != null)
+            {
+                foreach (var entry in Data.GetChildren())
+                {
+                    DataToJson(entry, ref jsonStr);
+                }
+            }
+            if (jsonStr[jsonStr.Length - 1] == ',')
+            {
+                jsonStr = jsonStr.Substring(0, jsonStr.Length - 1);
+            }
+            jsonStr += "}";
+
+            System.IO.File.WriteAllText(configFilePath, jsonStr);
+        }
+
+        /// <summary>
+        /// Recursively extracts data information and transforms content to a JSON formatted string output.
+        /// </summary>
+        /// <param name="section">Section that is checked for content.</param>
+        /// <param name="json">JSON output.</param>
+        private void DataToJson(in IConfigurationSection section, ref string json)
+        {
+            json += "\"" + section.Key + "\":";
+
+            var tmp = Data.GetSection(section.Key).GetChildren();
+            if (tmp.ToArray().Length == 0)
+            {
+                json += "\"" + section.Value + "\"";
+                json += ",\n";
+            }
+            else
+            {
+                json += "{";
+                var jsonChild = "";
+                foreach (var child in tmp)
+                {
+                    DataToJson(child, ref jsonChild);
+                }
+                if(jsonChild[jsonChild.Length-1]==',')
+                {
+                    jsonChild = jsonChild.Substring(0, jsonChild.Length - 1);
+                }
+
+                json += jsonChild;
+                json += "}";
+                json += ",\n";
+            }
         }
     }
 }

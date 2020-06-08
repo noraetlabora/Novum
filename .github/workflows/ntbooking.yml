@@ -4,11 +4,11 @@ on:
   # deployment
   schedule:
     - cron: '0 0 * * *' 
-  # push: 
-  #   schedule: 
-  #     branches: [ master ] 
-  #   pull_request: 
-  #     branches: [ master ]
+  push: 
+    schedule: 
+      branches: [ deploy ] 
+    pull_request: 
+      branches: [ deploy ]
   
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: 0

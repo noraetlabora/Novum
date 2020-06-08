@@ -7,12 +7,12 @@ namespace Nt.Booking.Test
         [Fact]
         public void EmptyConfigurationFileTest()
         {
-            Assert.Throws<System.ArgumentException>(()=> new ServerConfiguration(""));
+            Assert.Throws<System.ArgumentException>(()=> new ServiceConfiguration(""));
         }
         [Fact]
         public void MissingConfigurationFileTest()
         {
-            Assert.Throws<System.IO.FileNotFoundException>(() => new ServerConfiguration("..."));
+            Assert.Throws<System.IO.FileNotFoundException>(() => new ServiceConfiguration("..."));
         }
 
         [Fact]
