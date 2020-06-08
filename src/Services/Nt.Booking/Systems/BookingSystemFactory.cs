@@ -11,9 +11,9 @@ namespace Nt.Booking.Systems
     public static class BookingSystemFactory
     {
         /// <summary>
-        /// 
+        /// Factory that creates a new booking service.
         /// </summary>
-        /// <param name="configuration"></param>
+        /// <param name="configuration">Basic service configuration.</param>
         /// <returns></returns>
         public static IBookingSystem Create(ServiceConfiguration configuration)
         {
@@ -22,8 +22,8 @@ namespace Nt.Booking.Systems
                 case BookingSystemType.ExSI:
                     return new ExSI();
                 case BookingSystemType.SVS:
-                    var svs = new SVS(configuration);                    
-                    return svs;
+                    var svsConfig = new SvsServiceConfiguration(configuration);
+                    return new SVS(svsConfig);                    
                 default:
                     throw new Exception(String.Format("Couldn't find a corresponding booking system for '{0}'.", configuration.BookingSystem));
             }

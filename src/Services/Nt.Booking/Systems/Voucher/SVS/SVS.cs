@@ -18,15 +18,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// <summary>Soap client object.</summary>
         private SvsSoapClient _svsSoapClient = null;
         /// <summary>User defined service configuration.</summary>
-        private ServiceConfiguration _config = null;
+        private SvsServiceConfiguration _config = null;
         /// <summary>Random number generator.</summary>
         private Random _random = new Random();
-        /// <summary>Merchant name.</summary>
-        private string _merchantName = "";
-        /// <summary>Merchant number.</summary>
-        private string _merchantNumber = "";
-        /// <summary>Routing identification number.</summary>
-        private string _routingId = "";
         /// <summary>Supported SVS cards, defined by the service configuration.</summary>
         private List<SvsCardHandler> _svsCardPool = new List<SvsCardHandler>();
 
@@ -34,7 +28,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// SVS voucher service. Create an object to handle SVS voucher service queries.
         /// </summary>
         /// <param name="configuration">Main configuration file.</param>
-        public SVS(in ServiceConfiguration configuration)
+        public SVS(in SvsServiceConfiguration configuration)
         {
             if (configuration == null)
                 throw new ArgumentNullException("Configuration has not been initialized.");
@@ -44,18 +38,18 @@ namespace Nt.Booking.Systems.Voucher.SVS
 
             Initialize(configuration);
 
-            var timespan = new TimeSpan(0, 0, 0, configuration.Timeout, 0);
+            var timespan = new TimeSpan(0, 0, 0, configuration.Connection.Timeout, 0);
             var binding = SvsSoapClient.GetBindingForEndpoint();
             binding.OpenTimeout = timespan;
             binding.CloseTimeout = timespan;
             binding.SendTimeout = timespan;
             binding.ReceiveTimeout = timespan;
-            var endpoint = new System.ServiceModel.EndpointAddress(configuration.Address);
+            var endpoint = new System.ServiceModel.EndpointAddress(configuration.Connection.Address);
 
             _svsSoapClient = new SvsSoapClient(binding, endpoint);
             // credentials
-            _svsSoapClient.ClientCredentials.UserName.UserName = configuration.Username;
-            _svsSoapClient.ClientCredentials.UserName.Password = configuration.Password;
+            _svsSoapClient.ClientCredentials.UserName.UserName = configuration.Connection.Username;
+            _svsSoapClient.ClientCredentials.UserName.Password = configuration.Connection.Password;
         }
 
         /// <summary>
@@ -75,9 +69,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new BalanceInquiryRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _merchantNumber;
-            svsRequest.merchant.merchantName = _merchantName;
-            svsRequest.routingID = _routingId;
+            svsRequest.merchant.merchantNumber = _config.Arguments.MerchantNumber;
+            svsRequest.merchant.merchantName = _config.Arguments.MerchantName;
+            svsRequest.routingID = _config.Arguments.RoutingId;
             svsRequest.stan = _random.Next(100000, 999999).ToString();
             svsRequest.amount = new Amount();
             svsRequest.amount.currency = NtBooking.ServiceConfig.Currency;
@@ -144,9 +138,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new RedemptionRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _merchantNumber;
-            svsRequest.merchant.merchantName = _merchantName;
-            svsRequest.routingID = _routingId;
+            svsRequest.merchant.merchantNumber = _config.Arguments.MerchantNumber;
+            svsRequest.merchant.merchantName = _config.Arguments.MerchantName;
+            svsRequest.routingID = _config.Arguments.RoutingId;
             svsRequest.stan = debitRequest.MetaData.transactionId;
             svsRequest.redemptionAmount = new Amount();
             svsRequest.redemptionAmount.amount = (double)debitRequest.Amount;
@@ -192,9 +186,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new IssueGiftCardRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _merchantNumber;
-            svsRequest.merchant.merchantName = _merchantName;
-            svsRequest.routingID = _routingId;
+            svsRequest.merchant.merchantNumber = _config.Arguments.MerchantNumber;
+            svsRequest.merchant.merchantName = _config.Arguments.MerchantName;
+            svsRequest.routingID = _config.Arguments.RoutingId;
             svsRequest.stan = creditRequest.MetaData.transactionId;
             svsRequest.issueAmount = new Amount();
             svsRequest.issueAmount.amount = (double)creditRequest.Amount;
@@ -274,9 +268,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var svsRequest = new CancelRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _merchantNumber;
-            svsRequest.merchant.merchantName = _merchantName;
-            svsRequest.routingID = _routingId;
+            svsRequest.merchant.merchantNumber = _config.Arguments.MerchantNumber;
+            svsRequest.merchant.merchantName = _config.Arguments.MerchantName;
+            svsRequest.routingID = _config.Arguments.RoutingId;
             svsRequest.stan = cancellationRequest.MetaData.transactionId;
             svsRequest.transactionAmount = new Amount();
             svsRequest.transactionAmount.amount = (double)cancellationRequest.Amount;
@@ -390,25 +384,19 @@ namespace Nt.Booking.Systems.Voucher.SVS
         /// Initialize object with a user defined configuration.
         /// </summary>
         /// <param name="configuration">User defined server configuration.</param>
-        private void Initialize(in ServiceConfiguration configuration)
+        private void Initialize(in SvsServiceConfiguration configuration)
         {
             _config = configuration;
-            _merchantName = configuration.Arguments.GetValue<string>("merchantName", "");
-            _merchantNumber = configuration.Arguments.GetValue<string>("merchantNumber", "");
-            _routingId = configuration.Arguments.GetValue<string>("routingId", "");
-
-            IConfigurationSection cards = configuration.Arguments.GetSection("cards");
-
             _svsCardPool.Clear();
 
-            foreach (var card in cards.GetChildren())
+            foreach (var card in configuration.Arguments.Cards)
             {
-                SvsCardHandler svsCard = new SvsCardHandler(card.GetValue<string>("range", "0-0"))
+                SvsCardHandler svsCard = new SvsCardHandler(card.Range)
                 {
-                    Type = card.GetValue<string>("type", ""),
-                    MaxCharge = card.GetValue<decimal>("maxCharge", -1),
-                    OnlyFullRedemption = card.GetValue<bool>("onlyFullRedemption", false),
-                    PinPattern = card.GetValue<string>("pinPattern", ""),
+                    Type = card.Type,
+                    MaxCharge = card.MaxCharge,
+                    OnlyFullRedemption = card.OnlyFullRedemption,
+                    PinPattern = card.PinPattern,
                 };
                 _svsCardPool.Add(svsCard);
             }
