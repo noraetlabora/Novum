@@ -4,8 +4,10 @@ using System.Text.Json;
 
 namespace Nt.Booking.Systems.Voucher.SVS
 {
+    [DataContract]
     public class SvsServiceConfiguration
     {
+        [DataContract]
         public struct ServiceConnection
         {
             [DataMember(Name = "address")]
@@ -19,6 +21,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             [DataMember(Name = "timeout")]
             public int Timeout { get; set; }
         }
+        [DataContract]
         public struct ServiceOptions
         {
             [DataMember(Name = "currency")]
@@ -26,7 +29,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             [DataMember(Name = "language")]
             public string Language { get; set; }
         }
-
+        [DataContract]
         public struct ServiceCards
         {
             [DataMember(Name = "type")]
@@ -40,7 +43,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             [DataMember(Name = "pinPattern")]
             public string PinPattern { get; set; }
         }
-
+        [DataContract]
         public struct ServiceArguments
         {
             [DataMember(Name = "routingId")]

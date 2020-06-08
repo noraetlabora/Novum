@@ -80,9 +80,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.routingID = _routingId;
             svsRequest.stan = _random.Next(100000, 999999).ToString();
             svsRequest.amount = new Amount();
-            svsRequest.amount.currency = NtBooking.serverConfiguration.Currency;
+            svsRequest.amount.currency = NtBooking.ServiceConfig.Currency;
             svsRequest.card = new Card();
-            svsRequest.card.cardCurrency = NtBooking.serverConfiguration.Currency;
+            svsRequest.card.cardCurrency = NtBooking.ServiceConfig.Currency;
             svsRequest.card.cardNumber = mediumHandler.GetCardNumber(mediumId);
             svsRequest.card.pinNumber = mediumHandler.GetPinNumber(mediumId);
 
@@ -150,9 +150,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.stan = debitRequest.MetaData.transactionId;
             svsRequest.redemptionAmount = new Amount();
             svsRequest.redemptionAmount.amount = (double)debitRequest.Amount;
-            svsRequest.redemptionAmount.currency = NtBooking.serverConfiguration.Currency;
+            svsRequest.redemptionAmount.currency = NtBooking.ServiceConfig.Currency;
             svsRequest.card = new Card();
-            svsRequest.card.cardCurrency = NtBooking.serverConfiguration.Currency;
+            svsRequest.card.cardCurrency = NtBooking.ServiceConfig.Currency;
             svsRequest.card.cardNumber = mediumHandler.GetCardNumber(mediumId);
             svsRequest.card.pinNumber = mediumHandler.GetPinNumber(mediumId);
 
@@ -198,9 +198,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.stan = creditRequest.MetaData.transactionId;
             svsRequest.issueAmount = new Amount();
             svsRequest.issueAmount.amount = (double)creditRequest.Amount;
-            svsRequest.issueAmount.currency = NtBooking.serverConfiguration.Currency;
+            svsRequest.issueAmount.currency = NtBooking.ServiceConfig.Currency;
             svsRequest.card = new Card();
-            svsRequest.card.cardCurrency = NtBooking.serverConfiguration.Currency;
+            svsRequest.card.cardCurrency = NtBooking.ServiceConfig.Currency;
             svsRequest.card.cardNumber = mediumHandler.GetCardNumber(mediumId);
             svsRequest.card.pinNumber = mediumHandler.GetPinNumber(mediumId);
 
@@ -280,9 +280,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.stan = cancellationRequest.MetaData.transactionId;
             svsRequest.transactionAmount = new Amount();
             svsRequest.transactionAmount.amount = (double)cancellationRequest.Amount;
-            svsRequest.transactionAmount.currency = NtBooking.serverConfiguration.Currency;
+            svsRequest.transactionAmount.currency = NtBooking.ServiceConfig.Currency;
             svsRequest.card = new Card();
-            svsRequest.card.cardCurrency = NtBooking.serverConfiguration.Currency;
+            svsRequest.card.cardCurrency = NtBooking.ServiceConfig.Currency;
             svsRequest.card.cardNumber = mediumHandler.GetCardNumber(mediumId);
             svsRequest.card.pinNumber = mediumHandler.GetPinNumber(mediumId);
             svsRequest.invoiceNumber = cancellationRequest.InvoiceId;

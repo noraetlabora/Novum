@@ -36,30 +36,16 @@ namespace Nt.Booking
         }
 
         /// <summary>Main configuration settings.</summary>
-        public static ServiceConfiguration serverConfiguration { get; private set; }
+        public static ServiceConfiguration ServiceConfig { get; private set; }
 
         /// <summary>Booking system that is created.</summary>
         public static IBookingSystem BookingSystem;
 
         /// <summary>
-        /// Display help information.
-        /// </summary>
-        public static void Help()
-        {
-            var helpInfo = new StringBuilder();
-            helpInfo.Append("\nNt.Booking:\n");
-            helpInfo.Append("  Creates a booking service based on a preconfigured configuration file.\n");
-            helpInfo.Append("Usage:\n");
-            helpInfo.Append("  Nt.Booking.exe [options]:\n");
-            helpInfo.Append("Options:\n");
-            helpInfo.Append("  -i/--input\tJSON formatted input configuration file path.\n");
-            System.Console.WriteLine(helpInfo.ToString());
-        }
-
-        /// <summary>
         /// Main function. Entry point of the program.
         /// 
-        /// -i/--input Input configuration JSON file.
+        /// -i/--input      Optional. Input configuration JSON file.
+        /// -?/-h/--help    Show help information.
         /// </summary>
         /// <param name="args">Optional arguments.</param>
         public static void Main(string[] args)
@@ -85,10 +71,10 @@ namespace Nt.Booking
                     // var conf = System.Text.Json.JsonSerializer.Deserialize<SvsServiceConfiguration>(System.IO.File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config.json"), new JsonSerializerOptions { PropertyNamingPolicy=JsonNamingPolicy.CamelCase} );
                     // var jsonTxt = conf.ToJson();
 
-                    serverConfiguration = new ServiceConfiguration(serverConfigFile);
-                    serverConfiguration.Save(AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config2.json");
+                    ServiceConfig = new ServiceConfiguration(serverConfigFile);
+                    ServiceConfig.Save(AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config2.json");
 
-                    StartBookingService(serverConfiguration);
+                    StartBookingService(ServiceConfig);
 
                     return 0;
                 });
