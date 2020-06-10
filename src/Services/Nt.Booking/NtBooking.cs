@@ -64,15 +64,9 @@ namespace Nt.Booking
                 commandLineApplication.OnExecute(() =>
                 {
                     Resources.Dictionary.Initialize("de-AT");
-
                     string serverConfigFile = input.Value() ?? (AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config.json");
-
-                    // todo: possible to serialize config file
-                    // var conf = System.Text.Json.JsonSerializer.Deserialize<SvsServiceConfiguration>(System.IO.File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config.json"), new JsonSerializerOptions { PropertyNamingPolicy=JsonNamingPolicy.CamelCase} );
-                    // var jsonTxt = conf.ToJson();
-
                     ServiceConfig = new ServiceConfiguration(serverConfigFile);
-                    ServiceConfig.Save(AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config2.json");
+                    ServiceConfig.Save(AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config.json");
 
                     StartBookingService(ServiceConfig);
 
