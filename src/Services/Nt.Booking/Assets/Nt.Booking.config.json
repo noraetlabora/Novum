@@ -1,5 +1,5 @@
 {
-    "version": "0.2",
+    "version": "0.3",
     "bookingSystem": -1,
     "connection": {
         "address": "https://server.address.com",
@@ -16,9 +16,8 @@
         "routingId": "",
         "merchantNumber": "",
         "merchantName": "",
-        "gRange": "",
-        "bRange": "",
-        "cRange": "",
-        "sRange": ""
+	    "cards": [
+            { "type":"TEST", "range":"10 - 20", "maxCharge":5000, "onlyFullRedemption":false, "pinPattern":"PPPPPPPP" }
+        ]
     }
 }
