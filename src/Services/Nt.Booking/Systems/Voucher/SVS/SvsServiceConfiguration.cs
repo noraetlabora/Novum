@@ -136,11 +136,13 @@ namespace Nt.Booking.Systems.Voucher.SVS
             opt.Currency = config.Currency;
             opt.Language = config.Language;
             Options = opt;
+
             var arg = new ServiceArguments();
             arg.MerchantName = config.Arguments.GetValue<string>("merchantName", "");
             arg.MerchantNumber = config.Arguments.GetValue<string>("merchantNumber", "");
             arg.RoutingId = config.Arguments.GetValue<string>("routingId", "");
-            IConfigurationSection cards = config.Arguments.GetSection("cards");
+
+            var cards = config.Arguments.GetSection("cards");
 
             arg.Cards = new List<ServiceCard>();
 
