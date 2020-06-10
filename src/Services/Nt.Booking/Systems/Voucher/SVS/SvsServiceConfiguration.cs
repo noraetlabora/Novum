@@ -97,11 +97,29 @@ namespace Nt.Booking.Systems.Voucher.SVS
         public ServiceArguments Arguments { get; set; }
 
         /// <summary>
+        /// Initialize SVS service configuration from JSON file path.
+        /// </summary>
+        /// <param name="configFilePath">JSON configuration file path.</param>
+        public SvsServiceConfiguration(in string configFilePath)
+        {
+            Initialize(new ServiceConfiguration(configFilePath));
+        }
+
+        /// <summary>
         /// Constructor. Creates a new SVS service configuration out of the basic 
         /// configuration object.
         /// </summary>
         /// <param name="config">Basic configuration object.</param>
         public SvsServiceConfiguration(in ServiceConfiguration config)
+        {
+            Initialize(config);
+        }
+
+        /// <summary>
+        /// Initialize SVS service configuration with an existing basic configuration.
+        /// </summary>
+        /// <param name="config">Service configuration.</param>
+        private void Initialize(in ServiceConfiguration config)
         {
             Version = config.Version;
             BookingSystem = (int)config.BookingSystem;
