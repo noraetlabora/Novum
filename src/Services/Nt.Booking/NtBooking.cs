@@ -1,4 +1,3 @@
-using System.Text;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -8,10 +7,7 @@ using Nt.Booking.Systems;
 using System;
 using System.ServiceProcess;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.CommandLineUtils;
 using System.Collections.Generic;
-using Nt.Booking.Systems.Voucher.SVS;
-using System.Text.Json;
 
 namespace Nt.Booking
 {
@@ -50,34 +46,20 @@ namespace Nt.Booking
         /// <param name="args">Optional arguments.</param>
         public static void Main(string[] args)
         {
-            CommandLineApplication commandLineApplication = new CommandLineApplication(throwOnUnexpectedArg: false);
-            commandLineApplication.Description = "Creates a service that is used to handle booking queries.";
-            commandLineApplication.Name = "Nt.Booking";
-            commandLineApplication.FullName = "Nt.Booking";
-
-            CommandOption input = commandLineApplication.Option("-i |--input <file>", "The service configuration file.", CommandOptionType.SingleValue);
-            commandLineApplication.HelpOption("-? | -h | --help");
             try
             {
                 Nt.Logging.Log.Server.Info("================================================================== Nt.Booking  ==================================================================");
 
-                commandLineApplication.OnExecute(() =>
-                {
-                    string serverConfigFile = input.Value() ?? (AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config.json");
-                    ServiceConfig = new ServiceConfiguration(serverConfigFile);
-                    
-                    Resources.Dictionary.Initialize(ServiceConfig.Language);
+                string serverConfigFile = AppDomain.CurrentDomain.BaseDirectory + "Nt.Booking.config.json";
+                ServiceConfig = new ServiceConfiguration(serverConfigFile);
 
-                    StartBookingService(ServiceConfig);
-                    return 0;
-                });
-                commandLineApplication.Execute(args);
+                Resources.Dictionary.Initialize(ServiceConfig.Language);
+
+                StartBookingService(ServiceConfig);
             }
             catch (Exception ex)
             {
                 System.Console.Out.Write(ex.Message);
-                commandLineApplication.ShowHelp();
-
                 Nt.Logging.Log.Server.Fatal(ex);
             }
         }
