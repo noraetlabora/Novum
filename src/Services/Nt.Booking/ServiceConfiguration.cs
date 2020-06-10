@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
-using System.IO;
-using System;
-using System.Text.Json;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace Nt.Booking
 {

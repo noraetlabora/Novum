@@ -23,7 +23,7 @@ namespace Nt.Booking.Systems
                     return new ExSI();
                 case BookingSystemType.SVS:
                     var svsConfig = new SvsServiceConfiguration(configuration);
-                    return new SVS(svsConfig);                    
+                    return new SVS(svsConfig);
                 default:
                     throw new Exception(String.Format("Couldn't find a corresponding booking system for '{0}'.", configuration.BookingSystem));
             }

@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using Nt.Booking.Models;
+﻿using Nt.Booking.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Nt.Booking.Systems.Voucher.SVS
-{    
+{
     /// <summary>
     /// SVS booking system service handler.
     /// </summary>
@@ -119,9 +118,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             if (mediumHandler == null)
                 throw new Exception(string.Format(Resources.Dictionary.GetString("VoucherInvalidBarcode"), mediumHandler.GetCardNumber(mediumId)));
 
-            if(mediumHandler.OnlyFullRedemption)
+            if (mediumHandler.OnlyFullRedemption)
             {
-                if(int.TryParse(mediumHandler.GetAmount(mediumId), out int voucherAmount))
+                if (int.TryParse(mediumHandler.GetAmount(mediumId), out int voucherAmount))
                 {
                     if (debitRequest.Amount != voucherAmount)
                     {
@@ -248,7 +247,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         {
             foreach (var card in svsCards)
             {
-                if(card.IsInRange(mediumId))
+                if (card.IsInRange(mediumId))
                 {
                     return card;
                 }

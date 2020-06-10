@@ -123,7 +123,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         {
             Version = config.Version;
             BookingSystem = (int)config.BookingSystem;
-            
+
             var con = new ServiceConnection();
             con.Address = config.Address;
             con.Port = config.Port;

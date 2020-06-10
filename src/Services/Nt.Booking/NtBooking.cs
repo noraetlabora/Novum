@@ -7,8 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Nt.Booking.Systems;
 using System;
-using System.ServiceProcess;
 using System.Collections.Generic;
+using System.ServiceProcess;
 
 namespace Nt.Booking
 {
