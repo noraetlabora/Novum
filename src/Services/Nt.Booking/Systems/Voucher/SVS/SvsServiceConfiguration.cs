@@ -47,9 +47,12 @@ namespace Nt.Booking.Systems.Voucher.SVS
         [DataContract]
         public struct ServiceCard
         {
-            /// <summary>SVS specific. Title of the card type.</summary>
+            /// <summary>SVS specific. Card type, e.g. GIFT, MERCH, PROMO.</summary>
             [DataMember(Name = "type")]
             public string Type { get; set; }
+            /// <summary>SVS specific. Title of the card type.</summary>
+            [DataMember(Name = "name")]
+            public string Name { get; set; }
             /// <summary>SVS specific. Range of the card number.</summary>
             [DataMember(Name = "range")]
             public string Range { get; set; }
@@ -62,6 +65,18 @@ namespace Nt.Booking.Systems.Voucher.SVS
             /// <summary>SVS specific. PIN pattern of the card, e.g. PPPPPPPP</summary>
             [DataMember(Name = "pinPattern")]
             public string PinPattern { get; set; }
+            /// <summary>En/disable credit requests.</summary>
+            [DataMember(Name = "useCredit")]
+            public bool UseCredit { get; set; }
+            /// <summary>En/disable debit requests.</summary>
+            [DataMember(Name = "useDebit")]
+            public bool UseDebit { get; set; }
+            /// <summary>En/disable media information requests.</summary>
+            [DataMember(Name = "useInfo")]
+            public bool UseInfo { get; set; }
+            /// <summary>En/disable cancel requests.</summary>
+            [DataMember(Name = "useCancel")]
+            public bool UseCancel { get; set; }
         }
         [DataContract]
         public struct ServiceArguments
@@ -78,6 +93,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             /// <summary>SVS specific. Supported cards.</summary>
             [DataMember(Name = "cards")]
             public List<ServiceCard> Cards { get; set; }
+            /// <summary>SVS specific. Check for duplicate.</summary>
+            [DataMember(Name = "checkForDuplicate")]
+            public bool CheckForDuplicate { get; set; }
         }
         /// <summary>Configuration file version.</summary>
         [DataMember(Name = "version")]
@@ -141,6 +159,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             arg.MerchantName = config.Arguments.GetValue<string>("merchantName", "");
             arg.MerchantNumber = config.Arguments.GetValue<string>("merchantNumber", "");
             arg.RoutingId = config.Arguments.GetValue<string>("routingId", "");
+            arg.CheckForDuplicate = config.Arguments.GetValue<bool>("checkForDuplicate", false);
 
             var cards = config.Arguments.GetSection("cards");
 
@@ -151,10 +170,15 @@ namespace Nt.Booking.Systems.Voucher.SVS
                 var serviceCard = new ServiceCard
                 {
                     Range = card.GetValue<string>("range", "0-0"),
-                    Type = card.GetValue<string>("type", ""),
+                    Name = card.GetValue<string>("name", ""),
+                    Type = card.GetValue<string>("type", "GIFT"),
                     MaxCharge = card.GetValue<decimal>("maxCharge", -1),
                     OnlyFullRedemption = card.GetValue<bool>("onlyFullRedemption", false),
                     PinPattern = card.GetValue<string>("pinPattern", ""),
+                    UseCredit = card.GetValue<bool>("useCredit", true),
+                    UseDebit = card.GetValue<bool>("useDebit", true),
+                    UseInfo = card.GetValue<bool>("useInfo", true),
+                    UseCancel = card.GetValue<bool>("useCancel", true),
                 };
                 arg.Cards.Add(serviceCard);
             }

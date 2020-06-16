@@ -1,5 +1,5 @@
 {
-    "version": "0.3",
+    "version": "0.4",
     "bookingSystem": -1,
     "connection": {
         "address": "https://server.address.com",
@@ -17,7 +17,7 @@
         "merchantNumber": "",
         "merchantName": "",
 	    "cards": [
-            { "type":"TEST", "range":"10 - 20", "maxCharge":5000, "onlyFullRedemption":false, "pinPattern":"PPPPPPPP" }
+            { "type":"TEST", "range":"10 - 20", "maxCharge":5000, "onlyFullRedemption":false, "pinPattern":"PPPPPPPP", "useCredit":true, "useDebit":true, "useInfo":true, "useCancel":true }
         ]
     }
 }

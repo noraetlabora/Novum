@@ -135,6 +135,15 @@
   <data name="VoucherAlreadyUsed" xml:space="preserve">
     <value>[{0}]: Aktion kann nicht durchgeführt werden, da die Karte zwischenzeitlich verwendet wurde. Bitte wenden Sie sich an den Kundenservice.</value>
   </data>
+  <data name="VoucherAmountInfoRestricted" xml:space="preserve">
+    <value>Gutscheinwert wie aufgedruckt, keine Abfrage Kontostand möglich.</value>
+  </data>
+  <data name="VoucherCreditRestricted" xml:space="preserve">
+    <value>Gutschein kann nicht beladen werden.</value>
+  </data>
+  <data name="VoucherDebitRestricted" xml:space="preserve">
+    <value>Bezahlung ist mit diesem Gutschein nicht möglich.</value>
+  </data>
   <data name="VoucherError" xml:space="preserve">
     <value>[{0}]: Gutscheinanfrage ist fehlerhaft.</value>
   </data>
