@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using Nt.Booking.Models;
+﻿using Nt.Booking.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Nt.Booking.Systems.Voucher.SVS
-{    
+{
     /// <summary>
     /// SVS booking system service handler.
     /// </summary>
@@ -33,7 +32,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             if (configuration == null)
                 throw new ArgumentNullException("Configuration has not been initialized.");
 
-            if (configuration.Version != "0.3")
+            if (configuration.Version != "0.4")
                 throw new ArgumentNullException("Invalid configuration. Please update to newer version.");
 
             Initialize(configuration);
@@ -53,6 +52,16 @@ namespace Nt.Booking.Systems.Voucher.SVS
         }
 
         /// <summary>
+        /// Get information of all media, not used in SVS.
+        /// </summary>
+        /// <param name="metadata"></param>
+        /// <returns></returns>
+        public Task<List<Response>> GetMediumInformation(MetaData metadata)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Get information of a medium.
         /// </summary>
         /// <param name="mediumId">Medium identification number.</param>
@@ -63,22 +72,33 @@ namespace Nt.Booking.Systems.Voucher.SVS
             var mediumHandler = GetMediumHandler(mediumId, _svsCardPool);
 
             if (mediumHandler == null)
-                throw new Exception(string.Format(Resources.Dictionary.GetString("VoucherInvalidBarcode"), mediumHandler.GetCardNumber(mediumId)));
+                throw new Exception(Resources.Dictionary.GetString("VoucherInvalidBarcode"));
+
+            if (!mediumHandler.Card.UseInfo)
+                throw new Exception(Resources.Dictionary.GetString("VoucherAmountInfoRestricted"));
 
             //assemble request for SVS
             var svsRequest = new BalanceInquiryRequest();
             svsRequest.date = System.DateTime.Now.ToString("s"); //2011-08-15T10:16:51  (YYYY-MM-DDTHH:MM:SS)
             svsRequest.merchant = new Merchant();
-            svsRequest.merchant.merchantNumber = _config.Arguments.MerchantNumber;
             svsRequest.merchant.merchantName = _config.Arguments.MerchantName;
+            svsRequest.merchant.merchantNumber = _config.Arguments.MerchantNumber;
+            svsRequest.checkForDuplicate = _config.Arguments.CheckForDuplicate;
+            //svsRequest.merchant.storeNumber = metaData.BranchId;
+            //svsRequest.merchant.division = ? //5 digits
+            //svsRequest.invoiceNumber = ? //8 digits
+            //svsRequest.campaignCode = ? //20 digits
+            //svsRequest.couponCode = ? //20 digits e.g. NEWYEAR2020
+
             svsRequest.routingID = _config.Arguments.RoutingId;
             svsRequest.stan = _random.Next(100000, 999999).ToString();
             svsRequest.amount = new Amount();
             svsRequest.amount.currency = NtBooking.ServiceConfig.Currency;
             svsRequest.card = new Card();
-            svsRequest.card.cardCurrency = NtBooking.ServiceConfig.Currency;
             svsRequest.card.cardNumber = mediumHandler.GetCardNumber(mediumId);
+            svsRequest.card.cardCurrency = NtBooking.ServiceConfig.Currency;
             svsRequest.card.pinNumber = mediumHandler.GetPinNumber(mediumId);
+            svsRequest.card.cardType = mediumHandler.Card.Type;
 
             //send asynchronous redemption request to SVS
             var svsResponse = await _svsSoapClient.balanceInquiryAsync(svsRequest).ConfigureAwait(false);
@@ -95,17 +115,6 @@ namespace Nt.Booking.Systems.Voucher.SVS
             return response;
         }
 
-
-        /// <summary>
-        /// Get information of all media, not used in SVS.
-        /// </summary>
-        /// <param name="metadata"></param>
-        /// <returns></returns>
-        public Task<List<Response>> GetMediumInformation(MetaData metadata)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Pay with voucher (debit).
         /// </summary>
@@ -119,9 +128,12 @@ namespace Nt.Booking.Systems.Voucher.SVS
             if (mediumHandler == null)
                 throw new Exception(string.Format(Resources.Dictionary.GetString("VoucherInvalidBarcode"), mediumHandler.GetCardNumber(mediumId)));
 
-            if(mediumHandler.OnlyFullRedemption)
+            if (!mediumHandler.Card.UseDebit)
+                throw new Exception(Resources.Dictionary.GetString("VoucherAmountInfoRestricted"));
+
+            if (mediumHandler.Card.OnlyFullRedemption)
             {
-                if(int.TryParse(mediumHandler.GetAmount(mediumId), out int voucherAmount))
+                if (int.TryParse(mediumHandler.GetAmount(mediumId), out int voucherAmount))
                 {
                     if (debitRequest.Amount != voucherAmount)
                     {
@@ -140,8 +152,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.merchant = new Merchant();
             svsRequest.merchant.merchantNumber = _config.Arguments.MerchantNumber;
             svsRequest.merchant.merchantName = _config.Arguments.MerchantName;
+            svsRequest.merchant.storeNumber = debitRequest.MetaData.BranchId;
             svsRequest.routingID = _config.Arguments.RoutingId;
-            svsRequest.stan = debitRequest.MetaData.transactionId;
+            svsRequest.stan = debitRequest.MetaData.TransactionId;
             svsRequest.redemptionAmount = new Amount();
             svsRequest.redemptionAmount.amount = (double)debitRequest.Amount;
             svsRequest.redemptionAmount.currency = NtBooking.ServiceConfig.Currency;
@@ -179,7 +192,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
             if (mediumHandler == null)
                 throw new Exception(string.Format(Resources.Dictionary.GetString("VoucherInvalidBarcode"), mediumHandler.GetCardNumber(mediumId)));
 
-            if (mediumHandler.MaxCharge == 0)
+            if (mediumHandler.Card.MaxCharge == 0)
                 throw new Exception(string.Format(Resources.Dictionary.GetString("VoucherAlreadyIssued"), mediumHandler.GetCardNumber(mediumId)));
 
             //assemble request for SVS
@@ -188,8 +201,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.merchant = new Merchant();
             svsRequest.merchant.merchantNumber = _config.Arguments.MerchantNumber;
             svsRequest.merchant.merchantName = _config.Arguments.MerchantName;
+            svsRequest.merchant.storeNumber = creditRequest.MetaData.BranchId;
             svsRequest.routingID = _config.Arguments.RoutingId;
-            svsRequest.stan = creditRequest.MetaData.transactionId;
+            svsRequest.stan = creditRequest.MetaData.TransactionId;
             svsRequest.issueAmount = new Amount();
             svsRequest.issueAmount.amount = (double)creditRequest.Amount;
             svsRequest.issueAmount.currency = NtBooking.ServiceConfig.Currency;
@@ -248,7 +262,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
         {
             foreach (var card in svsCards)
             {
-                if(card.IsInRange(mediumId))
+                if (card.IsInRange(mediumId))
                 {
                     return card;
                 }
@@ -270,8 +284,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
             svsRequest.merchant = new Merchant();
             svsRequest.merchant.merchantNumber = _config.Arguments.MerchantNumber;
             svsRequest.merchant.merchantName = _config.Arguments.MerchantName;
+            svsRequest.merchant.storeNumber = cancellationRequest.MetaData.BranchId;
             svsRequest.routingID = _config.Arguments.RoutingId;
-            svsRequest.stan = cancellationRequest.MetaData.transactionId;
+            svsRequest.stan = cancellationRequest.MetaData.TransactionId;
             svsRequest.transactionAmount = new Amount();
             svsRequest.transactionAmount.amount = (double)cancellationRequest.Amount;
             svsRequest.transactionAmount.currency = NtBooking.ServiceConfig.Currency;
@@ -391,13 +406,7 @@ namespace Nt.Booking.Systems.Voucher.SVS
 
             foreach (var card in configuration.Arguments.Cards)
             {
-                SvsCardHandler svsCard = new SvsCardHandler(card.Range)
-                {
-                    Type = card.Type,
-                    MaxCharge = card.MaxCharge,
-                    OnlyFullRedemption = card.OnlyFullRedemption,
-                    PinPattern = card.PinPattern,
-                };
+                SvsCardHandler svsCard = new SvsCardHandler(card);
                 _svsCardPool.Add(svsCard);
             }
         }

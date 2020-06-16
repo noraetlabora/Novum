@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Nt.Booking.Systems.Voucher.SVS
 {
@@ -14,24 +12,16 @@ namespace Nt.Booking.Systems.Voucher.SVS
         private Tuple<ulong, ulong> _binRange;
         /// <summary>Card number without SSC and PIN.</summary>
         private int _digitsCardNum = 0;
-        /// <summary>User defined PIN (SSC/PIN) pattern, e.g. SSSSPPPP.</summary>
-        private string _pinPattern = "";
-        /// <summary>Type of the card.</summary>
-        public string Type { get; set; } = "";
-        /// <summary>Maximum allowed charging amount.</summary>
-        public decimal MaxCharge { get; set; } = 0;
-        /// <summary>Flag to define cards that can only by redeemed by it full value.</summary>
-        public bool OnlyFullRedemption { get; set; } = false;
-        /// <summary>User defined PIN (SSC/PIN) pattern, e.g. SSSSPPPP.</summary>
-        public string PinPattern { get { return _pinPattern; } set { _pinPattern = value.ToUpper(); } }
+        /// <summary>Service card.</summary>
+        public SvsServiceConfiguration.ServiceCard Card { get; set; }
 
         /// <summary>
         /// Create a new object defined by its range.
         /// </summary>
         /// <param name="range">Number range separated by a '-', e.g. "10-20" or "10 - 20".</param>
-        public SvsCardHandler(in string range)
+        public SvsCardHandler(in SvsServiceConfiguration.ServiceCard card)
         {
-            SetBinRange(range);
+            SetBinRange(card.Range);
         }
 
         /// <summary>
@@ -121,9 +111,9 @@ namespace Nt.Booking.Systems.Voucher.SVS
 
             for (int i = 0, iLength = mediumFullPin.Length; i < iLength; i++)
             {
-                if (i < _pinPattern.Length)
+                if (i < Card.PinPattern.Length)
                 {
-                    if (_pinPattern[i] == 'V')
+                    if (Card.PinPattern[i] == 'V')
                     {
                         amount += mediumFullPin[i];
                     }
@@ -140,19 +130,19 @@ namespace Nt.Booking.Systems.Voucher.SVS
         public string GetPinNumber(string mediumId)
         {
             // no SSC or PIN
-            if (OnlyFullRedemption)
+            if (Card.OnlyFullRedemption)
                 return string.Empty;
 
-            if (_pinPattern.Length != 0)
+            if (Card.PinPattern.Length != 0)
             {
                 string mediumFullPin = mediumId.Substring(_digitsCardNum);
-                char[] extractedPin = "".PadRight(_pinPattern.Length, '0').ToCharArray();
+                char[] extractedPin = "".PadRight(Card.PinPattern.Length, '0').ToCharArray();
 
                 for (int i = 0, iLength = mediumFullPin.Length; i < iLength; i++)
                 {
-                    if (i < _pinPattern.Length)
+                    if (i < Card.PinPattern.Length)
                     {
-                        if (_pinPattern[i] == 'P')
+                        if (Card.PinPattern[i] == 'P')
                         {
                             extractedPin[i] = mediumFullPin[i];
                         }

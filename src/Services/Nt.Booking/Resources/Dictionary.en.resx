@@ -135,6 +135,15 @@
   <data name="VoucherAlreadyUsed" xml:space="preserve">
     <value>[{0}]: Action cannot be performed because the card has been used in the meantime. Please contact customer service.</value>
   </data>
+  <data name="VoucherAmountInfoRestricted" xml:space="preserve">
+    <value>Voucher value as printed, no account balance query possible.</value>
+  </data>
+  <data name="VoucherCreditRestricted" xml:space="preserve">
+    <value>This voucher type can not be charged.</value>
+  </data>
+  <data name="VoucherDebitRestricted" xml:space="preserve">
+    <value>Payment is not possible with this voucher type.</value>
+  </data>
   <data name="VoucherError" xml:space="preserve">
     <value>[{0}]: Voucher request is incorrect.</value>
   </data>

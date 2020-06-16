@@ -7,7 +7,7 @@ namespace Nt.Booking.Test
         [Fact]
         public void EmptyConfigurationFileTest()
         {
-            Assert.Throws<System.ArgumentException>(()=> new ServiceConfiguration(""));
+            Assert.Throws<System.ArgumentException>(() => new ServiceConfiguration(""));
         }
         [Fact]
         public void MissingConfigurationFileTest()
@@ -18,7 +18,7 @@ namespace Nt.Booking.Test
         [Fact]
         public void HelloWorld2()
         {
-            Assert.Equal("HelloWorld","HelloWorld");
+            Assert.Equal("HelloWorld", "HelloWorld");
         }
         [Fact]
         public void HelloWorld3()

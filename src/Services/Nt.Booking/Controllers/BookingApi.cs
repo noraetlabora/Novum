@@ -46,7 +46,7 @@ namespace Nt.Booking.Controllers
         /// <response code="400">schlecht</response>
         [HttpGet]
         [Route("/api/v1/medium/info/{mediumId}")]
-        public async Task<IActionResult> GetMediumAsync([FromRoute][Required]string mediumId, [FromBody]Models.MetaData metaData)
+        public async Task<IActionResult> GetMediumAsync([FromRoute][Required] string mediumId, [FromBody] Models.MetaData metaData)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace Nt.Booking.Controllers
         /// <response code="400"></response>
         [HttpGet]
         [Route("/api/v1/medium/info")]
-        public async Task<IActionResult> GetMediums([FromBody]Models.MetaData metaData)
+        public async Task<IActionResult> GetMediums([FromBody] Models.MetaData metaData)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace Nt.Booking.Controllers
         /// <response code="200">gonz guad</response>
         [HttpPost]
         [Route("/api/v1/medium/debit/{mediumId}")]
-        public async Task<IActionResult> Debit([FromRoute][Required]string mediumId, [FromBody]Models.DebitRequest debitRequest)
+        public async Task<IActionResult> Debit([FromRoute][Required] string mediumId, [FromBody] Models.DebitRequest debitRequest)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace Nt.Booking.Controllers
         /// 
         [HttpPost]
         [Route("/api/v1/medium/credit/{mediumId}")]
-        public async Task<IActionResult> Credit([FromRoute][Required]string mediumId, [FromBody]Models.CreditRequest creditRequest)
+        public async Task<IActionResult> Credit([FromRoute][Required] string mediumId, [FromBody] Models.CreditRequest creditRequest)
         {
             try
             {
@@ -138,7 +138,7 @@ namespace Nt.Booking.Controllers
         /// 
         [HttpPost]
         [Route("/api/v1/medium/credit")]
-        public async Task<IActionResult> Credit([FromBody]Models.CreditRequest creditRequest)
+        public async Task<IActionResult> Credit([FromBody] Models.CreditRequest creditRequest)
         {
             try
             {
@@ -161,7 +161,7 @@ namespace Nt.Booking.Controllers
         /// <response code="200"></response>
         [HttpPost]
         [Route("/api/v1/medium/cancelDebit/{mediumId}")]
-        public async Task<IActionResult> CancelDebit([FromRoute][Required]string mediumId, [FromBody]Models.CancellationRequest cancellationRequest)
+        public async Task<IActionResult> CancelDebit([FromRoute][Required] string mediumId, [FromBody] Models.CancellationRequest cancellationRequest)
         {
             try
             {
@@ -184,7 +184,7 @@ namespace Nt.Booking.Controllers
         /// <response code="200"></response>
         [HttpPost]
         [Route("/api/v1/medium/cancelCredit/{mediumId}")]
-        public async Task<IActionResult> CancelCredit([FromRoute][Required]string mediumId, [FromBody]Models.CancellationRequest cancellationRequest)
+        public async Task<IActionResult> CancelCredit([FromRoute][Required] string mediumId, [FromBody] Models.CancellationRequest cancellationRequest)
         {
             try
             {
