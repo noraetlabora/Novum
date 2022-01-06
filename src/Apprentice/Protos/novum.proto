@@ -10,7 +10,7 @@ service System {
   rpc Ping (google.protobuf.Empty) returns (google.protobuf.Empty);
 }
 
-// The greeting service definition.
+// The greeting service definition
 service Authentication {
   rpc Initialize (InitializeRequest) returns (InitializeReply);
   rpc Login (LoginRequest) returns (LoginReply);
