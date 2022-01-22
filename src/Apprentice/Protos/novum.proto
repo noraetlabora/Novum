@@ -10,7 +10,7 @@ service System {
   rpc Ping (google.protobuf.Empty) returns (google.protobuf.Empty);
 }
 
-// The greeting service definition
+// the greeting service definition
 service Authentication {
   rpc Initialize (InitializeRequest) returns (InitializeReply);
   rpc Login (LoginRequest) returns (LoginReply);
@@ -26,7 +26,7 @@ service RuntimeData {
   rpc GetTables (google.protobuf.Empty) returns (Tables);
 }
 
-// The request message containing the user's name
+// the request message containing the user's name
 message InitializeRequest {
   string id = 1;
   ClientType clientType = 2;
@@ -40,7 +40,8 @@ enum ClientType {
     WEB = 2;
 }
 
-// The response message containing the greetings
+// the response message containing the greetings
+
 message InitializeReply {
   uint32 unixTimestamp = 1;
 }
